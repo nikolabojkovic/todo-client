@@ -1,0 +1,205 @@
+@import "./app/shared/style/bootstrap-override.scss";
+@import "./app/shared/style/veriables.scss";
+
+html {
+  background-color: $background-primary-color;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+section { 
+  color: $text-primary-color;
+}
+
+ul {
+  margin: 0px !important;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: $background-primary-color;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: $background-ternary-color-1;
+  border-radius: 10px;
+  border: 2px solid $background-primary-color;
+}
+
+.app {
+  text-align: center;
+  padding-bottom: 50px;
+  background-color: $background-primary-color;
+  color: $text-primary-color;
+
+  &-header {
+    min-height: 10vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-size: bold;
+    font-style: italic;
+    color: $text-primary-color;
+  }
+
+  &__todo-list {
+    background-color: $background-primary-color;
+    max-width: 650px;
+    margin: auto;
+
+    &__item {
+      background-color: $background-secondary-color;
+      margin: 2px 0px;
+      padding: 0px 15px;
+
+      &:hover {
+        background-color: $background-secondary-color-1;
+      }
+
+      &-title {
+        color: $text-secondary-color;
+        font-weight: bold;
+        font-size: $font-size-primary;
+        text-align: left;
+        text-decoration: none;
+        padding: 10px 0px 5px 0px;
+  
+        &--completed {
+          color: $text-ternary-color;
+          font-weight: bold;
+          font-size: $font-size-primary;
+          text-align: left;      
+          text-decoration: line-through;
+          padding: 10px 0px 5px 0px;
+        }
+      }
+  
+      &-description {
+        color: $text-ternary-color-2;
+        font-size: $font-size-secondary;
+        text-decoration: none;
+        text-align: left;
+  
+        &--compleated {
+          color: $text-ternary-color;
+          font-size: $font-size-secondary;
+          text-decoration: line-through;
+          text-align: left;
+        }
+      }
+    }
+  }
+
+  &__tabs {
+    &-content {
+      position: relative;
+      background-color: $background-secondary-color;
+    }
+
+    &__item {
+      padding: 5px 10px;
+      cursor: default;
+      background-color: $background-secondary-color;
+
+      .svg-inline--fa {
+        color: $text-secondary-color;
+      }
+
+      &--inactive {
+        cursor: pointer;
+        background-color: $background-ternary-color;
+
+        .svg-inline--fa {
+          color: $text-primary-color
+        }
+      }
+    }
+  }
+
+  &__filter {
+    height: 55px;
+    padding: 15px;
+  }
+
+  &__sorting {
+    padding: 5px 15px;
+    margin: 10px 0px 5px 0px;
+    background-color: $background-secondary-color;
+
+    &__item {
+      user-select: none;
+      cursor: pointer;
+      margin-right: 15px;
+      margin-bottom: 2px;
+      margin-top: 2px;
+      background-color: $background-ternary-color-2;
+      border-radius: 5px;
+      padding: 0px 5px;
+      text-transform: uppercase;
+      font-weight: bold;
+      font-size: smaller;
+
+      &__icon-up {
+        left: 7px;
+        position: relative;
+      }
+
+      &__icon-down {
+        right: 1px;
+        position: relative;
+      }
+
+      .icon--inactive {
+        color: $background-ternary-color;
+      }
+    }
+  }
+
+  .paging-container {
+    color: $text-ternary-color-2;
+    background-color: $background-secondary-color;
+    padding: 10px 10px;
+  }
+
+  button:hover {
+    color: $background-primary-color;
+  }
+
+  .todo-background {
+    background-color: $background-secondary-color;
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .fade-in {
+    opacity: 0;
+    animation-name: fade-in;
+    animation-duration: 0.5s;
+    animation-delay: 0.2s;
+    animation-fill-mode: forwards;
+  }
+}

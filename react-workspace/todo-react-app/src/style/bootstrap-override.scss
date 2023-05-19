@@ -1,0 +1,80 @@
+@import "./variables.scss";
+
+/* bootsrap override */
+.page-link.active, .active > .page-link {
+  background-color: $text-secondary-color;
+  border-color: $background-primary-color;
+  cursor: default;
+  
+  &:hover {
+    color: $text-primary-color;
+  }
+}
+
+.page-link.disabled, .disabled > .page-link {
+  color: rgb(160, 160, 160);
+  pointer-events: none;
+  background-color: $background-ternary-color;
+  border-color: $background-primary-color;
+}
+
+.page-link {
+  color: $text-primary-color;
+  background-color: $background-ternary-color-2;
+  border-color: $background-primary-color;
+
+  &:hover {
+    color: $background-ternary-color-1;
+  }
+
+  &:focus {
+    border-color: $background-primary-color;
+    box-shadow: none;
+  }
+}
+
+.form-select {
+  background-color: $background-ternary-color-2;
+  border-color: $background-primary-color;
+  color: $text-primary-color;
+  cursor: pointer;
+  border: none;
+  box-shadow: none;
+
+  &:focus {
+    border: none;
+    box-shadow: none;
+  }
+}
+
+.form-control {
+  &:focus {
+    border-color: $text-secondary-color;
+    outline: 0;
+    box-shadow: 0 0 0 0.1rem $text-secondary-color;
+  }
+}
+
+.form-check-input {
+  box-shadow: none;
+  border-color: $background-primary-color;
+  background-color: $background-ternary-color-1;
+  background-image: escape-svg($form-switch-checked-bg-image);
+
+  &:focus {
+    border-color: $background-primary-color;
+    background-image: escape-svg($form-switch-checked-bg-image);
+    box-shadow: none;
+  }
+
+  &:checked {
+    background-color: $text-secondary-color;
+    border-color: $background-primary-color;
+    box-shadow: none;
+    background-image: escape-svg($form-switch-checked-bg-image) !important;
+  }
+}
+
+.form-switch .form-check-input, .form-switch .form-check-input:focus {
+  background-image: escape-svg($form-switch-checked-bg-image);
+}
