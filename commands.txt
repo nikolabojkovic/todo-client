@@ -15,3 +15,7 @@ npx tsc --init --rootDir src --outDir build \--esModuleInterop --resolveJsonModu
 true // init tsconfig.json
 npm install @types/node --save-dev // ambient Node.js types for TypeScript
 npm install --save-dev ts-node nodemon // cold watch, run without waiting typesript to compile
+
+// angular 
+link local npm package
+command example: npm install "file://./dist//sort-button-lib" 
