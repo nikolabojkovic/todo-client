@@ -7,11 +7,13 @@
     "start:test-app": "ng serve --project='test-app'",
     "start:todo-app": "ng serve --project='todo-app'",
     "build": "ng build",
-    "watch:sort-button-lib": "ng build --watch --project='sort-button-lib'",
+    "watch:sort-button": "ng build --watch --project='sort-button'",
     "build:test-app": "ng build --project='test-app'",
     "build:todo-app": "ng build --project='todo-app'",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "test:sort-button": "ng test --project='sort-button'",
+    "test:todo-app": "ng test --project='todo-app'"
   },
   "private": true,
   "dependencies": {
@@ -31,7 +33,7 @@
     "bootstrap": "^5.2.3",
     "ngx-bootstrap": "^6.2.0",
     "rxjs": "~7.8.0",
-    "sort-button-lib": "file:dist/sort-button-lib",
+    "sort-button": "file:dist/sort-button",
     "tslib": "^2.3.0",
     "zone.js": "~0.13.0"
   },

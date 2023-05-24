@@ -17,8 +17,8 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "paths": {
-      "sort-button-lib": [
-        "dist/sort-button-lib"
+      "sort-button": [
+        "dist/sort-button"
       ]
     },
     "target": "ES2022",

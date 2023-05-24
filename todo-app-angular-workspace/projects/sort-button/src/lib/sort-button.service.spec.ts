@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { SortButtonLibService } from './sort-button-lib.service';
+import { SortButtonService } from './sort-button.service';
 
-describe('SortButtonLibService', () => {
-  let service: SortButtonLibService;
+describe('SortButtonService', () => {
+  let service: SortButtonService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(SortButtonLibService);
+    service = TestBed.inject(SortButtonService);
   });
 
   it('should be created', () => {

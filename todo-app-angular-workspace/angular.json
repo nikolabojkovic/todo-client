@@ -3,23 +3,23 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "sort-button-lib": {
+    "sort-button": {
       "projectType": "library",
-      "root": "projects/sort-button-lib",
-      "sourceRoot": "projects/sort-button-lib/src",
+      "root": "projects/sort-button",
+      "sourceRoot": "projects/sort-button/src",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "project": "projects/sort-button-lib/ng-package.json"
+            "project": "projects/sort-button/ng-package.json"
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/sort-button-lib/tsconfig.lib.prod.json"
+              "tsConfig": "projects/sort-button/tsconfig.lib.prod.json"
             },
             "development": {
-              "tsConfig": "projects/sort-button-lib/tsconfig.lib.json"
+              "tsConfig": "projects/sort-button/tsconfig.lib.json"
             }
           },
           "defaultConfiguration": "production"
@@ -27,7 +27,7 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "tsConfig": "projects/sort-button-lib/tsconfig.spec.json",
+            "tsConfig": "projects/sort-button/tsconfig.spec.json",
             "polyfills": [
               "zone.js",
               "zone.js/testing"

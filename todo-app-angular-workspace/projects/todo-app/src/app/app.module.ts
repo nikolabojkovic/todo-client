@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { SortButtonLibModule } from 'sort-button-lib';
+import { SortButtonModule } from 'sort-button';
 
 import { AppComponent } from './app.component';
 import { TodoItemComponent } from './todo-item/todo-item.component';
@@ -23,7 +23,7 @@ import { TabsComponent } from './tabs/tabs.component';
     BrowserAnimationsModule,
     MatSlideToggleModule,
     FontAwesomeModule,
-    SortButtonLibModule
+    SortButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

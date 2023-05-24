@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'lib-sort-button-lib',
+  selector: 'lib-sort-button',
   template: `
     <p>
-      sort-button-lib works! edited again
+      sort-button works! edited again
     </p>
   `,
   styles: [
   ]
 })
-export class SortButtonLibComponent {
+export class SortButtonComponent {
 
 }
