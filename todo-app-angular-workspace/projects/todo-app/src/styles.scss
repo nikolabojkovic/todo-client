@@ -79,7 +79,6 @@ code {
         font-size: $font-size-primary;
         text-align: left;
         text-decoration: none;
-        padding: 10px 0px 5px 0px;
   
         &--completed {
           color: $text-ternary-color;
@@ -87,7 +86,6 @@ code {
           font-size: $font-size-primary;
           text-align: left;      
           text-decoration: line-through;
-          padding: 10px 0px 5px 0px;
         }
       }
   
@@ -174,14 +172,6 @@ code {
         color: $background-ternary-color;
       }
     }
-  }
-
-  &__button {
-    background-color: $text-secondary-color;
-    color: $text-primary-color !important;
-    min-width: 90px;
-    border-radius: 20px;
-    width: 100%;
   }
 
   .paging-container {

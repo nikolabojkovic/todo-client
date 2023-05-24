@@ -6,6 +6,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./search-todos.component.scss']
 })
 export class SearchTodosComponent implements OnInit {
+  searchButton = { 
+    backgroundColor: '#FE9801',
+    color: 'white', 
+    minWidth: '90px',
+    borderRadius: '20px',
+    width: '100%'
+  };
   disabled = true;
   constructor() { }
 

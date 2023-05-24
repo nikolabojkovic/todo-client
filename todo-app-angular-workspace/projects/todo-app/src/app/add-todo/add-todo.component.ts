@@ -6,6 +6,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./add-todo.component.scss']
 })
 export class AddTodoComponent implements OnInit {
+  addButton = { 
+    backgroundColor: '#FE9801',
+    color: 'white', 
+    minWidth: '90px',
+    borderRadius: '20px',
+    width: '100%'
+  };
   disabled = true;
 
   constructor() { }
