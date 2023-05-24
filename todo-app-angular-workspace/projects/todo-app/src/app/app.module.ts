@@ -9,6 +9,8 @@ import { AppComponent } from './app.component';
 import { TodoItemComponent } from './todo-item/todo-item.component';
 import { TodoListComponent } from './todo-list/todo-list.component';
 import { TabsComponent } from './tabs/tabs.component';
+import { AddTodoComponent } from './add-todo/add-todo.component';
+import { SearchTodosComponent } from './search-todos/search-todos.component';
 
 
 @NgModule({
@@ -16,7 +18,9 @@ import { TabsComponent } from './tabs/tabs.component';
     AppComponent,
     TodoListComponent,
     TodoItemComponent,
-    TabsComponent
+    TabsComponent,
+    AddTodoComponent,
+    SearchTodosComponent
   ],
   imports: [
     BrowserModule,

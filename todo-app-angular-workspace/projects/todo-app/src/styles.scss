@@ -108,6 +108,10 @@ code {
   }
 
   &__tabs {
+    background-color: $background-primary-color;
+    max-width: 650px;
+    margin: auto;
+    
     &-content {
       position: relative;
       background-color: $background-secondary-color;
@@ -170,6 +174,14 @@ code {
         color: $background-ternary-color;
       }
     }
+  }
+
+  &__button {
+    background-color: $text-secondary-color;
+    color: $text-primary-color !important;
+    min-width: 90px;
+    border-radius: 20px;
+    width: 100%;
   }
 
   .paging-container {

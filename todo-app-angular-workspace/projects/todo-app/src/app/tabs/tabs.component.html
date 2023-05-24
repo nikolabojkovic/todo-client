@@ -1,6 +1,22 @@
-<p>tabs works!</p>
-<mat-slide-toggle>Toggle me!</mat-slide-toggle>
-<span class="mx-2">
-  <fa-icon [icon]="faCoffee"></fa-icon>
-</span>
+<!-- <mat-slide-toggle>Toggle me!</mat-slide-toggle> -->
+<!-- <span class="mx-2">
+  <fa-icon [icon]="faAdd"></fa-icon>
+</span> -->
 
+<section class="app__tabs mb-2">
+  <div class="hstack gap-1">
+    <div 
+      *ngFor="let tab of tabs" 
+      [ngClass]="active === tab.name ? 'app__tabs__item' : 'app__tabs__item app__tabs__item--inactive'"
+      (click)="setTab(tab.name)"
+    >
+      <fa-icon [icon]="tab.icon"></fa-icon>
+    </div>
+  </div>
+  <section class="app__tabs-content">
+    <div class="container-fluid todo-background">
+      <app-add-todo *ngIf="active === 'add-todo'" class="fade-in"></app-add-todo>
+      <app-search-todos *ngIf="active === 'search-todos'" class="fade-in"></app-search-todos>   
+    </div>
+  </section>     
+</section>

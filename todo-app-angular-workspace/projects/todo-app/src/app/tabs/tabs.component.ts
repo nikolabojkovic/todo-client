@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { faCoffee } from '@fortawesome/free-solid-svg-icons';
+import { faAdd, faSearch, faFilter, faDownload } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-tabs',
@@ -7,5 +7,27 @@ import { faCoffee } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./tabs.component.scss']
 })
 export class TabsComponent {
-  faCoffee = faCoffee;
+  tabs = [{
+      name: 'add-todo',
+      icon: faAdd,
+    },
+    {
+      name: 'search-todos',
+      icon: faSearch
+    },
+    {
+      name: 'filter-todos',
+      icon: faFilter
+    },
+    {
+      name: 'import-export',
+      icon: faDownload
+    }
+  ];
+
+  active = 'add-todo'
+
+  setTab(name: string): void {
+    this.active = name;
+  }
 }
