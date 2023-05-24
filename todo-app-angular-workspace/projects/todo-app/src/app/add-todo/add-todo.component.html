@@ -1,16 +1,29 @@
 <div class="row">
   <div class="col-12 col-sm-5 p-2">
-    <input type="text" class="form-control form-control-sm" id="title" placeholder="Enter title">
+    <input 
+      type="text" 
+      class="form-control form-control-sm" 
+      id="title" 
+      placeholder="Enter title"
+      [(ngModel)]="title"
+    />
   </div>
   <div class="col-12 col-sm-5 p-2">
-    <input type="text" class="form-control form-control-sm" id="description" placeholder="Enter description">
+    <input 
+      type="text" 
+      class="form-control form-control-sm" 
+      id="description" 
+      placeholder="Enter description"
+      [(ngModel)]="description"
+    />
   </div>
   <div class="col-12 col-sm-2 p-2">
     <button 
       type="submit" 
       class="btn btn-sm btn-warning"
       [ngStyle]="addButton"
-      [disabled]="disabled"
+      [disabled]="buttonState"
+      (click)="add()"
     >
       Add
     </button>

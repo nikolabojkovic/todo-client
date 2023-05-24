@@ -13,9 +13,22 @@ export class AddTodoComponent implements OnInit {
     borderRadius: '20px',
     width: '100%'
   };
-  disabled = true;
+  title = ''
+  description = ''
 
   constructor() { }
 
   ngOnInit(): void { }
+
+  add() {
+    console.log(this.title);
+    console.log(this.description);
+  }
+
+  get buttonState(): boolean {
+    return !this.title 
+      || this.title.trim() === '' 
+      || !this.description 
+      || this.description.trim() === ''
+  }
 }

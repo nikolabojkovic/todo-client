@@ -11,6 +11,7 @@ import { TodoListComponent } from './todo-list/todo-list.component';
 import { TabsComponent } from './tabs/tabs.component';
 import { AddTodoComponent } from './add-todo/add-todo.component';
 import { SearchTodosComponent } from './search-todos/search-todos.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { SearchTodosComponent } from './search-todos/search-todos.component';
     BrowserAnimationsModule,
     MatSlideToggleModule,
     FontAwesomeModule,
-    SortButtonModule
+    SortButtonModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
