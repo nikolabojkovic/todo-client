@@ -1,0 +1,14 @@
+<div class="app__filter d-flex justify-content-start align-items-center">
+  <div class="hstack gap-3">
+    <div>
+      <mat-slide-toggle [(ngModel)]="isCompleted" (click)="onFilter()">
+        Completed
+      </mat-slide-toggle>
+    </div>
+    <div>
+      <mat-slide-toggle [(ngModel)]="isUncompleted" (click)="onFilter()">
+        Uncompleted
+      </mat-slide-toggle>
+    </div>
+  </div>
+</div>

@@ -16,7 +16,9 @@
   <section class="app__tabs-content">
     <div class="container-fluid todo-background">
       <app-add-todo *ngIf="active === 'add-todo'" class="fade-in"></app-add-todo>
-      <app-search-todos *ngIf="active === 'search-todos'" class="fade-in"></app-search-todos>   
+      <app-search-todos *ngIf="active === 'search-todos'" class="fade-in"></app-search-todos>
+      <app-filter-todos *ngIf="active === 'filter-todos'" class="fade-in"></app-filter-todos>  
+      <app-import-export *ngIf="active === 'import-export'" class="fade-in"></app-import-export>  
     </div>
   </section>     
 </section>

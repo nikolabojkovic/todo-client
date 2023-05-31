@@ -12,6 +12,8 @@ import { TabsComponent } from './tabs/tabs.component';
 import { AddTodoComponent } from './add-todo/add-todo.component';
 import { SearchTodosComponent } from './search-todos/search-todos.component';
 import { FormsModule } from '@angular/forms';
+import { FilterTodosComponent } from './filter-todos/filter-todos.component';
+import { ImportExportComponent } from './import-export/import-export.component';
 
 
 @NgModule({
@@ -21,7 +23,9 @@ import { FormsModule } from '@angular/forms';
     TodoItemComponent,
     TabsComponent,
     AddTodoComponent,
-    SearchTodosComponent
+    SearchTodosComponent,
+    FilterTodosComponent,
+    ImportExportComponent
   ],
   imports: [
     BrowserModule,
