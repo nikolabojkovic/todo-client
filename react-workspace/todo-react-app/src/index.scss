@@ -1,5 +1,9 @@
 @import "./style/variables.scss";
 
+#root {
+  background-color: $background-primary-color;
+}
+
 html {
   background-color: $background-primary-color;
 }

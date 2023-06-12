@@ -22,33 +22,34 @@ export function Search({ placeholder }: Props) {
   return (
     <Form className="todo-background p-1">
       <Stack direction="horizontal" gap={3}>
-        <Form.Control 
-          type="text" 
-          placeholder={placeholder} 
-          size="sm" 
-          className="me-auto m-2"
-          value={todoList.search.searchTerm}
-          onChange={(e) => { 
+        <Form.Group className="me-auto m-2 w-100">
+          <Form.Control 
+            type="text" 
+            placeholder={placeholder} 
+            size="sm" 
+            value={todoList.search.searchTerm}
+            onChange={(e) => { 
+                dispatch({
+                  type: 'searchTerm-updated',
+                  searchTerm: e.target.value
+                });
+                if (e.target.value === '') {
+                  searchTodos(e.target.value);
+                }
+              }}
+          />
+          {todoList.search.searchTerm !== '' && <FontAwesomeIcon 
+            className="clear-icon" 
+            icon={faCircleXmark}
+            onClick={() => {
               dispatch({
                 type: 'searchTerm-updated',
-                searchTerm: e.target.value
+                searchTerm: ''
               });
-              if (e.target.value === '') {
-                searchTodos(e.target.value);
-              }
+              searchTodos('');
             }}
-        />
-        {todoList.search.searchTerm !== '' && <FontAwesomeIcon 
-          className="clear-icon" 
-          icon={faCircleXmark}
-          onClick={() => {
-            dispatch({
-              type: 'searchTerm-updated',
-              searchTerm: ''
-            });
-            searchTodos('');
-          }}
-        />}
+          />}
+        </Form.Group>
         <Button 
           variant="warning"
           className="m-2"

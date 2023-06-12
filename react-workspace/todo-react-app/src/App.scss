@@ -6,6 +6,8 @@
   text-align: center;
   padding-bottom: 50px;
   background-color: $background-primary-color;
+  max-width: 650px;
+  margin: auto;
 
   &-header {
     min-height: 10vh;
@@ -20,9 +22,6 @@
   }
 
   &__todo-list {
-    background-color: $background-primary-color;
-    max-width: 650px;
-    margin: auto;
 
     &__item {
       background-color: $background-secondary-color;
@@ -128,6 +127,13 @@
         color: $background-ternary-color;
       }
     }
+  }
+
+  .clear-icon {
+    position: absolute;
+    right: 133px;
+    top: 20px;
+    color: $text-ternary-color;
   }
 
   .paging-container {
