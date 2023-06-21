@@ -1,4 +1,6 @@
+import { Store } from '@ngrx/store';
 import { Component, OnInit } from '@angular/core';
+import { TodosActions } from '../state/todos.actions';
 
 @Component({
   selector: 'app-add-todo',
@@ -16,13 +18,16 @@ export class AddTodoComponent implements OnInit {
   title = ''
   description = ''
 
-  constructor() { }
+  constructor(private store: Store) { }
 
   ngOnInit(): void { }
-
-  add() {
-    console.log(this.title);
-    console.log(this.description);
+  
+  onAdd() {
+    this.store.dispatch(TodosActions.addTodo({
+      title: this.title,
+      description: this.description,
+    }));
+    // console.log(todo);
   }
 
   get buttonState(): boolean {

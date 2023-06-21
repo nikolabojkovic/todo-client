@@ -1,5 +1,8 @@
+import { Store } from '@ngrx/store';
 import { Component, OnInit } from '@angular/core';
-import { todos } from '../shared/initial-data';
+import { TodoService } from '../shared/services/todo.service';
+import { selectTodos } from '../state/todos.selectors';
+import { TodosActions } from '../state/todos.actions';
 
 @Component({
   selector: 'app-todo-list',
@@ -8,9 +11,13 @@ import { todos } from '../shared/initial-data';
 })
 export class TodoListComponent implements OnInit {
 
-  items: any = todos;
+  items$ = this.store.select(selectTodos);;
 
-  constructor() { }
+  constructor(private todoService: TodoService, private store: Store) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    let data = this.todoService.getTodos();
+    this.store.dispatch(TodosActions.retrievedTodoList({ todos: data }));
+  }
+
 }
