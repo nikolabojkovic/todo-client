@@ -21,7 +21,11 @@
       </button>
     </div>
     <div [ngClass]="{'ms-todo' : todo.completed}">
-      <button [ngStyle]="buttonStyle" class="btn btn-outline-danger btn-sm" (click)="onRemove(todo.id)">
+      <button 
+        [ngStyle]="buttonStyle" 
+        class="btn btn-outline-danger btn-sm" 
+        (click)="onRemove(todo.id)"
+      >
         Delete
       </button>
     </div>

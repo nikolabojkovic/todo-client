@@ -2,10 +2,8 @@ import { createReducer, on } from '@ngrx/store';
 
 import { TodosActions } from './todos.actions';
 import { Todo } from '../shared/models/todo';
-import { todos } from '../shared/initial-data';
 
-export const initialState: ReadonlyArray<Todo> = todos;
-let id = 6;
+export const initialState: ReadonlyArray<Todo> = [];
 
 export const todosReducer = createReducer(
   initialState,
@@ -24,7 +22,11 @@ export const todosReducer = createReducer(
   }
   ),
   on(TodosActions.addTodo, (state, { title, description } ) => {
-    id = id + 1;
+    let lastElement = state[state.length - 1];
+    let id = 0;
+    if (lastElement) {
+      id = lastElement.id + 1;
+    }
     const todo = {
       id,
       title,

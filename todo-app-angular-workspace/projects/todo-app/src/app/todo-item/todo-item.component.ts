@@ -1,7 +1,9 @@
 import { Store } from '@ngrx/store';
 import { Component, Input } from '@angular/core';
 import { ITodo } from '../shared/models/todo';
+import { selectTodos } from '../state/todos.selectors';
 import { TodosActions } from '../state/todos.actions';
+import { TodoService } from '../shared/services/todo.service';
 
 @Component({
   selector: 'app-todo-item',
@@ -18,13 +20,19 @@ export class TodoItemComponent {
     minWidth: '90px'
   }
 
-  constructor(private store: Store) {}
+  constructor(private store: Store, private todoService: TodoService) {}
 
   onComplete(todoId: number) {
     this.store.dispatch(TodosActions.completeTodo({ todoId }));
+    this.store
+        .select(selectTodos)
+        .subscribe((todos: any) => this.todoService.saveTodos(todos));
   }
 
   onRemove(todoId: number) {
     this.store.dispatch(TodosActions.removeTodo({ todoId }));
+    this.store
+        .select(selectTodos)
+        .subscribe((todos: any) => this.todoService.saveTodos(todos));
   }
 }

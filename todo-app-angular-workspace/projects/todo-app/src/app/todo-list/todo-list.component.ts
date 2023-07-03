@@ -11,7 +11,7 @@ import { TodosActions } from '../state/todos.actions';
 })
 export class TodoListComponent implements OnInit {
 
-  items$ = this.store.select(selectTodos);;
+  items$ = this.store.select(selectTodos);
 
   constructor(private todoService: TodoService, private store: Store) { }
 
