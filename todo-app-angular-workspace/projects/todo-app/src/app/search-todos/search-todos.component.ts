@@ -14,8 +14,17 @@ export class SearchTodosComponent implements OnInit {
     width: '100%'
   };
   disabled = true;
+  searchValue = '';
   
   constructor() { }
 
   ngOnInit(): void { }
+
+  onTyping(): void {
+    this.disabled = !this.searchValue || this.searchValue.trim() === '';
+  }
+
+  onSerach(): void {
+    console.log(this.searchValue);
+  }
 }

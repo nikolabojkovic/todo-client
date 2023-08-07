@@ -37,7 +37,7 @@ function getTodos() {
       endIndex: 5,
       itemsPerPage: 5
     } as IPaging
-  };
+  } as ITodoList;
   return todoList;
 }
 

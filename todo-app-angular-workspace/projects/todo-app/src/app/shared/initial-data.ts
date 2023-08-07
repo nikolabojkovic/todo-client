@@ -1,3 +1,5 @@
+import { IPaging } from "./models/IPaging";
+import { ITodoList } from "./models/ITodoList";
 import { ITodo } from "./models/todo";
 
 export const todos: ITodo[] = [
@@ -44,3 +46,19 @@ export const todos: ITodo[] = [
     createdAt: new Date(2022, 2, 4)
   } as ITodo
 ] as ITodo[];
+
+export const initTodoList: ITodoList = 
+{
+  originalList: todos,
+  displayList: todos,
+  search: { searchTerm: '' },
+  filter: { completed: false, uncompleted: false },
+  sort: { column: 'createdAt', direction: 'asc'},
+  paging: {
+    totalCount: 6,
+    activePage: 1,
+    itemsPerPage: 5,
+    startIndex: 0,
+    endIndex: 5,
+  } as IPaging
+};

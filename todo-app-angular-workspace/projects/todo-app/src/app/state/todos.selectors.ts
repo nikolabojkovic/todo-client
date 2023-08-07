@@ -1,6 +1,5 @@
 import { createFeatureSelector } from '@ngrx/store';
-import { Todo } from '../shared/models/todo';
-
+import { ITodoList } from '../shared/models/ITodoList';
  
-export const selectTodos = createFeatureSelector<ReadonlyArray<Todo>>('todos');
+export const selectTodos = createFeatureSelector<ITodoList>('todos');
  

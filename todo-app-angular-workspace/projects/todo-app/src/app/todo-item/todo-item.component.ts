@@ -4,6 +4,7 @@ import { ITodo } from '../shared/models/todo';
 import { selectTodos } from '../state/todos.selectors';
 import { TodosActions } from '../state/todos.actions';
 import { TodoService } from '../shared/services/todo.service';
+import { first } from 'rxjs';
 
 @Component({
   selector: 'app-todo-item',
@@ -26,6 +27,7 @@ export class TodoItemComponent {
     this.store.dispatch(TodosActions.completeTodo({ todoId }));
     this.store
         .select(selectTodos)
+        .pipe(first())
         .subscribe((todos: any) => this.todoService.saveTodos(todos));
   }
 
@@ -33,6 +35,7 @@ export class TodoItemComponent {
     this.store.dispatch(TodosActions.removeTodo({ todoId }));
     this.store
         .select(selectTodos)
+        .pipe(first())
         .subscribe((todos: any) => this.todoService.saveTodos(todos));
   }
 }

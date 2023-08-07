@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
-import { todos as initialData } from '../initial-data';
+import { initTodoList } from '../initial-data';
+import { IPaging } from '../models/IPaging';
+import { ITodoList } from '../models/ITodoList';
 import { ITodo, Todo } from '../models/todo';
 
 @Injectable({
@@ -9,17 +11,43 @@ export class TodoService {
 
   constructor() {}
 
-  getTodos(): Todo[] {
+  getTodoList(): ITodoList {
     if (localStorage.getItem('todo-list') === undefined 
      || localStorage.getItem('todo-list') === null) {
-      return initialData;
+      return initTodoList;
     }
 
-    const todoList = JSON.parse(localStorage.getItem('todo-list') ?? "[]") as ITodo[];
+    const sortBy = {
+      column: 'createdAt',
+      direction: 'asc'
+    };
+    const todos = JSON.parse(localStorage.getItem('todo-list') ?? "[]") as ITodo[];
+
+    let todoList = {
+      originalList: todos, 
+      displayList: todos,
+      search: {
+        searchTerm: '',
+      },
+      filter: {
+        completed: false,
+        uncompleted: false,
+      },
+      sort: sortBy,
+      paging: {
+        totalCount: todos.length,
+        activePage: todos.length > 0 ? 1 : 0,
+        startIndex: 0,
+        endIndex: 5,
+        itemsPerPage: 5
+      } as IPaging
+    } as ITodoList;
+
     return todoList;
   }
 
-  saveTodos(todos: Todo[]): void {
-    localStorage.setItem('todo-list', JSON.stringify(todos));
+  saveTodos(todoList: ITodoList): void {
+    localStorage.setItem('todo-list', JSON.stringify(todoList.originalList));
+    console.log("todo saved!");
   }
 }

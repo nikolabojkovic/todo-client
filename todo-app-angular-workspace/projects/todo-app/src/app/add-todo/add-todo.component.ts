@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { TodosActions } from '../state/todos.actions';
 import { selectTodos } from '../state/todos.selectors';
 import { TodoService } from '../shared/services/todo.service';
+import { first } from 'rxjs';
 
 @Component({
   selector: 'app-add-todo',
@@ -31,6 +32,7 @@ export class AddTodoComponent implements OnInit {
     }));
     this.store
         .select(selectTodos)
+        .pipe(first())
         .subscribe((todos: any) => this.todoService.saveTodos(todos));
   }
 
