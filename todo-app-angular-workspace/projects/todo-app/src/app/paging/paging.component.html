@@ -1,0 +1,15 @@
+<section class="paging-container p-0 mt-2">
+  <pagination 
+    [boundaryLinks]="true" 
+    [totalItems]="totalCount"
+    [maxSize]="3"
+    [itemsPerPage]="itemsPerPage"
+    [(ngModel)]="activePage" 
+    (pageChanged)="onPageChange($event)"
+    previousText="&lsaquo;" 
+    nextText="&rsaquo;" 
+    firstText="&laquo;" 
+    lastText="&raquo;"
+  >
+  </pagination>
+</section>

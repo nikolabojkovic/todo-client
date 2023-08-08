@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { TodosActions } from '../state/todos.actions';
 
 @Component({
   selector: 'app-search-todos',
@@ -6,25 +8,33 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./search-todos.component.scss']
 })
 export class SearchTodosComponent implements OnInit {
-  searchButton = { 
-    backgroundColor: '#FE9801',
-    color: 'white', 
-    minWidth: '90px',
-    borderRadius: '20px',
-    width: '100%'
-  };
   disabled = true;
   searchValue = '';
   
-  constructor() { }
+  constructor(private store: Store) { }
 
   ngOnInit(): void { }
 
   onTyping(): void {
     this.disabled = !this.searchValue || this.searchValue.trim() === '';
+
+    if (this.searchValue.trim() === '') {
+      this.store.dispatch(TodosActions.searchedTodos({ 
+        action: { 
+          searchTerm: this.searchValue,
+          activePage: 1
+        }
+      }));
+    }
   }
 
   onSerach(): void {
+    this.store.dispatch(TodosActions.searchedTodos({ 
+      action: { 
+        searchTerm: this.searchValue,
+        activePage: 1
+      }
+    }));
     console.log(this.searchValue);
   }
 }

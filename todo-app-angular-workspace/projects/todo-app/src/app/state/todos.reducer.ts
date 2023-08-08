@@ -10,7 +10,7 @@ export const initialState: ITodoList = {} as ITodoList;
 export const todosReducer = createReducer(
   initialState,
   on(TodosActions.retrievedTodoList, (_state, { todoList }) => todoList),
-  on(TodosActions.removeTodo, (todoList, { todoId }) => {
+  on(TodosActions.removedTodo, (todoList, { todoId }) => {
     return {
       ...todoList,
       originalList: todoList.originalList.filter(t => t.id !== todoId) as ITodo[],
@@ -25,7 +25,7 @@ export const todosReducer = createReducer(
     } as ITodoList;
   }
   ),
-  on(TodosActions.completeTodo, (todoList, { todoId }) => {
+  on(TodosActions.completedTodo, (todoList, { todoId }) => {
     return {
       ...todoList,
       originalList: todoList.originalList.map(todo => {
@@ -46,7 +46,7 @@ export const todosReducer = createReducer(
     } as ITodoList;
   }
   ),
-  on(TodosActions.addTodo, (todoList, { title, description } ) => {
+  on(TodosActions.addedTodo, (todoList, { title, description } ) => {
     let lastElement = todoList.originalList[todoList.originalList.length - 1];
     let id = 0;
     if (lastElement) {
@@ -70,7 +70,36 @@ export const todosReducer = createReducer(
         startIndex: (calculateActivePageOnAdd(todoList.paging) - 1) * todoList.paging.itemsPerPage,
         endIndex: calculateActivePageOnAdd(todoList.paging) * todoList.paging.itemsPerPage
       } as IPaging
-    } as ITodoList;;
+    } as ITodoList;
+  }),
+  on(TodosActions.searchedTodos, (todoList, { action }) => {
+    const filteredList = filter(todoList.originalList, todoList.filter);
+    const searchedList = search(filteredList, action.searchTerm);
+    return {
+      ...todoList,
+      displayList: [...searchedList],
+      search: { searchTerm: action.searchTerm },
+      paging: {
+        ...todoList.paging,
+        activePage: action.activePage,
+        totalCount: searchedList.length,
+        startIndex: (action.activePage - 1) * todoList.paging.itemsPerPage,
+        endIndex: action.activePage * todoList.paging.itemsPerPage
+      } as IPaging
+    } as ITodoList
+  }),
+  on(TodosActions.pagingUpdated, (todoList, { action }) => {
+    console.log(action);
+    return {
+      ...todoList,
+      paging: {
+        ...todoList.paging,
+        activePage: action.activePage,
+        itemsPerPage: action.itemsPerPage,
+        startIndex: (action.activePage - 1) * action.itemsPerPage,
+        endIndex: action.activePage * action.itemsPerPage
+      } as IPaging
+    } as ITodoList
   })
 );
 

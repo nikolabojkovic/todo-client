@@ -6,8 +6,10 @@ export const TodosActions = createActionGroup({
   source: 'Todos',
   events: {
     retrievedTodoList: props<{ todoList: ITodoList }>(),
-    addTodo: props<{ title: string, description: string }>(),
-    completeTodo: props<{ todoId: number }>(),
-    removeTodo: props<{ todoId: number }>()
+    addedTodo: props<{ title: string, description: string }>(),
+    completedTodo: props<{ todoId: number }>(),
+    removedTodo: props<{ todoId: number }>(),
+    searchedTodos: props<{ action: any }>(),
+    pagingUpdated: props<{ action: any }>(),
   }
 });

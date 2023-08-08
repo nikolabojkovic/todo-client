@@ -11,13 +11,6 @@ import { first } from 'rxjs';
   styleUrls: ['./add-todo.component.scss']
 })
 export class AddTodoComponent implements OnInit {
-  addButton = { 
-    backgroundColor: '#FE9801',
-    color: 'white', 
-    minWidth: '90px',
-    borderRadius: '20px',
-    width: '100%'
-  };
   title = ''
   description = ''
 
@@ -26,7 +19,7 @@ export class AddTodoComponent implements OnInit {
   ngOnInit(): void { }
   
   async onAdd() {
-    this.store.dispatch(TodosActions.addTodo({
+    this.store.dispatch(TodosActions.addedTodo({
       title: this.title,
       description: this.description,
     }));

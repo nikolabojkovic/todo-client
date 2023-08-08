@@ -24,7 +24,7 @@ export class TodoItemComponent {
   constructor(private store: Store, private todoService: TodoService) {}
 
   onComplete(todoId: number) {
-    this.store.dispatch(TodosActions.completeTodo({ todoId }));
+    this.store.dispatch(TodosActions.completedTodo({ todoId }));
     this.store
         .select(selectTodos)
         .pipe(first())
@@ -32,7 +32,7 @@ export class TodoItemComponent {
   }
 
   onRemove(todoId: number) {
-    this.store.dispatch(TodosActions.removeTodo({ todoId }));
+    this.store.dispatch(TodosActions.removedTodo({ todoId }));
     this.store
         .select(selectTodos)
         .pipe(first())

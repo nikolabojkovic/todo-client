@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { SortButtonModule } from 'sort-button';
 import { todosReducer } from './state/todos.reducer';
 import { StoreModule } from '@ngrx/store';
@@ -17,6 +18,7 @@ import { FormsModule } from '@angular/forms';
 import { FilterTodosComponent } from './filter-todos/filter-todos.component';
 import { ImportExportComponent } from './import-export/import-export.component';
 import { TodoService } from './shared/services/todo.service';
+import { PagingComponent } from './paging/paging.component';
 
 
 @NgModule({
@@ -28,7 +30,8 @@ import { TodoService } from './shared/services/todo.service';
     AddTodoComponent,
     SearchTodosComponent,
     FilterTodosComponent,
-    ImportExportComponent
+    ImportExportComponent,
+    PagingComponent
   ],
   imports: [
     BrowserModule,
@@ -36,6 +39,7 @@ import { TodoService } from './shared/services/todo.service';
     MatSlideToggleModule,
     FontAwesomeModule,
     SortButtonModule,
+    PaginationModule.forRoot(),
     FormsModule,
     StoreModule.forRoot({ todos: todosReducer }),
   ],

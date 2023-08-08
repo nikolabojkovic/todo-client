@@ -128,11 +128,11 @@ function todoListReducer(todoList: ITodoList, action: any) {
         paging: {
           ...todoList.paging,
           activePage: action.activePage,
-          itemPerPage: action.itemsPerPage,
+          itemsPerPage: action.itemsPerPage,
           startIndex: (action.activePage - 1) * action.itemsPerPage,
           endIndex: action.activePage * action.itemsPerPage
         } as IPaging
-      }
+      } as ITodoList
     }
     case 'searched': {
       const filteredList = filter(todoList.originalList, todoList.filter);
