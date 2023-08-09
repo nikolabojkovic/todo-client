@@ -89,7 +89,6 @@ export const todosReducer = createReducer(
     } as ITodoList
   }),
   on(TodosActions.pagingUpdated, (todoList, { action }) => {
-    console.log(action);
     return {
       ...todoList,
       paging: {

@@ -13,6 +13,7 @@ import { selectTodos } from '../state/todos.selectors';
 export class PagingComponent implements OnInit {
 
   totalCount: number = 0;
+  pageCount: number = 0;
   activePage: number = 2;
   itemsPerPage: number = 1;
 
@@ -25,14 +26,24 @@ export class PagingComponent implements OnInit {
           this.totalCount = todoList.paging.totalCount;
           this.itemsPerPage = todoList.paging.itemsPerPage;
           this.activePage = todoList.paging.activePage;
+          this.pageCount = Math.ceil(this.totalCount / todoList.paging.itemsPerPage);
         });
   }
 
   onPageChange(event: PageChangedEvent) {
-    console.log(event.page);
     this.store.dispatch(TodosActions.pagingUpdated({ 
       action: {
         activePage: event.page,
+        itemsPerPage: this.itemsPerPage
+      }
+    }));
+  }
+
+  onPageSizeChange(event: any) {
+    this.itemsPerPage = event.target.value;
+    this.store.dispatch(TodosActions.pagingUpdated({ 
+      action: {
+        activePage: 1,
         itemsPerPage: this.itemsPerPage
       }
     }));

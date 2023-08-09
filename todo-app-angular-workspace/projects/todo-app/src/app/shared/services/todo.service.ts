@@ -48,6 +48,6 @@ export class TodoService {
 
   saveTodos(todoList: ITodoList): void {
     localStorage.setItem('todo-list', JSON.stringify(todoList.originalList));
-    console.log("todo saved!");
+    // console.log("todo saved!");
   }
 }

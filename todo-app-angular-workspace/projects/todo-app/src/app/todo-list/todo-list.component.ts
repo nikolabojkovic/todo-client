@@ -24,8 +24,9 @@ export class TodoListComponent implements OnInit {
     this.store.select(selectTodos)
         .pipe()
         .subscribe((todoList: ITodoList) => {
-          this.items = todoList.displayList.slice(todoList.paging.startIndex, todoList.paging.endIndex)
-          console.log(todoList.paging);
+          this.items = todoList.displayList.slice(todoList.paging.startIndex, todoList.paging.endIndex);
+          console.log(todoList.paging.startIndex);
+          console.log(todoList.paging.endIndex);
         });
   }
 
