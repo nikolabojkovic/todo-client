@@ -4,38 +4,61 @@ import { useRef, useState } from 'react';
 import { Stack, Container, Row, Col } from 'react-bootstrap';
 import { useTodoList, useTodoListDispatch } from '../context/TodosContext';
 
-export function Paging() {
+export function Paging({ rotate = true, maxVisiblePagesCount = 3 }) {
   const todoList = useTodoList();
   const dispatch = useTodoListDispatch();
 
   const [itemsPerPage, setItemsPerPage] = useState(todoList.paging.itemsPerPage); 
-  const inputRef = useRef(null as any);
+  const inputSelectRef = useRef(null as any);
   const pageCount = Math.ceil(todoList.paging.totalCount / itemsPerPage);
 
   function calculateStartPage(): number {
-    if (todoList.paging.activePage <= 2 )
-      return 1;
+    if (rotate) {
+      if (todoList.paging.activePage < maxVisiblePagesCount) {
+        return 1;
+      }
     
-    if (todoList.paging.activePage === pageCount)
-      return pageCount < 3 ? todoList.paging.activePage - 1 : todoList.paging.activePage - 2;
+      if (todoList.paging.activePage === pageCount)
+      {
+        return pageCount < maxVisiblePagesCount 
+          ? todoList.paging.activePage - 1 
+          : todoList.paging.activePage - 2;
+      }
 
-    return todoList.paging.activePage - 1;
+      return todoList.paging.activePage - 1;      
+    }
+
+    return Math.ceil(todoList.paging.activePage / maxVisiblePagesCount) === 1
+      ? 1
+      : ((Math.ceil(todoList.paging.activePage / maxVisiblePagesCount) - 1) * maxVisiblePagesCount) + 1;
+  }
+
+  function calculateEndPage(): number {
+    if (rotate) {
+      return startPage + (maxVisiblePagesCount - 1) > pageCount 
+        ? pageCount 
+        : startPage + (maxVisiblePagesCount - 1);
+    }
+
+    return Math.ceil(todoList.paging.activePage / maxVisiblePagesCount) * maxVisiblePagesCount > pageCount 
+      ? pageCount 
+      : Math.ceil(todoList.paging.activePage / maxVisiblePagesCount) * maxVisiblePagesCount;
   }
 
   let pages = [];
+  const startPage = calculateStartPage();
+  const endPage = calculateEndPage();
 
-  for (let number = calculateStartPage();
-       number <= (calculateStartPage()  + 2 > pageCount ? pageCount : calculateStartPage() + 2); 
-       number++) {
+  for (let pageNumber = startPage; pageNumber <= endPage; pageNumber++) {
     pages.push(
-      <Pagination.Item key={number} active={number === todoList.paging.activePage} onClick={() => { 
+      <Pagination.Item key={pageNumber} active={pageNumber === todoList.paging.activePage} onClick={() => { 
         dispatch({
           type: 'paging-updated',
-          activePage: number,
+          activePage: pageNumber,
           itemsPerPage: itemsPerPage
         });
       }}>
-        {number}
+        {pageNumber}
       </Pagination.Item>
     );
   }
@@ -54,7 +77,7 @@ export function Paging() {
               </div>
               <div className="">
                 <Form.Select
-                    ref={inputRef}
+                    ref={inputSelectRef}
                     aria-label="Page size" 
                     size="sm"
                     onChange={(e) => { 
@@ -85,7 +108,7 @@ export function Paging() {
                     activePage: 1,
                     itemsPerPage: itemsPerPage
                   });
-                  inputRef.current.focus();
+                  inputSelectRef.current.focus();
                 }}
               />
               <Pagination.Prev 
@@ -97,12 +120,40 @@ export function Paging() {
                     activePage: todoList.paging.activePage - 1 >= 1 ? todoList.paging.activePage - 1 : 1,
                     itemsPerPage: itemsPerPage
                   });
-                  inputRef.current.focus();
+                  inputSelectRef.current.focus();
                 }} 
               />
-              { (pageCount > 3 && todoList.paging.activePage > 2) && <Pagination.Ellipsis disabled={true} key="left-separator" />}
+              {
+                (pageCount > 3 && todoList.paging.activePage > maxVisiblePagesCount && !rotate) 
+                && <Pagination.Ellipsis 
+                      disabled={false} 
+                      key="left-pages-link" 
+                      onClick={() => { 
+                        dispatch({
+                          type: 'paging-updated',
+                          activePage: todoList.paging.activePage - maxVisiblePagesCount <= pageCount ? todoList.paging.activePage - maxVisiblePagesCount : 1,
+                          itemsPerPage: itemsPerPage
+                        });
+                        inputSelectRef.current.focus();
+                      }}
+                    />
+              }
               {pages}
-              { (pageCount > 3 && todoList.paging.activePage < pageCount - 1) && <Pagination.Ellipsis disabled={true} key="right-separator" />}
+              { 
+                (pageCount > 3 && todoList.paging.activePage < pageCount && !rotate) 
+                && <Pagination.Ellipsis 
+                      disabled={false} 
+                      key="right-pages-link" 
+                      onClick={() => { 
+                        dispatch({
+                          type: 'paging-updated',
+                          activePage: todoList.paging.activePage + maxVisiblePagesCount <= pageCount ? todoList.paging.activePage + maxVisiblePagesCount : pageCount,
+                          itemsPerPage: itemsPerPage
+                        });
+                        inputSelectRef.current.focus();
+                      }}
+                    />
+              }
               <Pagination.Next
                 key="next" 
                 disabled={todoList.paging.activePage === pageCount}
@@ -112,7 +163,7 @@ export function Paging() {
                     activePage: todoList.paging.activePage + 1 <= pageCount ? todoList.paging.activePage + 1 : pageCount,
                     itemsPerPage: itemsPerPage
                   });
-                  inputRef.current.focus();
+                  inputSelectRef.current.focus();
                 }} 
               />
               <Pagination.Last 
@@ -124,7 +175,7 @@ export function Paging() {
                     activePage: pageCount,
                     itemsPerPage: itemsPerPage
                   });
-                  inputRef.current.focus();
+                  inputSelectRef.current.focus();
                 }} 
               />
             </Pagination>

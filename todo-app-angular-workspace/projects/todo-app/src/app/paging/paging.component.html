@@ -30,12 +30,12 @@
           nextText="&rsaquo;" 
           firstText="&laquo;" 
           lastText="&raquo;"
-          [rotate]="false"
-          [boundaryLinks]="true" 
-          [totalItems]="totalCount"
-          [maxSize]="3"
-          [itemsPerPage]="itemsPerPage"
-          [ngModel]="activePage" 
+          [rotate]=false
+          [boundaryLinks]=true 
+          [totalItems]=totalCount
+          [maxSize]=3
+          [itemsPerPage]=itemsPerPage
+          [ngModel]=activePage 
           (pageChanged)="onPageChange($event)"
         >
         </pagination>

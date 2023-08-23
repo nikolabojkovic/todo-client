@@ -17,7 +17,7 @@ export function TodoList() {
       {todoList.displayList
         .slice(todoList.paging.startIndex, todoList.paging.endIndex)
         .map((todo: ITodo) => <TodoItem key={todo.id} todo={todo} />)}
-      <Paging/>
+      <Paging rotate={false} />
     </main>
   );
 }
