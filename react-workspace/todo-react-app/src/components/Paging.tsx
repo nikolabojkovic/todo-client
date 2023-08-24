@@ -35,17 +35,17 @@ export function Paging({ rotate = true, maxVisiblePagesCount = 3 }) {
         return todoList.paging.activePage;
       }
 
-      // At the beginning of the group
+      // Active page is at the beginning of the group
       if (todoList.paging.activePage <= (maxVisiblePagesCount - 1)) {
         return 1;
       }
 
-      // In the middle of the group
+      // Active page is in the middle of the group
       if (todoList.paging.activePage + 1 <= pageCount) {
         return todoList.paging.activePage - (maxVisiblePagesCount - 2);
       }
 
-      // At the end of the group
+      // Active page is at the end of the group
       if (todoList.paging.activePage === pageCount) {
         return pageCount - (maxVisiblePagesCount - 1)
       }   
@@ -61,17 +61,17 @@ export function Paging({ rotate = true, maxVisiblePagesCount = 3 }) {
         return todoList.paging.activePage;
       }
 
-      // At the beginning of the group
+      // Active page is at the beginning of the group
       if (todoList.paging.activePage <= (maxVisiblePagesCount - 1)) {
         return maxVisiblePagesCount;
       }
 
-      // In the middle of the group
+      // Active page is in the middle of the group
       if (todoList.paging.activePage + 1 <= pageCount) {
         return todoList.paging.activePage + 1;
       }
 
-      // At the end of the group
+      // Active page is at the end of the group
       if (todoList.paging.activePage === pageCount) {
         return pageCount;
       }
