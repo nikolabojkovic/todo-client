@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { ITodoList } from '../shared/models/ITodoList';
 import { TodosActions } from '../state/todos.actions';
+import { selectTodos } from '../state/todos.selectors';
 
 @Component({
   selector: 'app-search-todos',
@@ -13,7 +15,13 @@ export class SearchTodosComponent implements OnInit {
   
   constructor(private store: Store) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void { 
+    this.store.select(selectTodos)
+        .pipe()
+        .subscribe((todoList: ITodoList) => {
+          this.searchValue = todoList.search.searchTerm;
+        });
+  }
 
   onTyping(): void {
     this.disabled = !this.searchValue || this.searchValue.trim() === '';

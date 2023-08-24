@@ -11,5 +11,6 @@ export const TodosActions = createActionGroup({
     removedTodo: props<{ todoId: number }>(),
     searchedTodos: props<{ action: any }>(),
     pagingUpdated: props<{ action: any }>(),
+    todosFiltered: props<{ action: any }>(),
   }
 });

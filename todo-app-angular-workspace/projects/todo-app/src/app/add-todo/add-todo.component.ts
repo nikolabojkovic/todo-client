@@ -26,7 +26,11 @@ export class AddTodoComponent implements OnInit {
     this.store
         .select(selectTodos)
         .pipe(first())
-        .subscribe((todos: any) => this.todoService.saveTodos(todos));
+        .subscribe((todos: any) => { 
+          this.todoService.saveTodos(todos);
+          this.title = '';
+          this.description = ''
+         });
   }
 
   get disabledButtonState(): boolean {

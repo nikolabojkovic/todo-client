@@ -99,6 +99,22 @@ export const todosReducer = createReducer(
         endIndex: action.activePage * action.itemsPerPage
       } as IPaging
     } as ITodoList
+  }),
+  on(TodosActions.todosFiltered, (todoList, { action }) => {
+    const filteredList = filter(todoList.originalList, action.filter);
+    const searchedList = search(filteredList, todoList.search.searchTerm);
+    return {
+      ...todoList,
+      displayList: [...searchedList],
+      filter: {...action.filter},
+      paging: {
+        ...todoList.paging,
+        activePage: action.activePage,
+        totalCount: searchedList.length,
+        startIndex: (action.activePage - 1) * todoList.paging.itemsPerPage,
+        endIndex: action.activePage * todoList.paging.itemsPerPage
+      } as IPaging
+    } as ITodoList
   })
 );
 
