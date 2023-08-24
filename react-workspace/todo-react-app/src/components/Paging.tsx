@@ -46,8 +46,8 @@ export function Paging({ rotate = true, maxVisiblePagesCount = 3 }) {
   }
 
   let pages = [];
-  const startPage = calculateStartPage();
-  const endPage = calculateEndPage();
+  const startPage = calculateStartPage() ?? 1;
+  const endPage = calculateEndPage() ?? 1;
 
   for (let pageNumber = startPage; pageNumber <= endPage; pageNumber++) {
     pages.push(
