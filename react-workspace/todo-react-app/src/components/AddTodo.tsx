@@ -20,6 +20,8 @@ export function AddTodo() {
         <Row xs={1} sm={3}>
           <Col sm={5} className="p-2">
             <Form.Control 
+              id="title"
+              name="title"
               type="text" 
               placeholder="Enter title" 
               size="sm" 
@@ -29,6 +31,8 @@ export function AddTodo() {
           </Col>
           <Col sm={5} className="p-2">
             <Form.Control 
+              id="description"
+              name="description"
               type="text" 
               placeholder="Enter description" 
               size="sm" 

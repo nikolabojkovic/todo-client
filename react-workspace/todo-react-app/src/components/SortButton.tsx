@@ -5,13 +5,11 @@ import { SortIcon } from "./SortIcon";
 export function SortButton({ column, text }: any) {
   const todoList = useTodoList();
   const dispatch = useTodoListDispatch();
-  const [direction, setDirection] = useState('asc');
+  const [direction, setDirection] = useState(todoList.sort.column === column ? todoList.sort.direction : 'none');
 
-  useEffect(() => {
-    if (todoList.sort.column !== column) {
-      setDirection('none');
-    }
-  }, [column, todoList.sort.column])
+  useEffect(() => {     
+    setDirection(todoList.sort.column === column ? todoList.sort.direction : 'none');
+  }, [column, todoList.sort.column, todoList.sort.direction])
 
   return(
     <div className="App__sorting__item" onClick={() => { 
@@ -19,7 +17,8 @@ export function SortButton({ column, text }: any) {
         setDirection(newDirectionState);
         dispatch({
           type: 'sorted',
-          sort: {...{
+          sort: {
+            ...{
               column: column, 
               direction: newDirectionState
             }
