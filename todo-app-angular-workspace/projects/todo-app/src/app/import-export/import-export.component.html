@@ -2,12 +2,14 @@
   <div class="col-12 col-sm-8 p-2">
     <div class="input-group">
       <input 
-        type="file" 
+        ngModel #fileContainer
+        type="file"
         class="form-control form-control-sm" 
         [style.cursor]="'pointer'"
         id="choose-file" 
         accept=".json" 
         readOnly 
+        (change)="onChooseFile($event)"
       />
     </div>
   </div>
@@ -16,9 +18,11 @@
       type="button" 
       class="btn btn-sm btn-outline-success w-100" 
       [ngStyle]="buttonStyle"
-      [disabled]="importDisabled"
+      [disabled]="!this.file"
+      (click)="onImport()"
     >
       Import
+      <fa-icon [icon]="faFileImport"></fa-icon>
     </button>
   </div>
   <div class="col-12 col-sm-2 p-2">
@@ -27,8 +31,10 @@
       class="btn btn-sm btn-outline-success  w-100" 
       [ngStyle]="buttonStyle"
       [disabled]="exportDisabled"
+      (click)="onExport()"
     >
       Export
+      <fa-icon [icon]="faFileExport"></fa-icon>
     </button>
   </div>
 </div>

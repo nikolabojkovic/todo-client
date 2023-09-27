@@ -115,6 +115,25 @@ export const todosReducer = createReducer(
         endIndex: action.activePage * todoList.paging.itemsPerPage
       } as IPaging
     } as ITodoList
+  }),
+  on(TodosActions.todosImported, (todoList, { action}) => {
+    return {
+      ...todoList,
+      originalList: [...action.originalList],
+      displayList: [...action.originalList],
+      search: { searchTerm: '' },
+      filter: {
+        completed: false,
+        uncompleted: false
+       },
+      paging: {
+        ...todoList.paging,
+        activePage: action.activePage,
+        totalCount: action.originalList.length,
+        startIndex: (action.activePage - 1) * todoList.paging.itemsPerPage,
+        endIndex: action.activePage * todoList.paging.itemsPerPage
+      } as IPaging
+    }
   })
 );
 

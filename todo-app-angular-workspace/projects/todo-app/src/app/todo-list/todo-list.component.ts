@@ -4,7 +4,6 @@ import { TodoService } from '../shared/services/todo.service';
 import { selectTodos } from '../state/todos.selectors';
 import { TodosActions } from '../state/todos.actions';
 import { ITodo } from '../shared/models/todo';
-import { first } from 'rxjs';
 import { ITodoList } from '../shared/models/ITodoList';
 
 @Component({
