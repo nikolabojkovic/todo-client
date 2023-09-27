@@ -217,11 +217,11 @@ function search(list: ITodo[], searchTerm: string,) {
       todo.title.trim()
                 .toLocaleLowerCase()
                 .includes(searchTerm.trim()
-                .toLocaleLowerCase()) 
+                                    .toLocaleLowerCase()) 
    || todo.description.trim()
                       .toLocaleLowerCase()
                       .includes(searchTerm.trim()
-                      .toLocaleLowerCase()));
+                                          .toLocaleLowerCase()));
   }
 
   return filteredList;

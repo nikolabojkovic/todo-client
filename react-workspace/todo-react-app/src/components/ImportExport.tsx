@@ -26,41 +26,41 @@ export function ImportExport() {
     if (!file) 
       return;
 
-    fileReader.onload = function (e: any) {
-      const text = e.target.result;
-      const list = JSON.parse(text) as Todo[];
-
-      if (!(list instanceof Array)) {
-        alert("Invalid JSON file content. Todo list should be an array.");
-        return;
-      }
-
-      const importedTodoList = list.map((item: any) => 
-        new Todo(item.id, 
-          item.title, 
-          item.description, 
-          item.completed, 
-          item.createdAt));
-
-      if ((importedTodoList.length > 0 
-          && (!(importedTodoList[0] instanceof Todo) 
-           || !(Todo.validateFields(importedTodoList[0]))
-              )
-          )) {
-        alert("Invalid JSON file content. Objects in array are not valid Todo objects.");
-        return;
-      }
-            
-      setFile(null);
-      dispatch({
-        type: 'imported',
-        originalList: importedTodoList,
-        activePage: 1
-      });
-      fileRef.current.value = '';
-    };
-
     fileReader.readAsText(file);
+  };
+
+  fileReader.onload = function (e: any) {
+    const text = e.target.result;
+    const list = JSON.parse(text) as Todo[];
+
+    if (!(list instanceof Array)) {
+      alert("Invalid JSON file content. Todo list should be an array.");
+      return;
+    }
+
+    const importedTodoList = list.map((item: any) => 
+      new Todo(item.id, 
+        item.title, 
+        item.description, 
+        item.completed, 
+        item.createdAt));
+
+    if ((importedTodoList.length > 0 
+        && (!(importedTodoList[0] instanceof Todo) 
+         || !(Todo.validateFields(importedTodoList[0]))
+            )
+        )) {
+      alert("Invalid JSON file content. Objects in array are not valid Todo objects.");
+      return;
+    }
+          
+    setFile(null);
+    dispatch({
+      type: 'imported',
+      originalList: importedTodoList,
+      activePage: 1
+    });
+    fileRef.current.value = '';
   };
 
   return (
