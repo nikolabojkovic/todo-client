@@ -13,6 +13,7 @@ export const TodosActions = createActionGroup({
     pagingUpdated: props<{ action: any }>(),
     todosFiltered: props<{ action: any }>(),
     todosImported: props<{ action: any}>(),
-    sorted: props< { action:any }>()
+    sorted: props< { action:any }>(),
+    searchTermUpdated: props< { searchTerm: string }>()
   }
 });

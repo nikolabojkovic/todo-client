@@ -20,19 +20,18 @@ export class SearchTodosComponent implements OnInit {
         .pipe()
         .subscribe((todoList: ITodoList) => {
           this.searchValue = todoList.search.searchTerm;
+          this.disabled = todoList.search.searchTerm === ''
         });
   }
 
   onTyping(): void {
     this.disabled = !this.searchValue || this.searchValue.trim() === '';
+    this.store.dispatch(TodosActions.searchTermUpdated({ 
+      searchTerm: this.searchValue ? this.searchValue.trim() : ''
+    }));
 
     if (this.searchValue.trim() === '') {
-      this.store.dispatch(TodosActions.searchedTodos({ 
-        action: { 
-          searchTerm: this.searchValue,
-          activePage: 1
-        }
-      }));
+      this.onSerach();
     }
   }
 
@@ -43,6 +42,5 @@ export class SearchTodosComponent implements OnInit {
         activePage: 1
       }
     }));
-    console.log(this.searchValue);
   }
 }
