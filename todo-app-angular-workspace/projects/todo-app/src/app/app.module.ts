@@ -19,6 +19,9 @@ import { FilterTodosComponent } from './filter-todos/filter-todos.component';
 import { ImportExportComponent } from './import-export/import-export.component';
 import { TodoService } from './shared/services/todo.service';
 import { PagingComponent } from './paging/paging.component';
+import { SortingComponent } from './sorting/sorting.component';
+import { SortButtonComponent } from './sort-button/sort-button.component';
+import { SortIconComponent } from './sort-icon/sort-icon.component';
 
 
 @NgModule({
@@ -31,7 +34,10 @@ import { PagingComponent } from './paging/paging.component';
     SearchTodosComponent,
     FilterTodosComponent,
     ImportExportComponent,
-    PagingComponent
+    PagingComponent,
+    SortingComponent,
+    SortButtonComponent,
+    SortIconComponent,
   ],
   imports: [
     BrowserModule,

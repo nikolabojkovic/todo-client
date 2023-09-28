@@ -116,7 +116,7 @@ export const todosReducer = createReducer(
       } as IPaging
     } as ITodoList
   }),
-  on(TodosActions.todosImported, (todoList, { action}) => {
+  on(TodosActions.todosImported, (todoList, { action }) => {
     return {
       ...todoList,
       originalList: [...action.originalList],
@@ -134,6 +134,18 @@ export const todosReducer = createReducer(
         endIndex: action.activePage * todoList.paging.itemsPerPage
       } as IPaging
     }
+  }),
+  on(TodosActions.sorted, (todoList, { action }) => {
+    const filteredList = filter(todoList.originalList, todoList.filter);
+    const searchedList = search(filteredList, todoList.search.searchTerm);
+    const sortedList = sort(searchedList, action.sort);
+
+    return {
+      ...todoList,
+      displayList: [...sortedList],
+      sort: {...action.sort},
+      paging: {...todoList.paging} as IPaging
+    }
   })
 );
 
@@ -145,11 +157,11 @@ function search(list: ITodo[], searchTerm: string,) {
       todo.title.trim()
                 .toLocaleLowerCase()
                 .includes(searchTerm.trim()
-                .toLocaleLowerCase()) 
+                                    .toLocaleLowerCase()) 
    || todo.description.trim()
                       .toLocaleLowerCase()
                       .includes(searchTerm.trim()
-                      .toLocaleLowerCase()));
+                                          .toLocaleLowerCase()));
   }
 
   return filteredList;
@@ -159,7 +171,7 @@ function filter(list: ITodo[], filter: any = null) {
   let filteredList = list;
 
   if (filter && filter.completed && filter.uncompleted) {
-    return filteredList;
+    return [...filteredList];
   }
 
   if (filter?.completed) {
@@ -170,7 +182,7 @@ function filter(list: ITodo[], filter: any = null) {
     filteredList = filteredList.filter((todo: ITodo) => todo.completed === false);
   }
 
-  return filteredList;
+  return [...filteredList];
 }
 
 function sort(list: ITodo[], sort: any) {

@@ -141,8 +141,10 @@ code {
   }
 
   &__sorting {
+    background-color: $background-primary-color;
+    max-width: 650px;
     padding: 5px 15px;
-    margin: 10px 0px 5px 0px;
+    margin: 10px auto 5px auto;
     background-color: $background-secondary-color;
 
     &__item {

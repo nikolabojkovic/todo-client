@@ -28,9 +28,9 @@
   <div class="col-12 col-sm-2 p-2">
     <button 
       type="button" 
-      class="btn btn-sm btn-outline-success  w-100" 
+      class="btn btn-sm btn-outline-success w-100" 
       [ngStyle]="buttonStyle"
-      [disabled]="exportDisabled"
+      [disabled]="!this.items || this.items.length === 0"
       (click)="onExport()"
     >
       Export

@@ -5,6 +5,8 @@ import { ITodo, Todo } from '../shared/models/todo';
 import { selectTodos } from '../state/todos.selectors';
 import { faFileExport, faFileImport } from '@fortawesome/free-solid-svg-icons';
 import { TodosActions } from '../state/todos.actions';
+import { TodoService } from '../shared/services/todo.service';
+import { first } from 'rxjs';
 
 @Component({
   selector: 'app-import-export',
@@ -18,8 +20,6 @@ export class ImportExportComponent implements OnInit {
   items: ITodo[] = [];
   file: any = null;
   fileReader = new FileReader();
-
-  exportDisabled: boolean = false;
   buttonStyle : any = { 
     backgroundColor: '#F5F6F7', 
     borderRadius: '20px', 
@@ -28,15 +28,12 @@ export class ImportExportComponent implements OnInit {
   faFileImport = faFileImport;
   faFileExport = faFileExport;
 
-  constructor(private store: Store) { }
+  constructor(private store: Store, private todoService: TodoService) { }
 
   ngOnInit(): void {
     this.store.select(selectTodos)
     .pipe()
-    .subscribe((todoList: ITodoList) => { 
-      this.items = todoList.originalList;
-      this.exportDisabled = !this.items || this.items.length === 0;
-    });
+    .subscribe((todoList: ITodoList) => this.items = todoList.originalList);
 
     this.fileReader.onload = (e: any) => {
       const text = e.target.result;
@@ -47,12 +44,11 @@ export class ImportExportComponent implements OnInit {
         return;
       }
 
-      const importedTodoList = list.map((item: any) => 
-        new Todo(item.id, 
-          item.title, 
-          item.description, 
-          item.completed, 
-          item.createdAt));
+      const importedTodoList = list.map((item: any) => new Todo(item.id, 
+                                                                item.title, 
+                                                                item.description, 
+                                                                item.completed, 
+                                                                item.createdAt));
 
       if ((importedTodoList.length > 0 
           && (!(importedTodoList[0] instanceof Todo) 
@@ -71,6 +67,12 @@ export class ImportExportComponent implements OnInit {
           originalList: importedTodoList
         }
       }));
+      this.store
+        .select(selectTodos)
+        .pipe(first())
+        .subscribe((todos: any) => { 
+          this.todoService.saveTodos(todos);
+        });
     };
   }
 
