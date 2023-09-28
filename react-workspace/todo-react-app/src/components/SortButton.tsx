@@ -18,10 +18,8 @@ export function SortButton({ column, text }: any) {
         dispatch({
           type: 'sorted',
           sort: {
-            ...{
-              column: column, 
-              direction: newDirectionState
-            }
+            column: column, 
+            direction: newDirectionState
           }
         })
       }}

@@ -231,7 +231,7 @@ function filter(list: ITodo[], filter: any = null) {
   let filteredList = list;
 
   if (filter && filter.completed && filter.uncompleted) {
-    return filteredList;
+    return [...filteredList];
   }
 
   if (filter?.completed) {
@@ -242,7 +242,7 @@ function filter(list: ITodo[], filter: any = null) {
     filteredList = filteredList.filter((todo: ITodo) => todo.completed === false);
   }
 
-  return filteredList;
+  return [...filteredList];
 }
 
 function sort(list: ITodo[], sort: any) {

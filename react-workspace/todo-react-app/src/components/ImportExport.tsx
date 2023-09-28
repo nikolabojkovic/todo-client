@@ -29,6 +29,16 @@ export function ImportExport() {
     fileReader.readAsText(file);
   };
 
+  function handleExport() {
+    const link = document.createElement('a');
+    const jsonContent = `data:text/json;chatset=utf-8,${encodeURIComponent(
+      JSON.stringify(todoList.originalList)
+    )}`;
+    link.href = jsonContent;
+    link.download = `todo-list-${new Date().toLocaleDateString()}-${new Date().toLocaleTimeString()}.json`;
+    link.click();
+  }
+
   fileReader.onload = function (e: any) {
     const text = e.target.result;
     const list = JSON.parse(text) as Todo[];
@@ -38,12 +48,11 @@ export function ImportExport() {
       return;
     }
 
-    const importedTodoList = list.map((item: any) => 
-      new Todo(item.id, 
-        item.title, 
-        item.description, 
-        item.completed, 
-        item.createdAt));
+    const importedTodoList = list.map((item: any) => new Todo(item.id, 
+                                                              item.title, 
+                                                              item.description, 
+                                                              item.completed, 
+                                                              item.createdAt));
 
     if ((importedTodoList.length > 0 
         && (!(importedTodoList[0] instanceof Todo) 
@@ -101,16 +110,8 @@ export function ImportExport() {
               variant="outline-success" 
               size="sm"
               style={ buttonStyle }
-              onClick={() => {
-                const link = document.createElement('a');
-                const jsonContent = `data:text/json;chatset=utf-8,${encodeURIComponent(
-                  JSON.stringify(todoList.originalList)
-                )}`;
-                link.href = jsonContent;
-                link.download = `todo-list-${new Date().toLocaleDateString()}-${new Date().toLocaleTimeString()}.json`;
-                link.click();
-                console.log("export");
-              }}
+              disabled={!todoList.originalList || todoList.originalList.length === 0}
+              onClick={handleExport}
             >
               Export {' '}
               <FontAwesomeIcon icon={faFileExport} />
