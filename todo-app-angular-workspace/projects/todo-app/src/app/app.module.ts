@@ -5,8 +5,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { SortButtonModule } from 'sort-button';
-import { todosReducer } from './state/todos.reducer';
+import { todosReducer } from './state/todo.reducer';
 import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 
 import { AppComponent } from './app.component';
 import { TodoItemComponent } from './todo-item/todo-item.component';
@@ -22,6 +23,7 @@ import { PagingComponent } from './paging/paging.component';
 import { SortingComponent } from './sorting/sorting.component';
 import { SortButtonComponent } from './sort-button/sort-button.component';
 import { SortIconComponent } from './sort-icon/sort-icon.component';
+import { TodoEffects } from './state/todo.effects';
 
 
 @NgModule({
@@ -48,6 +50,7 @@ import { SortIconComponent } from './sort-icon/sort-icon.component';
     PaginationModule.forRoot(),
     FormsModule,
     StoreModule.forRoot({ todos: todosReducer }),
+    EffectsModule.forRoot([TodoEffects])
   ],
   providers: [TodoService],
   bootstrap: [AppComponent]

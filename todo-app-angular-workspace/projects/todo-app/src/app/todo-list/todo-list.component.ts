@@ -1,10 +1,10 @@
 import { Store } from '@ngrx/store';
 import { Component, OnInit } from '@angular/core';
 import { TodoService } from '../shared/services/todo.service';
-import { selectTodoDisplayList } from '../state/todos.selectors';
-import { TodoListActions } from '../state/todos.actions';
+import { selectTodoDisplayList } from '../state/todo.selectors';
+import { TodoListActions } from '../state/todo.actions';
 import { ITodo } from '../shared/models/todo';
-import { ITodoList } from '../shared/models/ITodoList';
+import { ITodoList } from '../shared/models/todoList';
 import { map, Observable, tap } from 'rxjs';
 
 @Component({

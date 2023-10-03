@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { ITodoList } from '../shared/models/ITodoList';
-import { TodoListActions } from '../state/todos.actions';
-import { selectSearch } from '../state/todos.selectors';
+import { ITodoList } from '../shared/models/todoList';
+import { TodoListActions } from '../state/todo.actions';
+import { selectSearch } from '../state/todo.selectors';
 
 @Component({
   selector: 'app-search-todos',

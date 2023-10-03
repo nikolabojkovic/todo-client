@@ -1,10 +1,7 @@
 import { Store } from '@ngrx/store';
 import { Component, OnInit } from '@angular/core';
-import { TodoListActions } from '../state/todos.actions';
-import { selectTodos } from '../state/todos.selectors';
-import { TodoService } from '../shared/services/todo.service';
-import { first } from 'rxjs';
-import { ITodoList } from '../shared/models/ITodoList';
+import { TodoListActions } from '../state/todo.actions';
+import { ITodoList } from '../shared/models/todoList';
 
 @Component({
   selector: 'app-add-todo',
@@ -15,7 +12,7 @@ export class AddTodoComponent implements OnInit {
   title = ''
   description = ''
 
-  constructor(private store: Store<ITodoList>, private todoService: TodoService) { }
+  constructor(private store: Store<ITodoList>) { }
 
   ngOnInit(): void { }
   
@@ -24,14 +21,6 @@ export class AddTodoComponent implements OnInit {
       title: this.title,
       description: this.description,
     }));
-    this.store
-        .select(selectTodos)
-        .pipe(first())
-        .subscribe((todos: any) => { 
-          this.todoService.saveTodos(todos);
-          this.title = '';
-          this.description = ''
-         });
   }
 
   get disabledButtonState(): boolean {

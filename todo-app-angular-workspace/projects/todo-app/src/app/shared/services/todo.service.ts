@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { initTodoList } from '../initial-data';
-import { IPaging } from '../models/IPaging';
-import { ITodoList } from '../models/ITodoList';
+import { IPaging } from '../models/paging';
+import { ITodoList } from '../models/todoList';
 import { ITodo } from '../models/todo';
 
 @Injectable({

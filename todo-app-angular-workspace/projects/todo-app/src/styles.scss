@@ -193,6 +193,12 @@ code {
     width: 100%;
   }
 
+  .confirm-button {
+    background-color: #F5F6F7;
+    border-radius: 20px;
+    min-width: 90px;
+  }
+
   button:hover {
     color: $background-primary-color;
   }

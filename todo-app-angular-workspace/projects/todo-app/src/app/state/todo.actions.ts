@@ -1,6 +1,7 @@
 import { createActionGroup, props } from '@ngrx/store';
-import { ITodoList } from '../shared/models/ITodoList';
-import { Todo } from '../shared/models/todo';
+import { IFilter } from '../shared/models/filter';
+import { ITodoList } from '../shared/models/todoList';
+import { ITodo } from '../shared/models/todo';
 
 export const TodoListActions = createActionGroup({
   source: 'todos',
@@ -11,9 +12,9 @@ export const TodoListActions = createActionGroup({
     removed: props<{ todoId: number }>(),
     searched: props<{ searchTerm: string, activePage: number }>(),
     pagingUpdated: props<{ activePage: number, itemsPerPage: number }>(),
-    filtered: props<{ action: any }>(),
-    imported: props<{ action: any }>(),
-    sorted: props< { action: any }>(),
+    filtered: props<{ activePage: number, filter: IFilter }>(),
+    imported: props<{ activePage: number, originalList: ITodo[] }>(),
+    sorted: props< { column: string, direction: string }>(),
     searchTermUpdated: props< { searchTerm: string }>()
   }
 });

@@ -1,6 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { IPaging } from '../shared/models/IPaging';
-import { ITodoList } from '../shared/models/ITodoList';
+import { IPaging } from '../shared/models/paging';
+import { ITodoList } from '../shared/models/todoList';
 import { ITodo } from '../shared/models/todo';
  
 export const selectTodos = createFeatureSelector<ITodoList>('todos');

@@ -13,8 +13,7 @@
     <div class="ms-auto">
       <button 
         *ngIf="!todo.completed" 
-        [ngStyle]="buttonStyle" 
-        class="btn btn-outline-success btn-sm"
+        class="btn confirm-button btn-outline-success btn-sm"
         (click)="onComplete(todo.id)"
       >
         Complete
@@ -22,8 +21,7 @@
     </div>
     <div [ngClass]="{'ms-todo' : todo.completed}">
       <button 
-        [ngStyle]="buttonStyle" 
-        class="btn btn-outline-danger btn-sm" 
+        class="btn confirm-button btn-outline-danger btn-sm" 
         (click)="onRemove(todo.id)"
       >
         Delete

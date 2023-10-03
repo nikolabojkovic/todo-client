@@ -1,8 +1,8 @@
 import { createReducer, on } from '@ngrx/store';
 
-import { TodoListActions } from './todos.actions';
-import { ITodoList } from '../shared/models/ITodoList';
-import { IPaging } from '../shared/models/IPaging';
+import { TodoListActions } from './todo.actions';
+import { ITodoList } from '../shared/models/todoList';
+import { IPaging } from '../shared/models/paging';
 import { ITodo } from '../shared/models/todo';
 import { initTodoList } from '../shared/initial-data';
 
@@ -74,8 +74,8 @@ export const todosReducer = createReducer(
     } as ITodoList;
   }),
   on(TodoListActions.searched, (todoList, { searchTerm, activePage }) => {
-    const filteredList = filter(todoList.originalList, todoList.filter);
-    const searchedList = search(filteredList, searchTerm);
+    const filteredList = filterList(todoList.originalList, todoList.filter);
+    const searchedList = searchList(filteredList, searchTerm);
     return {
       ...todoList,
       displayList: [...searchedList],
@@ -101,27 +101,27 @@ export const todosReducer = createReducer(
       } as IPaging
     } as ITodoList
   }),
-  on(TodoListActions.filtered, (todoList, { action }) => {
-    const filteredList = filter(todoList.originalList, action.filter);
-    const searchedList = search(filteredList, todoList.search.searchTerm);
+  on(TodoListActions.filtered, (todoList, { activePage, filter }) => {
+    const filteredList = filterList(todoList.originalList, filter);
+    const searchedList = searchList(filteredList, todoList.search.searchTerm);
     return {
       ...todoList,
       displayList: [...searchedList],
-      filter: {...action.filter},
+      filter: {...filter},
       paging: {
         ...todoList.paging,
-        activePage: action.activePage,
+        activePage: activePage,
         totalCount: searchedList.length,
-        startIndex: (action.activePage - 1) * todoList.paging.itemsPerPage,
-        endIndex: action.activePage * todoList.paging.itemsPerPage
+        startIndex: (activePage - 1) * todoList.paging.itemsPerPage,
+        endIndex: activePage * todoList.paging.itemsPerPage
       } as IPaging
     } as ITodoList
   }),
-  on(TodoListActions.imported, (todoList, { action }) => {
+  on(TodoListActions.imported, (todoList, { activePage, originalList }) => {
     return {
       ...todoList,
-      originalList: [...action.originalList],
-      displayList: [...action.originalList],
+      originalList: [...originalList],
+      displayList: [...originalList],
       search: { searchTerm: '' },
       filter: {
         completed: false,
@@ -129,22 +129,22 @@ export const todosReducer = createReducer(
        },
       paging: {
         ...todoList.paging,
-        activePage: action.activePage,
-        totalCount: action.originalList.length,
-        startIndex: (action.activePage - 1) * todoList.paging.itemsPerPage,
-        endIndex: action.activePage * todoList.paging.itemsPerPage
+        activePage: activePage,
+        totalCount: originalList.length,
+        startIndex: (activePage - 1) * todoList.paging.itemsPerPage,
+        endIndex: activePage * todoList.paging.itemsPerPage
       } as IPaging
     } as ITodoList
   }),
-  on(TodoListActions.sorted, (todoList, { action }) => {
-    const filteredList = filter(todoList.originalList, todoList.filter);
-    const searchedList = search(filteredList, todoList.search.searchTerm);
-    const sortedList = sort(searchedList, action.sort);
+  on(TodoListActions.sorted, (todoList, sort) => {
+    const filteredList = filterList(todoList.originalList, todoList.filter);
+    const searchedList = searchList(filteredList, todoList.search.searchTerm);
+    const sortedList = sortList(searchedList, sort);
 
     return {
       ...todoList,
       displayList: [...sortedList],
-      sort: {...action.sort},
+      sort: {...sort},
       paging: {...todoList.paging} as IPaging
     } as ITodoList
   }),
@@ -156,7 +156,7 @@ export const todosReducer = createReducer(
   })
 );
 
-function search(list: ITodo[], searchTerm: string,) {
+function searchList(list: ITodo[], searchTerm: string,) {
   let filteredList = list;
 
   if (searchTerm !== '') {
@@ -174,7 +174,7 @@ function search(list: ITodo[], searchTerm: string,) {
   return filteredList;
 }
 
-function filter(list: ITodo[], filter: any = null) {
+function filterList(list: ITodo[], filter: any = null) {
   let filteredList = list;
 
   if (filter && filter.completed && filter.uncompleted) {
@@ -192,7 +192,7 @@ function filter(list: ITodo[], filter: any = null) {
   return [...filteredList];
 }
 
-function sort(list: ITodo[], sort: any) {
+function sortList(list: ITodo[], sort: any) {
   let sortResult = [];
   
   if (sort.column === 'createdAt') {
