@@ -1,16 +1,17 @@
 import { createReducer, on } from '@ngrx/store';
 
-import { TodosActions } from './todos.actions';
+import { TodoListActions } from './todos.actions';
 import { ITodoList } from '../shared/models/ITodoList';
 import { IPaging } from '../shared/models/IPaging';
 import { ITodo } from '../shared/models/todo';
+import { initTodoList } from '../shared/initial-data';
 
-export const initialState: ITodoList = {} as ITodoList;
+export const initialState: ITodoList = initTodoList;
 
 export const todosReducer = createReducer(
   initialState,
-  on(TodosActions.retrievedTodoList, (_state, { todoList }) => todoList),
-  on(TodosActions.removedTodo, (todoList, { todoId }) => {
+  on(TodoListActions.fetched, (_state, { todoList }) => todoList),
+  on(TodoListActions.removed, (todoList, { todoId }) => {
     return {
       ...todoList,
       originalList: todoList.originalList.filter(t => t.id !== todoId) as ITodo[],
@@ -25,7 +26,7 @@ export const todosReducer = createReducer(
     } as ITodoList;
   }
   ),
-  on(TodosActions.completedTodo, (todoList, { todoId }) => {
+  on(TodoListActions.completed, (todoList, { todoId }) => {
     return {
       ...todoList,
       originalList: todoList.originalList.map(todo => {
@@ -46,7 +47,7 @@ export const todosReducer = createReducer(
     } as ITodoList;
   }
   ),
-  on(TodosActions.addedTodo, (todoList, { title, description } ) => {
+  on(TodoListActions.added, (todoList, { title, description } ) => {
     let lastElement = todoList.originalList[todoList.originalList.length - 1];
     let id = 0;
     if (lastElement) {
@@ -72,35 +73,35 @@ export const todosReducer = createReducer(
       } as IPaging
     } as ITodoList;
   }),
-  on(TodosActions.searchedTodos, (todoList, { action }) => {
+  on(TodoListActions.searched, (todoList, { searchTerm, activePage }) => {
     const filteredList = filter(todoList.originalList, todoList.filter);
-    const searchedList = search(filteredList, action.searchTerm);
+    const searchedList = search(filteredList, searchTerm);
     return {
       ...todoList,
       displayList: [...searchedList],
-      search: { searchTerm: action.searchTerm },
+      search: { searchTerm: searchTerm },
       paging: {
         ...todoList.paging,
-        activePage: action.activePage,
+        activePage: activePage,
         totalCount: searchedList.length,
-        startIndex: (action.activePage - 1) * todoList.paging.itemsPerPage,
-        endIndex: action.activePage * todoList.paging.itemsPerPage
+        startIndex: (activePage - 1) * todoList.paging.itemsPerPage,
+        endIndex: activePage * todoList.paging.itemsPerPage
       } as IPaging
     } as ITodoList
   }),
-  on(TodosActions.pagingUpdated, (todoList, { action }) => {
+  on(TodoListActions.pagingUpdated, (todoList, { activePage, itemsPerPage }) => {
     return {
       ...todoList,
       paging: {
         ...todoList.paging,
-        activePage: action.activePage,
-        itemsPerPage: action.itemsPerPage,
-        startIndex: (action.activePage - 1) * action.itemsPerPage,
-        endIndex: action.activePage * action.itemsPerPage
+        activePage: activePage,
+        itemsPerPage: itemsPerPage,
+        startIndex: (activePage - 1) * itemsPerPage,
+        endIndex: activePage * itemsPerPage
       } as IPaging
     } as ITodoList
   }),
-  on(TodosActions.todosFiltered, (todoList, { action }) => {
+  on(TodoListActions.filtered, (todoList, { action }) => {
     const filteredList = filter(todoList.originalList, action.filter);
     const searchedList = search(filteredList, todoList.search.searchTerm);
     return {
@@ -116,7 +117,7 @@ export const todosReducer = createReducer(
       } as IPaging
     } as ITodoList
   }),
-  on(TodosActions.todosImported, (todoList, { action }) => {
+  on(TodoListActions.imported, (todoList, { action }) => {
     return {
       ...todoList,
       originalList: [...action.originalList],
@@ -135,7 +136,7 @@ export const todosReducer = createReducer(
       } as IPaging
     } as ITodoList
   }),
-  on(TodosActions.sorted, (todoList, { action }) => {
+  on(TodoListActions.sorted, (todoList, { action }) => {
     const filteredList = filter(todoList.originalList, todoList.filter);
     const searchedList = search(filteredList, todoList.search.searchTerm);
     const sortedList = sort(searchedList, action.sort);
@@ -147,7 +148,7 @@ export const todosReducer = createReducer(
       paging: {...todoList.paging} as IPaging
     } as ITodoList
   }),
-  on(TodosActions.searchTermUpdated, (todoList, { searchTerm }) => {
+  on(TodoListActions.searchTermUpdated, (todoList, { searchTerm }) => {
     return {
       ...todoList,
       search: { searchTerm },

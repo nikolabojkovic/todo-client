@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ITodoList } from '../shared/models/ITodoList';
-import { TodosActions } from '../state/todos.actions';
-import { selectTodos } from '../state/todos.selectors';
+import { TodoListActions } from '../state/todos.actions';
+import { selectSearch } from '../state/todos.selectors';
 
 @Component({
   selector: 'app-search-todos',
@@ -13,20 +13,20 @@ export class SearchTodosComponent implements OnInit {
   disabled = true;
   searchValue = '';
   
-  constructor(private store: Store) { }
+  constructor(private store: Store<ITodoList>) { }
 
   ngOnInit(): void { 
-    this.store.select(selectTodos)
+    this.store.select(selectSearch)
         .pipe()
-        .subscribe((todoList: ITodoList) => {
-          this.searchValue = todoList.search.searchTerm;
-          this.disabled = todoList.search.searchTerm === ''
+        .subscribe((search: any) => {
+          this.searchValue = search.searchTerm;
+          this.disabled = search.searchTerm === ''
         });
   }
 
   onTyping(): void {
     this.disabled = !this.searchValue || this.searchValue.trim() === '';
-    this.store.dispatch(TodosActions.searchTermUpdated({ 
+    this.store.dispatch(TodoListActions.searchTermUpdated({ 
       searchTerm: this.searchValue ? this.searchValue.trim() : ''
     }));
 
@@ -36,11 +36,9 @@ export class SearchTodosComponent implements OnInit {
   }
 
   onSerach(): void {
-    this.store.dispatch(TodosActions.searchedTodos({ 
-      action: { 
-        searchTerm: this.searchValue,
-        activePage: 1
-      }
+    this.store.dispatch(TodoListActions.searched({ 
+      searchTerm: this.searchValue,
+      activePage: 1
     }));
   }
 }

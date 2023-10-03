@@ -2,9 +2,10 @@ import { Store } from '@ngrx/store';
 import { Component, Input } from '@angular/core';
 import { ITodo } from '../shared/models/todo';
 import { selectTodos } from '../state/todos.selectors';
-import { TodosActions } from '../state/todos.actions';
+import { TodoListActions } from '../state/todos.actions';
 import { TodoService } from '../shared/services/todo.service';
 import { first } from 'rxjs';
+import { ITodoList } from '../shared/models/ITodoList';
 
 @Component({
   selector: 'app-todo-item',
@@ -21,10 +22,10 @@ export class TodoItemComponent {
     minWidth: '90px'
   }
 
-  constructor(private store: Store, private todoService: TodoService) {}
+  constructor(private store: Store<ITodoList>, private todoService: TodoService) {}
 
   onComplete(todoId: number) {
-    this.store.dispatch(TodosActions.completedTodo({ todoId }));
+    this.store.dispatch(TodoListActions.completed({ todoId }));
     this.store
         .select(selectTodos)
         .pipe(first())
@@ -32,7 +33,7 @@ export class TodoItemComponent {
   }
 
   onRemove(todoId: number) {
-    this.store.dispatch(TodosActions.removedTodo({ todoId }));
+    this.store.dispatch(TodoListActions.removed({ todoId }));
     this.store
         .select(selectTodos)
         .pipe(first())

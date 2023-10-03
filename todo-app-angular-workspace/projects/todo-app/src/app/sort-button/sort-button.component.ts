@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ITodoList } from '../shared/models/ITodoList';
-import { TodosActions } from '../state/todos.actions';
-import { selectTodos } from '../state/todos.selectors';
+import { TodoListActions } from '../state/todos.actions';
+import { selectSort } from '../state/todos.selectors';
 
 @Component({
   selector: 'app-sort-button',
@@ -15,18 +15,18 @@ export class SortButtonComponent {
 
   sortDirection: any;
 
-  constructor(private store: Store) {}
+  constructor(private store: Store<ITodoList>) {}
 
   ngOnInit(): void {    
-    this.store.select(selectTodos)
+    this.store.select(selectSort)
     .pipe()
-    .subscribe((todoList: ITodoList) => {
-      this.sortDirection = todoList.sort.column === this.column ? todoList.sort.direction : 'none';
+    .subscribe((sort: any) => {
+      this.sortDirection = sort.column === this.column ? sort.direction : 'none';
     });
   }
 
   sort(): void {
-    this.store.dispatch(TodosActions.sorted({ 
+    this.store.dispatch(TodoListActions.sorted({ 
       action: {        
         sort: {
           ...{

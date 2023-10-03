@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ITodoList } from '../shared/models/ITodoList';
-import { TodosActions } from '../state/todos.actions';
-import { selectTodos } from '../state/todos.selectors';
+import { TodoListActions } from '../state/todos.actions';
+import { selectFilter } from '../state/todos.selectors';
 
 @Component({
   selector: 'app-filter-todos',
@@ -13,19 +13,19 @@ export class FilterTodosComponent implements OnInit {
   isCompleted = false;
   isUncompleted = false;
 
-  constructor(private store: Store) { }
+  constructor(private store: Store<ITodoList>) { }
 
   ngOnInit(): void { 
-    this.store.select(selectTodos)
+    this.store.select(selectFilter)
         .pipe()
-        .subscribe((todoList: ITodoList) => {
-          this.isCompleted = todoList.filter.completed;
-          this.isUncompleted = todoList.filter.uncompleted;
+        .subscribe((filter: any) => {
+          this.isCompleted = filter.completed;
+          this.isUncompleted = filter.uncompleted;
         });
   }
 
   onFilter(): void {
-    this.store.dispatch(TodosActions.todosFiltered({ 
+    this.store.dispatch(TodoListActions.filtered({ 
       action: {        
         activePage: 1,
         filter: { 

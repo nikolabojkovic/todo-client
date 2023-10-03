@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { initTodoList } from '../initial-data';
 import { IPaging } from '../models/IPaging';
 import { ITodoList } from '../models/ITodoList';
-import { ITodo, Todo } from '../models/todo';
+import { ITodo } from '../models/todo';
 
 @Injectable({
   providedIn: 'root'

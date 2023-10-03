@@ -4,7 +4,7 @@ import { ITodoList } from '../shared/models/ITodoList';
 import { ITodo, Todo } from '../shared/models/todo';
 import { selectTodos } from '../state/todos.selectors';
 import { faFileExport, faFileImport } from '@fortawesome/free-solid-svg-icons';
-import { TodosActions } from '../state/todos.actions';
+import { TodoListActions } from '../state/todos.actions';
 import { TodoService } from '../shared/services/todo.service';
 import { first } from 'rxjs';
 
@@ -28,12 +28,12 @@ export class ImportExportComponent implements OnInit {
   faFileImport = faFileImport;
   faFileExport = faFileExport;
 
-  constructor(private store: Store, private todoService: TodoService) { }
+  constructor(private store: Store<ITodoList>, private todoService: TodoService) { }
 
   ngOnInit(): void {
     this.store.select(selectTodos)
-    .pipe()
-    .subscribe((todoList: ITodoList) => this.items = todoList.originalList);
+      .pipe()
+      .subscribe((todoList: ITodoList) => this.items = todoList.originalList);
 
     this.fileReader.onload = (e: any) => {
       const text = e.target.result;
@@ -61,7 +61,7 @@ export class ImportExportComponent implements OnInit {
             
       this.file = null;
       this.fileContainer.nativeElement.value = '';
-      this.store.dispatch(TodosActions.todosImported({ 
+      this.store.dispatch(TodoListActions.imported({ 
         action: {        
           activePage: 1,
           originalList: importedTodoList

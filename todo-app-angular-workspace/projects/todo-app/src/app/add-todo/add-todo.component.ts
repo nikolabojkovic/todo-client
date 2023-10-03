@@ -1,9 +1,10 @@
 import { Store } from '@ngrx/store';
 import { Component, OnInit } from '@angular/core';
-import { TodosActions } from '../state/todos.actions';
+import { TodoListActions } from '../state/todos.actions';
 import { selectTodos } from '../state/todos.selectors';
 import { TodoService } from '../shared/services/todo.service';
 import { first } from 'rxjs';
+import { ITodoList } from '../shared/models/ITodoList';
 
 @Component({
   selector: 'app-add-todo',
@@ -14,12 +15,12 @@ export class AddTodoComponent implements OnInit {
   title = ''
   description = ''
 
-  constructor(private store: Store, private todoService: TodoService) { }
+  constructor(private store: Store<ITodoList>, private todoService: TodoService) { }
 
   ngOnInit(): void { }
   
   async onAdd() {
-    this.store.dispatch(TodosActions.addedTodo({
+    this.store.dispatch(TodoListActions.added({
       title: this.title,
       description: this.description,
     }));
