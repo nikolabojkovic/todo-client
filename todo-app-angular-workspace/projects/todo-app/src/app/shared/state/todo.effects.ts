@@ -31,7 +31,7 @@ export class TodoEffects {
         .pipe(
           map((todoList: ITodoList) => TodoListActions.fetched({ todoList })),
           catchError((err) => { 
-            console.error("error thrown" + err);
+            // console.error("error thrown" + err);
             return of(TodoListActions.fetched( { todoList: new TodoList([] as ITodo[]) })); 
           })
         )
