@@ -49,8 +49,8 @@ export class ImportExportComponent implements OnInit {
     link.click();
   }
 
-  onChooseFile(e: Event<HTMLInputElement>) {
-    this.file = e.target!.files![0];
+  onChooseFile(e: Event) {
+    this.file = ((e.target) as HTMLInputElement).files![0];
   }
 
   onLoad = (e: ProgressEvent<FileReader>) => {
