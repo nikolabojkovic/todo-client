@@ -3,9 +3,9 @@ import { Actions, createEffect, ofType, concatLatestFrom } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import { catchError, exhaustMap, map, tap } from 'rxjs/operators';
-import { ITodo } from '../shared/models/todo';
-import { ITodoList, TodoList } from '../shared/models/todoList';
-import { TodoService } from '../shared/services/todo.service';
+import { ITodo } from '../models/todo';
+import { ITodoList, TodoList } from '../models/todoList';
+import { TodoService } from '../services/todo.service';
 import { TodoListActions } from './todo.actions';
 import { selectTodos } from './todo.selectors';
  

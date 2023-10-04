@@ -5,7 +5,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { SortButtonModule } from 'sort-button';
-import { todosReducer } from './state/todo.reducer';
+import { todosReducer } from './shared/state/todo.reducer';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
@@ -23,7 +23,7 @@ import { PagingComponent } from './components/paging/paging.component';
 import { SortingComponent } from './components/sorting/sorting.component';
 import { SortButtonComponent } from './components/sort-button/sort-button.component';
 import { SortIconComponent } from './components/sort-icon/sort-icon.component';
-import { TodoEffects } from './state/todo.effects';
+import { TodoEffects } from './shared/state/todo.effects';
 
 
 @NgModule({

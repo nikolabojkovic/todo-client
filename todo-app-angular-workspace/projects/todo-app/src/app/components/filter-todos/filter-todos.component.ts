@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { IFilter } from '../../shared/models/filter';
 import { ITodoList } from '../../shared/models/todoList';
-import { TodoListActions } from '../../state/todo.actions';
-import { selectFilter } from '../../state/todo.selectors';
+import { TodoListActions } from '../../shared/state/todo.actions';
+import { selectFilter } from '../../shared/state/todo.selectors';
 
 @Component({
   selector: 'app-filter-todos',
@@ -18,7 +19,7 @@ export class FilterTodosComponent implements OnInit {
   ngOnInit(): void { 
     this.store.select(selectFilter)
         .pipe()
-        .subscribe((filter: any) => {
+        .subscribe((filter: IFilter) => {
           this.isCompleted = filter.completed;
           this.isUncompleted = filter.uncompleted;
         });
@@ -30,7 +31,7 @@ export class FilterTodosComponent implements OnInit {
       filter: {
         completed: this.isCompleted,
         uncompleted: this.isUncompleted
-      }
+      } as IFilter
     }));
   }
 }

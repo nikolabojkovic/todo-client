@@ -1,7 +1,7 @@
 import { Store } from '@ngrx/store';
 import { Component, Input } from '@angular/core';
 import { ITodo } from '../../shared/models/todo';
-import { TodoListActions } from '../../state/todo.actions';
+import { TodoListActions } from '../../shared/state/todo.actions';
 import { ITodoList } from '../../shared/models/todoList';
 
 @Component({

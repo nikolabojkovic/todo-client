@@ -2,9 +2,10 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ITodoList } from '../../shared/models/todoList';
 import { ITodo, Todo } from '../../shared/models/todo';
-import { selectTodos } from '../../state/todo.selectors';
+import { selectTodos } from '../../shared/state/todo.selectors';
 import { faFileExport, faFileImport } from '@fortawesome/free-solid-svg-icons';
-import { TodoListActions } from '../../state/todo.actions';
+import { TodoListActions } from '../../shared/state/todo.actions';
+import { Event } from '../../shared/models/event';
 
 @Component({
   selector: 'app-import-export',
@@ -16,7 +17,7 @@ export class ImportExportComponent implements OnInit {
   @ViewChild("fileContainer") fileContainer!: ElementRef<HTMLInputElement>;
 
   items: ITodo[] = [];
-  file: any = null;
+  file: File | null = null;
   fileReader = new FileReader();
   faFileImport = faFileImport;
   faFileExport = faFileExport;
@@ -32,6 +33,9 @@ export class ImportExportComponent implements OnInit {
   }
 
   onImport(): void {
+    if (this.file === null)
+      return;
+
     this.fileReader.readAsText(this.file);
   }
 
@@ -45,24 +49,24 @@ export class ImportExportComponent implements OnInit {
     link.click();
   }
 
-  onChooseFile(e: any) {
-    this.file = e.target.files[0];
+  onChooseFile(e: Event<EventTarget>) {
+    this.file = (e as Event<HTMLInputElement>).target!.files![0];
   }
 
-  onLoad = (e: any) => {
-    const text = e.target.result;
-    const list = JSON.parse(text) as Todo[];
+  onLoad = (e: ProgressEvent<FileReader>) => {
+    const text = e.target?.result;
+    const list = JSON.parse(text as string) as Todo[];
 
     if (!(list instanceof Array)) {
       alert("Invalid JSON file content. Todo list should be an array.");
       return;
     }
 
-    const importedTodoList = list.map((item: any) => new Todo(item.id, 
-                                                              item.title, 
-                                                              item.description, 
-                                                              item.completed, 
-                                                              item.createdAt));
+    const importedTodoList = list.map((item: Todo) => new Todo(item.id, 
+                                                               item.title, 
+                                                               item.description, 
+                                                               item.completed, 
+                                                               item.createdAt));
 
     if ((importedTodoList.length > 0 
         && (!(importedTodoList[0] instanceof Todo) 

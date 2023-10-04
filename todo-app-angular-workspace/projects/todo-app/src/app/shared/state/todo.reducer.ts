@@ -1,10 +1,12 @@
 import { createReducer, on } from '@ngrx/store';
 
 import { TodoListActions } from './todo.actions';
-import { ITodoList } from '../shared/models/todoList';
-import { IPaging } from '../shared/models/paging';
-import { ITodo } from '../shared/models/todo';
-import { initTodoList } from '../shared/initial-data';
+import { ITodoList } from '../models/todoList';
+import { IPaging } from '../models/paging';
+import { ITodo } from '../models/todo';
+import { initTodoList } from '../initial-data';
+import { ISort, SortDirection } from '../models/sort';
+import { IFilter } from '../models/filter';
 
 export const initialState: ITodoList = initTodoList;
 
@@ -139,7 +141,7 @@ export const todosReducer = createReducer(
   on(TodoListActions.sorted, (todoList, sort) => {
     const filteredList = filterList(todoList.originalList, todoList.filter);
     const searchedList = searchList(filteredList, todoList.search.searchTerm);
-    const sortedList = sortList(searchedList, sort);
+    const sortedList = sortList(searchedList, sort as ISort);
 
     return {
       ...todoList,
@@ -174,7 +176,7 @@ function searchList(list: ITodo[], searchTerm: string,) {
   return filteredList;
 }
 
-function filterList(list: ITodo[], filter: any = null) {
+function filterList(list: ITodo[], filter: IFilter | null = null) {
   let filteredList = list;
 
   if (filter && filter.completed && filter.uncompleted) {
@@ -192,20 +194,20 @@ function filterList(list: ITodo[], filter: any = null) {
   return [...filteredList];
 }
 
-function sortList(list: ITodo[], sort: any) {
+function sortList(list: ITodo[], sort: ISort) {
   let sortResult = [];
   
   if (sort.column === 'createdAt') {
     if (sort.direction === 'asc') {
-      sortResult = [...list.sort((a: any, b: any) => Date.parse(a[sort.column]) > Date.parse(b[sort.column]) ? 1 : -1)]
+      sortResult = [...list.sort((a: ITodo , b: ITodo) => a.createdAt > b.createdAt ? 1 : -1)]
     } else {
-      sortResult = [...list.sort((a: any, b: any) => Date.parse(a[sort.column]) < Date.parse(b[sort.column]) ? 1 : -1)]
+      sortResult = [...list.sort((a: ITodo, b: ITodo) => a.createdAt < b.createdAt ? 1 : -1)]
     }
 
     return sortResult;
   }
 
-  if (sort.direction === 'asc') {
+  if (sort.direction === SortDirection.Asc) {
     sortResult = [...list.sort((a: any, b: any) => a[sort.column] > b[sort.column] ? 1 : -1)]
   } else {
     sortResult = [...list.sort((a: any, b: any) => a[sort.column] < b[sort.column] ? 1 : -1)]

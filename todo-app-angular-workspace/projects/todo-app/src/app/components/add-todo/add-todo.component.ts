@@ -1,6 +1,6 @@
 import { Store } from '@ngrx/store';
 import { Component, OnInit } from '@angular/core';
-import { TodoListActions } from '../../state/todo.actions';
+import { TodoListActions } from '../../shared/state/todo.actions';
 import { ITodoList } from '../../shared/models/todoList';
 
 @Component({

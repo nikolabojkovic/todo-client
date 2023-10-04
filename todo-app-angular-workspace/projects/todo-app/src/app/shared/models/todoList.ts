@@ -1,12 +1,13 @@
 import { IFilter } from "./filter";
 import { IPaging } from "./paging";
+import { ISearch } from "./search";
 import { ISort, SortDirection } from "./sort";
 import { ITodo } from "./todo";
 
 export interface ITodoList {
 	originalList: ITodo[];
 	displayList: ITodo[];
-	search: any;
+	search: ISearch;
 	filter: IFilter;
 	sort: ISort;
 	paging: IPaging;
@@ -15,7 +16,7 @@ export interface ITodoList {
 export class TodoList implements ITodoList {
 		originalList: ITodo[];
 		displayList: ITodo[];
-		search: any;
+		search: ISearch;
 		filter: IFilter;
 		sort: ISort;
 		paging: IPaging;

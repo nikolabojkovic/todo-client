@@ -3,8 +3,8 @@ import { Store } from '@ngrx/store';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 import { IPaging } from '../../shared/models/paging';
 import { ITodoList } from '../../shared/models/todoList';
-import { TodoListActions } from '../../state/todo.actions';
-import { selectPaging } from '../../state/todo.selectors';
+import { TodoListActions } from '../../shared/state/todo.actions';
+import { selectPaging } from '../../shared/state/todo.selectors';
 
 @Component({
   selector: 'app-paging',
