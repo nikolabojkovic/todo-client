@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { initTodoList } from '../initial-data';
 import { ITodoList, TodoList } from '../models/todoList';
 import { ITodo } from '../models/todo';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +14,8 @@ export class TodoService {
   constructor() {}
 
   getTodoList(): Observable<ITodoList> {
+    // return throwError(() => new Error('Test'));
+    // return of (new TodoList([] as ITodo[]));
     let todoListData = localStorage.getItem(this.todoListName);
     if (todoListData === undefined 
      || todoListData === null) {

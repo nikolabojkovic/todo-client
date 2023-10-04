@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType, concatLatestFrom } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
-import { catchError, exhaustMap, map, mergeMap, tap } from 'rxjs/operators';
-import { ITodoList } from '../shared/models/todoList';
+import { catchError, exhaustMap, map, tap } from 'rxjs/operators';
+import { ITodo } from '../shared/models/todo';
+import { ITodoList, TodoList } from '../shared/models/todoList';
 import { TodoService } from '../shared/services/todo.service';
 import { TodoListActions } from './todo.actions';
 import { selectTodos } from './todo.selectors';
@@ -29,7 +30,10 @@ export class TodoEffects {
       exhaustMap(() => this.todoService.getTodoList()
         .pipe(
           map((todoList: ITodoList) => TodoListActions.fetched({ todoList })),
-          catchError(() => of(TodoListActions.fetched( { todoList: { } as ITodoList })))
+          catchError((err) => { 
+            console.error("error thrown" + err);
+            return of(TodoListActions.fetched( { todoList: new TodoList([] as ITodo[]) })); 
+          })
         )
       )
     )
