@@ -10,19 +10,19 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
 import { AppComponent } from './app.component';
-import { TodoItemComponent } from './todo-item/todo-item.component';
-import { TodoListComponent } from './todo-list/todo-list.component';
-import { TabsComponent } from './tabs/tabs.component';
-import { AddTodoComponent } from './add-todo/add-todo.component';
-import { SearchTodosComponent } from './search-todos/search-todos.component';
+import { TodoItemComponent } from './components/todo-item/todo-item.component';
+import { TodoListComponent } from './components/todo-list/todo-list.component';
+import { TabsComponent } from './components/tabs/tabs.component';
+import { AddTodoComponent } from './components/add-todo/add-todo.component';
+import { SearchTodosComponent } from './components/search-todos/search-todos.component';
 import { FormsModule } from '@angular/forms';
-import { FilterTodosComponent } from './filter-todos/filter-todos.component';
-import { ImportExportComponent } from './import-export/import-export.component';
+import { FilterTodosComponent } from './components/filter-todos/filter-todos.component';
+import { ImportExportComponent } from './components/import-export/import-export.component';
 import { TodoService } from './shared/services/todo.service';
-import { PagingComponent } from './paging/paging.component';
-import { SortingComponent } from './sorting/sorting.component';
-import { SortButtonComponent } from './sort-button/sort-button.component';
-import { SortIconComponent } from './sort-icon/sort-icon.component';
+import { PagingComponent } from './components/paging/paging.component';
+import { SortingComponent } from './components/sorting/sorting.component';
+import { SortButtonComponent } from './components/sort-button/sort-button.component';
+import { SortIconComponent } from './components/sort-icon/sort-icon.component';
 import { TodoEffects } from './state/todo.effects';
 
 

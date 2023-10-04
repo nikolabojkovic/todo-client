@@ -1,10 +1,10 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { ITodoList } from '../shared/models/todoList';
-import { ITodo, Todo } from '../shared/models/todo';
-import { selectTodos } from '../state/todo.selectors';
+import { ITodoList } from '../../shared/models/todoList';
+import { ITodo, Todo } from '../../shared/models/todo';
+import { selectTodos } from '../../state/todo.selectors';
 import { faFileExport, faFileImport } from '@fortawesome/free-solid-svg-icons';
-import { TodoListActions } from '../state/todo.actions';
+import { TodoListActions } from '../../state/todo.actions';
 
 @Component({
   selector: 'app-import-export',

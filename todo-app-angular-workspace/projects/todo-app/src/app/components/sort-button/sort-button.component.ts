@@ -1,9 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { SortDirection } from '../shared/models/sort';
-import { ITodoList } from '../shared/models/todoList';
-import { TodoListActions } from '../state/todo.actions';
-import { selectSort } from '../state/todo.selectors';
+import { SortDirection } from '../../shared/models/sort';
+import { ITodoList } from '../../shared/models/todoList';
+import { TodoListActions } from '../../state/todo.actions';
+import { selectSort } from '../../state/todo.selectors';
 
 @Component({
   selector: 'app-sort-button',

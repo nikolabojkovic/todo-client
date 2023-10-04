@@ -1,52 +1,31 @@
 import { Injectable } from '@angular/core';
 import { initTodoList } from '../initial-data';
-import { IPaging } from '../models/paging';
-import { ITodoList } from '../models/todoList';
+import { ITodoList, TodoList } from '../models/todoList';
 import { ITodo } from '../models/todo';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TodoService {
 
+  private todoListName = 'todo-list';
+
   constructor() {}
 
-  getTodoList(): ITodoList {
-    if (localStorage.getItem('todo-list') === undefined 
-     || localStorage.getItem('todo-list') === null) {
-      return initTodoList;
+  getTodoList(): Observable<ITodoList> {
+    let todoListData = localStorage.getItem(this.todoListName);
+    if (todoListData === undefined 
+     || todoListData === null) {
+      return of(initTodoList);
     }
+    const todos = JSON.parse(todoListData ?? "[]") as ITodo[];
+    let todoList = new TodoList(todos);
 
-    const sortBy = {
-      column: 'createdAt',
-      direction: 'asc'
-    };
-    const todos = JSON.parse(localStorage.getItem('todo-list') ?? "[]") as ITodo[];
-
-    let todoList = {
-      originalList: todos, 
-      displayList: todos,
-      search: {
-        searchTerm: '',
-      },
-      filter: {
-        completed: false,
-        uncompleted: false,
-      },
-      sort: sortBy,
-      paging: {
-        totalCount: todos.length,
-        activePage: todos.length > 0 ? 1 : 0,
-        startIndex: 0,
-        endIndex: 5,
-        itemsPerPage: 5
-      } as IPaging
-    } as ITodoList;
-
-    return todoList;
+    return of(todoList);
   }
 
   saveTodos(todoList: ITodoList): void {
-    localStorage.setItem('todo-list', JSON.stringify(todoList.originalList));
+    localStorage.setItem(this.todoListName, JSON.stringify(todoList.originalList));
   }
 }
