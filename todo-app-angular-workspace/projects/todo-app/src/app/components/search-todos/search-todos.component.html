@@ -13,7 +13,7 @@
     <button 
       type="button" 
       class="btn btn-sm action-button" 
-      [disabled]="disabled"
+      [disabled]="ifSearchIsEmpty"
       (click)="onSerach()"
     >
       Search

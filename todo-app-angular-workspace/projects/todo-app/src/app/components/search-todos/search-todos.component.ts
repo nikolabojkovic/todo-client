@@ -11,7 +11,7 @@ import { selectSearch } from '../../shared/state/todo.selectors';
   styleUrls: ['./search-todos.component.scss']
 })
 export class SearchTodosComponent implements OnInit {
-  disabled = true;
+  ifSearchIsEmpty = true;
   searchValue = '';
   
   constructor(private store: Store<ITodoList>) { }
@@ -21,12 +21,12 @@ export class SearchTodosComponent implements OnInit {
         .pipe()
         .subscribe((search: ISearch) => {
           this.searchValue = search.searchTerm;
-          this.disabled = search.searchTerm === ''
+          this.ifSearchIsEmpty = search.searchTerm === ''
         });
   }
 
   onTyping(): void {
-    this.disabled = !this.searchValue || this.searchValue.trim() === '';
+    this.ifSearchIsEmpty = !this.searchValue || this.searchValue.trim() === '';
     this.store.dispatch(TodoListActions.searchTermUpdated({ 
       searchTerm: this.searchValue ? this.searchValue.trim() : ''
     }));

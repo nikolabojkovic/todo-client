@@ -21,7 +21,7 @@
     <button 
       type="submit" 
       class="btn btn-sm action-button"
-      [disabled]="disabledButtonState"
+      [disabled]="ifDataIsMissing"
       (click)="onAdd()"
     >
       Add

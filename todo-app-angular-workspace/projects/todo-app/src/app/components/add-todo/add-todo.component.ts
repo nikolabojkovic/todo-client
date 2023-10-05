@@ -23,7 +23,7 @@ export class AddTodoComponent implements OnInit {
     }));
   }
 
-  get disabledButtonState(): boolean {
+  get ifDataIsMissing(): boolean {
     return !this.title 
       || this.title.trim() === '' 
       || !this.description 
