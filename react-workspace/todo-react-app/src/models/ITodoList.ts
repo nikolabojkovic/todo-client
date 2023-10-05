@@ -8,9 +8,9 @@ import { ISearch } from "./ISearch";
 export interface ITodoList {
 	originalList: ITodo[];
 	displayList: ITodo[];
-	search: any;
-	filter: any;
-	sort: any;
+	search: ISearch;
+	filter: IFilter;
+	sort: ISort;
 	paging: IPaging;
 }
 

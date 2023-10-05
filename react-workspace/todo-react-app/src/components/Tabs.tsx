@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faAdd, faFilter, faDownload } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faAdd, faFilter, faDownload, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { Stack } from "react-bootstrap";
 import { useState } from "react";
 
@@ -8,18 +8,25 @@ import { Search } from './Search';
 import { FilterTodos } from './FilterTodos';
 import { ImportExport } from './ImportExport';
 
+type Tab  ={
+  name: string,
+  icon: IconDefinition,
+  content: JSX.Element
+}
+
 export function Tabs() {
   const [active, setActive] = useState('add-todo');
-  const tabs: any = [{
+
+  const tabs: Tab[] = [{
       name: 'add-todo',
       icon: faAdd,
       content: <AddTodo/>
-    },
+    } as Tab,
     {
       name: 'search-todos',
       icon: faSearch,
       content: <Search placeholder='Search by title or description' />
-    },
+    } as Tab,
     {
       name: 'filter-todos',
       icon: faFilter,
@@ -29,14 +36,14 @@ export function Tabs() {
       name: 'import-export',
       icon: faDownload,
       content: <ImportExport/>
-    }
-  ];  
-  const activeChild = tabs.find((item: any) => item.name === active);
+    } as Tab
+  ] as Tab [];  
+  const activeChild = tabs.find((item: Tab) => item.name === active);
 
   return (
     <section className="App__tabs mb-2">
       <Stack direction="horizontal" gap={1}>      
-        {tabs.map((tab: any) => (
+        {tabs.map((tab: Tab) => (
           <div 
             key={tab.name}
             className={ 
@@ -52,10 +59,10 @@ export function Tabs() {
       </Stack>
       <section className="App__tabs-content">
         <div 
-          key={"tab-content-" + activeChild.name}
+          key={"tab-content-" + activeChild?.name}
           className="fade-in"
         >
-          {activeChild.content}
+          {activeChild?.content}
         </div>
       </section>     
     </section>

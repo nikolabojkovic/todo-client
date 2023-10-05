@@ -1,6 +1,7 @@
-import { Button, Col, Container, Form, Row, Stack } from 'react-bootstrap';
+import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { useState } from 'react';
 import { useTodoListDispatch } from '../context/TodosContext';
+import { IAction } from '../models/Action';
 
 export function AddTodo() {
   const [title, setTitle] = useState('');
@@ -11,9 +12,11 @@ export function AddTodo() {
   function handleAdd() {
     dispatch({
       type: 'added',
-      title, 
-      description
-    });
+      payload: {
+        title, 
+        description
+      }
+    } as IAction);
     setTitle('');
     setDescription('');
   }
@@ -47,13 +50,7 @@ export function AddTodo() {
           <Col sm={2} className="p-2">
             <Button 
               variant="warning"
-              style={{ 
-                backgroundColor: '#FE9801',
-                color: 'white', 
-                minWidth: '90px',
-                borderRadius: '20px',
-                width: '100%'
-              }} 
+              className="action-button"
               size="sm"
               disabled={!title || title.trim() === '' || !description || description.trim() === ''}
               onClick={handleAdd}

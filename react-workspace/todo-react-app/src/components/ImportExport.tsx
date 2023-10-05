@@ -1,15 +1,10 @@
 import { faFileExport, faFileImport } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRef, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import { Button, Col, Container, Form, InputGroup, Row } from "react-bootstrap";
 import { useTodoList, useTodoListDispatch } from "../context/TodosContext";
-import { Todo } from "../models/Todo";
-
-const buttonStyle : any = { 
-  backgroundColor: '#F5F6F7', 
-  borderRadius: '20px', 
-  minWidth: '90px'
-}
+import { IAction } from "../models/Action";
+import { ITodo, Todo } from "../models/Todo";
 
 const fileReader = new FileReader();
 
@@ -17,12 +12,10 @@ export function ImportExport() {
   const todoList = useTodoList();
   const dispatch = useTodoListDispatch();
   
-  const [file, setFile] = useState(null);
-  const fileRef = useRef(null as any);
+  const [file, setFile] = useState<File | null>(null);
+  const fileRef = useRef(null as HTMLInputElement | null);
 
-  function handleImport(e: any) {
-    e.preventDefault();
-
+  function handleImport() {
     if (!file) 
       return;
 
@@ -39,20 +32,20 @@ export function ImportExport() {
     link.click();
   }
 
-  fileReader.onload = function (e: any) {
-    const text = e.target.result;
-    const list = JSON.parse(text) as Todo[];
+  fileReader.onload = (e: ProgressEvent<FileReader>) => {
+    const text = e.target?.result;
+    const list = JSON.parse(text as string) as Todo[];
 
     if (!(list instanceof Array)) {
       alert("Invalid JSON file content. Todo list should be an array.");
       return;
     }
 
-    const importedTodoList = list.map((item: any) => new Todo(item.id, 
-                                                              item.title, 
-                                                              item.description, 
-                                                              item.completed, 
-                                                              item.createdAt));
+    const importedTodoList = list.map((item: ITodo) => new Todo(item.id, 
+                                                                item.title, 
+                                                                item.description, 
+                                                                item.completed, 
+                                                                item.createdAt));
 
     if ((importedTodoList.length > 0 
         && (!(importedTodoList[0] instanceof Todo) 
@@ -66,10 +59,12 @@ export function ImportExport() {
     setFile(null);
     dispatch({
       type: 'imported',
-      originalList: importedTodoList,
-      activePage: 1
-    });
-    fileRef.current.value = '';
+      payload: {
+        originalList: importedTodoList,
+        activePage: 1
+      }
+    } as IAction);
+    fileRef!.current!.value = '';
   };
 
   return (
@@ -84,8 +79,8 @@ export function ImportExport() {
                 type={"file"} 
                 accept={".json"} 
                 ref={fileRef}
-                onChange={(e: any) => {
-                  setFile(e.target.files[0]);
+                onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                  setFile(((e.target).files![0]));
                 }}
                 readOnly 
               />
@@ -93,10 +88,9 @@ export function ImportExport() {
           </Col>
           <Col sm={2} className="p-2">
             <Button 
-              className="w-100"
+              className="w-100 confirm-button"
               variant="outline-success" 
               size="sm"
-              style={ buttonStyle }
               onClick={handleImport}
               disabled={!file}
             >
@@ -106,10 +100,9 @@ export function ImportExport() {
           </Col>
           <Col sm={2} className="p-2">
             <Button 
-              className="w-100"
+              className="w-100 confirm-button"
               variant="outline-success" 
               size="sm"
-              style={ buttonStyle }
               disabled={!todoList.originalList || todoList.originalList.length === 0}
               onClick={handleExport}
             >

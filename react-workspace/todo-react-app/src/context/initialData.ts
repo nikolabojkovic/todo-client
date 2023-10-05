@@ -1,6 +1,8 @@
 import { ITodo } from "../models/Todo";
 import { IPaging } from "../models/IPaging";
 import { ITodoList } from "../models/ITodoList";
+import { ISort, SortDirection } from "../models/ISort";
+import { IFilter } from "../models/IFilter";
 
 export const todos: ITodo[] = [
   {
@@ -52,8 +54,8 @@ export const initTodoList: ITodoList =
   originalList: todos,
   displayList: todos,
   search: { searchTerm: '' },
-  filter: { completed: false, uncompleted: false },
-  sort: { column: 'createdAt', direction: 'asc'},
+  filter: { completed: false, uncompleted: false } as IFilter,
+  sort: { column: 'createdAt', direction: SortDirection.Asc} as ISort,
   paging: {
     totalCount: 6,
     activePage: 1,
@@ -61,4 +63,4 @@ export const initTodoList: ITodoList =
     startIndex: 0,
     endIndex: 5,
   } as IPaging
-};
+} as ITodoList;

@@ -1,4 +1,5 @@
 import { initTodoList } from "../context/initialData";
+import { IFilter } from "../models/IFilter";
 import { ISort } from "../models/ISort";
 import { TodoList } from "../models/ITodoList";
 import { ITodo } from "../models/Todo";
@@ -23,7 +24,7 @@ export class TodoService {
     return todoList;
   }
 
-  saveTodoList(list: any): void {
+  saveTodoList(list: ITodo[]): void {
     localStorage.setItem(this.todoListName, JSON.stringify(list));
   }
   
@@ -45,7 +46,7 @@ export class TodoService {
     return filteredList;
   }
   
-  filter(list: ITodo[], filter: any = null) {
+  filter(list: ITodo[], filter: IFilter) {
     let filteredList = list;
   
     if (filter && filter.completed && filter.uncompleted) {
@@ -63,14 +64,14 @@ export class TodoService {
     return [...filteredList];
   }
   
-  sort(list: ITodo[], sort: any) {
+  sort(list: ITodo[], sort: ISort) {
     let sortResult = [];
     
     if (sort.column === 'createdAt') {
       if (sort.direction === 'asc') {
-        sortResult = [...list.sort((a: any, b: any) => Date.parse(a[sort.column]) > Date.parse(b[sort.column]) ? 1 : -1)]
+        sortResult = [...list.sort((a: ITodo, b: ITodo) => a.createdAt > b.createdAt ? 1 : -1)]
       } else {
-        sortResult = [...list.sort((a: any, b: any) => Date.parse(a[sort.column]) < Date.parse(b[sort.column]) ? 1 : -1)]
+        sortResult = [...list.sort((a: ITodo, b: ITodo) => a.createdAt < b.createdAt ? 1 : -1)]
       }
   
       return sortResult;

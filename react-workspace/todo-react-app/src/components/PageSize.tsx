@@ -1,8 +1,14 @@
 import { Stack, Col } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import { useTodoList, useTodoListDispatch } from '../context/TodosContext';
+import { IAction } from '../models/Action';
 
-export function PageSize({ inputSelectRef, pageCount }: any) {
+type Props = {
+  inputSelectRef: ((instance: HTMLSelectElement | null) => void) | React.RefObject<HTMLSelectElement> | null | undefined,
+  pageCount: number
+};
+
+export function PageSize({ inputSelectRef, pageCount }: Props) {
   const todoList = useTodoList();
   const dispatch = useTodoListDispatch();
   
@@ -26,9 +32,11 @@ export function PageSize({ inputSelectRef, pageCount }: any) {
               onChange={(e) => {
                 dispatch({
                   type: 'paging-updated',
-                  activePage: 1,
-                  itemsPerPage: +e.target.value
-                });
+                  payload: {
+                    activePage: 1,
+                    itemsPerPage: +e.target.value
+                  }
+                } as IAction);
               }}
             >
               <option value={5}>5</option>

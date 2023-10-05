@@ -7,7 +7,7 @@ import { CustomPagination as Pagination } from './Pagination';
 export function Paging({ rotate = true, maxVisiblePagesCount = 3 }) {
   const todoList = useTodoList();
 
-  const inputSelectRef = useRef(null as any);
+  const inputSelectRef = useRef<HTMLSelectElement | null>(null);
   const pageCount = Math.ceil(todoList.paging.totalCount / todoList.paging.itemsPerPage);
 
   return (

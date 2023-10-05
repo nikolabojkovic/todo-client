@@ -1,4 +1,5 @@
 import { createContext, useContext, useReducer } from "react";
+import { IAction } from "../models/Action";
 import { IPaging } from "../models/IPaging";
 import { ITodoList } from "../models/ITodoList";
 import { ITodo } from "../models/Todo";
@@ -8,7 +9,11 @@ export const TodosContext = createContext({} as ITodoList);
 export const TodosDispatchContext = createContext(null as any);
 export const todoService: TodoService = new TodoService();
 
-export function TodoListProvider({ children }: any) {
+type Props = {
+  children: JSX.Element | JSX.Element[]
+}
+
+export function TodoListProvider({ children }: Props) {
   const [todoList, dispatch] = useReducer(
     todoListReducer,
     todoService.getTodoList()
@@ -31,7 +36,7 @@ export function useTodoListDispatch() {
   return useContext(TodosDispatchContext);
 }
 
-function todoListReducer(todoList: ITodoList, action: any) {
+function todoListReducer(todoList: ITodoList, action: IAction) {
   switch (action.type) {
     case 'added': {
       const id = todoList.originalList.length >= 1 
@@ -40,8 +45,8 @@ function todoListReducer(todoList: ITodoList, action: any) {
       : 0;
       const newTodo = {
         id: id + 1,
-        title: action.title,
-        description: action.description,
+        title: action.payload.title,
+        description: action.payload.description,
         completed: false, 
         createdAt: new Date()
       } as ITodo;
@@ -63,15 +68,15 @@ function todoListReducer(todoList: ITodoList, action: any) {
       return {
         ...todoList,
         originalList: todoList.originalList.map(t => {
-          if (t.id === action.todo.id) {
-            return action.todo;
+          if (t.id === action.payload.todo.id) {
+            return action.payload.todo;
           } else {
             return t;
           }
         }),
         displayList: todoList.displayList.map(t => {
-          if (t.id === action.todo.id) {
-            return action.todo;
+          if (t.id === action.payload.todo.id) {
+            return action.payload.todo;
           } else {
             return t;
           }
@@ -82,8 +87,8 @@ function todoListReducer(todoList: ITodoList, action: any) {
     case 'deleted': {
       return {
         ...todoList,
-        originalList: todoList.originalList.filter(t => t.id !== action.id),
-        displayList: todoList.displayList.filter(t => t.id !== action.id),
+        originalList: todoList.originalList.filter(t => t.id !== action.payload.id),
+        displayList: todoList.displayList.filter(t => t.id !== action.payload.id),
         paging: {
           ...todoList.paging, 
           totalCount: todoList.paging.totalCount - 1,
@@ -98,68 +103,68 @@ function todoListReducer(todoList: ITodoList, action: any) {
         ...todoList,
         paging: {
           ...todoList.paging,
-          activePage: action.activePage,
-          itemsPerPage: action.itemsPerPage,
-          startIndex: (action.activePage - 1) * action.itemsPerPage,
-          endIndex: action.activePage * action.itemsPerPage
+          activePage: action.payload.activePage,
+          itemsPerPage: action.payload.itemsPerPage,
+          startIndex: (action.payload.activePage - 1) * action.payload.itemsPerPage,
+          endIndex: action.payload.activePage * action.payload.itemsPerPage
         } as IPaging
       } as ITodoList
     }
     case 'searched': {
       const filteredList = todoService.filter(todoList.originalList, todoList.filter);
-      const searchedList = todoService.search(filteredList, action.searchTerm);
+      const searchedList = todoService.search(filteredList, action.payload.searchTerm);
       return {
         ...todoList,
         displayList: [...searchedList],
-        search: { searchTerm: action.searchTerm },
+        search: { searchTerm: action.payload.searchTerm },
         paging: {
           ...todoList.paging,
-          activePage: action.activePage,
+          activePage: action.payload.activePage,
           totalCount: searchedList.length,
-          startIndex: (action.activePage - 1) * todoList.paging.itemsPerPage,
-          endIndex: action.activePage * todoList.paging.itemsPerPage
+          startIndex: (action.payload.activePage - 1) * todoList.paging.itemsPerPage,
+          endIndex: action.payload.activePage * todoList.paging.itemsPerPage
         } as IPaging
       }
     }
     case 'searchTerm-updated': {
       return {
         ...todoList,
-        search: { searchTerm: action.searchTerm },
+        search: { searchTerm: action.payload.searchTerm },
       }
     }
     case 'filtered': {
-      const filteredList = todoService.filter(todoList.originalList, action.filter);
+      const filteredList = todoService.filter(todoList.originalList, action.payload.filter);
       const searchedList = todoService.search(filteredList, todoList.search.searchTerm);
       return {
         ...todoList,
         displayList: [...searchedList],
-        filter: {...action.filter},
+        filter: {...action.payload.filter},
         paging: {
           ...todoList.paging,
-          activePage: action.activePage,
+          activePage: action.payload.activePage,
           totalCount: searchedList.length,
-          startIndex: (action.activePage - 1) * todoList.paging.itemsPerPage,
-          endIndex: action.activePage * todoList.paging.itemsPerPage
+          startIndex: (action.payload.activePage - 1) * todoList.paging.itemsPerPage,
+          endIndex: action.payload.activePage * todoList.paging.itemsPerPage
         } as IPaging
       }
     }
     case 'sorted': {
       const filteredList = todoService.filter(todoList.originalList, todoList.filter);
       const searchedList = todoService.search(filteredList, todoList.search.searchTerm);
-      const sortedList = todoService.sort(searchedList, action.sort);
+      const sortedList = todoService.sort(searchedList, action.payload.sort);
 
       return {
         ...todoList,
         displayList: [...sortedList],
-        sort: {...action.sort},
+        sort: {...action.payload.sort},
         paging: {...todoList.paging} as IPaging
       }
     }
     case 'imported': {
       return {
         ...todoList,
-        originalList: [...action.originalList],
-        displayList: [...action.originalList],
+        originalList: [...action.payload.originalList],
+        displayList: [...action.payload.originalList],
         search: { searchTerm: '' },
         filter: {
           completed: false,
@@ -167,10 +172,10 @@ function todoListReducer(todoList: ITodoList, action: any) {
          },
         paging: {
           ...todoList.paging,
-          activePage: action.activePage,
-          totalCount: action.originalList.length,
-          startIndex: (action.activePage - 1) * todoList.paging.itemsPerPage,
-          endIndex: action.activePage * todoList.paging.itemsPerPage
+          activePage: action.payload.activePage,
+          totalCount: action.payload.originalList.length,
+          startIndex: (action.payload.activePage - 1) * todoList.paging.itemsPerPage,
+          endIndex: action.payload.activePage * todoList.paging.itemsPerPage
         } as IPaging
       }
     }

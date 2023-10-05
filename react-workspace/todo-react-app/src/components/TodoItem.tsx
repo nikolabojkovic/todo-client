@@ -1,12 +1,7 @@
 import { Button, Stack } from 'react-bootstrap';
 import { useTodoListDispatch } from '../context/TodosContext';
+import { IAction } from '../models/Action';
 import { ITodo } from '../models/Todo';
-
-const buttonStyle : any = { 
-  backgroundColor: '#F5F6F7', 
-  borderRadius: '20px', 
-  minWidth: '90px'
-}
 
 type Props = {
   todo: ITodo;
@@ -39,30 +34,32 @@ export function TodoItem({ todo }: Props){
           </div>     
           { !todo.completed &&
             <Button 
-              className="ms-auto"
+              className="ms-auto confirm-button"
               variant="outline-success" 
               size="sm"
-              style={ buttonStyle }
               onClick={() => {
                 dispatch({
                   type: 'changed',
-                  todo: {...todo, completed: true}
-                });
+                  payload: {
+                    todo: {...todo, completed: true}
+                  }
+                } as IAction);
               }}
             >
               Complete
             </Button>
           }
           <Button 
-            className= { todo.completed ? "ms-auto" : "" } 
+            className= { todo.completed ? "ms-auto confirm-button" : "confirm-button" } 
             variant="outline-danger" 
-            size="sm" 
-            style={ buttonStyle }
+            size="sm"
             onClick={() => {
               dispatch({
                 type: 'deleted',
-                id: todo.id
-              });
+                payload: {
+                  id: todo.id
+                }                
+              } as IAction);
             }}
           >
             Delete

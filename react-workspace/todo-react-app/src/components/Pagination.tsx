@@ -1,8 +1,16 @@
 import Pagination from 'react-bootstrap/Pagination';
 import { Col } from 'react-bootstrap';
 import { useTodoList, useTodoListDispatch } from '../context/TodosContext';
+import { IAction } from '../models/Action';
 
-export function CustomPagination({ inputSelectRef, rotate, pageCount, maxVisiblePagesCount }: any) {
+type Props = {
+  inputSelectRef: React.MutableRefObject<HTMLSelectElement | null>,
+  rotate: boolean,
+  pageCount: number,
+  maxVisiblePagesCount: number
+}
+
+export function CustomPagination({ inputSelectRef, rotate, pageCount, maxVisiblePagesCount }: Props) {
   const todoList = useTodoList();
   const dispatch = useTodoListDispatch();
 
@@ -71,19 +79,27 @@ export function CustomPagination({ inputSelectRef, rotate, pageCount, maxVisible
     return 1;
   };
 
+  function handlePaginationUpdate(activePage: number, itemsPerPage: number) {
+    dispatch({
+      type: 'paging-updated',
+      payload: {
+        activePage,
+        itemsPerPage
+      }
+    } as IAction);
+
+    if (inputSelectRef && inputSelectRef.current) {
+      inputSelectRef.current.focus();
+    }
+  }
+
 
   for (let pageNumber = firstPage; pageNumber <= lastPage; pageNumber++) {
     pages.push(
       <Pagination.Item 
         key={pageNumber} 
         active={pageNumber === todoList.paging.activePage} 
-        onClick={() => { 
-          dispatch({
-            type: 'paging-updated',
-            activePage: pageNumber,
-            itemsPerPage: todoList.paging.itemsPerPage
-          });
-        }}
+        onClick={() => handlePaginationUpdate(pageNumber, todoList.paging.itemsPerPage)}
       >
         {pageNumber}
       </Pagination.Item>
@@ -97,40 +113,19 @@ export function CustomPagination({ inputSelectRef, rotate, pageCount, maxVisible
           <Pagination.First 
             key="first" 
             disabled={todoList.paging.activePage === 1 }
-            onClick={() => { 
-              dispatch({
-                type: 'paging-updated',
-                activePage: 1,
-                itemsPerPage: todoList.paging.itemsPerPage
-              });
-              inputSelectRef.current.focus();
-            }}
+            onClick={() => handlePaginationUpdate(1, todoList.paging.itemsPerPage)}
           />
           <Pagination.Prev 
             key="prev" 
             disabled={todoList.paging.activePage === 1 }
-            onClick={() => { 
-              dispatch({
-                type: 'paging-updated',
-                activePage: todoList.paging.activePage - 1 >= 1 ? todoList.paging.activePage - 1 : 1,
-                itemsPerPage: todoList.paging.itemsPerPage
-              });
-              inputSelectRef.current.focus();
-            }} 
+            onClick={() => handlePaginationUpdate(todoList.paging.activePage - 1 >= 1 ? todoList.paging.activePage - 1 : 1, todoList.paging.itemsPerPage)} 
           />
           {
             (!rotate && (activeGroup > 1)) 
             && <Pagination.Ellipsis 
                   disabled={false} 
                   key="left-pages-link" 
-                  onClick={() => { 
-                    dispatch({
-                      type: 'paging-updated',
-                      activePage: calculateLastPageOfTheGroup(activeGroup - 1),
-                      itemsPerPage: todoList.paging.itemsPerPage
-                    });
-                    inputSelectRef.current.focus();
-                  }}
+                  onClick={() => handlePaginationUpdate(calculateLastPageOfTheGroup(activeGroup - 1), todoList.paging.itemsPerPage)}
                 />
           }
           {pages}
@@ -139,39 +134,21 @@ export function CustomPagination({ inputSelectRef, rotate, pageCount, maxVisible
             && <Pagination.Ellipsis 
                   disabled={false} 
                   key="right-pages-link" 
-                  onClick={() => { 
-                    dispatch({
-                      type: 'paging-updated',
-                      activePage: calculateFirstPageOfTheGroup(activeGroup + 1),
-                      itemsPerPage: todoList.paging.itemsPerPage
-                    });
-                    inputSelectRef.current.focus();
-                  }}
+                  onClick={() => handlePaginationUpdate(calculateFirstPageOfTheGroup(activeGroup + 1), todoList.paging.itemsPerPage)}
                 />
           }
           <Pagination.Next
             key="next" 
             disabled={todoList.paging.activePage === pageCount}
-            onClick={() => { 
-              dispatch({
-                type: 'paging-updated',
-                activePage: todoList.paging.activePage + 1 <= pageCount ? todoList.paging.activePage + 1 : pageCount,
-                itemsPerPage: todoList.paging.itemsPerPage
-              });
-              inputSelectRef.current.focus();
-            }} 
+            onClick={() => handlePaginationUpdate(
+              todoList.paging.activePage + 1 <= pageCount ? todoList.paging.activePage + 1 : pageCount,
+              todoList.paging.itemsPerPage
+            )} 
           />
           <Pagination.Last 
             key="last"
             disabled={todoList.paging.activePage === pageCount}
-            onClick={() => { 
-              dispatch({
-                type: 'paging-updated',
-                activePage: pageCount,
-                itemsPerPage: todoList.paging.itemsPerPage
-              });
-              inputSelectRef.current.focus();
-            }} 
+            onClick={() => handlePaginationUpdate(pageCount, todoList.paging.itemsPerPage)} 
           />
         </Pagination>
       </Col>

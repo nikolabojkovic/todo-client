@@ -5,6 +5,7 @@ import { IPaging } from '../../shared/models/paging';
 import { ITodoList } from '../../shared/models/todoList';
 import { TodoListActions } from '../../shared/state/todo.actions';
 import { selectPaging } from '../../shared/state/todo.selectors';
+import { Event } from '../../shared/models/event';
 
 @Component({
   selector: 'app-paging',
@@ -38,8 +39,8 @@ export class PagingComponent implements OnInit {
     }));
   }
 
-  onPageSizeChange(event: any) {
-    this.itemsPerPage = event.target.value;
+  onPageSizeChange(event: Event) {
+    this.itemsPerPage = +(event as Event<HTMLSelectElement>)!.target!.value;
     this.store.dispatch(TodoListActions.pagingUpdated({ 
       activePage: 1,
       itemsPerPage: this.itemsPerPage

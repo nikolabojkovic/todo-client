@@ -1,19 +1,22 @@
 import { Form, Stack } from "react-bootstrap";
 import { useTodoList, useTodoListDispatch } from "../context/TodosContext";
+import { IAction } from "../models/Action";
 
 export function FilterTodos() {
   const todoList = useTodoList();
   const dispatch = useTodoListDispatch();
 
-  function handleFilter(completed: any, uncompleted: any) {
+  function handleFilter(completed: boolean, uncompleted: boolean) {
     dispatch({
       type: 'filtered',
-      activePage: 1,
-      filter: { 
-        completed: completed,
-        uncompleted: uncompleted
+      payload: {
+        activePage: 1,
+        filter: { 
+          completed: completed,
+          uncompleted: uncompleted
+        }
       }
-    });
+    } as IAction);
   }
 
   return (
