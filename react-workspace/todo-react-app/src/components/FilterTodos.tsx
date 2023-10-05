@@ -5,7 +5,7 @@ export function FilterTodos() {
   const todoList = useTodoList();
   const dispatch = useTodoListDispatch();
 
-  function onFilter(completed: any, uncompleted: any) {
+  function handleFilter(completed: any, uncompleted: any) {
     dispatch({
       type: 'filtered',
       activePage: 1,
@@ -25,7 +25,7 @@ export function FilterTodos() {
           label={`Completed`}
           checked={todoList.filter.completed}
           onChange={(e) => {
-            onFilter(e.target.checked, todoList.filter.uncompleted);
+            handleFilter(e.target.checked, todoList.filter.uncompleted);
           }}
         />   
         <Form.Check 
@@ -34,7 +34,7 @@ export function FilterTodos() {
           label={`Uncompleted`}
           checked={todoList.filter.uncompleted}
           onChange={(e) => {
-            onFilter(todoList.filter.completed, e.target.checked);
+            handleFilter(todoList.filter.completed, e.target.checked);
           }}
         />         
       </Stack>

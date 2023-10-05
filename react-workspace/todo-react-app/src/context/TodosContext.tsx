@@ -2,49 +2,16 @@ import { createContext, useContext, useReducer } from "react";
 import { IPaging } from "../models/IPaging";
 import { ITodoList } from "../models/ITodoList";
 import { ITodo } from "../models/Todo";
-import { initTodoList } from "./initialData";
+import { TodoService } from "../services/TodoService";
  
 export const TodosContext = createContext({} as ITodoList);
 export const TodosDispatchContext = createContext(null as any);
-
-function getTodos() {
-  if (localStorage.getItem('todo-list') === undefined 
-   || localStorage.getItem('todo-list') === null) {
-    return initTodoList;
-  }
-    
-  const sortBy = {
-    column: 'createdAt',
-    direction: 'asc'
-  };
-  const todos = sort(JSON.parse(localStorage.getItem('todo-list') ?? "[]") as ITodo[], sortBy);
-
-  let todoList = {
-    originalList: todos, 
-    displayList: todos,
-    search: {
-      searchTerm: '',
-    },
-    filter: {
-      completed: false,
-      uncompleted: false,
-    },
-    sort: sortBy,
-    paging: {
-      totalCount: todos.length,
-      activePage: todos.length > 0 ? 1 : 0,
-      startIndex: 0,
-      endIndex: 5,
-      itemsPerPage: 5
-    } as IPaging
-  } as ITodoList;
-  return todoList;
-}
+export const todoService: TodoService = new TodoService();
 
 export function TodoListProvider({ children }: any) {
   const [todoList, dispatch] = useReducer(
     todoListReducer,
-    getTodos()
+    todoService.getTodoList()
   );
 
   return (
@@ -67,8 +34,12 @@ export function useTodoListDispatch() {
 function todoListReducer(todoList: ITodoList, action: any) {
   switch (action.type) {
     case 'added': {
+      const id = todoList.originalList.length >= 1 
+      ? todoList.originalList
+          .sort((a: ITodo, b: ITodo) => a.id > b.id ? 1 : -1)[todoList.originalList.length - 1].id 
+      : 0;
       const newTodo = {
-        id: action.id,
+        id: id + 1,
         title: action.title,
         description: action.description,
         completed: false, 
@@ -135,8 +106,8 @@ function todoListReducer(todoList: ITodoList, action: any) {
       } as ITodoList
     }
     case 'searched': {
-      const filteredList = filter(todoList.originalList, todoList.filter);
-      const searchedList = search(filteredList, action.searchTerm);
+      const filteredList = todoService.filter(todoList.originalList, todoList.filter);
+      const searchedList = todoService.search(filteredList, action.searchTerm);
       return {
         ...todoList,
         displayList: [...searchedList],
@@ -157,8 +128,8 @@ function todoListReducer(todoList: ITodoList, action: any) {
       }
     }
     case 'filtered': {
-      const filteredList = filter(todoList.originalList, action.filter);
-      const searchedList = search(filteredList, todoList.search.searchTerm);
+      const filteredList = todoService.filter(todoList.originalList, action.filter);
+      const searchedList = todoService.search(filteredList, todoList.search.searchTerm);
       return {
         ...todoList,
         displayList: [...searchedList],
@@ -173,9 +144,9 @@ function todoListReducer(todoList: ITodoList, action: any) {
       }
     }
     case 'sorted': {
-      const filteredList = filter(todoList.originalList, todoList.filter);
-      const searchedList = search(filteredList, todoList.search.searchTerm);
-      const sortedList = sort(searchedList, action.sort);
+      const filteredList = todoService.filter(todoList.originalList, todoList.filter);
+      const searchedList = todoService.search(filteredList, todoList.search.searchTerm);
+      const sortedList = todoService.sort(searchedList, action.sort);
 
       return {
         ...todoList,
@@ -207,64 +178,6 @@ function todoListReducer(todoList: ITodoList, action: any) {
       throw Error('Unknown action: ' + action.type);
     }
   }
-}
-
-function search(list: ITodo[], searchTerm: string,) {
-  let filteredList = list;
-
-  if (searchTerm !== '') {
-    filteredList = list.filter((todo: ITodo) => 
-      todo.title.trim()
-                .toLocaleLowerCase()
-                .includes(searchTerm.trim()
-                                    .toLocaleLowerCase()) 
-   || todo.description.trim()
-                      .toLocaleLowerCase()
-                      .includes(searchTerm.trim()
-                                          .toLocaleLowerCase()));
-  }
-
-  return filteredList;
-}
-
-function filter(list: ITodo[], filter: any = null) {
-  let filteredList = list;
-
-  if (filter && filter.completed && filter.uncompleted) {
-    return [...filteredList];
-  }
-
-  if (filter?.completed) {
-    filteredList = filteredList.filter((todo: ITodo) => todo.completed === true);
-  }
-
-  if (filter?.uncompleted) {
-    filteredList = filteredList.filter((todo: ITodo) => todo.completed === false);
-  }
-
-  return [...filteredList];
-}
-
-function sort(list: ITodo[], sort: any) {
-  let sortResult = [];
-  
-  if (sort.column === 'createdAt') {
-    if (sort.direction === 'asc') {
-      sortResult = [...list.sort((a: any, b: any) => Date.parse(a[sort.column]) > Date.parse(b[sort.column]) ? 1 : -1)]
-    } else {
-      sortResult = [...list.sort((a: any, b: any) => Date.parse(a[sort.column]) < Date.parse(b[sort.column]) ? 1 : -1)]
-    }
-
-    return sortResult;
-  }
-
-  if (sort.direction === 'asc') {
-    sortResult = [...list.sort((a: any, b: any) => a[sort.column] > b[sort.column] ? 1 : -1)]
-  } else {
-    sortResult = [...list.sort((a: any, b: any) => a[sort.column] < b[sort.column] ? 1 : -1)]
-  }
-
-  return sortResult;
 }
 
 function calculateActivePageOnDelete(paging: IPaging) {

@@ -5,29 +5,40 @@ import { ITodoList } from '../models/todoList';
 import { IPaging } from '../models/paging';
 import { ITodo } from '../models/todo';
 import { initTodoList } from '../initial-data';
-import { ISort, SortDirection } from '../models/sort';
-import { IFilter } from '../models/filter';
+import { ISort } from '../models/sort';
+import { TodoService } from '../services/todo.service';
 
 export const initialState: ITodoList = initTodoList;
+const todoservice: TodoService = new TodoService();
 
 export const todosReducer = createReducer(
   initialState,
   on(TodoListActions.fetched, (_state, { todoList }) => todoList),
-  on(TodoListActions.removed, (todoList, { todoId }) => {
+  on(TodoListActions.added, (todoList, { title, description } ) => {
+    const id = todoList.originalList.length >= 1 
+    ? [...todoList.originalList]
+        .sort((a: ITodo, b: ITodo) => a.id > b.id ? 1 : -1)[todoList.originalList.length - 1].id 
+    : 0;
+    const newTodo = {
+      id: id + 1,
+      title,
+      description, 
+      completed: false,
+      createdAt: new Date() 
+    }
     return {
       ...todoList,
-      originalList: todoList.originalList.filter(t => t.id !== todoId) as ITodo[],
-      displayList: todoList.displayList.filter(t => t.id !== todoId) as ITodo[],
+      originalList: [...todoList.originalList, newTodo],
+      displayList: [...todoList.displayList, newTodo],
       paging: {
         ...todoList.paging, 
-        totalCount: todoList.paging.totalCount - 1,
-        activePage: calculateActivePageOnDelete(todoList.paging),
-        startIndex: (calculateActivePageOnDelete(todoList.paging) - 1) * todoList.paging.itemsPerPage,
-        endIndex: calculateActivePageOnDelete(todoList.paging) * todoList.paging.itemsPerPage,  
+        totalCount: todoList.paging.totalCount + 1,
+        activePage: calculateActivePageOnAdd(todoList.paging),
+        startIndex: (calculateActivePageOnAdd(todoList.paging) - 1) * todoList.paging.itemsPerPage,
+        endIndex: calculateActivePageOnAdd(todoList.paging) * todoList.paging.itemsPerPage
       } as IPaging
     } as ITodoList;
-  }
-  ),
+  }),
   on(TodoListActions.completed, (todoList, { todoId }) => {
     return {
       ...todoList,
@@ -47,41 +58,45 @@ export const todosReducer = createReducer(
       }) as ITodo[],
       paging: {...todoList.paging}
     } as ITodoList;
-  }
-  ),
-  on(TodoListActions.added, (todoList, { title, description } ) => {
-    let lastElement = todoList.originalList[todoList.originalList.length - 1];
-    let id = 0;
-    if (lastElement) {
-      id = lastElement.id + 1;
-    }
-    const newTodo = {
-      id,
-      title,
-      description, 
-      completed: false,
-      createdAt: new Date() 
-    }
+  }),
+  on(TodoListActions.removed, (todoList, { todoId }) => {
     return {
       ...todoList,
-      originalList: [...todoList.originalList, newTodo],
-      displayList: [...todoList.displayList, newTodo],
+      originalList: todoList.originalList.filter(t => t.id !== todoId) as ITodo[],
+      displayList: todoList.displayList.filter(t => t.id !== todoId) as ITodo[],
       paging: {
         ...todoList.paging, 
-        totalCount: todoList.paging.totalCount + 1,
-        activePage: calculateActivePageOnAdd(todoList.paging),
-        startIndex: (calculateActivePageOnAdd(todoList.paging) - 1) * todoList.paging.itemsPerPage,
-        endIndex: calculateActivePageOnAdd(todoList.paging) * todoList.paging.itemsPerPage
+        totalCount: todoList.paging.totalCount - 1,
+        activePage: calculateActivePageOnDelete(todoList.paging),
+        startIndex: (calculateActivePageOnDelete(todoList.paging) - 1) * todoList.paging.itemsPerPage,
+        endIndex: calculateActivePageOnDelete(todoList.paging) * todoList.paging.itemsPerPage,  
       } as IPaging
     } as ITodoList;
-  }),
+  }
+  ),
   on(TodoListActions.searched, (todoList, { searchTerm, activePage }) => {
-    const filteredList = filterList(todoList.originalList, todoList.filter);
-    const searchedList = searchList(filteredList, searchTerm);
+    const filteredList = todoservice.filter(todoList.originalList, todoList.filter);
+    const searchedList = todoservice.search(filteredList, searchTerm);
     return {
       ...todoList,
       displayList: [...searchedList],
       search: { searchTerm: searchTerm },
+      paging: {
+        ...todoList.paging,
+        activePage: activePage,
+        totalCount: searchedList.length,
+        startIndex: (activePage - 1) * todoList.paging.itemsPerPage,
+        endIndex: activePage * todoList.paging.itemsPerPage
+      } as IPaging
+    } as ITodoList
+  }),
+  on(TodoListActions.filtered, (todoList, { activePage, filter }) => {
+    const filteredList = todoservice.filter(todoList.originalList, filter);
+    const searchedList = todoservice.search(filteredList, todoList.search.searchTerm);
+    return {
+      ...todoList,
+      displayList: [...searchedList],
+      filter: {...filter},
       paging: {
         ...todoList.paging,
         activePage: activePage,
@@ -100,22 +115,6 @@ export const todosReducer = createReducer(
         itemsPerPage: itemsPerPage,
         startIndex: (activePage - 1) * itemsPerPage,
         endIndex: activePage * itemsPerPage
-      } as IPaging
-    } as ITodoList
-  }),
-  on(TodoListActions.filtered, (todoList, { activePage, filter }) => {
-    const filteredList = filterList(todoList.originalList, filter);
-    const searchedList = searchList(filteredList, todoList.search.searchTerm);
-    return {
-      ...todoList,
-      displayList: [...searchedList],
-      filter: {...filter},
-      paging: {
-        ...todoList.paging,
-        activePage: activePage,
-        totalCount: searchedList.length,
-        startIndex: (activePage - 1) * todoList.paging.itemsPerPage,
-        endIndex: activePage * todoList.paging.itemsPerPage
       } as IPaging
     } as ITodoList
   }),
@@ -139,9 +138,9 @@ export const todosReducer = createReducer(
     } as ITodoList
   }),
   on(TodoListActions.sorted, (todoList, sort) => {
-    const filteredList = filterList(todoList.originalList, todoList.filter);
-    const searchedList = searchList(filteredList, todoList.search.searchTerm);
-    const sortedList = sortList(searchedList, sort as ISort);
+    const filteredList = todoservice.filter(todoList.originalList, todoList.filter);
+    const searchedList = todoservice.search(filteredList, todoList.search.searchTerm);
+    const sortedList = todoservice.sort(searchedList, sort as ISort);
 
     return {
       ...todoList,
@@ -157,64 +156,6 @@ export const todosReducer = createReducer(
     }
   })
 );
-
-function searchList(list: ITodo[], searchTerm: string,) {
-  let filteredList = list;
-
-  if (searchTerm !== '') {
-    filteredList = list.filter((todo: ITodo) => 
-      todo.title.trim()
-                .toLocaleLowerCase()
-                .includes(searchTerm.trim()
-                                    .toLocaleLowerCase()) 
-   || todo.description.trim()
-                      .toLocaleLowerCase()
-                      .includes(searchTerm.trim()
-                                          .toLocaleLowerCase()));
-  }
-
-  return filteredList;
-}
-
-function filterList(list: ITodo[], filter: IFilter | null = null) {
-  let filteredList = list;
-
-  if (filter && filter.completed && filter.uncompleted) {
-    return [...filteredList];
-  }
-
-  if (filter?.completed) {
-    filteredList = filteredList.filter((todo: ITodo) => todo.completed === true);
-  }
-
-  if (filter?.uncompleted) {
-    filteredList = filteredList.filter((todo: ITodo) => todo.completed === false);
-  }
-
-  return [...filteredList];
-}
-
-function sortList(list: ITodo[], sort: ISort) {
-  let sortResult = [];
-  
-  if (sort.column === 'createdAt') {
-    if (sort.direction === 'asc') {
-      sortResult = [...list.sort((a: ITodo , b: ITodo) => a.createdAt > b.createdAt ? 1 : -1)]
-    } else {
-      sortResult = [...list.sort((a: ITodo, b: ITodo) => a.createdAt < b.createdAt ? 1 : -1)]
-    }
-
-    return sortResult;
-  }
-
-  if (sort.direction === SortDirection.Asc) {
-    sortResult = [...list.sort((a: any, b: any) => a[sort.column] > b[sort.column] ? 1 : -1)]
-  } else {
-    sortResult = [...list.sort((a: any, b: any) => a[sort.column] < b[sort.column] ? 1 : -1)]
-  }
-
-  return sortResult;
-}
 
 function calculateActivePageOnDelete(paging: IPaging) {
   return Math.ceil((paging.totalCount - 1) / paging.itemsPerPage) < paging.activePage

@@ -11,7 +11,7 @@ export function Search({ placeholder }: Props) {
   const dispatch = useTodoListDispatch();
   const todoList = useTodoList();
 
-  function searchTodos(searchTerm: string) {
+  function handleSearch(searchTerm: string) {
     dispatch({
       type: 'searched',
       searchTerm,
@@ -34,7 +34,7 @@ export function Search({ placeholder }: Props) {
                   searchTerm: e.target.value
                 });
                 if (e.target.value === '') {
-                  searchTodos(e.target.value);
+                  handleSearch(e.target.value);
                 }
               }}
           />
@@ -46,7 +46,7 @@ export function Search({ placeholder }: Props) {
                 type: 'searchTerm-updated',
                 searchTerm: ''
               });
-              searchTodos('');
+              handleSearch('');
             }}
           />}
         </Form.Group>
@@ -62,7 +62,7 @@ export function Search({ placeholder }: Props) {
           size="sm"
           disabled={!todoList.search.searchTerm || todoList.search.searchTerm.trim() === ''}
           onClick={() => {
-            searchTodos(todoList.search.searchTerm);
+            handleSearch(todoList.search.searchTerm);
           }}
         >
           Search

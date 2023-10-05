@@ -1,19 +1,23 @@
 import { Button, Col, Container, Form, Row, Stack } from 'react-bootstrap';
 import { useState } from 'react';
-import { useTodoList, useTodoListDispatch } from '../context/TodosContext';
-import { ITodo } from '../models/Todo';
+import { useTodoListDispatch } from '../context/TodosContext';
 
 export function AddTodo() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
 
-  const todoList = useTodoList();
   const dispatch = useTodoListDispatch();
-  const id = todoList.originalList.length >= 1 
-    ? todoList.originalList
-        .sort((a: ITodo, b: ITodo) => a.id > b.id ? 1 : -1)[todoList.originalList.length - 1].id 
-    : 0;
 
+  function handleAdd() {
+    dispatch({
+      type: 'added',
+      title, 
+      description
+    });
+    setTitle('');
+    setDescription('');
+  }
+  
   return (
     <Form className="todo-background p-1">
       <Container fluid>
@@ -52,16 +56,7 @@ export function AddTodo() {
               }} 
               size="sm"
               disabled={!title || title.trim() === '' || !description || description.trim() === ''}
-              onClick={() => {
-                dispatch({
-                  type: 'added',
-                  id: id + 1, 
-                  title, 
-                  description
-                });
-                setTitle('');
-                setDescription('');
-              }}
+              onClick={handleAdd}
             >
               Add
             </Button>
