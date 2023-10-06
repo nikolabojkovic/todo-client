@@ -1,0 +1,3 @@
+<section class="app__todo-list">
+  <app-todo-item *ngFor="let item of items$ | async" [todo]="item"></app-todo-item>
+</section>

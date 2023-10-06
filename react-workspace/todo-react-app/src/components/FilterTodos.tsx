@@ -1,19 +1,22 @@
 import { Form, Stack } from "react-bootstrap";
 import { useTodoList, useTodoListDispatch } from "../context/TodosContext";
+import { IAction } from "../models/Action";
 
 export function FilterTodos() {
   const todoList = useTodoList();
   const dispatch = useTodoListDispatch();
 
-  function onFilter(completed: any, uncompleted: any) {
+  function handleFilter(completed: boolean, uncompleted: boolean) {
     dispatch({
       type: 'filtered',
-      activePage: 1,
-      filter: { 
-        completed: completed,
-        uncompleted: uncompleted
+      payload: {
+        activePage: 1,
+        filter: { 
+          completed: completed,
+          uncompleted: uncompleted
+        }
       }
-    });
+    } as IAction);
   }
 
   return (
@@ -25,7 +28,7 @@ export function FilterTodos() {
           label={`Completed`}
           checked={todoList.filter.completed}
           onChange={(e) => {
-            onFilter(e.target.checked, todoList.filter.uncompleted);
+            handleFilter(e.target.checked, todoList.filter.uncompleted);
           }}
         />   
         <Form.Check 
@@ -34,7 +37,7 @@ export function FilterTodos() {
           label={`Uncompleted`}
           checked={todoList.filter.uncompleted}
           onChange={(e) => {
-            onFilter(todoList.filter.completed, e.target.checked);
+            handleFilter(todoList.filter.completed, e.target.checked);
           }}
         />         
       </Stack>

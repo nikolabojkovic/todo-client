@@ -1,38 +1,33 @@
-import { Injectable } from '@angular/core';
-import { initTodoList } from '../initial-data';
-import { ITodoList, TodoList } from '../models/todoList';
-import { ITodo } from '../models/todo';
-import { Observable, of, throwError } from 'rxjs';
-import { IFilter } from '../models/filter';
-import { ISort, SortDirection } from '../models/sort';
+import { initTodoList } from "../context/initialData";
+import { IFilter } from "../models/IFilter";
+import { ISort } from "../models/ISort";
+import { TodoList } from "../models/ITodoList";
+import { ITodo } from "../models/Todo";
 
-@Injectable({
-  providedIn: 'root'
-})
 export class TodoService {
 
-  private todoListName = 'todo-list';
+  private todoListName: string = 'todo-list';
 
-  constructor() {}
-
-  getTodoList(): Observable<ITodoList> {
-    // return throwError(() => new Error('Test'));
-    // return of (new TodoList([] as ITodo[]));
-    let todoListData = localStorage.getItem(this.todoListName);
-    if (todoListData === undefined 
-     || todoListData === null) {
-      return of(initTodoList);
+  getTodoList() {
+    if (localStorage.getItem(this.todoListName) === undefined 
+     || localStorage.getItem(this.todoListName) === null) {
+      return initTodoList;
     }
-    const todos = JSON.parse(todoListData ?? "[]") as ITodo[];
+    
+    const todos = this.sort(JSON.parse(localStorage.getItem(this.todoListName) ?? "[]") as ITodo[], {
+      column: 'createdAt',
+      direction: 'asc'
+    } as ISort);
+  
     let todoList = new TodoList(todos);
 
-    return of(todoList);
+    return todoList;
   }
 
-  saveTodos(todoList: ITodoList): void {
-    localStorage.setItem(this.todoListName, JSON.stringify(todoList.originalList));
+  saveTodoList(list: ITodo[]): void {
+    localStorage.setItem(this.todoListName, JSON.stringify(list));
   }
-
+  
   search(list: ITodo[], searchTerm: string,) {
     let filteredList = list;
   
@@ -51,7 +46,7 @@ export class TodoService {
     return filteredList;
   }
   
-  filter(list: ITodo[], filter: IFilter | null = null) {
+  filter(list: ITodo[], filter: IFilter) {
     let filteredList = list;
   
     if (filter && filter.completed && filter.uncompleted) {
@@ -74,7 +69,7 @@ export class TodoService {
     
     if (sort.column === 'createdAt') {
       if (sort.direction === 'asc') {
-        sortResult = [...list.sort((a: ITodo , b: ITodo) => a.createdAt > b.createdAt ? 1 : -1)]
+        sortResult = [...list.sort((a: ITodo, b: ITodo) => a.createdAt > b.createdAt ? 1 : -1)]
       } else {
         sortResult = [...list.sort((a: ITodo, b: ITodo) => a.createdAt < b.createdAt ? 1 : -1)]
       }
@@ -82,7 +77,7 @@ export class TodoService {
       return sortResult;
     }
   
-    if (sort.direction === SortDirection.Asc) {
+    if (sort.direction === 'asc') {
       sortResult = [...list.sort((a: any, b: any) => a[sort.column] > b[sort.column] ? 1 : -1)]
     } else {
       sortResult = [...list.sort((a: any, b: any) => a[sort.column] < b[sort.column] ? 1 : -1)]

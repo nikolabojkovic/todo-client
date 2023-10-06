@@ -1,0 +1,22 @@
+<div class="row p-1">
+  <div class="col-12 col-sm-10 p-2">
+    <input 
+      type="text" 
+      class="form-control form-control-sm" 
+      id="title" 
+      placeholder="Enter title"
+      [(ngModel)]="searchValue"
+      (keyup)="onTyping()"
+    >
+  </div>
+  <div class="col-12 col-sm-2 p-2">
+    <button 
+      type="button" 
+      class="btn btn-sm action-button" 
+      [disabled]="ifSearchIsEmpty"
+      (click)="onSerach()"
+    >
+      Search
+    </button>
+  </div>
+</div>

@@ -1,0 +1,30 @@
+<div class="row p-1">
+  <div class="col-12 col-sm-5 p-2">
+    <input 
+      type="text" 
+      class="form-control form-control-sm" 
+      id="title" 
+      placeholder="Enter title"
+      [(ngModel)]="title"
+    />
+  </div>
+  <div class="col-12 col-sm-5 p-2">
+    <input 
+      type="text" 
+      class="form-control form-control-sm" 
+      id="description" 
+      placeholder="Enter description"
+      [(ngModel)]="description"
+    />
+  </div>
+  <div class="col-12 col-sm-2 p-2">
+    <button 
+      type="submit" 
+      class="btn btn-sm action-button"
+      [disabled]="ifDataIsMissing"
+      (click)="onAdd()"
+    >
+      Add
+    </button>
+  </div>
+</div>

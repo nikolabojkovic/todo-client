@@ -142,6 +142,21 @@
     padding: 10px 10px;
   }
 
+  .action-button {
+    background-color: $text-secondary-color;
+    color: $text-primary-color; 
+    min-width: 90px;
+    border-radius: 20px;
+    border-color: $text-secondary-color;
+    width: 90px;
+  }
+
+  .confirm-button {
+    background-color: #F5F6F7;
+    border-radius: 20px;
+    min-width: 90px;
+  }
+
   button:hover {
     color: $background-primary-color;
   }

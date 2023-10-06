@@ -1,19 +1,26 @@
-import { Button, Col, Container, Form, Row, Stack } from 'react-bootstrap';
+import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { useState } from 'react';
-import { useTodoList, useTodoListDispatch } from '../context/TodosContext';
-import { ITodo } from '../models/Todo';
+import { useTodoListDispatch } from '../context/TodosContext';
+import { IAction } from '../models/Action';
 
 export function AddTodo() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
 
-  const todoList = useTodoList();
   const dispatch = useTodoListDispatch();
-  const id = todoList.originalList.length >= 1 
-    ? todoList.originalList
-        .sort((a: ITodo, b: ITodo) => a.id > b.id ? 1 : -1)[todoList.originalList.length - 1].id 
-    : 0;
 
+  function handleAdd() {
+    dispatch({
+      type: 'added',
+      payload: {
+        title, 
+        description
+      }
+    } as IAction);
+    setTitle('');
+    setDescription('');
+  }
+  
   return (
     <Form className="todo-background p-1">
       <Container fluid>
@@ -43,25 +50,10 @@ export function AddTodo() {
           <Col sm={2} className="p-2">
             <Button 
               variant="warning"
-              style={{ 
-                backgroundColor: '#FE9801',
-                color: 'white', 
-                minWidth: '90px',
-                borderRadius: '20px',
-                width: '100%'
-              }} 
+              className="action-button"
               size="sm"
               disabled={!title || title.trim() === '' || !description || description.trim() === ''}
-              onClick={() => {
-                dispatch({
-                  type: 'added',
-                  id: id + 1, 
-                  title, 
-                  description
-                });
-                setTitle('');
-                setDescription('');
-              }}
+              onClick={handleAdd}
             >
               Add
             </Button>

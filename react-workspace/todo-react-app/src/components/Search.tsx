@@ -2,6 +2,7 @@ import { Button, Form, Stack } from 'react-bootstrap';
 import { useTodoList, useTodoListDispatch } from '../context/TodosContext';
 import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { IAction } from '../models/Action';
 
 type Props = {
   placeholder: string
@@ -11,12 +12,14 @@ export function Search({ placeholder }: Props) {
   const dispatch = useTodoListDispatch();
   const todoList = useTodoList();
 
-  function searchTodos(searchTerm: string) {
+  function handleSearch(searchTerm: string) {
     dispatch({
       type: 'searched',
-      searchTerm,
-      activePage: 1,
-    });
+      payload: {
+        searchTerm,
+        activePage: 1,
+      }
+    } as IAction);
   }
 
   return (
@@ -31,10 +34,12 @@ export function Search({ placeholder }: Props) {
             onChange={(e) => { 
                 dispatch({
                   type: 'searchTerm-updated',
-                  searchTerm: e.target.value
-                });
+                  payload: {
+                    searchTerm: e.target.value
+                  }
+                } as IAction);
                 if (e.target.value === '') {
-                  searchTodos(e.target.value);
+                  handleSearch(e.target.value);
                 }
               }}
           />
@@ -44,25 +49,21 @@ export function Search({ placeholder }: Props) {
             onClick={() => {
               dispatch({
                 type: 'searchTerm-updated',
-                searchTerm: ''
-              });
-              searchTodos('');
+                payload: {
+                  searchTerm: ''
+                }
+              } as IAction);
+              handleSearch('');
             }}
           />}
         </Form.Group>
         <Button 
           variant="warning"
-          className="m-2"
-          style={{ 
-            backgroundColor: '#FE9801',
-            color: 'white', 
-            minWidth: '90px',
-            borderRadius: '20px'
-          }} 
+          className="me-2 action-button"
           size="sm"
           disabled={!todoList.search.searchTerm || todoList.search.searchTerm.trim() === ''}
           onClick={() => {
-            searchTodos(todoList.search.searchTerm);
+            handleSearch(todoList.search.searchTerm);
           }}
         >
           Search

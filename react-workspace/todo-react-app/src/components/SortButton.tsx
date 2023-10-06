@@ -1,27 +1,36 @@
 import { useEffect, useState } from "react";
 import { useTodoList, useTodoListDispatch } from "../context/TodosContext";
+import { IAction } from "../models/Action";
+import { SortDirection } from "../models/ISort";
 import { SortIcon } from "./SortIcon";
 
-export function SortButton({ column, text }: any) {
+type Props = {
+  column: string,
+  text: string
+};
+
+export function SortButton({ column, text }: Props) {
   const todoList = useTodoList();
   const dispatch = useTodoListDispatch();
-  const [direction, setDirection] = useState(todoList.sort.column === column ? todoList.sort.direction : 'none');
+  const [direction, setDirection] = useState(todoList.sort.column === column ? todoList.sort.direction : SortDirection.None);
 
   useEffect(() => {     
-    setDirection(todoList.sort.column === column ? todoList.sort.direction : 'none');
+    setDirection(todoList.sort.column === column ? todoList.sort.direction : SortDirection.None);
   }, [column, todoList.sort.column, todoList.sort.direction])
 
   return(
     <div className="App__sorting__item" onClick={() => { 
-        const newDirectionState = direction !== 'asc' ? 'asc' : 'desc';
+        const newDirectionState = direction !== SortDirection.Asc ? SortDirection.Asc : SortDirection.Desc;
         setDirection(newDirectionState);
         dispatch({
           type: 'sorted',
-          sort: {
-            column: column, 
-            direction: newDirectionState
+          payload: {
+            sort: {
+              column: column, 
+              direction: newDirectionState
+            }
           }
-        })
+        } as IAction)
       }}
     >
       <span>{text}</span> 
