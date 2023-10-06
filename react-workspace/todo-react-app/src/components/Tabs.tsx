@@ -8,7 +8,7 @@ import { Search } from './Search';
 import { FilterTodos } from './FilterTodos';
 import { ImportExport } from './ImportExport';
 
-type Tab  ={
+type Tab = {
   name: string,
   icon: IconDefinition,
   content: JSX.Element
