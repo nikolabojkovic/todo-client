@@ -1,0 +1,392 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`todo list rendered match snapshot 1`] = `
+<main
+  className="App__todo-list"
+>
+  <div
+    className="App__todo-list__item"
+  >
+    <div
+      className="hstack gap-3"
+    >
+      <div>
+        <div
+          className="App__todo-list__item-title"
+        >
+          Task 1
+        </div>
+        <div
+          className="App__todo-list__item-description"
+        >
+          <span>
+            Description 1
+          </span>
+          <span>
+             Fri Feb 04 2022 
+          </span>
+        </div>
+      </div>
+      <button
+        className="ms-auto confirm-button btn btn-outline-success btn-sm"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
+      >
+        Complete
+      </button>
+      <button
+        className="confirm-button btn btn-outline-danger btn-sm"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
+      >
+        Delete
+      </button>
+    </div>
+  </div>
+  <div
+    className="App__todo-list__item"
+  >
+    <div
+      className="hstack gap-3"
+    >
+      <div>
+        <div
+          className="App__todo-list__item-title--completed"
+        >
+          Task 2
+        </div>
+        <div
+          className="App__todo-list__item-description--compleated"
+        >
+          <span>
+            Description 2
+          </span>
+          <span>
+             Sat Feb 05 2022 
+          </span>
+        </div>
+      </div>
+      <button
+        className="ms-auto confirm-button btn btn-outline-danger btn-sm"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
+      >
+        Delete
+      </button>
+    </div>
+  </div>
+  <div
+    className="App__todo-list__item"
+  >
+    <div
+      className="hstack gap-3"
+    >
+      <div>
+        <div
+          className="App__todo-list__item-title"
+        >
+          Task 3
+        </div>
+        <div
+          className="App__todo-list__item-description"
+        >
+          <span>
+            Description 3
+          </span>
+          <span>
+             Sun Feb 06 2022 
+          </span>
+        </div>
+      </div>
+      <button
+        className="ms-auto confirm-button btn btn-outline-success btn-sm"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
+      >
+        Complete
+      </button>
+      <button
+        className="confirm-button btn btn-outline-danger btn-sm"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
+      >
+        Delete
+      </button>
+    </div>
+  </div>
+  <div
+    className="App__todo-list__item"
+  >
+    <div
+      className="hstack gap-3"
+    >
+      <div>
+        <div
+          className="App__todo-list__item-title"
+        >
+          Task 4
+        </div>
+        <div
+          className="App__todo-list__item-description"
+        >
+          <span>
+            Description 4
+          </span>
+          <span>
+             Mon Feb 07 2022 
+          </span>
+        </div>
+      </div>
+      <button
+        className="ms-auto confirm-button btn btn-outline-success btn-sm"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
+      >
+        Complete
+      </button>
+      <button
+        className="confirm-button btn btn-outline-danger btn-sm"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
+      >
+        Delete
+      </button>
+    </div>
+  </div>
+  <div
+    className="App__todo-list__item"
+  >
+    <div
+      className="hstack gap-3"
+    >
+      <div>
+        <div
+          className="App__todo-list__item-title"
+        >
+          Task 5
+        </div>
+        <div
+          className="App__todo-list__item-description"
+        >
+          <span>
+            Description 5
+          </span>
+          <span>
+             Fri Apr 08 2022 
+          </span>
+        </div>
+      </div>
+      <button
+        className="ms-auto confirm-button btn btn-outline-success btn-sm"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
+      >
+        Complete
+      </button>
+      <button
+        className="confirm-button btn btn-outline-danger btn-sm"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
+      >
+        Delete
+      </button>
+    </div>
+  </div>
+  <section
+    className="paging-container p-0 mt-2"
+  >
+    <div
+      className="container-fluid"
+    >
+      <div
+        className="row row-cols-sm-3 row-cols-1"
+      >
+        <div
+          className="p-3 pt-2 pb-2 d-flex justify-content-sm-start justify-content-center align-items-center col-sm-3"
+        >
+          Page 
+          1
+           of 
+          2
+        </div>
+        <div
+          className="p-3 pt-2 pb-2 col-sm-4"
+        >
+          <div
+            className="justify-content-center hstack gap-2"
+          >
+            <div
+              className="ms-sm-auto"
+            >
+              Page size:
+               
+            </div>
+            <div
+              className=""
+            >
+              <select
+                aria-label="Page size"
+                className="form-select form-select-sm"
+                id="page-size"
+                name="page-size"
+                onChange={[Function]}
+              >
+                <option
+                  value={5}
+                >
+                  5
+                </option>
+                <option
+                  value={10}
+                >
+                  10
+                </option>
+                <option
+                  value={50}
+                >
+                  50
+                </option>
+                <option
+                  value={100}
+                >
+                  100
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div
+          className="p-3 pt-2 pb-2 d-flex justify-content-sm-end justify-content-center col-sm-5"
+        >
+          <ul
+            className="pagination pagination-sm"
+          >
+            <li
+              className="page-item disabled"
+            >
+              <span
+                className="page-link"
+                onClick={[Function]}
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  «
+                </span>
+                <span
+                  className="visually-hidden"
+                >
+                  First
+                </span>
+              </span>
+            </li>
+            <li
+              className="page-item disabled"
+            >
+              <span
+                className="page-link"
+                onClick={[Function]}
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  ‹
+                </span>
+                <span
+                  className="visually-hidden"
+                >
+                  Previous
+                </span>
+              </span>
+            </li>
+            <li
+              className="page-item active"
+            >
+              <span
+                className="page-link"
+                onClick={[Function]}
+              >
+                1
+                <span
+                  className="visually-hidden"
+                >
+                  (current)
+                </span>
+              </span>
+            </li>
+            <li
+              className="page-item"
+            >
+              <a
+                className="page-link"
+                href="#"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                role="button"
+                tabIndex={0}
+              >
+                2
+              </a>
+            </li>
+            <li
+              className="page-item"
+            >
+              <a
+                className="page-link"
+                href="#"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                role="button"
+                tabIndex={0}
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  ›
+                </span>
+                <span
+                  className="visually-hidden"
+                >
+                  Next
+                </span>
+              </a>
+            </li>
+            <li
+              className="page-item"
+            >
+              <a
+                className="page-link"
+                href="#"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                role="button"
+                tabIndex={0}
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  »
+                </span>
+                <span
+                  className="visually-hidden"
+                >
+                  Last
+                </span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+`;

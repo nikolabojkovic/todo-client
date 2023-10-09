@@ -1,6 +1,6 @@
 import renderer from 'react-test-renderer';
 import { render, screen } from '@testing-library/react';
-import { TodoItem } from '../components/TodoItem';
+import { TodoItem } from '../../components/TodoItem';
 
 const todo = {
   id: 1,

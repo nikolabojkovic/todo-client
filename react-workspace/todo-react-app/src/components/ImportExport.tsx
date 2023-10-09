@@ -60,7 +60,7 @@ export function ImportExport() {
     dispatch({
       type: 'imported',
       payload: {
-        originalList: importedTodoList,
+        list: importedTodoList,
         activePage: 1
       }
     } as IAction);

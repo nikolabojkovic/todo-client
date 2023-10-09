@@ -51,7 +51,7 @@ export class TodoService {
     return filteredList;
   }
   
-  filter(list: ITodo[], filter: IFilter | null = null) {
+  filter(list: ITodo[], filter: IFilter) : ITodo[] {
     let filteredList = list;
   
     if (filter && filter.completed && filter.uncompleted) {
@@ -69,7 +69,7 @@ export class TodoService {
     return [...filteredList];
   }
   
-  sort(list: ITodo[], sort: ISort) {
+  sort(list: ITodo[], sort: ISort) : ITodo[] {
     let sortResult = [];
     
     if (sort.column === 'createdAt') {

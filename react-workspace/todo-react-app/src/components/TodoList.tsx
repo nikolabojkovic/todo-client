@@ -1,8 +1,9 @@
 import { useEffect } from 'react'
 import { TodoItem } from './TodoItem';
 import { Paging } from './Paging';
-import { todoService, useTodoList } from '../context/TodosContext';
+import { useTodoList } from '../context/TodosContext';
 import { ITodo } from '../models/Todo';
+import { todoService } from '../services/TodoService';
 
 export function TodoList() {
   const todoList = useTodoList();

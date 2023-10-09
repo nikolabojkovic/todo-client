@@ -25,31 +25,17 @@ exports[`todo item uncompleted match snapshot 1`] = `
       </div>
     </div>
     <button
-      className="ms-auto btn btn-outline-success btn-sm"
+      className="ms-auto confirm-button btn btn-outline-success btn-sm"
       disabled={false}
       onClick={[Function]}
-      style={
-        Object {
-          "backgroundColor": "#F5F6F7",
-          "borderRadius": "20px",
-          "minWidth": "90px",
-        }
-      }
       type="button"
     >
       Complete
     </button>
     <button
-      className="btn btn-outline-danger btn-sm"
+      className="confirm-button btn btn-outline-danger btn-sm"
       disabled={false}
       onClick={[Function]}
-      style={
-        Object {
-          "backgroundColor": "#F5F6F7",
-          "borderRadius": "20px",
-          "minWidth": "90px",
-        }
-      }
       type="button"
     >
       Delete

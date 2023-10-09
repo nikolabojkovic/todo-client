@@ -28,7 +28,7 @@ export class TodoService {
     localStorage.setItem(this.todoListName, JSON.stringify(list));
   }
   
-  search(list: ITodo[], searchTerm: string,) {
+  search(list: ITodo[], searchTerm: string,): ITodo[] {
     let filteredList = list;
   
     if (searchTerm !== '') {
@@ -46,7 +46,7 @@ export class TodoService {
     return filteredList;
   }
   
-  filter(list: ITodo[], filter: IFilter) {
+  filter(list: ITodo[], filter: IFilter) : ITodo[] {
     let filteredList = list;
   
     if (filter && filter.completed && filter.uncompleted) {
@@ -64,7 +64,7 @@ export class TodoService {
     return [...filteredList];
   }
   
-  sort(list: ITodo[], sort: ISort) {
+  sort(list: ITodo[], sort: ISort) : ITodo[] {
     let sortResult = [];
     
     if (sort.column === 'createdAt') {
@@ -86,3 +86,5 @@ export class TodoService {
     return sortResult;
   }
 }
+
+export const todoService = new TodoService();

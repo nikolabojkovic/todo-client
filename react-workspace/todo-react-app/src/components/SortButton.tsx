@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useTodoList, useTodoListDispatch } from "../context/TodosContext";
 import { IAction } from "../models/Action";
 import { SortDirection } from "../models/ISort";
+import { todoService } from "../services/TodoService";
 import { SortIcon } from "./SortIcon";
 
 type Props = {
@@ -22,13 +23,20 @@ export function SortButton({ column, text }: Props) {
     <div className="App__sorting__item" onClick={() => { 
         const newDirectionState = direction !== SortDirection.Asc ? SortDirection.Asc : SortDirection.Desc;
         setDirection(newDirectionState);
+        const sort = {
+          column: column, 
+          direction: newDirectionState
+        }
+
+        const filteredList = todoService.filter(todoList.originalList, todoList.filter);
+        const searchedList = todoService.search(filteredList, todoList.search.searchTerm);
+        const sortedList = todoService.sort(searchedList, sort);
+
         dispatch({
           type: 'sorted',
           payload: {
-            sort: {
-              column: column, 
-              direction: newDirectionState
-            }
+            sort,
+            list: sortedList
           }
         } as IAction)
       }}

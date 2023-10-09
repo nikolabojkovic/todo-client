@@ -3,6 +3,7 @@ import { useTodoList, useTodoListDispatch } from '../context/TodosContext';
 import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IAction } from '../models/Action';
+import { todoService } from '../services/TodoService';
 
 type Props = {
   placeholder: string
@@ -13,10 +14,13 @@ export function Search({ placeholder }: Props) {
   const todoList = useTodoList();
 
   function handleSearch(searchTerm: string) {
+    const filteredList = todoService.filter(todoList.originalList, todoList.filter);
+    const searchedList = todoService.search(filteredList, searchTerm);
     dispatch({
       type: 'searched',
       payload: {
         searchTerm,
+        list: searchedList,
         activePage: 1,
       }
     } as IAction);
@@ -31,14 +35,15 @@ export function Search({ placeholder }: Props) {
             placeholder={placeholder} 
             size="sm" 
             value={todoList.search.searchTerm}
-            onChange={(e) => { 
+            onChange={(e) => {
+              const searchTerm = e.target.value;
                 dispatch({
                   type: 'searchTerm-updated',
                   payload: {
-                    searchTerm: e.target.value
+                    searchTerm
                   }
                 } as IAction);
-                if (e.target.value === '') {
+                if (searchTerm === '') {
                   handleSearch(e.target.value);
                 }
               }}
@@ -47,12 +52,6 @@ export function Search({ placeholder }: Props) {
             className="clear-icon" 
             icon={faCircleXmark}
             onClick={() => {
-              dispatch({
-                type: 'searchTerm-updated',
-                payload: {
-                  searchTerm: ''
-                }
-              } as IAction);
               handleSearch('');
             }}
           />}

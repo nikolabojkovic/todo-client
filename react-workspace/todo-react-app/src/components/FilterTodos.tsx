@@ -1,20 +1,28 @@
 import { Form, Stack } from "react-bootstrap";
 import { useTodoList, useTodoListDispatch } from "../context/TodosContext";
 import { IAction } from "../models/Action";
+import { IFilter } from "../models/IFilter";
+import { todoService } from "../services/TodoService";
 
 export function FilterTodos() {
   const todoList = useTodoList();
   const dispatch = useTodoListDispatch();
 
   function handleFilter(completed: boolean, uncompleted: boolean) {
+    const filter = { 
+      completed: completed,
+      uncompleted: uncompleted
+    } as IFilter;
+
+    const filteredList = todoService.filter(todoList.originalList, filter);
+    const searchedList = todoService.search(filteredList, todoList.search.searchTerm);
+
     dispatch({
       type: 'filtered',
       payload: {
         activePage: 1,
-        filter: { 
-          completed: completed,
-          uncompleted: uncompleted
-        }
+        list: searchedList,
+        filter
       }
     } as IAction);
   }

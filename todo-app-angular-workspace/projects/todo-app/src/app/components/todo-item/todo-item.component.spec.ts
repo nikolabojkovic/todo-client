@@ -15,7 +15,7 @@ describe('TodoItemComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create todo list', () => {
     expect(component).toBeTruthy();
   });
 });
