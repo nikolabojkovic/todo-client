@@ -1,15 +1,15 @@
 import { useEffect } from 'react'
 import { TodoItem } from './TodoItem';
 import { Paging } from './Paging';
-import { useTodoList } from '../context/TodosContext';
+import { useTodoList } from '../context/TodoListContext';
 import { ITodo } from '../models/Todo';
-import { todoService } from '../services/TodoService';
+import { todoServiceInstance } from '../services/TodoService';
 
 export function TodoList() {
   const todoList = useTodoList();
 
   useEffect(() => {
-    todoService.saveTodoList(todoList.originalList);
+    todoServiceInstance.saveTodoList(todoList.originalList);
   }, [todoList.originalList]);
 
   return (

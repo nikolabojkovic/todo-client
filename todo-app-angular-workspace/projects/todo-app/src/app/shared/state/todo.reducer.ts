@@ -4,12 +4,9 @@ import { TodoListActions } from './todo.actions';
 import { ITodoList } from '../models/todoList';
 import { IPaging } from '../models/paging';
 import { ITodo } from '../models/todo';
-import { initTodoList } from '../initial-data';
-import { ISort } from '../models/sort';
-import { TodoService } from '../services/todo.service';
+import { inMemoryTodoListTestData } from '../test-data';
 
-export const initialState: ITodoList = initTodoList;
-const todoservice: TodoService = new TodoService();
+export const initialState: ITodoList = inMemoryTodoListTestData;
 
 export const todosReducer = createReducer(
   initialState,
@@ -74,33 +71,29 @@ export const todosReducer = createReducer(
     } as ITodoList;
   }
   ),
-  on(TodoListActions.searched, (todoList, { searchTerm, activePage }) => {
-    const filteredList = todoservice.filter(todoList.originalList, todoList.filter);
-    const searchedList = todoservice.search(filteredList, searchTerm);
+  on(TodoListActions.searched, (todoList, { searchTerm, activePage, list }) => {
     return {
       ...todoList,
-      displayList: [...searchedList],
+      displayList: [...list],
       search: { searchTerm: searchTerm },
       paging: {
         ...todoList.paging,
         activePage: activePage,
-        totalCount: searchedList.length,
+        totalCount: list.length,
         startIndex: (activePage - 1) * todoList.paging.itemsPerPage,
         endIndex: activePage * todoList.paging.itemsPerPage
       } as IPaging
     } as ITodoList
   }),
-  on(TodoListActions.filtered, (todoList, { activePage, filter }) => {
-    const filteredList = todoservice.filter(todoList.originalList, filter);
-    const searchedList = todoservice.search(filteredList, todoList.search.searchTerm);
+  on(TodoListActions.filtered, (todoList, { activePage, filter, list }) => {
     return {
       ...todoList,
-      displayList: [...searchedList],
+      displayList: [...list],
       filter: {...filter},
       paging: {
         ...todoList.paging,
         activePage: activePage,
-        totalCount: searchedList.length,
+        totalCount: list.length,
         startIndex: (activePage - 1) * todoList.paging.itemsPerPage,
         endIndex: activePage * todoList.paging.itemsPerPage
       } as IPaging
@@ -118,11 +111,11 @@ export const todosReducer = createReducer(
       } as IPaging
     } as ITodoList
   }),
-  on(TodoListActions.imported, (todoList, { activePage, originalList }) => {
+  on(TodoListActions.imported, (todoList, { activePage, list }) => {
     return {
       ...todoList,
-      originalList: [...originalList],
-      displayList: [...originalList],
+      originalList: [...list],
+      displayList: [...list],
       search: { searchTerm: '' },
       filter: {
         completed: false,
@@ -131,20 +124,16 @@ export const todosReducer = createReducer(
       paging: {
         ...todoList.paging,
         activePage: activePage,
-        totalCount: originalList.length,
+        totalCount: list.length,
         startIndex: (activePage - 1) * todoList.paging.itemsPerPage,
         endIndex: activePage * todoList.paging.itemsPerPage
       } as IPaging
     } as ITodoList
   }),
-  on(TodoListActions.sorted, (todoList, sort) => {
-    const filteredList = todoservice.filter(todoList.originalList, todoList.filter);
-    const searchedList = todoservice.search(filteredList, todoList.search.searchTerm);
-    const sortedList = todoservice.sort(searchedList, sort as ISort);
-
+  on(TodoListActions.sorted, (todoList, {sort, list} ) => {
     return {
       ...todoList,
-      displayList: [...sortedList],
+      displayList: [...list],
       sort: {...sort},
       paging: {...todoList.paging} as IPaging
     } as ITodoList

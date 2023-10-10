@@ -2,6 +2,7 @@ import { createActionGroup, props, emptyProps } from '@ngrx/store';
 import { IFilter } from '../models/filter';
 import { ITodoList } from '../models/todoList';
 import { ITodo } from '../models/todo';
+import { ISort } from '../models/sort';
 
 export const TodoListActions = createActionGroup({
   source: 'todos',
@@ -11,11 +12,11 @@ export const TodoListActions = createActionGroup({
     added: props<{ title: string, description: string }>(),
     completed: props<{ todoId: number }>(),
     removed: props<{ todoId: number }>(),
-    searched: props<{ searchTerm: string, activePage: number }>(),
+    searched: props<{ searchTerm: string, activePage: number, list: ITodo[] }>(),
     pagingUpdated: props<{ activePage: number, itemsPerPage: number }>(),
-    filtered: props<{ activePage: number, filter: IFilter }>(),
-    imported: props<{ activePage: number, originalList: ITodo[] }>(),
-    sorted: props< { column: string, direction: string }>(),
+    filtered: props<{ activePage: number, filter: IFilter, list: ITodo[] }>(),
+    imported: props<{ activePage: number, list: ITodo[] }>(),
+    sorted: props< { sort: ISort, list: ITodo[] }>(),
     searchTermUpdated: props< { searchTerm: string }>()
   }
 });

@@ -81,7 +81,7 @@ export class ImportExportComponent implements OnInit {
     this.fileContainer.nativeElement.value = '';
     this.store.dispatch(TodoListActions.imported({ 
       activePage: 1,
-      originalList: importedTodoList
+      list: importedTodoList
     }));
   };
 }

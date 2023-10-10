@@ -1,15 +1,12 @@
 import renderer from 'react-test-renderer';
 import { render } from '@testing-library/react';
 import { TodoList } from '../../components/TodoList';
-import { TodoListProvider } from '../../context/TodosContext';
-import { TodoService } from '../../services/TodoService';
-
-const todoService = new TodoService();
+import { TodoListProvider } from '../../context/TodoListContext';
+import { inMemoryTodoListTestData } from '../../context/testData';
 
 describe('todo list rendered', () => {
   it('match snapshot', () => {
-    const todoList = todoService.getTodoList();
-    const todoListJsxElements = (<TodoListProvider todoList={todoList}>
+    const todoListJsxElements = (<TodoListProvider todoList={inMemoryTodoListTestData}>
                                    <TodoList/>
                                  </TodoListProvider>);
     const tree = renderer.create(

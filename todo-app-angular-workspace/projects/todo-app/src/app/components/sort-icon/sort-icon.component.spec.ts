@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { SortIconComponent } from './sort-icon.component';
 
@@ -8,7 +9,8 @@ describe('SortIconComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [SortIconComponent]
+      declarations: [SortIconComponent],
+      imports: [FontAwesomeModule]
     });
     fixture = TestBed.createComponent(SortIconComponent);
     component = fixture.componentInstance;

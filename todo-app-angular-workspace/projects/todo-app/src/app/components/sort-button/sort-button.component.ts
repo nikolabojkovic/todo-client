@@ -1,9 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { first } from 'rxjs';
 import { ISort, SortDirection } from '../../shared/models/sort';
 import { ITodoList } from '../../shared/models/todoList';
+import { TodoService } from '../../shared/services/todo.service';
 import { TodoListActions } from '../../shared/state/todo.actions';
-import { selectSort } from '../../shared/state/todo.selectors';
+import { selectSort, selectTodos } from '../../shared/state/todo.selectors';
 
 @Component({
   selector: 'app-sort-button',
@@ -16,7 +18,7 @@ export class SortButtonComponent {
 
   sortDirection!: string;
 
-  constructor(private store: Store<ITodoList>) {}
+  constructor(private store: Store<ITodoList>, private todoService: TodoService) {}
 
   ngOnInit(): void {    
     this.store.select(selectSort)
@@ -27,9 +29,21 @@ export class SortButtonComponent {
   }
 
   sort(): void {
-    this.store.dispatch(TodoListActions.sorted({ 
-      column: this.column, 
-      direction: this.sortDirection !== SortDirection.Asc ? SortDirection.Asc : SortDirection.Desc
-    } as ISort));
+    this.store.select(selectTodos)
+    .pipe(first())
+    .subscribe((todoList: ITodoList) => {
+      const sort = { 
+        column: this.column, 
+        direction: this.sortDirection !== SortDirection.Asc ? SortDirection.Asc : SortDirection.Desc
+      } as ISort
+      const filteredList = this.todoService.filter(todoList.originalList, todoList.filter);
+      const searchedList = this.todoService.search(filteredList, todoList.search.searchTerm);
+      const sortedList = this.todoService.sort(searchedList, sort as ISort);
+  
+      this.store.dispatch(TodoListActions.sorted({
+        sort,
+        list: sortedList 
+      }));
+    });
   }
 }

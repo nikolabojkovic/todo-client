@@ -1,9 +1,9 @@
 import { Button, Form, Stack } from 'react-bootstrap';
-import { useTodoList, useTodoListDispatch } from '../context/TodosContext';
+import { useTodoList, useTodoListDispatch } from '../context/TodoListContext';
 import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IAction } from '../models/Action';
-import { todoService } from '../services/TodoService';
+import { todoServiceInstance } from '../services/TodoService';
 
 type Props = {
   placeholder: string
@@ -14,8 +14,8 @@ export function Search({ placeholder }: Props) {
   const todoList = useTodoList();
 
   function handleSearch(searchTerm: string) {
-    const filteredList = todoService.filter(todoList.originalList, todoList.filter);
-    const searchedList = todoService.search(filteredList, searchTerm);
+    const filteredList = todoServiceInstance.filter(todoList.originalList, todoList.filter);
+    const searchedList = todoServiceInstance.search(filteredList, searchTerm);
     dispatch({
       type: 'searched',
       payload: {

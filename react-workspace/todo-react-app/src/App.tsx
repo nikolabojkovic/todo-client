@@ -2,11 +2,11 @@ import './App.scss';
 import { Tabs } from './components/Tabs';
 import { Sorting } from './components/Sorting';
 import { TodoList } from './components/TodoList';
-import { TodoListProvider } from './context/TodosContext';
-import { todoService } from "./services/TodoService";
+import { TodoListProvider } from './context/TodoListContext';
+import { todoServiceInstance } from "./services/TodoService";
 
 function App() {
-  let todoList = todoService.getTodoList();
+  let todoList = todoServiceInstance.getTodoList();
 
   return (
     <div className="App">

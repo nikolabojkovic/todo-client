@@ -1,4 +1,4 @@
-import { todos } from '../context/initialData';
+import { todos } from '../context/testData';
 
 test('dummy test todos array', () => {
   expect(todos.length).toBe(6);

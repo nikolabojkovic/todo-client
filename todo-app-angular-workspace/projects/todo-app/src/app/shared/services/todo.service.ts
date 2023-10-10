@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { initTodoList } from '../initial-data';
+import { inMemoryTodoListTestData } from '../test-data';
 import { ITodoList, TodoList } from '../models/todoList';
 import { ITodo } from '../models/todo';
 import { Observable, of, throwError } from 'rxjs';
@@ -21,7 +21,7 @@ export class TodoService {
     let todoListData = localStorage.getItem(this.todoListName);
     if (todoListData === undefined 
      || todoListData === null) {
-      return of(initTodoList);
+      return of(inMemoryTodoListTestData);
     }
     const todos = JSON.parse(todoListData ?? "[]") as ITodo[];
     let todoList = new TodoList(todos);

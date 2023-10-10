@@ -1,4 +1,4 @@
-import { initTodoList } from "../context/initialData";
+import { inMemoryTodoListTestData } from "../context/testData";
 import { IFilter } from "../models/IFilter";
 import { ISort } from "../models/ISort";
 import { TodoList } from "../models/ITodoList";
@@ -11,7 +11,7 @@ export class TodoService {
   getTodoList() {
     if (localStorage.getItem(this.todoListName) === undefined 
      || localStorage.getItem(this.todoListName) === null) {
-      return initTodoList;
+      return inMemoryTodoListTestData;
     }
     
     const todos = this.sort(JSON.parse(localStorage.getItem(this.todoListName) ?? "[]") as ITodo[], {
@@ -87,4 +87,4 @@ export class TodoService {
   }
 }
 
-export const todoService = new TodoService();
+export const todoServiceInstance = new TodoService();

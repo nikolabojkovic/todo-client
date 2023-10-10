@@ -44,4 +44,12 @@ describe('todo service', () => {
     expect(sortedList.length).toBe(6);
     expect(sortedList[0].title).toBe('Task 1');
   });
+
+  it('sort todo list by title desc', () => {
+    let todoList = todoService.getTodoList();
+    let sortedList = todoService.sort(todoList.originalList, { column: 'title', direction: SortDirection.Desc} as ISort);
+    expect(sortedList !== null).toBeTruthy();
+    expect(sortedList.length).toBe(6);
+    expect(sortedList[5].title).toBe('Task 1');
+  });
 });

@@ -1,6 +1,6 @@
 import Pagination from 'react-bootstrap/Pagination';
 import { Col } from 'react-bootstrap';
-import { useTodoList, useTodoListDispatch } from '../context/TodosContext';
+import { useTodoList, useTodoListDispatch } from '../context/TodoListContext';
 import { IAction } from '../models/Action';
 
 type Props = {
