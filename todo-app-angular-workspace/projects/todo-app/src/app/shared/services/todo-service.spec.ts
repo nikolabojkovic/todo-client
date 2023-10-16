@@ -1,22 +1,18 @@
-import { IFilter } from '../../models/IFilter';
-import { IRange } from '../../models/IPaging';
-import { ISort, SortDirection } from '../../models/ISort';
-import { ITodo } from '../../models/Todo';
-import { TodoService } from '../../services/TodoService';
-import { LocalStorageMockService } from '../../Mocks/LocalStorageMockService';
+import { IFilter } from '../../shared/models/filter';
+import { ISort, SortDirection } from '../../shared/models/sort';
+import { TodoService } from '../../shared/services/todo.service';
 
-const todoService = new TodoService(new LocalStorageMockService());
+const todoService = new TodoService();
 
 describe('todo service', () => {
-  it('get todo list', (done) => {
-    todoService.getList({} as IRange, {} as IFilter, {} as ISort)
-      .subscribe((todoList: ITodo[]) => {
-        expect(todoList !== null).toBeTruthy();
-        expect(todoList.length > 0).toBeTruthy();
-        expect(todoList.length).toBe(3);
-        done();
-      });  
-  }, 200);
+  it('get todo list', (done: DoneFn) => {
+    todoService.getTodoList().subscribe((todoList) => {
+      expect(todoList !== null).toBeTruthy();
+      expect(todoList.originalList.length > 0).toBeTruthy();
+      expect(todoList.displayList.length).toBe(6);
+      done();
+    });    
+  });
 
   // it('filter completed todo list', () => {
   //   let todoList = todoService.getTodoList();

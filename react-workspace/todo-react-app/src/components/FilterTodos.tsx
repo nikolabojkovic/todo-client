@@ -1,7 +1,10 @@
 import { Form, Stack } from "react-bootstrap";
+import { first } from "rxjs";
 import { useTodoList, useTodoListDispatch } from "../context/TodoListContext";
 import { IAction } from "../models/Action";
 import { IFilter } from "../models/IFilter";
+import { IRange } from "../models/IPaging";
+import { ITodo } from "../models/Todo";
 import { todoServiceInstance } from "../services/TodoService";
 
 export function FilterTodos() {
@@ -13,18 +16,22 @@ export function FilterTodos() {
       completed: completed,
       uncompleted: uncompleted
     } as IFilter;
-
-    const filteredList = todoServiceInstance.filter(todoList.originalList, filter);
-    const searchedList = todoServiceInstance.search(filteredList, todoList.search.searchTerm);
-
-    dispatch({
-      type: 'filtered',
-      payload: {
-        activePage: 1,
-        list: searchedList,
-        filter
-      }
-    } as IAction);
+    todoServiceInstance.getList(
+      {} as IRange, 
+      filter, 
+      todoList.sort,
+      todoList.search.searchTerm)
+      .pipe(first())
+      .subscribe((list: ITodo[]) => { 
+        dispatch({
+          type: 'filtered',
+          payload: {
+            activePage: 1,
+            list: list,
+            filter
+          }
+        } as IAction);
+    });
   }
 
   return (

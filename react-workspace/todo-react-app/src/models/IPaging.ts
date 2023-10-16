@@ -6,3 +6,8 @@ export interface IPaging {
 	startIndex: number;
 	endIndex: number;
 }
+
+export interface IRange {
+	offset: number;
+	take: number;
+}

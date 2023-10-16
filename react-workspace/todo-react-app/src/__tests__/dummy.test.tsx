@@ -1,12 +1,12 @@
-import { todos } from '../context/testData';
+import { todoListTestData } from '../context/testData';
 
 test('dummy test todos array', () => {
-  expect(todos.length).toBe(6);
-  expect(todos[0].id).toBe(1);
+  expect(todoListTestData.length).toBe(6);
+  expect(todoListTestData[0].id).toBe(1);
 });
 
 describe('todo list', () => {
   it('first item has title', () => {
-    expect(todos[0].title).toBe('Task 1');
+    expect(todoListTestData[0].title).toBe('Task 1');
   })
 });

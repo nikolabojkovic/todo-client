@@ -1,10 +1,10 @@
 import { ITodo } from "../models/Todo";
 import { IPaging } from "../models/IPaging";
-import { ITodoList } from "../models/ITodoList";
+import { IState } from "./IState";
 import { ISort, SortDirection } from "../models/ISort";
 import { IFilter } from "../models/IFilter";
 
-export const todos: ITodo[] = [
+export const todoListTestData: ITodo[] = [
   {
     id: 1,
     title: "Task 1",
@@ -49,10 +49,10 @@ export const todos: ITodo[] = [
   } as ITodo
 ] as ITodo[];
 
-export const inMemoryTodoListTestData: ITodoList = 
+export const stateTestData: IState = 
 {
-  originalList: todos,
-  displayList: todos,
+  originalList: todoListTestData,
+  displayList: todoListTestData,
   search: { searchTerm: '' },
   filter: { completed: false, uncompleted: false } as IFilter,
   sort: { column: 'createdAt', direction: SortDirection.Asc} as ISort,
@@ -63,4 +63,4 @@ export const inMemoryTodoListTestData: ITodoList =
     startIndex: 0,
     endIndex: 5,
   } as IPaging
-} as ITodoList;
+} as IState;

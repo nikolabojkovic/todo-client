@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
+import { first } from "rxjs";
 import { useTodoList, useTodoListDispatch } from "../context/TodoListContext";
 import { IAction } from "../models/Action";
+import { IRange } from "../models/IPaging";
 import { SortDirection } from "../models/ISort";
+import { ITodo } from "../models/Todo";
 import { todoServiceInstance } from "../services/TodoService";
 import { SortIcon } from "./SortIcon";
 
@@ -27,18 +30,21 @@ export function SortButton({ column, text }: Props) {
           column: column, 
           direction: newDirectionState
         }
-
-        const filteredList = todoServiceInstance.filter(todoList.originalList, todoList.filter);
-        const searchedList = todoServiceInstance.search(filteredList, todoList.search.searchTerm);
-        const sortedList = todoServiceInstance.sort(searchedList, sort);
-
-        dispatch({
-          type: 'sorted',
-          payload: {
-            sort,
-            list: sortedList
-          }
-        } as IAction)
+        todoServiceInstance.getList(
+          {} as IRange, 
+          todoList.filter, 
+          sort,
+          todoList.search.searchTerm)
+          .pipe(first())
+          .subscribe((list: ITodo[]) => { 
+            dispatch({
+              type: 'sorted',
+              payload: {
+                sort,
+                list: list
+              }
+            } as IAction);
+        });
       }}
     >
       <span>{text}</span> 

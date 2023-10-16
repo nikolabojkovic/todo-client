@@ -4,6 +4,9 @@ import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IAction } from '../models/Action';
 import { todoServiceInstance } from '../services/TodoService';
+import { IRange } from '../models/IPaging';
+import { first } from 'rxjs';
+import { ITodo } from '../models/Todo';
 
 type Props = {
   placeholder: string
@@ -14,16 +17,22 @@ export function Search({ placeholder }: Props) {
   const todoList = useTodoList();
 
   function handleSearch(searchTerm: string) {
-    const filteredList = todoServiceInstance.filter(todoList.originalList, todoList.filter);
-    const searchedList = todoServiceInstance.search(filteredList, searchTerm);
-    dispatch({
-      type: 'searched',
-      payload: {
-        searchTerm,
-        list: searchedList,
-        activePage: 1,
-      }
-    } as IAction);
+    todoServiceInstance.getList(
+      {} as IRange, 
+      todoList.filter, 
+      todoList.sort,
+      searchTerm)
+      .pipe(first())
+      .subscribe((list: ITodo[]) => { 
+        dispatch({
+          type: 'searched',
+          payload: {
+            searchTerm,
+            list: list,
+            activePage: 1,
+          }
+        } as IAction);
+    });
   }
 
   return (

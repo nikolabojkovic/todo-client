@@ -1,22 +1,24 @@
-import { ITodo } from "./Todo";
-import { IPaging } from "./IPaging";
-import { IFilter } from "./IFilter";
-import { ISort, SortDirection } from "./ISort";
-import { ISearch } from "./ISearch";
+import { ITodo } from "../models/Todo";
+import { IPaging } from "../models/IPaging";
+import { IFilter } from "../models/IFilter";
+import { ISort, SortDirection } from "../models/ISort";
+import { ISearch } from "../models/ISearch";
 
 
-export interface ITodoList {
+export interface IState {
 	originalList: ITodo[];
 	displayList: ITodo[];
+	updateTriger: any | null;
 	search: ISearch;
 	filter: IFilter;
 	sort: ISort;
 	paging: IPaging;
 }
 
-export class TodoList implements ITodoList {
+export class State implements IState {
 	originalList: ITodo[];
 	displayList: ITodo[];
+	updateTriger: any | null;
 	search: ISearch;
 	filter: IFilter;
 	sort: ISort;
@@ -25,6 +27,7 @@ export class TodoList implements ITodoList {
 	constructor(todos: ITodo[]) {
 		this.originalList = todos; 
 		this.displayList = todos;
+		this.updateTriger = null;
 		this.search = {
 			searchTerm: '',
 		};

@@ -1,15 +1,15 @@
 import { createContext, useContext, useReducer } from "react";
 import { IAction } from "../models/Action";
 import { IPaging } from "../models/IPaging";
-import { ITodoList } from "../models/ITodoList";
+import { IState, State } from "./IState";
 import { ITodo } from "../models/Todo";
  
-export const TodosContext = createContext({} as ITodoList);
+export const TodosContext = createContext({} as IState);
 export const TodosDispatchContext = createContext(null as any);
 
 type Props = {
   children: JSX.Element | JSX.Element[],
-  todoList: ITodoList
+  todoList: IState
 }
 
 export function TodoListProvider({ todoList, children }: Props) {
@@ -35,8 +35,13 @@ export function useTodoListDispatch() {
   return useContext(TodosDispatchContext);
 }
 
-function todoListReducer(state: ITodoList, action: IAction) {
+function todoListReducer(state: IState, action: IAction) {
   switch (action.type) {
+    case 'fetched': {
+      return {
+        ...new State(action.payload.list)
+      } as IState;
+    }
     case 'added': {
       const id = state.originalList.length >= 1 
       ? state.originalList
@@ -54,6 +59,7 @@ function todoListReducer(state: ITodoList, action: IAction) {
         ...state,
         originalList: [...state.originalList, newTodo],
         displayList: [...state.displayList, newTodo],
+        updateTriger: { type: "Added" },
         paging: {
           ...state.paging, 
           totalCount: state.paging.totalCount + 1,
@@ -61,7 +67,7 @@ function todoListReducer(state: ITodoList, action: IAction) {
           startIndex: (calculateActivePageOnAdd(state.paging) - 1) * state.paging.itemsPerPage,
           endIndex: calculateActivePageOnAdd(state.paging) * state.paging.itemsPerPage
         } as IPaging
-      } as ITodoList;
+      } as IState;
     }
     case 'changed': {
       return {
@@ -80,14 +86,16 @@ function todoListReducer(state: ITodoList, action: IAction) {
             return t;
           }
         }),
+        updateTriger: { type: "Changed" },
         paging: {...state.paging}
-      } as ITodoList;
+      } as IState;
     }
     case 'deleted': {
       return {
         ...state,
         originalList: state.originalList.filter(t => t.id !== action.payload.id),
         displayList: state.displayList.filter(t => t.id !== action.payload.id),
+        updateTriger: { type: "Deleted" },
         paging: {
           ...state.paging, 
           totalCount: state.paging.totalCount - 1,
@@ -95,11 +103,12 @@ function todoListReducer(state: ITodoList, action: IAction) {
           startIndex: (calculateActivePageOnDelete(state.paging) - 1) * state.paging.itemsPerPage,
           endIndex: calculateActivePageOnDelete(state.paging) * state.paging.itemsPerPage,  
         } as IPaging
-      } as ITodoList;
+      } as IState;
     }
     case 'paging-updated': {
       return {
         ...state,
+        updateTriger: null,
         paging: {
           ...state.paging,
           activePage: action.payload.activePage,
@@ -107,11 +116,12 @@ function todoListReducer(state: ITodoList, action: IAction) {
           startIndex: (action.payload.activePage - 1) * action.payload.itemsPerPage,
           endIndex: action.payload.activePage * action.payload.itemsPerPage
         } as IPaging
-      } as ITodoList
+      } as IState
     }
     case 'searched': {
       return {
         ...state,
+        updateTriger: null,
         displayList: [...action.payload.list],
         search: { searchTerm: action.payload.searchTerm },
         paging: {
@@ -126,12 +136,14 @@ function todoListReducer(state: ITodoList, action: IAction) {
     case 'searchTerm-updated': {
       return {
         ...state,
+        updateTriger: null,
         search: { searchTerm: action.payload.searchTerm },
       }
     }
     case 'filtered': {
       return {
         ...state,
+        updateTriger: null,
         displayList: [...action.payload.list],
         filter: {...action.payload.filter},
         paging: {
@@ -146,6 +158,7 @@ function todoListReducer(state: ITodoList, action: IAction) {
     case 'sorted': {
       return {
         ...state,
+        updateTriger: null,
         displayList: [...action.payload.list],
         sort: {...action.payload.sort},
         paging: {...state.paging} as IPaging
@@ -156,6 +169,7 @@ function todoListReducer(state: ITodoList, action: IAction) {
         ...state,
         originalList: [...action.payload.list],
         displayList: [...action.payload.list],
+        updateTriger: { type: "Imported" },
         search: { searchTerm: '' },
         filter: {
           completed: false,
