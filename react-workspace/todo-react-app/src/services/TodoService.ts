@@ -1,59 +1,43 @@
-import { of } from "rxjs";
+import { map, of } from "rxjs";
 import { Observable } from "rxjs/internal/Observable";
-import { todoListTestData } from "../context/testData";
 import { IFilter } from "../models/IFilter";
-import { IRange } from "../models/IPaging";
 import { ISort } from "../models/ISort";
-import { ITodo, Todo } from "../models/Todo";
-import { LocalStorageProvider } from "./LocalStorageService";
+import { ITodo } from "../models/Todo";
+import { IStorageProvider, LocalStorageProvider } from "./StorageProvider";
 
 export class TodoService {
 
   private todoListName: string = 'todo-list';
 
-  constructor(private localStorageProvider: LocalStorageProvider) {
+  constructor(private localStorageProvider: IStorageProvider) {}
 
+  getList(filter: IFilter | null = null , sort: ISort | null = null, searchTerm: string | null = null): Observable<ITodo[]> {
+    return this.localStorageProvider.getItem(this.todoListName).pipe(map((todoListData) => {
+      if (todoListData === undefined 
+        || todoListData === null) {
+         return [] as ITodo[];
+       }
+       
+       let todos = JSON.parse(todoListData ?? "[]") as ITodo[];
+   
+       if (filter) {
+         todos = this.filter(todos, filter);
+       }
+   
+       if (searchTerm) {
+         todos = this.search(todos, searchTerm);
+       }
+   
+       if (sort) {
+         todos = this.sort(todos, sort);
+       }
+   
+       return todos;
+    }));
   }
 
-  // TODO: include sort, filter and search in getAll Method, other methods in service should be private and invokted only from getAll method.
-  getList(range: IRange = { offset: 0, take: 5 } as IRange, filter: IFilter | null = null , sort: ISort | null = null, searchTerm: string | null = null): Observable<ITodo[]> {
-    let todoListData = this.localStorageProvider.getItem(this.todoListName);
-    if (todoListData === undefined 
-     || todoListData === null) {
-      return of([] as ITodo[]);
-    }
-    
-    let todos = JSON.parse(todoListData ?? "[]") as ITodo[];
-
-    if (filter) {
-      todos = this.filter(todos, filter);
-    }
-
-    if (searchTerm) {
-      todos = this.search(todos, searchTerm);
-    }
-
-    if (sort) {
-      todos = this.sort(todos, sort);
-    }
-
-    return of(todos);
-  }
-
-  // create(todo: Todo): Observable<void> {
-  //   return of();
-  // }
-
-  // update(todo: Todo): Observable<Todo> {
-  //   return of({} as Todo);
-  // }
-
-  // delete(id: number): Observable<void> {
-  //   return of();
-  // }
-
-  saveList(list: ITodo[]): void {
-    this.localStorageProvider.setItem(this.todoListName, list);
+  saveList(list: ITodo[]): Observable<any> {
+    return this.localStorageProvider.setItem(this.todoListName, list);
   }
   
   private search(list: ITodo[], searchTerm: string): ITodo[] {

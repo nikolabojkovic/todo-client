@@ -1,16 +1,19 @@
 import { createReducer, on } from '@ngrx/store';
 
 import { TodoListActions } from './todo.actions';
-import { ITodoList } from '../models/todoList';
+import { IState, State } from './state';
 import { IPaging } from '../models/paging';
 import { ITodo } from '../models/todo';
-import { inMemoryTodoListTestData } from '../test-data';
 
-export const initialState: ITodoList = inMemoryTodoListTestData;
+export const initialState: IState = new State([] as ITodo[]);
 
 export const todosReducer = createReducer(
   initialState,
-  on(TodoListActions.fetched, (_state, { todoList }) => todoList),
+  on(TodoListActions.fetched, (_state, { list }) =>{  
+    return {
+      ...new State(list)
+    } as IState
+  }),
   on(TodoListActions.added, (todoList, { title, description } ) => {
     const id = todoList.originalList.length >= 1 
     ? [...todoList.originalList]
@@ -34,7 +37,7 @@ export const todosReducer = createReducer(
         startIndex: (calculateActivePageOnAdd(todoList.paging) - 1) * todoList.paging.itemsPerPage,
         endIndex: calculateActivePageOnAdd(todoList.paging) * todoList.paging.itemsPerPage
       } as IPaging
-    } as ITodoList;
+    } as IState;
   }),
   on(TodoListActions.completed, (todoList, { todoId }) => {
     return {
@@ -54,7 +57,7 @@ export const todosReducer = createReducer(
         }
       }) as ITodo[],
       paging: {...todoList.paging}
-    } as ITodoList;
+    } as IState;
   }),
   on(TodoListActions.removed, (todoList, { todoId }) => {
     return {
@@ -68,7 +71,7 @@ export const todosReducer = createReducer(
         startIndex: (calculateActivePageOnDelete(todoList.paging) - 1) * todoList.paging.itemsPerPage,
         endIndex: calculateActivePageOnDelete(todoList.paging) * todoList.paging.itemsPerPage,  
       } as IPaging
-    } as ITodoList;
+    } as IState;
   }
   ),
   on(TodoListActions.searched, (todoList, { searchTerm, activePage, list }) => {
@@ -83,7 +86,7 @@ export const todosReducer = createReducer(
         startIndex: (activePage - 1) * todoList.paging.itemsPerPage,
         endIndex: activePage * todoList.paging.itemsPerPage
       } as IPaging
-    } as ITodoList
+    } as IState
   }),
   on(TodoListActions.filtered, (todoList, { activePage, filter, list }) => {
     return {
@@ -97,7 +100,7 @@ export const todosReducer = createReducer(
         startIndex: (activePage - 1) * todoList.paging.itemsPerPage,
         endIndex: activePage * todoList.paging.itemsPerPage
       } as IPaging
-    } as ITodoList
+    } as IState
   }),
   on(TodoListActions.pagingUpdated, (todoList, { activePage, itemsPerPage }) => {
     return {
@@ -109,7 +112,7 @@ export const todosReducer = createReducer(
         startIndex: (activePage - 1) * itemsPerPage,
         endIndex: activePage * itemsPerPage
       } as IPaging
-    } as ITodoList
+    } as IState
   }),
   on(TodoListActions.imported, (todoList, { activePage, list }) => {
     return {
@@ -128,7 +131,7 @@ export const todosReducer = createReducer(
         startIndex: (activePage - 1) * todoList.paging.itemsPerPage,
         endIndex: activePage * todoList.paging.itemsPerPage
       } as IPaging
-    } as ITodoList
+    } as IState
   }),
   on(TodoListActions.sorted, (todoList, {sort, list} ) => {
     return {
@@ -136,7 +139,7 @@ export const todosReducer = createReducer(
       displayList: [...list],
       sort: {...sort},
       paging: {...todoList.paging} as IPaging
-    } as ITodoList
+    } as IState
   }),
   on(TodoListActions.searchTermUpdated, (todoList, { searchTerm }) => {
     return {

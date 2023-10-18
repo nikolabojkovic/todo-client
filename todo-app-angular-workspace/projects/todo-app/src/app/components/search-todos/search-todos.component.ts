@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { first } from 'rxjs';
 import { ISearch } from '../../shared/models/search';
-import { ITodoList } from '../../shared/models/todoList';
+import { IState } from '../../shared/state/state';
 import { TodoService } from '../../shared/services/todo.service';
 import { TodoListActions } from '../../shared/state/todo.actions';
 import { selectSearch, selectTodos } from '../../shared/state/todo.selectors';
+import { ITodo } from '../../shared/models/todo';
 
 @Component({
   selector: 'app-search-todos',
@@ -16,7 +17,7 @@ export class SearchTodosComponent implements OnInit {
   ifSearchIsEmpty = true;
   searchValue = '';
   
-  constructor(private store: Store<ITodoList>, private todoService: TodoService) { }
+  constructor(private store: Store<IState>, private todoService: TodoService) { }
 
   ngOnInit(): void { 
     this.store.select(selectSearch)
@@ -41,15 +42,19 @@ export class SearchTodosComponent implements OnInit {
   onSerach(): void {
     this.store.select(selectTodos)
     .pipe(first())
-    .subscribe((todoList: ITodoList) => {
-      const filteredList = this.todoService.filter(todoList.originalList, todoList.filter);
-      const searchedList = this.todoService.search(filteredList, this.searchValue);
-  
-      this.store.dispatch(TodoListActions.searched({ 
-        searchTerm: this.searchValue,
-        activePage: 1,
-        list: searchedList
-      }));
+    .subscribe((todoList: IState) => {
+      this.todoService.getList(
+        todoList.filter, 
+        todoList.sort,
+        this.searchValue)
+        .pipe(first())
+        .subscribe((list: ITodo[]) => { 
+          this.store.dispatch(TodoListActions.searched({ 
+            searchTerm: this.searchValue,
+            activePage: 1,
+            list: list
+          }));
+      });
     });
   }
 }

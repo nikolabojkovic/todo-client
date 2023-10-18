@@ -1,10 +1,10 @@
-import { IFilter } from "./filter";
-import { IPaging } from "./paging";
-import { ISearch } from "./search";
-import { ISort, SortDirection } from "./sort";
-import { ITodo } from "./todo";
+import { IFilter } from "../models/filter";
+import { IPaging } from "../models/paging";
+import { ISearch } from "../models/search";
+import { ISort, SortDirection } from "../models/sort";
+import { ITodo } from "../models/todo";
 
-export interface ITodoList {
+export interface IState {
 	originalList: ITodo[];
 	displayList: ITodo[];
 	search: ISearch;
@@ -13,7 +13,7 @@ export interface ITodoList {
 	paging: IPaging;
 }
 
-export class TodoList implements ITodoList {
+export class State implements IState {
 		originalList: ITodo[];
 		displayList: ITodo[];
 		search: ISearch;
@@ -39,7 +39,7 @@ export class TodoList implements ITodoList {
         totalCount: todos.length,
         activePage: todos.length > 0 ? 1 : 0,
         startIndex: 0,
-        endIndex: 5,
+        endIndex: todos.length > 5 ? 5 : todos.length,
         itemsPerPage: 5
       } as IPaging
 		}

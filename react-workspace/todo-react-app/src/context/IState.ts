@@ -43,7 +43,7 @@ export class State implements IState {
 			totalCount: todos.length,
 			activePage: todos.length > 0 ? 1 : 0,
 			startIndex: 0,
-			endIndex: 5,
+			endIndex: todos.length > 5 ? 5 : todos.length,
 			itemsPerPage: 5
 		} as IPaging
 	}

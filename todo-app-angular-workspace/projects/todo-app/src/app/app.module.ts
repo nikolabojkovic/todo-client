@@ -24,6 +24,7 @@ import { SortingComponent } from './components/sorting/sorting.component';
 import { SortButtonComponent } from './components/sort-button/sort-button.component';
 import { SortIconComponent } from './components/sort-icon/sort-icon.component';
 import { TodoEffects } from './shared/state/todo.effects';
+import { LocalStorageProvider, StorageProviderKey } from './shared/services/storage-provider.service';
 
 
 @NgModule({
@@ -52,7 +53,13 @@ import { TodoEffects } from './shared/state/todo.effects';
     StoreModule.forRoot({ todos: todosReducer }),
     EffectsModule.forRoot([TodoEffects])
   ],
-  providers: [TodoService],
+  providers: [
+    {
+      provide: StorageProviderKey,
+      useClass: LocalStorageProvider
+    },
+    TodoService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

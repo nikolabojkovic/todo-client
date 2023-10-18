@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 import { IPaging } from '../../shared/models/paging';
-import { ITodoList } from '../../shared/models/todoList';
+import { IState } from '../../shared/state/state';
 import { TodoListActions } from '../../shared/state/todo.actions';
 import { selectPaging } from '../../shared/state/todo.selectors';
 import { Event } from '../../shared/models/event';
@@ -19,7 +19,7 @@ export class PagingComponent implements OnInit {
   activePage: number = 1;
   itemsPerPage: number = 1;
 
-  constructor(private store: Store<ITodoList>) {}
+  constructor(private store: Store<IState>) {}
 
   ngOnInit(): void {
     this.store.select(selectPaging)

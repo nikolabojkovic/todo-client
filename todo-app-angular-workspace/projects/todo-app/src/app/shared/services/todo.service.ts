@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
-import { inMemoryTodoListTestData } from '../test-data';
-import { ITodoList, TodoList } from '../models/todoList';
+import { Inject, Injectable } from '@angular/core';
+import { IState } from '../state/state';
 import { ITodo } from '../models/todo';
-import { Observable, of, throwError } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 import { IFilter } from '../models/filter';
 import { ISort, SortDirection } from '../models/sort';
+import { IStorageProvider, StorageProviderKey } from './storage-provider.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,27 +13,38 @@ export class TodoService {
 
   private todoListName = 'todo-list';
 
-  constructor() {}
+  constructor(@Inject(StorageProviderKey) private localStorageProvider: IStorageProvider) {}
 
-  getTodoList(): Observable<ITodoList> {
-    // return throwError(() => new Error('Test'));
-    // return of (new TodoList([] as ITodo[]));
-    let todoListData = localStorage.getItem(this.todoListName);
-    if (todoListData === undefined 
-     || todoListData === null) {
-      return of(inMemoryTodoListTestData);
-    }
-    const todos = JSON.parse(todoListData ?? "[]") as ITodo[];
-    let todoList = new TodoList(todos);
-
-    return of(todoList);
+  getList(filter: IFilter | null = null , sort: ISort | null = null, searchTerm: string | null = null): Observable<ITodo[]> {
+    return this.localStorageProvider.getItem(this.todoListName).pipe(map((todoListData) => {
+      if (todoListData === undefined 
+        || todoListData === null) {
+         return [] as ITodo[];
+       }
+       
+       let todos = JSON.parse(todoListData ?? "[]") as ITodo[];
+   
+       if (filter) {
+         todos = this.filter(todos, filter);
+       }
+   
+       if (searchTerm) {
+         todos = this.search(todos, searchTerm);
+       }
+   
+       if (sort) {
+         todos = this.sort(todos, sort);
+       }
+   
+       return todos;
+    }));
   }
 
-  saveTodos(todoList: ITodoList): void {
-    localStorage.setItem(this.todoListName, JSON.stringify(todoList.originalList));
+  saveList(list: ITodo[]): Observable<any> {
+    return this.localStorageProvider.setItem(this.todoListName, list);
   }
 
-  search(list: ITodo[], searchTerm: string,) {
+  private search(list: ITodo[], searchTerm: string,) {
     let filteredList = list;
   
     if (searchTerm !== '') {
@@ -51,7 +62,7 @@ export class TodoService {
     return filteredList;
   }
   
-  filter(list: ITodo[], filter: IFilter) : ITodo[] {
+  private filter(list: ITodo[], filter: IFilter) : ITodo[] {
     let filteredList = list;
   
     if (filter && filter.completed && filter.uncompleted) {
@@ -69,7 +80,7 @@ export class TodoService {
     return [...filteredList];
   }
   
-  sort(list: ITodo[], sort: ISort) : ITodo[] {
+  private sort(list: ITodo[], sort: ISort) : ITodo[] {
     let sortResult = [];
     
     if (sort.column === 'createdAt') {

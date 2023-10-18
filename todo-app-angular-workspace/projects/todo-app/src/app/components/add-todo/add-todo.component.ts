@@ -1,7 +1,7 @@
 import { Store } from '@ngrx/store';
 import { Component, OnInit } from '@angular/core';
 import { TodoListActions } from '../../shared/state/todo.actions';
-import { ITodoList } from '../../shared/models/todoList';
+import { IState } from '../../shared/state/state';
 
 @Component({
   selector: 'app-add-todo',
@@ -12,7 +12,7 @@ export class AddTodoComponent implements OnInit {
   title = ''
   description = ''
 
-  constructor(private store: Store<ITodoList>) { }
+  constructor(private store: Store<IState>) { }
 
   ngOnInit(): void { }
   

@@ -7,7 +7,6 @@ import { ITodo } from '../models/Todo';
 import { todoServiceInstance } from '../services/TodoService';
 import { first } from 'rxjs';
 import { IAction } from '../models/Action';
-import { IRange } from '../models/IPaging';
 import { IFilter } from '../models/IFilter';
 import { ISort } from '../models/ISort';
 
@@ -18,8 +17,8 @@ export function TodoList() {
   
   useEffect(() => {   
     //setTimeout(() => {
+      setIsLoading(true);
       todoServiceInstance.getList(
-        {} as IRange, 
         {} as IFilter, 
         {
           column: 'createdAt',
@@ -41,7 +40,7 @@ export function TodoList() {
 
   useEffect(() => {
     if (todoList.updateTriger != null) {
-      todoServiceInstance.saveList(todoList.originalList);
+      todoServiceInstance.saveList(todoList.originalList).pipe(first()).subscribe();
     }
   }, [todoList.updateTriger, todoList.originalList]);
 

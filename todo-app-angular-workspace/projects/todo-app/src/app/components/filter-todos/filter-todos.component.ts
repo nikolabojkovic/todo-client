@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { first } from 'rxjs';
 import { IFilter } from '../../shared/models/filter';
-import { ITodoList } from '../../shared/models/todoList';
+import { ITodo } from '../../shared/models/todo';
+import { IState } from '../../shared/state/state';
 import { TodoService } from '../../shared/services/todo.service';
 import { TodoListActions } from '../../shared/state/todo.actions';
 import { selectFilter, selectTodos } from '../../shared/state/todo.selectors';
@@ -16,7 +17,7 @@ export class FilterTodosComponent implements OnInit {
   isCompleted = false;
   isUncompleted = false;
 
-  constructor(private store: Store<ITodoList>, private todoService: TodoService) { }
+  constructor(private store: Store<IState>, private todoService: TodoService) { }
 
   ngOnInit(): void { 
     this.store.select(selectFilter)
@@ -30,19 +31,24 @@ export class FilterTodosComponent implements OnInit {
   onFilter(): void {
     this.store.select(selectTodos)
     .pipe(first())
-    .subscribe((todoList: ITodoList) => {
+    .subscribe((todoList: IState) => {
       const filter = {
         completed: this.isCompleted,
         uncompleted: this.isUncompleted
-      } as IFilter
-      const filteredList = this.todoService.filter(todoList.originalList, filter);
-      const searchedList = this.todoService.search(filteredList, todoList.search.searchTerm);
-  
-      this.store.dispatch(TodoListActions.filtered({ 
-        activePage: 1,
-        filter,
-        list: searchedList
-      }));
+      } as IFilter;
+
+      this.todoService.getList(
+        filter, 
+        todoList.sort,
+        todoList.search.searchTerm)
+        .pipe(first())
+        .subscribe((list: ITodo[]) => { 
+          this.store.dispatch(TodoListActions.filtered({ 
+            activePage: 1,
+            filter,
+            list: list
+          }));
+      });
     });
 
     

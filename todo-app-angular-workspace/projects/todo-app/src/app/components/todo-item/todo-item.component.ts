@@ -2,7 +2,7 @@ import { Store } from '@ngrx/store';
 import { Component, Input } from '@angular/core';
 import { ITodo } from '../../shared/models/todo';
 import { TodoListActions } from '../../shared/state/todo.actions';
-import { ITodoList } from '../../shared/models/todoList';
+import { IState } from '../../shared/state/state';
 
 @Component({
   selector: 'app-todo-item',
@@ -13,7 +13,7 @@ export class TodoItemComponent {
 
   @Input() todo: ITodo = {} as ITodo;
 
-  constructor(private store: Store<ITodoList>) {}
+  constructor(private store: Store<IState>) {}
 
   onComplete(todoId: number) {
     this.store.dispatch(TodoListActions.completed({ todoId }));

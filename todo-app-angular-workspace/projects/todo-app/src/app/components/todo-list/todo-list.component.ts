@@ -4,7 +4,7 @@ import { TodoService } from '../../shared/services/todo.service';
 import { selectTodoDisplayList } from '../../shared/state/todo.selectors';
 import { TodoListActions } from '../../shared/state/todo.actions';
 import { ITodo } from '../../shared/models/todo';
-import { ITodoList } from '../../shared/models/todoList';
+import { IState } from '../../shared/state/state';
 import { map, Observable, tap } from 'rxjs';
 
 @Component({
@@ -16,7 +16,7 @@ export class TodoListComponent implements OnInit {
 
   items$: Observable<ITodo[]> = this.store.select(selectTodoDisplayList);
 
-  constructor(private store: Store<ITodoList>) { }
+  constructor(private store: Store<IState>) { }
 
   ngOnInit(): void {
     this.store.dispatch(TodoListActions.fetch());

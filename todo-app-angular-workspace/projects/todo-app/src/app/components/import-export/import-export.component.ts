@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { ITodoList } from '../../shared/models/todoList';
+import { IState } from '../../shared/state/state';
 import { ITodo, Todo } from '../../shared/models/todo';
 import { selectTodos } from '../../shared/state/todo.selectors';
 import { faFileExport, faFileImport } from '@fortawesome/free-solid-svg-icons';
@@ -22,12 +22,12 @@ export class ImportExportComponent implements OnInit {
   faFileImport = faFileImport;
   faFileExport = faFileExport;
 
-  constructor(private store: Store<ITodoList>) { }
+  constructor(private store: Store<IState>) { }
 
   ngOnInit(): void {
     this.store.select(selectTodos)
       .pipe()
-      .subscribe((todoList: ITodoList) => this.items = todoList.originalList);
+      .subscribe((todoList: IState) => this.items = todoList.originalList);
 
     this.fileReader.onload = this.onLoad;
   }

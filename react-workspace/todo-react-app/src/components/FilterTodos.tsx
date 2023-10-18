@@ -3,7 +3,6 @@ import { first } from "rxjs";
 import { useTodoList, useTodoListDispatch } from "../context/TodoListContext";
 import { IAction } from "../models/Action";
 import { IFilter } from "../models/IFilter";
-import { IRange } from "../models/IPaging";
 import { ITodo } from "../models/Todo";
 import { todoServiceInstance } from "../services/TodoService";
 
@@ -17,7 +16,6 @@ export function FilterTodos() {
       uncompleted: uncompleted
     } as IFilter;
     todoServiceInstance.getList(
-      {} as IRange, 
       filter, 
       todoList.sort,
       todoList.search.searchTerm)

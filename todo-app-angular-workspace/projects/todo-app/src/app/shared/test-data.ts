@@ -1,6 +1,6 @@
 import { IPaging } from "./models/paging";
 import { SortDirection } from "./models/sort";
-import { ITodoList } from "./models/todoList";
+import { IState } from "./state/state";
 import { ITodo } from "./models/todo";
 
 export const todos: ITodo[] = [
@@ -48,7 +48,7 @@ export const todos: ITodo[] = [
   } as ITodo
 ] as ITodo[];
 
-export const inMemoryTodoListTestData: ITodoList = 
+export const inMemoryTodoListTestState: IState = 
 {
   originalList: todos,
   displayList: todos,

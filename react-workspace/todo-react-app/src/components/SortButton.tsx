@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { first } from "rxjs";
 import { useTodoList, useTodoListDispatch } from "../context/TodoListContext";
 import { IAction } from "../models/Action";
-import { IRange } from "../models/IPaging";
 import { SortDirection } from "../models/ISort";
 import { ITodo } from "../models/Todo";
 import { todoServiceInstance } from "../services/TodoService";
@@ -31,7 +30,6 @@ export function SortButton({ column, text }: Props) {
           direction: newDirectionState
         }
         todoServiceInstance.getList(
-          {} as IRange, 
           todoList.filter, 
           sort,
           todoList.search.searchTerm)

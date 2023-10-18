@@ -4,7 +4,6 @@ import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IAction } from '../models/Action';
 import { todoServiceInstance } from '../services/TodoService';
-import { IRange } from '../models/IPaging';
 import { first } from 'rxjs';
 import { ITodo } from '../models/Todo';
 
@@ -18,7 +17,6 @@ export function Search({ placeholder }: Props) {
 
   function handleSearch(searchTerm: string) {
     todoServiceInstance.getList(
-      {} as IRange, 
       todoList.filter, 
       todoList.sort,
       searchTerm)

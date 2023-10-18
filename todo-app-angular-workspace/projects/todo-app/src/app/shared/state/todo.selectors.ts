@@ -1,9 +1,9 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { IPaging } from '../models/paging';
-import { ITodoList } from '../models/todoList';
+import { IState } from './state';
 import { ITodo } from '../models/todo';
  
-export const selectTodos = createFeatureSelector<ITodoList>('todos');
+export const selectTodos = createFeatureSelector<IState>('todos');
 
 // export const selectDisplayList = (state: ITodoList) => state.displayList;
 // export const selectPaging = (state: ITodoList) => state.paging;
@@ -18,26 +18,26 @@ export const selectTodos = createFeatureSelector<ITodoList>('todos');
 
 export const selectTodoDisplayList = createSelector(
   selectTodos,
-  (state: ITodoList) => state.displayList.slice(state.paging.startIndex, state.paging.endIndex)
+  (state: IState) => state.displayList.slice(state.paging.startIndex, state.paging.endIndex)
 );
 
 export const selectPaging = createSelector(
   selectTodos,
-  (state: ITodoList) => state.paging
+  (state: IState) => state.paging
 );
 
 export const selectSort = createSelector(
   selectTodos,
-  (state: ITodoList) => state.sort
+  (state: IState) => state.sort
 );
 
 export const selectSearch = createSelector(
   selectTodos,
-  (state: ITodoList) => state.search
+  (state: IState) => state.search
 );
 
 export const selectFilter = createSelector(
   selectTodos,
-  (state: ITodoList) => state.filter
+  (state: IState) => state.filter
 );
  

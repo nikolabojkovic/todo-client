@@ -5,17 +5,19 @@ import { SortingComponent } from './components/sorting/sorting.component';
 import { TabsComponent } from './components/tabs/tabs.component';
 import { TodoListComponent } from './components/todo-list/todo-list.component';
 import { provideMockStore, MockStore } from '@ngrx/store/testing';
-import { inMemoryTodoListTestData } from './shared/test-data';
-import { ITodoList } from './shared/models/todoList';
+import { inMemoryTodoListTestState } from './shared/test-data';
+import { IState } from './shared/state/state';
 import { PagingComponent } from './components/paging/paging.component';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { AddTodoComponent } from './components/add-todo/add-todo.component';
 import { FormsModule } from '@angular/forms';
 import { SortButtonComponent } from './components/sort-button/sort-button.component';
 import { SortIconComponent } from './components/sort-icon/sort-icon.component';
+import { MockLocalStorageProvider } from './shared/mocks/local-storage-provider.mock';
+import { StorageProviderKey } from './shared/services/storage-provider.service';
 
 describe('AppComponent', () => {
-  let store: MockStore<ITodoList>;
+  let store: MockStore<IState>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -29,7 +31,13 @@ describe('AppComponent', () => {
         PagingComponent, 
         AddTodoComponent],
       imports: [FontAwesomeModule, PaginationModule.forRoot(), FormsModule],
-      providers: [provideMockStore({ inMemoryTodoListTestData } as any),]
+      providers: [
+        provideMockStore({ inMemoryTodoListTestData: inMemoryTodoListTestState } as any),  
+        {
+          provide: StorageProviderKey,
+          useClass: MockLocalStorageProvider
+        },
+      ]
     });
     store = TestBed.inject(MockStore);
   });

@@ -1,6 +1,5 @@
 import { createActionGroup, props, emptyProps } from '@ngrx/store';
 import { IFilter } from '../models/filter';
-import { ITodoList } from '../models/todoList';
 import { ITodo } from '../models/todo';
 import { ISort } from '../models/sort';
 
@@ -8,7 +7,7 @@ export const TodoListActions = createActionGroup({
   source: 'todos',
   events: {
     fetch: emptyProps(),
-    fetched: props<{ todoList: ITodoList }>(),
+    fetched: props<{ list: ITodo[] }>(),
     added: props<{ title: string, description: string }>(),
     completed: props<{ todoId: number }>(),
     removed: props<{ todoId: number }>(),
