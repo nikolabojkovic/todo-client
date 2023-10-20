@@ -4,10 +4,11 @@ import { ISort, SortDirection } from '../../shared/models/sort';
 import { TodoService } from '../../shared/services/todo.service';
 import { MockLocalStorageProvider } from '../mocks/local-storage-provider.mock';
 import { ITodo } from '../models/todo';
+import { IStorageProvider } from './storage-provider.service';
 
 describe('todo service', () => {
-  let mockLocalStorage = new MockLocalStorageProvider();
-  let todoService = new TodoService(mockLocalStorage);
+  let mockLocalStorage: IStorageProvider;
+  let todoService: TodoService;
 
   beforeEach(() => {
     mockLocalStorage = new MockLocalStorageProvider();
@@ -15,7 +16,7 @@ describe('todo service', () => {
   });
 
   it('get todo list', (done: DoneFn) => {
-    todoService.getList({} as IFilter, {} as ISort)
+    todoService.getList()
       .subscribe((todoList: ITodo[]) => {
         expect(todoList !== null).toBeTruthy();
         expect(todoList.length > 0).toBeTruthy();
@@ -25,7 +26,7 @@ describe('todo service', () => {
   }, 100);
 
   it('filter completed todo list', (done: DoneFn) => {
-    todoService.getList({completed: true, uncompleted: false} as IFilter, {} as ISort)
+    todoService.getList({completed: true, uncompleted: false} as IFilter)
       .pipe(first())
       .subscribe((todoList: ITodo[]) => {
         expect(todoList !== null).toBeTruthy();
@@ -36,7 +37,7 @@ describe('todo service', () => {
   }, 100);
 
   it('filter uncopmleted todo list', (done: DoneFn) => {
-    todoService.getList({completed: false, uncompleted: true} as IFilter, {} as ISort)
+    todoService.getList({completed: false, uncompleted: true} as IFilter)
       .pipe(first())
       .subscribe((todoList: ITodo[]) => {
         expect(todoList !== null).toBeTruthy();
@@ -113,7 +114,7 @@ describe('todo service', () => {
       description: "Test created description",
       title: "Test created title"
     } as ITodo] as ITodo[];
-
+    
     todoService.saveList(expectedList)
       .pipe(first(), exhaustMap(() => mockLocalStorage.getItem('todo-list')))
         .pipe(first()).subscribe((data) => {

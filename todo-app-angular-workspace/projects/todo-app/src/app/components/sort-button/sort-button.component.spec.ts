@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideMockStore, MockStore } from '@ngrx/store/testing';
-import { inMemoryTodoListTestState } from '../../shared/test-data';
+import { stateTestData } from '../../shared/test-data';
 import { IState } from '../../shared/state/state';
 import { SortButtonComponent } from './sort-button.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -18,7 +18,7 @@ describe('SortButtonComponent', () => {
       declarations: [SortButtonComponent, SortIconComponent],
       imports: [FontAwesomeModule],
       providers: [
-        provideMockStore({ inMemoryTodoListTestData: inMemoryTodoListTestState } as any), 
+        provideMockStore({ stateTestData } as any), 
         {
           provide: StorageProviderKey,
           useClass: MockLocalStorageProvider
@@ -27,8 +27,8 @@ describe('SortButtonComponent', () => {
     });
     fixture = TestBed.createComponent(SortButtonComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
     store = TestBed.inject(MockStore);
+    fixture.detectChanges();
   });
 
   it('should create', () => {

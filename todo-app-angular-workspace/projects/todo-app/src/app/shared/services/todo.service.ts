@@ -1,5 +1,4 @@
 import { Inject, Injectable } from '@angular/core';
-import { IState } from '../state/state';
 import { ITodo } from '../models/todo';
 import { map, Observable, of } from 'rxjs';
 import { IFilter } from '../models/filter';

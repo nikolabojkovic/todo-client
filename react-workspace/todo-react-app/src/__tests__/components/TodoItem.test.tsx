@@ -2,24 +2,16 @@ import renderer from 'react-test-renderer';
 import { render, screen } from '@testing-library/react';
 import { TodoItem } from '../../components/TodoItem';
 
-const todo = {
-  id: 1,
-  title: "Task 1",
-  description: "Description 1",
-  completed: false,
-  createdAt: new Date(2023, 4, 5)
-};
-
-const todoCompleted = {
-  id: 1,
-  title: "Task 1",
-  description: "Description 1",
-  completed: true,
-  createdAt: new Date(2023, 4, 5)
-};
-
 describe('todo item uncompleted', () => {
-  it('match snapshot', () => {
+  const todo = {
+    id: 1,
+    title: "Task 1",
+    description: "Description 1",
+    completed: false,
+    createdAt: new Date(2023, 4, 5)
+  };
+
+  it('should match snapshot', () => {
     const tree = renderer.create(
       <TodoItem todo={todo}/>
     ).toJSON();
@@ -27,7 +19,7 @@ describe('todo item uncompleted', () => {
     expect(tree).toMatchSnapshot();
   });
 
-  it('has 2 buttons', () => {
+  it('should render 2 buttons', () => {
     render(<TodoItem todo={todo}/>);
     const buttons = screen.getAllByRole('button', { hidden: true });
     expect(buttons.length).toBe(2);
@@ -37,16 +29,32 @@ describe('todo item uncompleted', () => {
 })
 
 describe('todo item completed', () => {
-  it('has completed class', () => {    
+  const todoCompleted = {
+    id: 1,
+    title: "Task 1",
+    description: "Description 1",
+    completed: true,
+    createdAt: new Date(2023, 4, 5)
+  };
+
+  it('should match snapshot', () => {
+    const tree = renderer.create(
+      <TodoItem todo={todoCompleted}/>
+    ).toJSON();
+    render(<TodoItem todo={todoCompleted}/>);
+    expect(tree).toMatchSnapshot();
+  });
+
+  it('should render completed todo styled title', () => {    
     render(<TodoItem todo={todoCompleted}/>);
     const titleElement = screen.getByText(todoCompleted.title);
     expect(titleElement).toHaveClass('App__todo-list__item-title--completed');
   });
 
-  it('has only delete button', () => {
+  it('should render only delete button', () => {
     render(<TodoItem todo={todoCompleted}/>);
     const button = screen.getByRole('button', { hidden: true });
     expect(button.textContent).toBe('Delete');
-  });
+  }); 
 });
 

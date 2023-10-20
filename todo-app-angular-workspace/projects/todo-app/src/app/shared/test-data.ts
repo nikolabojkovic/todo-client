@@ -48,7 +48,7 @@ export const todos: ITodo[] = [
   } as ITodo
 ] as ITodo[];
 
-export const inMemoryTodoListTestState: IState = 
+export const stateTestData: IState = 
 {
   originalList: todos,
   displayList: todos,

@@ -5,7 +5,7 @@ import { SortingComponent } from './components/sorting/sorting.component';
 import { TabsComponent } from './components/tabs/tabs.component';
 import { TodoListComponent } from './components/todo-list/todo-list.component';
 import { provideMockStore, MockStore } from '@ngrx/store/testing';
-import { inMemoryTodoListTestState } from './shared/test-data';
+import { stateTestData } from './shared/test-data';
 import { IState } from './shared/state/state';
 import { PagingComponent } from './components/paging/paging.component';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
@@ -32,7 +32,7 @@ describe('AppComponent', () => {
         AddTodoComponent],
       imports: [FontAwesomeModule, PaginationModule.forRoot(), FormsModule],
       providers: [
-        provideMockStore({ inMemoryTodoListTestData: inMemoryTodoListTestState } as any),  
+        provideMockStore({ stateTestData } as any),  
         {
           provide: StorageProviderKey,
           useClass: MockLocalStorageProvider

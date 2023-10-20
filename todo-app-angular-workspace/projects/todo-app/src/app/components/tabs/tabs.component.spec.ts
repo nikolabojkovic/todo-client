@@ -2,11 +2,16 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AddTodoComponent } from '../add-todo/add-todo.component';
 import { provideMockStore, MockStore } from '@ngrx/store/testing';
-import { inMemoryTodoListTestState } from '../../shared/test-data';
+import { stateTestData } from '../../shared/test-data';
 import { IState } from '../../shared/state/state';
 
 import { TabsComponent } from './tabs.component';
 import { FormsModule } from '@angular/forms';
+import { SearchTodosComponent } from '../search-todos/search-todos.component';
+import { ImportExportComponent } from '../import-export/import-export.component';
+import { MockTodoService } from '../../shared/mocks/todo.service.mock';
+import { MockLocalStorageProvider } from '../../shared/mocks/local-storage-provider.mock';
+import { StorageProviderKey } from '../../shared/services/storage-provider.service';
 
 describe('TabsComponent', () => {
   let component: TabsComponent;
@@ -15,17 +20,55 @@ describe('TabsComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [TabsComponent, AddTodoComponent],
+      declarations: [
+        TabsComponent, 
+        AddTodoComponent, 
+        SearchTodosComponent, 
+        SearchTodosComponent, 
+        ImportExportComponent
+      ],
       imports: [FontAwesomeModule, FormsModule],
-      providers: [provideMockStore({ inMemoryTodoListTestData: inMemoryTodoListTestState } as any),]
+      providers: [
+        provideMockStore({ stateTestData } as any), 
+        MockTodoService, 
+        {
+          provide: StorageProviderKey,
+          useClass: MockLocalStorageProvider
+        },
+      ]
     });
     fixture = TestBed.createComponent(TabsComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
     store = TestBed.inject(MockStore);
+    fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should detect tab change', () => {
+    const funcSetTab = spyOn(component, 'setTab');
+    const el = fixture.nativeElement.querySelectorAll('#tabs div');
+    el[1].click();
+    fixture.detectChanges();
+    
+    expect(funcSetTab).toHaveBeenCalled();
+  });
+
+  it('should change active tab', () => {
+    component.setTab(component.tabs[1].name);    
+    fixture.detectChanges();
+
+    expect(component.active).toBe(component.tabs[1].name);
+  });
+
+  it('should switch to search tab', () => {
+    const el = fixture.nativeElement.querySelectorAll('#tabs div');
+    el[1].dispatchEvent(new Event('click'));    
+    fixture.detectChanges();
+
+    const searchTabEl = fixture.nativeElement.querySelector('app-search-todos');
+    expect(searchTabEl).toBeTruthy();
   });
 });

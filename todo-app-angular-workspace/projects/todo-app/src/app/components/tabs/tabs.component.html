@@ -1,8 +1,10 @@
 <section class="app__tabs mb-2">
-  <div class="hstack gap-1">
+  <div id="tabs" class="hstack gap-1">
     <div 
-      *ngFor="let tab of tabs" 
-      [ngClass]="active === tab.name ? 'app__tabs__item' : 'app__tabs__item app__tabs__item--inactive'"
+      *ngFor="let tab of tabs; trackBy:tabTrackBy" 
+      [id]="tab.name"
+      class="app__tabs__item"
+      [ngClass]="{'app__tabs__item--inactive': active !== tab.name}"
       (click)="setTab(tab.name)"
     >
       <fa-icon [icon]="tab.icon"></fa-icon>

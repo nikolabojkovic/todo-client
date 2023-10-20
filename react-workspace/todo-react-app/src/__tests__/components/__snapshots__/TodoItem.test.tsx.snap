@@ -1,6 +1,42 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`todo item uncompleted match snapshot 1`] = `
+exports[`todo item completed should match snapshot 1`] = `
+<div
+  className="App__todo-list__item"
+>
+  <div
+    className="hstack gap-3"
+  >
+    <div>
+      <div
+        className="App__todo-list__item-title--completed"
+      >
+        Task 1
+      </div>
+      <div
+        className="App__todo-list__item-description--compleated"
+      >
+        <span>
+          Description 1
+        </span>
+        <span>
+           Fri May 05 2023 
+        </span>
+      </div>
+    </div>
+    <button
+      className="ms-auto confirm-button btn btn-outline-danger btn-sm"
+      disabled={false}
+      onClick={[Function]}
+      type="button"
+    >
+      Delete
+    </button>
+  </div>
+</div>
+`;
+
+exports[`todo item uncompleted should match snapshot 1`] = `
 <div
   className="App__todo-list__item"
 >

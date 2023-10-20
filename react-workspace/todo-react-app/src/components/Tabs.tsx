@@ -41,10 +41,11 @@ export function Tabs() {
   const activeChild = tabs.find((item: Tab) => item.name === active);
 
   return (
-    <section className="App__tabs mb-2">
+    <section className="App__tabs mb-2" data-testid="tabs">
       <Stack direction="horizontal" gap={1}>      
         {tabs.map((tab: Tab) => (
           <div 
+            data-testid={tab.name}
             key={tab.name}
             className={ 
               active === tab.name 
@@ -59,6 +60,7 @@ export function Tabs() {
       </Stack>
       <section className="App__tabs-content">
         <div 
+          data-testid={"tab-content-" + activeChild?.name}
           key={"tab-content-" + activeChild?.name}
           className="fade-in"
         >
