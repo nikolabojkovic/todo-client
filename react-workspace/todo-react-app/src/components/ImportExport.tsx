@@ -5,6 +5,7 @@ import { Button, Col, Container, Form, InputGroup, Row } from "react-bootstrap";
 import { useTodoList, useTodoListDispatch } from "../context/TodoListContext";
 import { IAction } from "../models/Action";
 import { ITodo, Todo } from "../models/Todo";
+import { ConfirmModal } from "./ConfirmModal";
 
 const fileReader = new FileReader();
 
@@ -12,6 +13,7 @@ export function ImportExport() {
   const todoList = useTodoList();
   const dispatch = useTodoListDispatch();
   
+  const [showModal, setShowModal] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const fileRef = useRef(null as HTMLInputElement | null);
 
@@ -68,50 +70,61 @@ export function ImportExport() {
   };
 
   return (
-    <Form className="todo-background p-1">
-      <Container fluid>
-        <Row xs={1} sm={3}>
-          <Col sm={8} className="p-2">
-            <InputGroup size="sm" className="">
-              <Form.Control
-                aria-label="Choose File"
-                aria-describedby="inputGroup-sizing-sm"
-                type={"file"} 
-                accept={".json"} 
-                ref={fileRef}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                  setFile(((e.target).files![0]));
-                }}
-                readOnly 
-              />
-            </InputGroup>
-          </Col>
-          <Col sm={2} className="p-2">
-            <Button 
-              className="w-100 confirm-button"
-              variant="outline-success" 
-              size="sm"
-              onClick={handleImport}
-              disabled={!file}
-            >
-              Import {' '}
-              <FontAwesomeIcon icon={faFileImport} />
-            </Button>
-          </Col>
-          <Col sm={2} className="p-2">
-            <Button 
-              className="w-100 confirm-button"
-              variant="outline-success" 
-              size="sm"
-              disabled={!todoList.originalList || todoList.originalList.length === 0}
-              onClick={handleExport}
-            >
-              Export {' '}
-              <FontAwesomeIcon icon={faFileExport} />
-            </Button>
-          </Col>
-        </Row>
-      </Container>
-    </Form>
+    <>
+      <Form className="todo-background p-1">
+        <Container fluid>
+          <Row xs={1} sm={3}>
+            <Col sm={8} className="p-2">
+              <InputGroup size="sm" className="">
+                <Form.Control
+                  aria-label="Choose File"
+                  aria-describedby="inputGroup-sizing-sm"
+                  type={"file"} 
+                  accept={".json"} 
+                  ref={fileRef}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                    setFile(((e.target).files![0]));
+                  }}
+                  readOnly 
+                />
+              </InputGroup>
+            </Col>
+            <Col sm={2} className="p-2">
+              <Button 
+                variant="outline-secondary"
+                className="w-100 action-button"
+                size="sm"
+                onClick={() => setShowModal(true)}
+                disabled={!file}
+              >
+                Import {' '}
+                <FontAwesomeIcon icon={faFileImport} />
+              </Button>
+            </Col>
+            <Col sm={2} className="p-2">
+              <Button 
+                variant="outline-secondary"
+                className="w-100 action-button"
+                size="sm"
+                disabled={!todoList.originalList || todoList.originalList.length === 0}
+                onClick={handleExport}
+              >
+                Export {' '}
+                <FontAwesomeIcon icon={faFileExport} />
+              </Button>
+            </Col>
+          </Row>
+        </Container>
+      </Form>
+      <ConfirmModal 
+        content={'Import will overwrite existing data. Are you sure?'} 
+        show={showModal}
+        onConfirm={() => { 
+          handleImport(); 
+          setShowModal(false);
+        }}
+        onCancel={() => { setShowModal(false) }}
+      />
+    </>
   )
 }

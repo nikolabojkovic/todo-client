@@ -8,11 +8,16 @@
       [(ngModel)]="searchValue"
       (keyup)="onTyping()"
     >
+    <fa-icon 
+      *ngIf="searchValue !== ''" 
+      [icon]="faCircleXmark" 
+      class="clear-icon"
+      (click)="onClearSearch()"></fa-icon>
   </div>
   <div class="col-12 col-sm-2 p-2">
     <button 
       type="button" 
-      class="btn btn-sm action-button" 
+      class="btn btn-sm btn-outline-secondary action-button" 
       [disabled]="ifSearchIsEmpty"
       (click)="onSerach()"
     >

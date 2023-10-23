@@ -6,6 +6,8 @@ import { selectTodos } from '../../shared/state/todo.selectors';
 import { faFileExport, faFileImport } from '@fortawesome/free-solid-svg-icons';
 import { TodoListActions } from '../../shared/state/todo.actions';
 import { Event } from '../../shared/models/event';
+import { ConfirmModalService } from '../confirm-modal/confirm-modal.service';
+import { first } from 'rxjs';
 
 @Component({
   selector: 'app-import-export',
@@ -22,7 +24,7 @@ export class ImportExportComponent implements OnInit {
   faFileImport = faFileImport;
   faFileExport = faFileExport;
 
-  constructor(private store: Store<IState>) { }
+  constructor(private store: Store<IState>, private modalService: ConfirmModalService) { }
 
   ngOnInit(): void {
     this.store.select(selectTodos)
@@ -36,7 +38,13 @@ export class ImportExportComponent implements OnInit {
     if (this.file === null)
       return;
 
-    this.fileReader.readAsText(this.file);
+    this.modalService.confirm('Are you sure?', 'modal-sm')
+    .pipe(first())
+    .subscribe((confirmed) => {
+      if (confirmed) {
+        this.fileReader.readAsText(this.file!);
+      }      
+    }); 
   }
 
   onExport(): void {

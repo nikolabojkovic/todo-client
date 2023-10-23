@@ -1,5 +1,6 @@
 @import "./app/shared/style/bootstrap-override.scss";
 @import "./app/shared/style/veriables.scss";
+@import "./app/shared/style/angular-material.overrides.scss";
 
 html {
   background-color: $background-primary-color;
@@ -176,35 +177,20 @@ code {
     }
   }
 
+  .clear-icon {
+    position: absolute;
+    right: 129px;
+    top: 16px;
+    color: $text-ternary-color;
+    cursor: pointer;
+  }
+
   .paging-container {
     color: $text-ternary-color-2;
     background-color: $background-secondary-color;
     max-width: 650px;
     margin: auto;
     padding: 10px 10px;
-  }
-
-  .action-button {
-    background-color: $text-secondary-color;
-    color: $text-primary-color; 
-    min-width: 90px;
-    border-radius: 20px;
-    border-color: $text-secondary-color;
-    width: 100%;
-  }
-
-  .confirm-button {
-    background-color: #F5F6F7;
-    border-radius: 20px;
-    min-width: 90px;
-  }
-
-  button:hover {
-    color: $background-primary-color;
-  }
-
-  .todo-background {
-    background-color: $background-secondary-color;
   }
 
   @keyframes fade-in {
@@ -224,3 +210,28 @@ code {
     animation-fill-mode: forwards;
   }
 }
+
+.content-text{
+  color: $text-secondary-color;
+}
+
+.todo-background {
+  background-color: $background-secondary-color;
+}
+
+.action-button {
+  background-color: $background-secondary-color;
+  color: $text-secondary-color; 
+  min-width: 90px;
+  border-radius: 20px;
+  border-color: $text-secondary-color;
+  width: 90px;
+
+  &:hover {
+    background-color: $text-secondary-color;
+    border-color: $text-secondary-color;
+    color: $text-primary-color; 
+  }
+}
+
+

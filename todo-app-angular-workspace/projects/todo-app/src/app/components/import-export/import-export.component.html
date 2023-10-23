@@ -16,7 +16,7 @@
   <div class="col-12 col-sm-2 p-2">
     <button 
       type="button" 
-      class="btn btn-sm confirm-button btn-outline-success w-100" 
+      class="btn btn-sm btn-outline-secondary action-button w-100" 
       [disabled]="!this.file"
       (click)="onImport()"
     >
@@ -27,7 +27,7 @@
   <div class="col-12 col-sm-2 p-2">
     <button 
       type="button" 
-      class="btn btn-sm confirm-button btn-outline-success w-100" 
+      class="btn btn-sm btn-outline-secondary action-button w-100" 
       [disabled]="!this.items || this.items.length === 0"
       (click)="onExport()"
     >

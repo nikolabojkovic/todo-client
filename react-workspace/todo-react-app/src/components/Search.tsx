@@ -64,7 +64,7 @@ export function Search({ placeholder }: Props) {
           />}
         </Form.Group>
         <Button 
-          variant="warning"
+          variant="outline-secondary"
           className="me-2 action-button"
           size="sm"
           disabled={!todoList.search.searchTerm || todoList.search.searchTerm.trim() === ''}

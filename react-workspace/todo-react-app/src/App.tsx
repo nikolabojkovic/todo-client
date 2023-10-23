@@ -7,9 +7,9 @@ import { TodoListProvider } from './context/TodoListContext';
 import { State } from './context/IState';
 import { ITodo } from './models/Todo';
 
-function App() {  
+function App() {   
   return (
-    <div className="App">
+    <div className="App" data-bs-theme="dark">
       <header className="App-header">
         Todo List
       </header>

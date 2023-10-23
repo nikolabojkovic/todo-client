@@ -1,3 +1,5 @@
+@use "sass:color";
+
 @import "~bootstrap/dist/css/bootstrap.css";
 @import "./veriables.scss";
 
@@ -13,7 +15,7 @@
 }
 
 .page-link.disabled, .disabled > .page-link {
-  color: rgb(160, 160, 160);
+  color: $text-ternary-color-2;
   pointer-events: none;
   background-color: $background-ternary-color;
   border-color: $background-primary-color;
@@ -25,7 +27,9 @@
   border-color: $background-primary-color;
 
   &:hover {
-    color: $background-ternary-color-1;
+    color: $text-primary-color;
+    background-color: lighten($text-secondary-color, 10%);
+    border-color: lighten($text-secondary-color, 10%);
   }
 
   &:focus {
@@ -56,26 +60,7 @@
   }
 }
 
-.form-check-input {
-  box-shadow: none;
-  border-color: $background-primary-color;
-  background-color: $background-ternary-color-1;
-  // background-image: escape-svg($form-switch-checked-bg-image);
-
-  &:focus {
-    border-color: $background-primary-color;
-    // background-image: escape-svg($form-switch-checked-bg-image);
-    box-shadow: none;
-  }
-
-  &:checked {
-    background-color: $text-secondary-color;
-    border-color: $background-primary-color;
-    box-shadow: none;
-    // background-image: escape-svg($form-switch-checked-bg-image) !important;
-  }
-}
-
-.form-switch .form-check-input, .form-switch .form-check-input:focus {
-  // background-image: escape-svg($form-switch-checked-bg-image);
+.btn {
+  border-radius: 20px;
+  min-width: 90px;
 }

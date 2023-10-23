@@ -51,10 +51,10 @@ describe('todo item completed', () => {
     expect(titleElement).toHaveClass('App__todo-list__item-title--completed');
   });
 
-  it('should render only delete button', () => {
+  it('should render complete button disabled', () => {
     render(<TodoItem todo={todoCompleted}/>);
-    const button = screen.getByRole('button', { hidden: true });
-    expect(button.textContent).toBe('Delete');
+    const buttons = screen.getAllByRole('button', { hidden: true });
+    expect(buttons[0].attributes.getNamedItem('disabled')).toBeTruthy();
   }); 
 });
 

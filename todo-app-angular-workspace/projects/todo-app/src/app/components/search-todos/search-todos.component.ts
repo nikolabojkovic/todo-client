@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { first } from 'rxjs';
+import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import { ISearch } from '../../shared/models/search';
 import { IState } from '../../shared/state/state';
 import { TodoService } from '../../shared/services/todo.service';
@@ -16,6 +17,7 @@ import { ITodo } from '../../shared/models/todo';
 export class SearchTodosComponent implements OnInit {
   ifSearchIsEmpty = true;
   searchValue = '';
+  faCircleXmark = faCircleXmark;
   
   constructor(private store: Store<IState>, private todoService: TodoService) { }
 
@@ -56,5 +58,10 @@ export class SearchTodosComponent implements OnInit {
           }));
       });
     });
+  }
+
+  onClearSearch(): void {
+    this.searchValue = '';
+    this.onSerach();
   }
 }

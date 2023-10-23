@@ -25,7 +25,15 @@ exports[`todo item completed should match snapshot 1`] = `
       </div>
     </div>
     <button
-      className="ms-auto confirm-button btn btn-outline-danger btn-sm"
+      className="ms-auto btn btn-outline-secondary btn-sm"
+      disabled={true}
+      onClick={[Function]}
+      type="button"
+    >
+      Complete
+    </button>
+    <button
+      className="btn btn-outline-danger btn-sm"
       disabled={false}
       onClick={[Function]}
       type="button"
@@ -61,7 +69,7 @@ exports[`todo item uncompleted should match snapshot 1`] = `
       </div>
     </div>
     <button
-      className="ms-auto confirm-button btn btn-outline-success btn-sm"
+      className="ms-auto btn btn-outline-success btn-sm"
       disabled={false}
       onClick={[Function]}
       type="button"
@@ -69,7 +77,7 @@ exports[`todo item uncompleted should match snapshot 1`] = `
       Complete
     </button>
     <button
-      className="confirm-button btn btn-outline-danger btn-sm"
+      className="btn btn-outline-danger btn-sm"
       disabled={false}
       onClick={[Function]}
       type="button"

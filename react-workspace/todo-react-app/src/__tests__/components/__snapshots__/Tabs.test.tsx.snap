@@ -147,7 +147,7 @@ exports[`todo tabs should match snapshot 1`] = `
               className="p-2 col-sm-2"
             >
               <button
-                className="action-button btn btn-warning btn-sm"
+                className="action-button btn btn-outline-secondary btn-sm"
                 disabled={true}
                 onClick={[Function]}
                 type="button"

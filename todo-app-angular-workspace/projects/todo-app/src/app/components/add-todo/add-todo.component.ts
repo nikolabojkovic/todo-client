@@ -21,6 +21,8 @@ export class AddTodoComponent implements OnInit {
       title: this.title,
       description: this.description,
     }));
+    this.title = '';
+    this.description = '';
   }
 
   get ifDataIsMissing(): boolean {

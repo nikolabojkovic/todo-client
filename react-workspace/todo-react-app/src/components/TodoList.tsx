@@ -16,7 +16,6 @@ export function TodoList() {
   const [isLoading, setIsLoading] = useState(true); // TODO: implement loading indicator
   
   useEffect(() => {   
-    //setTimeout(() => {
       setIsLoading(true);
       todoServiceInstance.getList(
         {} as IFilter, 
@@ -34,8 +33,6 @@ export function TodoList() {
           } as IAction);
           setIsLoading(false);
         });
-      //}, 1000); 
-      //console.log("effect");   
   }, [dispatch]);
 
   useEffect(() => {

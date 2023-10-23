@@ -131,38 +131,16 @@
 
   .clear-icon {
     position: absolute;
-    right: 133px;
+    right: 129px;
     top: 20px;
     color: $text-ternary-color;
+    cursor: pointer;
   }
 
   .paging-container {
     color: $text-ternary-color-2;
     background-color: $background-secondary-color;
     padding: 10px 10px;
-  }
-
-  .action-button {
-    background-color: $text-secondary-color;
-    color: $text-primary-color; 
-    min-width: 90px;
-    border-radius: 20px;
-    border-color: $text-secondary-color;
-    width: 90px;
-  }
-
-  .confirm-button {
-    background-color: #F5F6F7;
-    border-radius: 20px;
-    min-width: 90px;
-  }
-
-  button:hover {
-    color: $background-primary-color;
-  }
-
-  .todo-background {
-    background-color: $background-secondary-color;
   }
 
   @keyframes fade-in {
@@ -173,12 +151,35 @@
       opacity: 1;
     }
   }
+}
 
-  .fade-in {
-    opacity: 0;
-    animation-name: fade-in;
-    animation-duration: 0.5s;
-    animation-delay: 0.2s;
-    animation-fill-mode: forwards;
+.content-text{
+  color: $text-secondary-color;
+}
+
+.todo-background {
+  background-color: $background-secondary-color;
+}
+
+.action-button {
+  background-color: $background-secondary-color;
+  color: $text-secondary-color; 
+  min-width: 90px;
+  border-radius: 20px;
+  border-color: $text-secondary-color;
+  width: 90px;
+
+  &:hover {
+    background-color: $text-secondary-color;
+    border-color: $text-secondary-color;
+    color: $text-primary-color; 
   }
+}
+
+.fade-in {
+  opacity: 0;
+  animation-name: fade-in;
+  animation-duration: 0.5s;
+  animation-delay: 0.2s;
+  animation-fill-mode: forwards;
 }

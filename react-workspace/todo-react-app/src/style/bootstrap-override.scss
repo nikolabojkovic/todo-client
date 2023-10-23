@@ -1,3 +1,5 @@
+@use "sass:color";
+
 @import "./variables.scss";
 
 /* bootsrap override */
@@ -12,7 +14,7 @@
 }
 
 .page-link.disabled, .disabled > .page-link {
-  color: rgb(160, 160, 160);
+  color: $text-ternary-color-2;
   pointer-events: none;
   background-color: $background-ternary-color;
   border-color: $background-primary-color;
@@ -24,7 +26,9 @@
   border-color: $background-primary-color;
 
   &:hover {
-    color: $background-ternary-color-1;
+    color: $text-primary-color;
+    background-color: lighten($text-secondary-color, 10%);
+    border-color: lighten($text-secondary-color, 10%);
   }
 
   &:focus {
@@ -77,4 +81,9 @@
 
 .form-switch .form-check-input, .form-switch .form-check-input:focus {
   background-image: escape-svg($form-switch-checked-bg-image);
+}
+
+.btn {
+  border-radius: 20px;
+  min-width: 90px;
 }

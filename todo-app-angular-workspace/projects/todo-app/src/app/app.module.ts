@@ -25,6 +25,9 @@ import { SortButtonComponent } from './components/sort-button/sort-button.compon
 import { SortIconComponent } from './components/sort-icon/sort-icon.component';
 import { TodoEffects } from './shared/state/todo.effects';
 import { LocalStorageProvider, StorageProviderKey } from './shared/services/storage-provider.service';
+import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.component';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { ConfirmModalService } from './components/confirm-modal/confirm-modal.service';
 
 
 @NgModule({
@@ -41,6 +44,7 @@ import { LocalStorageProvider, StorageProviderKey } from './shared/services/stor
     SortingComponent,
     SortButtonComponent,
     SortIconComponent,
+    ConfirmModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -54,11 +58,13 @@ import { LocalStorageProvider, StorageProviderKey } from './shared/services/stor
     EffectsModule.forRoot([TodoEffects])
   ],
   providers: [
+    BsModalService,
     {
       provide: StorageProviderKey,
       useClass: LocalStorageProvider
     },
     TodoService,
+    ConfirmModalService
   ],
   bootstrap: [AppComponent]
 })

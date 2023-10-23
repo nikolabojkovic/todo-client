@@ -49,7 +49,7 @@ export function AddTodo() {
           </Col>
           <Col sm={2} className="p-2">
             <Button 
-              variant="warning"
+              variant="outline-secondary"
               className="action-button"
               size="sm"
               disabled={!title || title.trim() === '' || !description || description.trim() === ''}

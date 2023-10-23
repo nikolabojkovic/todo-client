@@ -4,6 +4,8 @@ import { IState } from '../../shared/state/state';
 import { TodoItemComponent } from './todo-item.component';
 import { stateTestData } from '../../shared/test-data';
 import { ITodo } from '../../shared/models/todo';
+import { ConfirmModalService } from '../confirm-modal/confirm-modal.service';
+import { BsModalService } from 'ngx-bootstrap/modal';
 
 describe('TodoItemComponent', () => {
   let component: TodoItemComponent;
@@ -13,7 +15,7 @@ describe('TodoItemComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [TodoItemComponent],
-      providers: [provideMockStore({ stateTestData } as any),]
+      providers: [provideMockStore({ stateTestData } as any), ConfirmModalService, BsModalService]
     });
     store = TestBed.inject(MockStore);    
     fixture = TestBed.createComponent(TodoItemComponent);
@@ -39,7 +41,7 @@ describe('TodoItemComponent', () => {
     expect(buttons[1]?.textContent?.trim()).toBe('Delete');
   });
 
-  it('completed todo should render 1 button', () => {
+  it('completed todo should render complete button disabled', () => {
     const expectedTodo = {
       title: "test title",
       description: "test description",
@@ -53,7 +55,6 @@ describe('TodoItemComponent', () => {
 
     const compiled = fixture.nativeElement as HTMLElement;
     const buttons = compiled.querySelectorAll('button');
-    expect(buttons.length).toBe(1);
-    expect(buttons[0]?.textContent?.trim()).toBe('Delete');
+    expect(buttons[0]?.disabled).toBe(true);
   });
 });
