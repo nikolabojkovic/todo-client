@@ -1,5 +1,7 @@
 import { useState } from 'react';
-import { Button, Stack } from 'react-bootstrap';
+import { Stack } from 'react-bootstrap';
+import { faTrash, faCheckDouble } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useTodoListDispatch } from '../context/TodoListContext';
 import { IAction } from '../models/Action';
 import { ITodo } from '../models/Todo';
@@ -11,7 +13,8 @@ type Props = {
 
 export function TodoItem({ todo }: Props){
   const [showModal, setShowModal] = useState(false); 
-  const [confirm, setConfirm] = useState(null as any); 
+  const [confirm, setConfirm] = useState(null as any);   
+  const [confirmDialogText, setConfirmDialogText] = useState(''); 
   const dispatch = useTodoListDispatch();
 
   let handleComplete = () => {
@@ -54,31 +57,30 @@ export function TodoItem({ todo }: Props){
                 </span>
             </div>
           </div>     
-          <Button 
-            className="ms-auto"
-            variant={todo.completed ? "outline-secondary" : "outline-success" } 
-            size="sm"
-            disabled={todo.completed}
+          <FontAwesomeIcon 
+            icon={faCheckDouble} 
+            className={todo.completed ?  "ms-auto action-icon--disabled" : "ms-auto action-icon"}
             onClick={() => {
+              if (todo.completed)
+                return;
+
               setConfirm(() => handleComplete);
+              setConfirmDialogText('Are you sure you want to complete this item?');
               setShowModal(true);
             }}
-          >
-            Complete
-          </Button>
-          <Button 
-            variant="outline-danger" 
-            size="sm"
+          />
+          <FontAwesomeIcon 
+            icon={faTrash} 
+            className="action-icon"
             onClick={() => {
               setConfirm(() => handleDelete);
+              setConfirmDialogText('Are you sure you want to delete this item?');
               setShowModal(true);
             }}
-          >
-            Delete
-          </Button>
+          />
         </Stack>
         <ConfirmModal 
-          content={'Are you sure?'} 
+          content={confirmDialogText} 
           show={showModal}
           onConfirm={() => { 
             confirm(); 

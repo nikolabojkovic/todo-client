@@ -3,9 +3,9 @@ import Modal from 'react-bootstrap/Modal';
 
 type Props = {
   content: string
-  show: any,
-  onConfirm: any,
-  onCancel: any
+  show: boolean,
+  onConfirm: () => void
+  onCancel: () => void
 }
 
 export function ConfirmModal({ content, show, onConfirm, onCancel }: Props) {

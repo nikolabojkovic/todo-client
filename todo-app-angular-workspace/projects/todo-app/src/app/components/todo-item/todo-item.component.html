@@ -11,22 +11,18 @@
       </div>
     </div>
     <div class="ms-auto">
-      <button 
-        [disabled]="todo.completed" 
-        class="btn btn-sm"
-        [ngClass]="{'btn-outline-secondary': todo.completed, 'btn-outline-success': !todo.completed}"
+      <fa-icon 
+        [icon]="faCheckDouble"
+        [ngClass]="todo.completed ? 'action-icon--disabled' : 'action-icon'"
         (click)="onComplete(todo.id)"
-      >
-        Complete
-      </button>
+      ></fa-icon>
     </div>
     <div [ngClass]="{'ms-todo' : todo.completed}">
-      <button 
-        class="btn btn-outline-danger btn-sm" 
+      <fa-icon 
+        [icon]="faTrash"
+        class="action-icon"
         (click)="onRemove(todo.id)"
-      >
-        Delete
-      </button>
+      ></fa-icon>
     </div>
   </div>
 </div>

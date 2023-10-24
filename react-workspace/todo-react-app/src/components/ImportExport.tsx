@@ -117,7 +117,7 @@ export function ImportExport() {
         </Container>
       </Form>
       <ConfirmModal 
-        content={'Import will overwrite existing data. Are you sure?'} 
+        content={'Existing data will be lost. Are you sure?'} 
         show={showModal}
         onConfirm={() => { 
           handleImport(); 

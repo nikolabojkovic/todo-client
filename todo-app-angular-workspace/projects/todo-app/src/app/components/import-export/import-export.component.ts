@@ -38,7 +38,7 @@ export class ImportExportComponent implements OnInit {
     if (this.file === null)
       return;
 
-    this.modalService.confirm('Are you sure?', 'modal-sm')
+    this.modalService.confirm('Existing data will be lost. Are you sure?', 'modal-sm')
     .pipe(first())
     .subscribe((confirmed) => {
       if (confirmed) {

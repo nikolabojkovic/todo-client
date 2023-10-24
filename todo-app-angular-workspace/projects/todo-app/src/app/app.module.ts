@@ -4,6 +4,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { SortButtonModule } from 'sort-button';
 import { todosReducer } from './shared/state/todo.reducer';
 import { StoreModule } from '@ngrx/store';
@@ -53,6 +54,7 @@ import { ConfirmModalService } from './components/confirm-modal/confirm-modal.se
     FontAwesomeModule,
     SortButtonModule,
     PaginationModule.forRoot(),
+    BsDropdownModule,
     FormsModule,
     StoreModule.forRoot({ todos: todosReducer }),
     EffectsModule.forRoot([TodoEffects])

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+
 import { IPaging } from '../../shared/models/paging';
 import { IState } from '../../shared/state/state';
 import { TodoListActions } from '../../shared/state/todo.actions';
@@ -18,6 +20,8 @@ export class PagingComponent implements OnInit {
   pageCount: number = 1;
   activePage: number = 1;
   itemsPerPage: number = 1;
+
+  faChevronDown = faChevronDown;
 
   constructor(private store: Store<IState>) {}
 
@@ -39,8 +43,8 @@ export class PagingComponent implements OnInit {
     }));
   }
 
-  onPageSizeChange(event: Event) {
-    this.itemsPerPage = +(event as Event<HTMLSelectElement>)!.target!.value;
+  onPageSizeChange(pageSize: number) {
+    this.itemsPerPage = pageSize;
     this.store.dispatch(TodoListActions.pagingUpdated({ 
       activePage: 1,
       itemsPerPage: this.itemsPerPage
