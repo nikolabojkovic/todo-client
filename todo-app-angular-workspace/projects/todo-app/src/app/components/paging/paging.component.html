@@ -10,26 +10,15 @@
             Page size:{{' '}}
           </div>
           <div>
-            <!-- <select
-                class="form-select-sm form-select"
-                aria-label="Page size" 
-                (change)="onPageSizeChange($event)"
-              >
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-            </select> -->
             <div class="btn-group" dropdown>
               <button 
                 id="button-basic" 
                 dropdownToggle 
                 type="button" 
-                class="dropdown"
+                class="action-button dropdown-toggle btn btn-primary"
                 aria-controls="dropdown-basic"
               >
                 {{itemsPerPage}} 
-                <fa-icon [icon]="faChevronDown" class="dropdown-icon"></fa-icon>
               </button>
               <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
                   role="menu" aria-labelledby="button-basic">
@@ -44,7 +33,7 @@
       </div>
       <div class="col-sm-5 p-3 pt-2 pb-2 d-flex justify-content-sm-end justify-content-center">
         <pagination 
-          class="pagination pagination-sm"
+          class="pagination pagination-sm d-flex align-items-center"
           previousText="&lsaquo;" 
           nextText="&rsaquo;" 
           firstText="&laquo;" 

@@ -1,13 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
-import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 
 import { IPaging } from '../../shared/models/paging';
 import { IState } from '../../shared/state/state';
 import { TodoListActions } from '../../shared/state/todo.actions';
 import { selectPaging } from '../../shared/state/todo.selectors';
-import { Event } from '../../shared/models/event';
 
 @Component({
   selector: 'app-paging',
@@ -20,8 +18,6 @@ export class PagingComponent implements OnInit {
   pageCount: number = 1;
   activePage: number = 1;
   itemsPerPage: number = 1;
-
-  faChevronDown = faChevronDown;
 
   constructor(private store: Store<IState>) {}
 

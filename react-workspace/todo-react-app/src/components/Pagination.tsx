@@ -109,7 +109,7 @@ export function CustomPagination({ inputSelectRef, rotate, pageCount, maxVisible
   return (
     <>
       <Col sm={5} className="p-3 pt-2 pb-2 d-flex justify-content-sm-end justify-content-center">
-        <Pagination size="sm">
+        <Pagination size="sm" className='d-flex align-items-center'>
           <Pagination.First 
             key="first" 
             disabled={todoList.paging.activePage === 1 }

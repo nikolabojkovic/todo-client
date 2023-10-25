@@ -83,6 +83,25 @@
   background-image: escape-svg($form-switch-checked-bg-image);
 }
 
+.dropdown-item.active, .dropdown-item:active {
+  background-color: lighten($text-secondary-color, 10%);
+}
+
+.dropdown-item:hover, .dropdown-item:focus {  
+  background-color: $text-secondary-color;
+}
+
+.dropdown-toggle {
+  &:active {
+    background-color: $text-secondary-color;
+  }  
+}
+
+.btn-check:checked + .btn, :not(.btn-check) + .btn:active, .btn:first-child:active, .btn.active, .btn.show {
+  background-color: $text-secondary-color;
+  border-color: $text-secondary-color;
+}
+
 .btn {
   border-radius: 20px;
   min-width: 90px;

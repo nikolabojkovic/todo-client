@@ -1,16 +1,31 @@
 import { Stack, Col } from 'react-bootstrap';
-import Form from 'react-bootstrap/Form';
+import Dropdown from 'react-bootstrap/Dropdown';
 import { useTodoList, useTodoListDispatch } from '../context/TodoListContext';
 import { IAction } from '../models/Action';
+import { useState } from 'react';
 
 type Props = {
-  inputSelectRef: ((instance: HTMLSelectElement | null) => void) | React.RefObject<HTMLSelectElement> | null | undefined,
+  inputSelectRef: any,
   pageCount: number
 };
 
 export function PageSize({ inputSelectRef, pageCount }: Props) {
+
+  const [itemsPerPage, setItemsPerPage] = useState(5);
+
   const todoList = useTodoList();
   const dispatch = useTodoListDispatch();
+
+  function handlePageSizeChange(pageSize: number) {
+    dispatch({
+      type: 'paging-updated',
+      payload: {
+        activePage: 1,
+        itemsPerPage: pageSize
+      }
+    } as IAction);
+    setItemsPerPage(pageSize);
+  }
   
   return (
   <>
@@ -23,27 +38,22 @@ export function PageSize({ inputSelectRef, pageCount }: Props) {
           Page size:{' '}
         </div>
         <div className="">
-          <Form.Select
-              id="page-size"
-              name="page-size"
-              ref={inputSelectRef}
-              aria-label="Page size" 
-              size="sm"
-              onChange={(e) => {
-                dispatch({
-                  type: 'paging-updated',
-                  payload: {
-                    activePage: 1,
-                    itemsPerPage: +e.target.value
-                  }
-                } as IAction);
-              }}
+          <Dropdown>
+            <Dropdown.Toggle
+              className="action-button" 
+              ref={inputSelectRef} 
+              id="dropdown-basic"
             >
-              <option value={5}>5</option>
-              <option value={10}>10</option>
-              <option value={50}>50</option>
-              <option value={100}>100</option>
-          </Form.Select>
+              {' '}{itemsPerPage}{' '}
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu>
+              <Dropdown.Item href="#/action-1" onClick={() => handlePageSizeChange(5)}>5</Dropdown.Item>
+              <Dropdown.Item href="#/action-2" onClick={() => handlePageSizeChange(10)}>10</Dropdown.Item>
+              <Dropdown.Item href="#/action-3" onClick={() => handlePageSizeChange(50)}>50</Dropdown.Item>
+              <Dropdown.Item href="#/action-3" onClick={() => handlePageSizeChange(100)}>100</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
         </div>
       </Stack>
     </Col>
