@@ -50,7 +50,7 @@ export function AddTodo() {
           <Col sm={2} className="p-2">
             <Button 
               variant="outline-secondary"
-              className="action-button"
+              className="action-button w-100"
               size="sm"
               disabled={!title || title.trim() === '' || !description || description.trim() === ''}
               onClick={handleAdd}

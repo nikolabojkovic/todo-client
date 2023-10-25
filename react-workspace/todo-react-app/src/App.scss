@@ -182,6 +182,10 @@
   }
 }
 
+.page-ellipsis > a {
+  max-width: 27.11px;
+}
+
 .fade-in {
   opacity: 0;
   animation-name: fade-in;

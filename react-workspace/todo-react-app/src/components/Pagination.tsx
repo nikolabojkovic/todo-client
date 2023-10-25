@@ -125,6 +125,7 @@ export function CustomPagination({ inputSelectRef, rotate, pageCount, maxVisible
             && <Pagination.Ellipsis 
                   disabled={false} 
                   key="left-pages-link" 
+                  className='page-ellipsis'
                   onClick={() => handlePaginationUpdate(calculateLastPageOfTheGroup(activeGroup - 1), todoList.paging.itemsPerPage)}
                 />
           }
@@ -134,6 +135,7 @@ export function CustomPagination({ inputSelectRef, rotate, pageCount, maxVisible
             && <Pagination.Ellipsis 
                   disabled={false} 
                   key="right-pages-link" 
+                  className='page-ellipsis'
                   onClick={() => handlePaginationUpdate(calculateFirstPageOfTheGroup(activeGroup + 1), todoList.paging.itemsPerPage)}
                 />
           }
