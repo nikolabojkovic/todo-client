@@ -29,6 +29,7 @@ export class FilterTodosComponent implements OnInit {
   }
 
   onFilter(): void {
+    this.store.dispatch(TodoListActions.loadingStarged());
     this.store.select(selectTodos)
     .pipe(first())
     .subscribe((todoList: IState) => {

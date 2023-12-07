@@ -1,5 +1,5 @@
 import { Injectable, InjectionToken } from "@angular/core";
-import { Observable, of } from "rxjs";
+import { delay, Observable, of } from "rxjs";
 
 export const StorageProviderKey = new InjectionToken('Storage InjectionToken');
 
@@ -13,7 +13,7 @@ export interface IStorageProvider {
 })
 export class LocalStorageProvider {
   getItem(key: string): Observable<string | null> {
-    return of(localStorage.getItem(key));
+    return of(localStorage.getItem(key)).pipe(delay(800));
   }
 
   setItem(key: string, value: any): Observable<any> {

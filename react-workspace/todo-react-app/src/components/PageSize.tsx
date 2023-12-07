@@ -40,9 +40,11 @@ export function PageSize({ inputSelectRef, pageCount }: Props) {
         <div className="">
           <Dropdown>
             <Dropdown.Toggle
+              variant="outline-secondary"
               className="action-button" 
               ref={inputSelectRef} 
               id="dropdown-basic"
+              disabled={todoList.paging.totalCount === 0}
             >
               {' '}{itemsPerPage}{' '}
             </Dropdown.Toggle>

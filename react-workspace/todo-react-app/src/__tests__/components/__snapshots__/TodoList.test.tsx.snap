@@ -4,6 +4,13 @@ exports[`todo list rendered match snapshot 1`] = `
 <main
   className="App__todo-list"
 >
+  <div
+    className="loader-container d-flex justify-content-center align-items-center fade-in"
+  >
+    <div
+      className="loader"
+    />
+  </div>
   <section
     className="paging-container p-0 mt-2"
   >
@@ -17,9 +24,9 @@ exports[`todo list rendered match snapshot 1`] = `
           className="p-3 pt-2 pb-2 d-flex justify-content-sm-start justify-content-center align-items-center col-sm-3"
         >
           Page 
-          0
+          1
            of 
-          0
+          2
         </div>
         <div
           className="p-3 pt-2 pb-2 col-sm-4"
@@ -36,34 +43,22 @@ exports[`todo list rendered match snapshot 1`] = `
             <div
               className=""
             >
-              <select
-                aria-label="Page size"
-                className="form-select form-select-sm"
-                id="page-size"
-                name="page-size"
-                onChange={[Function]}
+              <div
+                className="dropdown"
               >
-                <option
-                  value={5}
+                <button
+                  aria-expanded={false}
+                  className="action-button dropdown-toggle btn btn-outline-secondary"
+                  disabled={false}
+                  id="dropdown-basic"
+                  onClick={[Function]}
+                  type="button"
                 >
+                   
                   5
-                </option>
-                <option
-                  value={10}
-                >
-                  10
-                </option>
-                <option
-                  value={50}
-                >
-                  50
-                </option>
-                <option
-                  value={100}
-                >
-                  100
-                </option>
-              </select>
+                   
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -71,18 +66,14 @@ exports[`todo list rendered match snapshot 1`] = `
           className="p-3 pt-2 pb-2 d-flex justify-content-sm-end justify-content-center col-sm-5"
         >
           <ul
-            className="pagination pagination-sm"
+            className="d-flex align-items-center pagination pagination-sm"
           >
             <li
-              className="page-item"
+              className="page-item disabled"
             >
-              <a
+              <span
                 className="page-link"
-                href="#"
                 onClick={[Function]}
-                onKeyDown={[Function]}
-                role="button"
-                tabIndex={0}
               >
                 <span
                   aria-hidden="true"
@@ -94,18 +85,14 @@ exports[`todo list rendered match snapshot 1`] = `
                 >
                   First
                 </span>
-              </a>
+              </span>
             </li>
             <li
-              className="page-item"
+              className="page-item disabled"
             >
-              <a
+              <span
                 className="page-link"
-                href="#"
                 onClick={[Function]}
-                onKeyDown={[Function]}
-                role="button"
-                tabIndex={0}
               >
                 <span
                   aria-hidden="true"
@@ -117,35 +104,7 @@ exports[`todo list rendered match snapshot 1`] = `
                 >
                   Previous
                 </span>
-              </a>
-            </li>
-            <li
-              className="page-item"
-            >
-              <a
-                className="page-link"
-                href="#"
-                onClick={[Function]}
-                onKeyDown={[Function]}
-                role="button"
-                tabIndex={0}
-              >
-                -2
-              </a>
-            </li>
-            <li
-              className="page-item"
-            >
-              <a
-                className="page-link"
-                href="#"
-                onClick={[Function]}
-                onKeyDown={[Function]}
-                role="button"
-                tabIndex={0}
-              >
-                -1
-              </a>
+              </span>
             </li>
             <li
               className="page-item active"
@@ -154,7 +113,7 @@ exports[`todo list rendered match snapshot 1`] = `
                 className="page-link"
                 onClick={[Function]}
               >
-                0
+                1
                 <span
                   className="visually-hidden"
                 >
@@ -163,11 +122,29 @@ exports[`todo list rendered match snapshot 1`] = `
               </span>
             </li>
             <li
-              className="page-item disabled"
+              className="page-item"
             >
-              <span
+              <a
                 className="page-link"
+                href="#"
                 onClick={[Function]}
+                onKeyDown={[Function]}
+                role="button"
+                tabIndex={0}
+              >
+                2
+              </a>
+            </li>
+            <li
+              className="page-item"
+            >
+              <a
+                className="page-link"
+                href="#"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                role="button"
+                tabIndex={0}
               >
                 <span
                   aria-hidden="true"
@@ -179,14 +156,18 @@ exports[`todo list rendered match snapshot 1`] = `
                 >
                   Next
                 </span>
-              </span>
+              </a>
             </li>
             <li
-              className="page-item disabled"
+              className="page-item"
             >
-              <span
+              <a
                 className="page-link"
+                href="#"
                 onClick={[Function]}
+                onKeyDown={[Function]}
+                role="button"
+                tabIndex={0}
               >
                 <span
                   aria-hidden="true"
@@ -198,7 +179,7 @@ exports[`todo list rendered match snapshot 1`] = `
                 >
                   Last
                 </span>
-              </span>
+              </a>
             </li>
           </ul>
         </div>

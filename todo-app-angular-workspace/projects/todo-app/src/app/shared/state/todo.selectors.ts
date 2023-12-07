@@ -40,4 +40,9 @@ export const selectFilter = createSelector(
   selectTodos,
   (state: IState) => state.filter
 );
+
+export const selectLoader = createSelector(
+  selectTodos,
+  (state: IState) => state.isLoading
+);
  

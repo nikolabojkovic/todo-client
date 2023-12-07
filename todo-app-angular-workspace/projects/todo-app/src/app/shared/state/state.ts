@@ -5,6 +5,7 @@ import { ISort, SortDirection } from "../models/sort";
 import { ITodo } from "../models/todo";
 
 export interface IState {
+	isLoading: boolean;
 	originalList: ITodo[];
 	displayList: ITodo[];
 	search: ISearch;
@@ -14,6 +15,7 @@ export interface IState {
 }
 
 export class State implements IState {
+	  isLoading: boolean;
 		originalList: ITodo[];
 		displayList: ITodo[];
 		search: ISearch;
@@ -22,6 +24,7 @@ export class State implements IState {
 		paging: IPaging;
 
 		constructor(todos: ITodo[]) {
+			this.isLoading = false;
 			this.originalList = todos; 
       this.displayList = todos;
       this.search = {

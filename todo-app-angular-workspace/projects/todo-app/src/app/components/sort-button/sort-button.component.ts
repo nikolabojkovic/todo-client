@@ -30,6 +30,7 @@ export class SortButtonComponent {
   }
 
   sort(): void {
+    this.store.dispatch(TodoListActions.loadingStarged());
     this.store.select(selectTodos)
     .pipe(first())
     .subscribe((todoList: IState) => {

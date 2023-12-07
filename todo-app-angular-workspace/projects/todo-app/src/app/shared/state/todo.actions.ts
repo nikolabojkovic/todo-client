@@ -16,6 +16,7 @@ export const TodoListActions = createActionGroup({
     filtered: props<{ activePage: number, filter: IFilter, list: ITodo[] }>(),
     imported: props<{ activePage: number, list: ITodo[] }>(),
     sorted: props< { sort: ISort, list: ITodo[] }>(),
-    searchTermUpdated: props< { searchTerm: string }>()
+    searchTermUpdated: props< { searchTerm: string }>(),
+    loadingStarged: emptyProps(),
   }
 });

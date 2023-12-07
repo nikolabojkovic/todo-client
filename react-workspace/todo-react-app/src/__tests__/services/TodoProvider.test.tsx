@@ -1,21 +1,20 @@
-import { IFilter } from '../../models/IFilter';
+import { IFilter, StateFilter } from '../../models/IFilter';
 import { ISort, SortDirection } from '../../models/ISort';
 import { ITodo } from '../../models/Todo';
-import { TodoService } from '../../services/TodoService';
+import { getList, GetListProps, saveList } from '../../providers/TodoProvider';
 import { MockLocalStorageProvider } from '../../Mocks/LocalStorageProvider.mock';
 import { concatMap, exhaustMap, first } from 'rxjs';
+import { IStorageProvider } from '../../providers/StorageProvider';
 
 describe('todo service', () => {
-  let mockLocalStorage = new MockLocalStorageProvider();
-  let todoService = new TodoService(mockLocalStorage);
+  let mockLocalStorage: IStorageProvider = new MockLocalStorageProvider();
 
   beforeEach(() => {
     mockLocalStorage = new MockLocalStorageProvider();
-    todoService = new TodoService(mockLocalStorage);
   });
   
   it('get todo list', (done) => {
-    todoService.getList({} as IFilter, {} as ISort)
+    getList({provider: mockLocalStorage} as GetListProps)
       .pipe(first())
       .subscribe((todoList: ITodo[]) => {
         expect(todoList !== null).toBeTruthy();
@@ -26,7 +25,7 @@ describe('todo service', () => {
   }, 100);
 
   it('filter completed todo list', (done) => {
-    todoService.getList({completed: true, uncompleted: false} as IFilter, {} as ISort)
+    getList({provider: mockLocalStorage, filter: {state: StateFilter.completed} as IFilter} as GetListProps)
       .pipe(first())
       .subscribe((todoList: ITodo[]) => {
         expect(todoList !== null).toBeTruthy();
@@ -37,7 +36,7 @@ describe('todo service', () => {
   }, 100);
 
   it('filter uncopmleted todo list', (done) => {
-    todoService.getList({completed: false, uncompleted: true} as IFilter, {} as ISort)
+    getList({provider: mockLocalStorage, filter: {state: StateFilter.uncompleted} as IFilter} as GetListProps)
       .pipe(first())
       .subscribe((todoList: ITodo[]) => {
         expect(todoList !== null).toBeTruthy();
@@ -50,7 +49,7 @@ describe('todo service', () => {
   it('search todo list', (done) => {
     var searchTerm = 'Task 1';
 
-    todoService.getList({} as IFilter, {} as ISort, searchTerm)
+    getList({provider: mockLocalStorage, searchTerm} as GetListProps)
       .pipe(first())  
       .subscribe((todoList: ITodo[]) => {
         expect(todoList !== null).toBeTruthy();
@@ -61,7 +60,7 @@ describe('todo service', () => {
   });
 
   it('sort todo list by title asc', (done) => {   
-    todoService.getList({} as IFilter, { column: 'title', direction: SortDirection.Asc} as ISort)
+    getList({provider: mockLocalStorage, sort: { column: 'title', direction: SortDirection.Asc} as ISort} as GetListProps)
       .pipe(first())
       .subscribe((todoList: ITodo[]) => {
         expect(todoList !== null).toBeTruthy();
@@ -72,7 +71,7 @@ describe('todo service', () => {
   }, 100);
 
   it('sort todo list by title desc', (done) => {
-    todoService.getList({} as IFilter, { column: 'title', direction: SortDirection.Desc} as ISort)
+    getList({provider: mockLocalStorage, sort: { column: 'title', direction: SortDirection.Desc} as ISort} as GetListProps)
       .pipe(first())
       .subscribe((todoList: ITodo[]) => {
         expect(todoList !== null).toBeTruthy();
@@ -83,7 +82,7 @@ describe('todo service', () => {
   }, 100);
 
   it('sort todo list by date asc', (done) => {   
-    todoService.getList({} as IFilter, { column: 'createdAt', direction: SortDirection.Asc} as ISort)
+    getList({provider: mockLocalStorage, sort: { column: 'createdAt', direction: SortDirection.Asc} as ISort} as GetListProps)
       .pipe(first())
       .subscribe((todoList: ITodo[]) => {
         expect(todoList !== null).toBeTruthy();
@@ -95,7 +94,7 @@ describe('todo service', () => {
   }, 100);
 
   it('sort todo list by date desc', (done) => {
-    todoService.getList({} as IFilter, { column: 'createdAt', direction: SortDirection.Desc} as ISort)
+    getList({provider: mockLocalStorage, sort: { column: 'createdAt', direction: SortDirection.Desc} as ISort} as GetListProps)
       .pipe(first())
       .subscribe((todoList: ITodo[]) => {
         expect(todoList !== null).toBeTruthy();
@@ -124,7 +123,7 @@ describe('todo service', () => {
     // });
 
     // NOTE: merge observables when first observable completed
-    todoService.saveList(expectedList)
+    saveList(mockLocalStorage, expectedList)
       .pipe(first(), exhaustMap(() => mockLocalStorage.getItem('todo-list')))
         .pipe(first()).subscribe((data) => {
           const actualList = JSON.parse(data!) as ITodo[];

@@ -1,4 +1,4 @@
-import { Observable, of } from "rxjs";
+import { delay, Observable, of } from "rxjs";
 
 export interface IStorageProvider {
   getItem(key: string): Observable<string | null>;
@@ -6,9 +6,9 @@ export interface IStorageProvider {
 }
 
 
-export class LocalStorageProvider {
+export class LocalStorageProvider implements IStorageProvider {
   getItem(key: string): Observable<string | null> {
-    return of(localStorage.getItem(key));
+    return of(localStorage.getItem(key)).pipe(delay(800));
   }
 
   setItem(key: string, value: any): Observable<any> {
@@ -18,7 +18,9 @@ export class LocalStorageProvider {
   }
 }
 
-export class BackendStorageProvider {
+export const localStorageProvider: IStorageProvider = new LocalStorageProvider(); 
+
+export class BackendStorageProvider implements IStorageProvider {
   getItem(key: string): Observable<string | null> {
     // TODO: read from backend API by using http request
     return of("");

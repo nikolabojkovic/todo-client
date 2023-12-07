@@ -77,6 +77,7 @@ export const todosReducer = createReducer(
   on(TodoListActions.searched, (todoList, { searchTerm, activePage, list }) => {
     return {
       ...todoList,
+      isLoading: false,
       displayList: [...list],
       search: { searchTerm: searchTerm },
       paging: {
@@ -91,6 +92,7 @@ export const todosReducer = createReducer(
   on(TodoListActions.filtered, (todoList, { activePage, filter, list }) => {
     return {
       ...todoList,
+      isLoading: false,
       displayList: [...list],
       filter: {...filter},
       paging: {
@@ -136,6 +138,7 @@ export const todosReducer = createReducer(
   on(TodoListActions.sorted, (todoList, {sort, list} ) => {
     return {
       ...todoList,
+      isLoading: false,
       displayList: [...list],
       sort: {...sort},
       paging: {...todoList.paging} as IPaging
@@ -146,7 +149,13 @@ export const todosReducer = createReducer(
       ...todoList,
       search: { searchTerm },
     }
-  })
+  }),
+  on(TodoListActions.loadingStarged, (_state, { }) =>{  
+    return {
+      ..._state,
+      isLoading: true
+    } as IState
+  }),
 );
 
 function calculateActivePageOnDelete(paging: IPaging) {

@@ -3,9 +3,11 @@ import { IPaging } from "../models/IPaging";
 import { IFilter } from "../models/IFilter";
 import { ISort, SortDirection } from "../models/ISort";
 import { ISearch } from "../models/ISearch";
+import { StateFilter } from '../models/IFilter'
 
 
 export interface IState {
+	isLoading: boolean;
 	originalList: ITodo[];
 	displayList: ITodo[];
 	updateTriger: any | null;
@@ -16,6 +18,7 @@ export interface IState {
 }
 
 export class State implements IState {
+	isLoading: boolean;
 	originalList: ITodo[];
 	displayList: ITodo[];
 	updateTriger: any | null;
@@ -25,6 +28,7 @@ export class State implements IState {
 	paging: IPaging;
 
 	constructor(todos: ITodo[]) {
+		this.isLoading = false;
 		this.originalList = todos; 
 		this.displayList = todos;
 		this.updateTriger = null;
@@ -32,8 +36,7 @@ export class State implements IState {
 			searchTerm: '',
 		};
 		this.filter = {
-			completed: false,
-			uncompleted: false,
+			state: StateFilter.all,
 		} as IFilter;
 		this.sort = {
 			column: 'createdAt',

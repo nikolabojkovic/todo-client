@@ -28,6 +28,10 @@ export function CustomPagination({ inputSelectRef, rotate, pageCount, maxVisible
   };
 
   function calculateFirstPageOfTheGroup(groupIndex: number) {
+    if (groupIndex === 0) {
+      return 0;
+    }
+
     return groupIndex === 1
     ? 1
     : ((groupIndex - 1) * maxVisiblePagesCount) + 1
@@ -112,12 +116,12 @@ export function CustomPagination({ inputSelectRef, rotate, pageCount, maxVisible
         <Pagination size="sm" className='d-flex align-items-center'>
           <Pagination.First 
             key="first" 
-            disabled={todoList.paging.activePage === 1 }
+            disabled={todoList.paging.activePage <= 1 }
             onClick={() => handlePaginationUpdate(1, todoList.paging.itemsPerPage)}
           />
           <Pagination.Prev 
             key="prev" 
-            disabled={todoList.paging.activePage === 1 }
+            disabled={todoList.paging.activePage <= 1 }
             onClick={() => handlePaginationUpdate(todoList.paging.activePage - 1 >= 1 ? todoList.paging.activePage - 1 : 1, todoList.paging.itemsPerPage)} 
           />
           {

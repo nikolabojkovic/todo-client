@@ -29,6 +29,7 @@ import { LocalStorageProvider, StorageProviderKey } from './shared/services/stor
 import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { ConfirmModalService } from './components/confirm-modal/confirm-modal.service';
+import { LoaderComponent } from './components/loader/loader.component';
 
 
 @NgModule({
@@ -46,6 +47,7 @@ import { ConfirmModalService } from './components/confirm-modal/confirm-modal.se
     SortButtonComponent,
     SortIconComponent,
     ConfirmModalComponent,
+    LoaderComponent,
   ],
   imports: [
     BrowserModule,

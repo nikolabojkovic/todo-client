@@ -2,7 +2,7 @@ import './App.scss';
 import { Tabs } from './components/Tabs';
 import { Sorting } from './components/Sorting';
 import { TodoList } from './components/TodoList';
-import { TodoListProvider } from './context/TodoListContext';
+import { TodoStateProvider } from './context/TodoListContext';
 
 import { State } from './context/IState';
 import { ITodo } from './models/Todo';
@@ -13,11 +13,11 @@ function App() {
       <header className="App-header">
         Todo List
       </header>
-      <TodoListProvider todoList={new State([] as ITodo[])}>
+      <TodoStateProvider todoList={new State([] as ITodo[])}>
         <Tabs/>
         <Sorting/>
         <TodoList/>
-      </TodoListProvider>
+      </TodoStateProvider>
     </div>
   );
 }

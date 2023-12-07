@@ -42,6 +42,7 @@ export class SearchTodosComponent implements OnInit {
   }
 
   onSerach(): void {
+    this.store.dispatch(TodoListActions.loadingStarged());
     this.store.select(selectTodos)
     .pipe(first())
     .subscribe((todoList: IState) => {
@@ -51,7 +52,7 @@ export class SearchTodosComponent implements OnInit {
         this.searchValue)
         .pipe(first())
         .subscribe((list: ITodo[]) => { 
-          this.store.dispatch(TodoListActions.searched({ 
+          this.store.dispatch(TodoListActions.searched({
             searchTerm: this.searchValue,
             activePage: 1,
             list: list

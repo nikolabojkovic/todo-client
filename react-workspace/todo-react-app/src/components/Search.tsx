@@ -3,9 +3,10 @@ import { useTodoList, useTodoListDispatch } from '../context/TodoListContext';
 import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IAction } from '../models/Action';
-import { todoServiceInstance } from '../services/TodoService';
+import { getList, GetListProps } from '../providers/TodoProvider';
 import { first } from 'rxjs';
 import { ITodo } from '../models/Todo';
+import { localStorageProvider } from '../providers/StorageProvider';
 
 type Props = {
   placeholder: string
@@ -16,10 +17,16 @@ export function Search({ placeholder }: Props) {
   const todoList = useTodoList();
 
   function handleSearch(searchTerm: string) {
-    todoServiceInstance.getList(
-      todoList.filter, 
-      todoList.sort,
-      searchTerm)
+    dispatch({
+      type: 'loading-started'
+    } as IAction);
+
+    getList({
+      provider: localStorageProvider,
+      filter: todoList.filter, 
+      sort: todoList.sort,
+      searchTerm
+      } as GetListProps)
       .pipe(first())
       .subscribe((list: ITodo[]) => { 
         dispatch({

@@ -1,12 +1,13 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faAdd, faFilter, faDownload, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { Stack } from "react-bootstrap";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { AddTodo } from './AddTodo';
 import { Search } from './Search';
 import { FilterTodos } from './FilterTodos';
 import { ImportExport } from './ImportExport';
+import { useTodoList } from "../context/TodoListContext";
 
 type Tab = {
   name: string,
@@ -16,6 +17,7 @@ type Tab = {
 
 export function Tabs() {
   const [active, setActive] = useState('add-todo');
+  const todoList = useTodoList();
 
   const tabs: Tab[] = [{
       name: 'add-todo',
@@ -30,7 +32,7 @@ export function Tabs() {
     {
       name: 'filter-todos',
       icon: faFilter,
-      content: <FilterTodos/>
+      content: <FilterTodos filter={todoList.filter}/>
     },
     {
       name: 'import-export',
@@ -42,27 +44,29 @@ export function Tabs() {
 
   return (
     <section className="App__tabs mb-2" data-testid="tabs">
-      <Stack direction="horizontal" gap={1}>      
-        {tabs.map((tab: Tab) => (
-          <div 
-            data-testid={tab.name}
-            key={tab.name}
-            className={ 
-              active === tab.name 
-              ? "App__tabs__item" 
-              : "App__tabs__item App__tabs__item--inactive"
-            } 
-            onClick={()=> setActive(tab.name)}
-          >      
-            <FontAwesomeIcon icon={tab.icon} />
-          </div>
-        ))}
-      </Stack>
-      <section className="App__tabs-content">
+      <section className='App__tabs__header'>
+        <Stack direction="horizontal" gap={1} className='align-items-end'>      
+          {tabs.map((tab: Tab) => (
+            <div 
+              data-testid={tab.name}
+              key={tab.name}
+              className={ 
+                active === tab.name 
+                ? "App__tabs__item" 
+                : "App__tabs__item App__tabs__item--inactive"
+              } 
+              onClick={()=> setActive(tab.name)}
+            >      
+              <FontAwesomeIcon icon={tab.icon} />
+            </div>
+          ))}
+        </Stack>
+      </section>      
+      <section className="App__tabs__content">
         <div 
           data-testid={"tab-content-" + activeChild?.name}
           key={"tab-content-" + activeChild?.name}
-          className="fade-in"
+          className=""
         >
           {activeChild?.content}
         </div>

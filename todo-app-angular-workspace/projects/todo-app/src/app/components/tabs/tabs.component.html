@@ -1,16 +1,18 @@
 <section class="app__tabs mb-2">
-  <div id="tabs" class="hstack gap-1">
-    <div 
-      *ngFor="let tab of tabs; trackBy:tabTrackBy" 
-      [id]="tab.name"
-      class="app__tabs__item"
-      [ngClass]="{'app__tabs__item--inactive': active !== tab.name}"
-      (click)="setTab(tab.name)"
-    >
-      <fa-icon [icon]="tab.icon"></fa-icon>
+  <section class="app__tabs__header">
+    <div id="tabs" class="hstack gap-1 align-items-end">
+      <div 
+        *ngFor="let tab of tabs; trackBy:tabTrackBy" 
+        [id]="tab.name"
+        class="app__tabs__item"
+        [ngClass]="{'app__tabs__item--inactive': active !== tab.name}"
+        (click)="setTab(tab.name)"
+      >
+        <fa-icon [icon]="tab.icon"></fa-icon>
+      </div>
     </div>
-  </div>
-  <section class="app__tabs-content">
+  </section>
+  <section class="app__tabs__content">
     <div class="todo-background">
       <app-add-todo *ngIf="active === 'add-todo'" class="fade-in"></app-add-todo>
       <app-search-todos *ngIf="active === 'search-todos'" class="fade-in"></app-search-todos>

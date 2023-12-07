@@ -1,15 +1,15 @@
 import renderer, { act } from 'react-test-renderer';
 import { render, screen } from '@testing-library/react';
-import { TodoListProvider } from '../../context/TodoListContext';
+import { TodoStateProvider } from '../../context/TodoListContext';
 import { stateTestData } from '../../context/testData';
 import { Tabs } from '../../components/Tabs';
 import userEvent from '@testing-library/user-event'
 
 describe('todo tabs', () => {
   const todoTabsJsxElement = 
-      (<TodoListProvider todoList={stateTestData}>
+      (<TodoStateProvider todoList={stateTestData}>
         <Tabs/>
-      </TodoListProvider>);
+      </TodoStateProvider>);
 
   it('should match snapshot', () => {
     const tree = renderer.create(

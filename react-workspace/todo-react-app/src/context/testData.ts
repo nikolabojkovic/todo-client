@@ -2,7 +2,7 @@ import { ITodo } from "../models/Todo";
 import { IPaging } from "../models/IPaging";
 import { IState } from "./IState";
 import { ISort, SortDirection } from "../models/ISort";
-import { IFilter } from "../models/IFilter";
+import { IFilter, StateFilter } from "../models/IFilter";
 
 export const todoListTestData: ITodo[] = [
   {
@@ -54,7 +54,7 @@ export const stateTestData: IState =
   originalList: todoListTestData,
   displayList: todoListTestData,
   search: { searchTerm: '' },
-  filter: { completed: false, uncompleted: false } as IFilter,
+  filter: { state: StateFilter.all } as IFilter,
   sort: { column: 'createdAt', direction: SortDirection.Asc} as ISort,
   paging: {
     totalCount: 6,
