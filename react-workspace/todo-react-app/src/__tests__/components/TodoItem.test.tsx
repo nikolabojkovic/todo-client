@@ -21,7 +21,7 @@ describe('todo item uncompleted', () => {
 
   it('should render 2 icons', () => {
     render(<TodoItem todo={todo}/>);
-    const buttons = screen.getAllByRole('img ', { hidden: true });
+    const buttons = screen.getAllByRole('img', { hidden: true });
     expect(buttons.length).toBe(2);
   });
 })

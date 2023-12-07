@@ -50,6 +50,7 @@ export const todos: ITodo[] = [
 
 export const stateTestData: IState = 
 {
+  isLoading: false,
   originalList: todos,
   displayList: todos,
   search: { searchTerm: '' },
