@@ -15,6 +15,9 @@ import { SortButtonComponent } from './components/sort-button/sort-button.compon
 import { SortIconComponent } from './components/sort-icon/sort-icon.component';
 import { MockLocalStorageProvider } from './shared/mocks/local-storage-provider.mock';
 import { StorageProviderKey } from './shared/services/storage-provider.service';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('AppComponent', () => {
   let store: MockStore<IState>;
@@ -30,7 +33,14 @@ describe('AppComponent', () => {
         TodoListComponent, 
         PagingComponent, 
         AddTodoComponent],
-      imports: [FontAwesomeModule, PaginationModule.forRoot(), FormsModule],
+      imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        FontAwesomeModule, 
+        PaginationModule.forRoot(), 
+        FormsModule, 
+        BsDropdownModule
+      ],
       providers: [
         provideMockStore({ stateTestData } as any),  
         {

@@ -6,6 +6,7 @@ import { stateTestData } from '../../shared/test-data';
 import { ITodo } from '../../shared/models/todo';
 import { ConfirmModalService } from '../confirm-modal/confirm-modal.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 describe('TodoItemComponent', () => {
   let component: TodoItemComponent;
@@ -15,6 +16,7 @@ describe('TodoItemComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [TodoItemComponent],
+      imports: [FontAwesomeModule],
       providers: [provideMockStore({ stateTestData } as any), ConfirmModalService, BsModalService]
     });
     store = TestBed.inject(MockStore);    
@@ -22,7 +24,7 @@ describe('TodoItemComponent', () => {
     component = fixture.componentInstance;
   });
 
-  it('uncompleted todo should render 2 buttons', () => {
+  it('uncompleted todo should render 2 icons', () => {
     const expectedTodo = {
       title: "test title",
       description: "test description",
@@ -35,13 +37,11 @@ describe('TodoItemComponent', () => {
     fixture.detectChanges();
 
     const compiled = fixture.nativeElement as HTMLElement;
-    const buttons = compiled.querySelectorAll('button');
-    expect(buttons.length).toBe(2);
-    expect(buttons[0]?.textContent?.trim()).toBe('Complete');
-    expect(buttons[1]?.textContent?.trim()).toBe('Delete');
+    const icons = compiled.querySelectorAll('.ng-fa-icon');
+    expect(icons.length).toBe(2);
   });
 
-  it('completed todo should render complete button disabled', () => {
+  it('completed todo should render complete icon disabled', () => {
     const expectedTodo = {
       title: "test title",
       description: "test description",
@@ -54,7 +54,7 @@ describe('TodoItemComponent', () => {
     fixture.detectChanges();
 
     const compiled = fixture.nativeElement as HTMLElement;
-    const buttons = compiled.querySelectorAll('button');
-    expect(buttons[0]?.disabled).toBe(true);
+    const icons = compiled.querySelectorAll('.ng-fa-icon');
+    expect(icons[0]?.className).toContain('action-icon--disabled');
   });
 });
