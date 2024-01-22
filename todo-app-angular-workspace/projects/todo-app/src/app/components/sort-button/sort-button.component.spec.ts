@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideMockStore, MockStore } from '@ngrx/store/testing';
-import { stateTestData } from '../../shared/test-data';
+import { stateTestData } from '../../tests/test-data';
 import { IState } from '../../shared/state/state';
 import { SortButtonComponent } from './sort-button.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SortIconComponent } from '../sort-icon/sort-icon.component';
-import { MockLocalStorageProvider } from '../../shared/mocks/local-storage-provider.mock';
-import { StorageProviderKey } from '../../shared/services/storage-provider.service';
+import { MockLocalStorageProvider } from '../../tests/mocks/local-storage.provider.mock';
+import { StorageProviderKey } from '../../shared/services/storage.provider';
 
 describe('SortButtonComponent', () => {
   let component: SortButtonComponent;

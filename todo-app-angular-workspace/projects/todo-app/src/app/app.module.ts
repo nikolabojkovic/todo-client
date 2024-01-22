@@ -25,7 +25,7 @@ import { SortingComponent } from './components/sorting/sorting.component';
 import { SortButtonComponent } from './components/sort-button/sort-button.component';
 import { SortIconComponent } from './components/sort-icon/sort-icon.component';
 import { TodoEffects } from './shared/state/todo.effects';
-import { LocalStorageProvider, StorageProviderKey } from './shared/services/storage-provider.service';
+import { LocalStorageProvider, StorageProviderKey } from './shared/services/storage.provider';
 import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { ConfirmModalService } from './components/confirm-modal/confirm-modal.service';

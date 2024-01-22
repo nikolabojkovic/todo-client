@@ -61,7 +61,7 @@ export class ImportExportComponent implements OnInit {
     this.file = ((e.target) as HTMLInputElement).files![0];
   }
 
-  onLoad = (e: ProgressEvent<FileReader>) => {
+  private onLoad = (e: ProgressEvent<FileReader>) => {
     const text = e.target?.result;
     const list = JSON.parse(text as string) as Todo[];
 

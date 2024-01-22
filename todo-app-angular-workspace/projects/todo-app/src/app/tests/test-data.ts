@@ -1,7 +1,7 @@
-import { IPaging } from "./models/paging";
-import { SortDirection } from "./models/sort";
-import { IState } from "./state/state";
-import { ITodo } from "./models/todo";
+import { IPaging } from "../shared/models/paging";
+import { SortDirection } from "../shared/models/sort";
+import { IState } from "../shared/state/state";
+import { ITodo } from "../shared/models/todo";
 
 export const todos: ITodo[] = [
   {

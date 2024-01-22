@@ -3,7 +3,7 @@ import { ITodo } from '../models/todo';
 import { map, Observable, of } from 'rxjs';
 import { IFilter } from '../models/filter';
 import { ISort, SortDirection } from '../models/sort';
-import { IStorageProvider, StorageProviderKey } from './storage-provider.service';
+import { IStorageProvider, StorageProviderKey } from './storage.provider';
 
 @Injectable({
   providedIn: 'root'

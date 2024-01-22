@@ -20,7 +20,7 @@ export class TodoItemComponent {
 
   constructor(private store: Store<IState>, private modalService: ConfirmModalService) {}
 
-  onComplete(todoId: number) {
+  onComplete() {
     if (this.todo.completed)
       return;
 
@@ -28,17 +28,17 @@ export class TodoItemComponent {
     .pipe(first())
     .subscribe((confirmed) => {
       if (confirmed) {
-        this.store.dispatch(TodoListActions.completed({ todoId }));
+        this.store.dispatch(TodoListActions.completed({ todoId: this.todo.id }));
       }      
     });    
   }
 
-  onRemove(todoId: number) {
+  onRemove() {
     this.modalService.confirm('Are you sure you want to delete this item?', 'modal-sm')
     .pipe(first())
     .subscribe((confirmed) => {
       if (confirmed) {
-        this.store.dispatch(TodoListActions.removed({ todoId }));
+        this.store.dispatch(TodoListActions.removed({ todoId: this.todo.id }));
       }      
     }); 
   }

@@ -1,5 +1,5 @@
 import { Observable, of } from "rxjs";
-import { IStorageProvider } from "../services/storage-provider.service";
+import { IStorageProvider } from "../../shared/services/storage.provider";
 import { todos } from "../test-data";
 
 export class MockLocalStorageProvider implements IStorageProvider {

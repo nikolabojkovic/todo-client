@@ -9,29 +9,29 @@ export const initialState: IState = new State([] as ITodo[]);
 
 export const todosReducer = createReducer(
   initialState,
-  on(TodoListActions.fetched, (_state, { list }) =>{  
+  on(TodoListActions.fetched, (_state, { list }) =>{
     return {
       ...new State(list)
     } as IState
   }),
   on(TodoListActions.added, (todoList, { title, description } ) => {
-    const id = todoList.originalList.length >= 1 
+    const id = todoList.originalList.length >= 1
     ? [...todoList.originalList]
-        .sort((a: ITodo, b: ITodo) => a.id > b.id ? 1 : -1)[todoList.originalList.length - 1].id 
+        .sort((a: ITodo, b: ITodo) => a.id > b.id ? 1 : -1)[todoList.originalList.length - 1].id
     : 0;
     const newTodo = {
       id: id + 1,
       title,
-      description, 
+      description,
       completed: false,
-      createdAt: new Date() 
+      createdAt: new Date()
     }
     return {
       ...todoList,
       originalList: [...todoList.originalList, newTodo],
       displayList: [...todoList.displayList, newTodo],
       paging: {
-        ...todoList.paging, 
+        ...todoList.paging,
         totalCount: todoList.paging.totalCount + 1,
         activePage: calculateActivePageOnAdd(todoList.paging),
         startIndex: (calculateActivePageOnAdd(todoList.paging) - 1) * todoList.paging.itemsPerPage,
@@ -65,11 +65,11 @@ export const todosReducer = createReducer(
       originalList: todoList.originalList.filter(t => t.id !== todoId) as ITodo[],
       displayList: todoList.displayList.filter(t => t.id !== todoId) as ITodo[],
       paging: {
-        ...todoList.paging, 
+        ...todoList.paging,
         totalCount: todoList.paging.totalCount - 1,
         activePage: calculateActivePageOnDelete(todoList.paging),
         startIndex: (calculateActivePageOnDelete(todoList.paging) - 1) * todoList.paging.itemsPerPage,
-        endIndex: calculateActivePageOnDelete(todoList.paging) * todoList.paging.itemsPerPage,  
+        endIndex: calculateActivePageOnDelete(todoList.paging) * todoList.paging.itemsPerPage,
       } as IPaging
     } as IState;
   }
@@ -150,7 +150,7 @@ export const todosReducer = createReducer(
       search: { searchTerm },
     }
   }),
-  on(TodoListActions.loadingStarged, (_state, { }) =>{  
+  on(TodoListActions.loadingStarted, (_state, { }) =>{
     return {
       ..._state,
       isLoading: true

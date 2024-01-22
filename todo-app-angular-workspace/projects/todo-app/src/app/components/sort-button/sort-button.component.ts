@@ -21,7 +21,7 @@ export class SortButtonComponent {
 
   constructor(private store: Store<IState>, private todoService: TodoService) {}
 
-  ngOnInit(): void {    
+  ngOnInit(): void {
     this.store.select(selectSort)
     .pipe()
     .subscribe((sort: ISort) => {
@@ -30,24 +30,24 @@ export class SortButtonComponent {
   }
 
   sort(): void {
-    this.store.dispatch(TodoListActions.loadingStarged());
+    this.store.dispatch(TodoListActions.loadingStarted());
     this.store.select(selectTodos)
     .pipe(first())
     .subscribe((todoList: IState) => {
-      const sort = { 
-        column: this.column, 
+      const sort = {
+        column: this.column,
         direction: this.sortDirection !== SortDirection.Asc ? SortDirection.Asc : SortDirection.Desc
       } as ISort;
-      
+
       this.todoService.getList(
-        todoList.filter, 
+        todoList.filter,
         sort,
         todoList.search.searchTerm)
         .pipe(first())
-        .subscribe((list: ITodo[]) => { 
+        .subscribe((list: ITodo[]) => {
           this.store.dispatch(TodoListActions.sorted({
             sort,
-            list 
+            list
           }));
       });
     });

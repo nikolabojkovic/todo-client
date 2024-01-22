@@ -14,14 +14,14 @@
       <fa-icon 
         [icon]="faCheckDouble"
         [ngClass]="todo.completed ? 'action-icon--disabled' : 'action-icon'"
-        (click)="onComplete(todo.id)"
+        (click)="onComplete()"
       ></fa-icon>
     </div>
     <div [ngClass]="{'ms-todo' : todo.completed}">
       <fa-icon 
         [icon]="faTrash"
         class="action-icon"
-        (click)="onRemove(todo.id)"
+        (click)="onRemove()"
       ></fa-icon>
     </div>
   </div>

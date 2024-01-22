@@ -19,7 +19,7 @@ export class FilterTodosComponent implements OnInit {
 
   constructor(private store: Store<IState>, private todoService: TodoService) { }
 
-  ngOnInit(): void { 
+  ngOnInit(): void {
     this.store.select(selectFilter)
         .pipe()
         .subscribe((filter: IFilter) => {
@@ -29,7 +29,7 @@ export class FilterTodosComponent implements OnInit {
   }
 
   onFilter(): void {
-    this.store.dispatch(TodoListActions.loadingStarged());
+    this.store.dispatch(TodoListActions.loadingStarted());
     this.store.select(selectTodos)
     .pipe(first())
     .subscribe((todoList: IState) => {
@@ -39,12 +39,12 @@ export class FilterTodosComponent implements OnInit {
       } as IFilter;
 
       this.todoService.getList(
-        filter, 
+        filter,
         todoList.sort,
         todoList.search.searchTerm)
         .pipe(first())
-        .subscribe((list: ITodo[]) => { 
-          this.store.dispatch(TodoListActions.filtered({ 
+        .subscribe((list: ITodo[]) => {
+          this.store.dispatch(TodoListActions.filtered({
             activePage: 1,
             filter,
             list: list
@@ -52,6 +52,6 @@ export class FilterTodosComponent implements OnInit {
       });
     });
 
-    
+
   }
 }

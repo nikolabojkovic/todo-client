@@ -2,9 +2,9 @@ import { exhaustMap, first } from 'rxjs';
 import { IFilter } from '../../shared/models/filter';
 import { ISort, SortDirection } from '../../shared/models/sort';
 import { TodoService } from '../../shared/services/todo.service';
-import { MockLocalStorageProvider } from '../mocks/local-storage-provider.mock';
+import { MockLocalStorageProvider } from '../../tests/mocks/local-storage.provider.mock';
 import { ITodo } from '../models/todo';
-import { IStorageProvider } from './storage-provider.service';
+import { IStorageProvider } from './storage.provider';
 
 describe('todo service', () => {
   let mockLocalStorage: IStorageProvider;

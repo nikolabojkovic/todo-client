@@ -16,7 +16,7 @@ export class AddTodoComponent implements OnInit {
 
   ngOnInit(): void { }
   
-  async onAdd() {
+  onAdd() {
     this.store.dispatch(TodoListActions.added({
       title: this.title,
       description: this.description,

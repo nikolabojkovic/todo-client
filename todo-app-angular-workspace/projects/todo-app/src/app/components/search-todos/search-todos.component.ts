@@ -18,10 +18,10 @@ export class SearchTodosComponent implements OnInit {
   ifSearchIsEmpty = true;
   searchValue = '';
   faCircleXmark = faCircleXmark;
-  
+
   constructor(private store: Store<IState>, private todoService: TodoService) { }
 
-  ngOnInit(): void { 
+  ngOnInit(): void {
     this.store.select(selectSearch)
         .pipe()
         .subscribe((search: ISearch) => {
@@ -32,7 +32,7 @@ export class SearchTodosComponent implements OnInit {
 
   onTyping(): void {
     this.ifSearchIsEmpty = !this.searchValue || this.searchValue.trim() === '';
-    this.store.dispatch(TodoListActions.searchTermUpdated({ 
+    this.store.dispatch(TodoListActions.searchTermUpdated({
       searchTerm: this.searchValue ? this.searchValue.trim() : ''
     }));
 
@@ -42,16 +42,16 @@ export class SearchTodosComponent implements OnInit {
   }
 
   onSerach(): void {
-    this.store.dispatch(TodoListActions.loadingStarged());
+    this.store.dispatch(TodoListActions.loadingStarted());
     this.store.select(selectTodos)
     .pipe(first())
     .subscribe((todoList: IState) => {
       this.todoService.getList(
-        todoList.filter, 
+        todoList.filter,
         todoList.sort,
         this.searchValue)
         .pipe(first())
-        .subscribe((list: ITodo[]) => { 
+        .subscribe((list: ITodo[]) => {
           this.store.dispatch(TodoListActions.searched({
             searchTerm: this.searchValue,
             activePage: 1,
