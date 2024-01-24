@@ -23,6 +23,7 @@ export class ImportExportComponent implements OnInit {
   fileReader = new FileReader();
   faFileImport = faFileImport;
   faFileExport = faFileExport;
+  downloadLink: HTMLAnchorElement = document.createElement('a');
 
   constructor(private store: Store<IState>, private modalService: ConfirmModalService) { }
 
@@ -43,25 +44,26 @@ export class ImportExportComponent implements OnInit {
     .subscribe((confirmed) => {
       if (confirmed) {
         this.fileReader.readAsText(this.file!);
-      }      
-    }); 
+      }
+    });
   }
 
-  onExport(): void {
-    const link = document.createElement('a');
+  onExport(): HTMLAnchorElement {
     const jsonContent = `data:text/json;chatset=utf-8,${encodeURIComponent(
       JSON.stringify(this.items)
     )}`;
-    link.href = jsonContent;
-    link.download = `todo-list-${new Date().toLocaleDateString()}-${new Date().toLocaleTimeString()}.json`;
-    link.click();
+    this.downloadLink.href = jsonContent;
+    this.downloadLink.download = `todo-list-${new Date().toLocaleDateString()}-${new Date().toLocaleTimeString()}.json`;
+    this.downloadLink.click();
+
+    return this.downloadLink;
   }
 
   onChooseFile(e: Event) {
     this.file = ((e.target) as HTMLInputElement).files![0];
   }
 
-  private onLoad = (e: ProgressEvent<FileReader>) => {
+  onLoad = (e: ProgressEvent<FileReader>) => {
     const text = e.target?.result;
     const list = JSON.parse(text as string) as Todo[];
 
@@ -70,24 +72,24 @@ export class ImportExportComponent implements OnInit {
       return;
     }
 
-    const importedTodoList = list.map((item: Todo) => new Todo(item.id, 
-                                                               item.title, 
-                                                               item.description, 
-                                                               item.completed, 
+    const importedTodoList = list.map((item: Todo) => new Todo(item.id,
+                                                               item.title,
+                                                               item.description,
+                                                               item.completed,
                                                                item.createdAt));
 
-    if ((importedTodoList.length > 0 
-        && (!(importedTodoList[0] instanceof Todo) 
+    if ((importedTodoList.length > 0
+        && (!(importedTodoList[0] instanceof Todo)
          || !(Todo.validateFields(importedTodoList[0]))
             )
         )) {
       alert("Invalid JSON file content. Objects in array are not valid Todo objects.");
       return;
     }
-          
+
     this.file = null;
     this.fileContainer.nativeElement.value = '';
-    this.store.dispatch(TodoListActions.imported({ 
+    this.store.dispatch(TodoListActions.imported({
       activePage: 1,
       list: importedTodoList
     }));

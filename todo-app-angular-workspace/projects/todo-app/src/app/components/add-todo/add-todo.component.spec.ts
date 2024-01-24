@@ -55,5 +55,32 @@ describe("AddTodoComponent", () => {
       expect(component.title).toBe('');
       expect(component.description).toBe('');
     });
+
+    it('should disable add button if title is empty', () => {
+      component.title = '';
+      component.description = 'desc';
+
+      fixture.detectChanges();
+
+      expect(component.ifDataIsMissing).toBeTrue();
+    });
+
+    it('should disable add button if description is empty', () => {
+      component.title = 'title';
+      component.description = '';
+
+      fixture.detectChanges();
+
+      expect(component.ifDataIsMissing).toBeTrue();
+    });
+
+    it('should enable add button if title and description are not empty', () => {
+      component.title = 'title';
+      component.description = 'desc';
+
+      fixture.detectChanges();
+
+      expect(component.ifDataIsMissing).toBeFalse();
+    });
   });
 })

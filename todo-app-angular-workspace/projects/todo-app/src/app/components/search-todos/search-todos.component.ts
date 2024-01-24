@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { first } from 'rxjs';
 import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import { ISearch } from '../../shared/models/search';
 import { IState } from '../../shared/state/state';
-import { TodoService } from '../../shared/services/todo.service';
 import { TodoListActions } from '../../shared/state/todo.actions';
-import { selectSearch, selectTodos } from '../../shared/state/todo.selectors';
-import { ITodo } from '../../shared/models/todo';
+import { selectFilter, selectSearch, selectSort } from '../../shared/state/todo.selectors';
+import { IFilter } from '../../shared/models/filter';
+import { ISort } from '../../shared/models/sort';
 
 @Component({
   selector: 'app-search-todos',
@@ -17,17 +16,30 @@ import { ITodo } from '../../shared/models/todo';
 export class SearchTodosComponent implements OnInit {
   ifSearchIsEmpty = true;
   searchValue = '';
+  filter!: IFilter;
+  sort!: ISort;
   faCircleXmark = faCircleXmark;
 
-  constructor(private store: Store<IState>, private todoService: TodoService) { }
+  constructor(private store: Store<IState>) { }
 
   ngOnInit(): void {
     this.store.select(selectSearch)
-        .pipe()
-        .subscribe((search: ISearch) => {
-          this.searchValue = search.searchTerm;
-          this.ifSearchIsEmpty = search.searchTerm === ''
-        });
+      .pipe()
+      .subscribe((search: ISearch) => {
+        this.searchValue = search.searchTerm;
+        this.ifSearchIsEmpty = search.searchTerm === ''
+      });
+    this.store.select(selectFilter)
+      .pipe()
+      .subscribe((filter: IFilter) => {
+        this.filter = filter;
+      });
+
+    this.store.select(selectSort)
+      .pipe()
+      .subscribe((sort: ISort) => {
+        this.sort = sort;
+      });
   }
 
   onTyping(): void {
@@ -42,23 +54,11 @@ export class SearchTodosComponent implements OnInit {
   }
 
   onSerach(): void {
-    this.store.dispatch(TodoListActions.loadingStarted());
-    this.store.select(selectTodos)
-    .pipe(first())
-    .subscribe((todoList: IState) => {
-      this.todoService.getList(
-        todoList.filter,
-        todoList.sort,
-        this.searchValue)
-        .pipe(first())
-        .subscribe((list: ITodo[]) => {
-          this.store.dispatch(TodoListActions.searched({
-            searchTerm: this.searchValue,
-            activePage: 1,
-            list: list
-          }));
-      });
-    });
+    this.store.dispatch(TodoListActions.search({
+      filter: this.filter,
+      sort: this.sort,
+      search: this.searchValue
+    }));
   }
 
   onClearSearch(): void {

@@ -19,7 +19,6 @@ export class TodoListComponent implements OnInit {
   constructor(private store: Store<IState>) { }
 
   ngOnInit(): void {
-    this.store.dispatch(TodoListActions.loadingStarted());
     this.store.dispatch(TodoListActions.fetch());
   }
 }

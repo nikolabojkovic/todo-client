@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { first } from 'rxjs';
 import { IFilter } from '../../shared/models/filter';
-import { ITodo } from '../../shared/models/todo';
 import { IState } from '../../shared/state/state';
-import { TodoService } from '../../shared/services/todo.service';
 import { TodoListActions } from '../../shared/state/todo.actions';
-import { selectFilter, selectTodos } from '../../shared/state/todo.selectors';
+import { selectFilter, selectSearch, selectSort } from '../../shared/state/todo.selectors';
+import { ISort } from '../../shared/models/sort';
+import { ISearch } from '../../shared/models/search';
 
 @Component({
   selector: 'app-filter-todos',
@@ -16,8 +15,10 @@ import { selectFilter, selectTodos } from '../../shared/state/todo.selectors';
 export class FilterTodosComponent implements OnInit {
   isCompleted = false;
   isUncompleted = false;
+  search: string = '';
+  sort!: ISort;
 
-  constructor(private store: Store<IState>, private todoService: TodoService) { }
+  constructor(private store: Store<IState>) { }
 
   ngOnInit(): void {
     this.store.select(selectFilter)
@@ -26,32 +27,23 @@ export class FilterTodosComponent implements OnInit {
           this.isCompleted = filter.completed;
           this.isUncompleted = filter.uncompleted;
         });
+    this.store.select(selectSearch)
+      .pipe()
+      .subscribe((search: ISearch) => {
+        this.search = search.searchTerm;
+      });
+    this.store.select(selectSort)
+      .pipe()
+      .subscribe((sort: ISort) => {
+        this.sort = sort;
+      });
   }
 
   onFilter(): void {
-    this.store.dispatch(TodoListActions.loadingStarted());
-    this.store.select(selectTodos)
-    .pipe(first())
-    .subscribe((todoList: IState) => {
-      const filter = {
-        completed: this.isCompleted,
-        uncompleted: this.isUncompleted
-      } as IFilter;
-
-      this.todoService.getList(
-        filter,
-        todoList.sort,
-        todoList.search.searchTerm)
-        .pipe(first())
-        .subscribe((list: ITodo[]) => {
-          this.store.dispatch(TodoListActions.filtered({
-            activePage: 1,
-            filter,
-            list: list
-          }));
-      });
-    });
-
-
+    this.store.dispatch(TodoListActions.filter({
+      filter: { completed: this.isCompleted, uncompleted: this.isUncompleted } as IFilter,
+      sort: this.sort,
+      search: this.search
+    }));
   }
 }

@@ -33,22 +33,22 @@ export const todos: ITodo[] = [
     createdAt: new Date(2022, 1, 7)
   } as ITodo,
   {
-    id: 5,
-    title: "Task 5",
-    description: "Description 5",
+    id: 6,
+    title: "Task 6",
+    description: "Description 6",
     completed: false,
     createdAt: new Date(2022, 3, 8)
   } as ITodo,
   {
-    id: 6,
-    title: "Task 6",
-    description: "Description 6",
+    id: 5,
+    title: "Task 5",
+    description: "Description 5",
     completed: false,
     createdAt: new Date(2022, 2, 4)
   } as ITodo
 ] as ITodo[];
 
-export const stateTestData: IState = 
+export const stateTestData: IState =
 {
   isLoading: false,
   originalList: todos,

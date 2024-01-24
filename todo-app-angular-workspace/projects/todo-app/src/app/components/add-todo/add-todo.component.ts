@@ -15,7 +15,7 @@ export class AddTodoComponent implements OnInit {
   constructor(private store: Store<IState>) { }
 
   ngOnInit(): void { }
-  
+
   onAdd() {
     this.store.dispatch(TodoListActions.added({
       title: this.title,
@@ -26,9 +26,6 @@ export class AddTodoComponent implements OnInit {
   }
 
   get ifDataIsMissing(): boolean {
-    return !this.title 
-      || this.title.trim() === '' 
-      || !this.description 
-      || this.description.trim() === ''
+    return this.title.trim() === '' || this.description.trim() === ''
   }
 }

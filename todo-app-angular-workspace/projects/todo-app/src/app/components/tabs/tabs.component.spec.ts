@@ -9,9 +9,9 @@ import { TabsComponent } from './tabs.component';
 import { FormsModule } from '@angular/forms';
 import { SearchTodosComponent } from '../search-todos/search-todos.component';
 import { ImportExportComponent } from '../import-export/import-export.component';
-import { MockTodoService } from '../../tests/mocks/todo.service.mock';
 import { MockLocalStorageProvider } from '../../tests/mocks/local-storage.provider.mock';
 import { StorageProviderKey } from '../../shared/services/storage.provider';
+import { TodoService } from '../../shared/services/todo.service';
 
 describe('TabsComponent', () => {
   let component: TabsComponent;
@@ -21,16 +21,16 @@ describe('TabsComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
-        TabsComponent, 
-        AddTodoComponent, 
-        SearchTodosComponent, 
-        SearchTodosComponent, 
+        TabsComponent,
+        AddTodoComponent,
+        SearchTodosComponent,
+        SearchTodosComponent,
         ImportExportComponent
       ],
       imports: [FontAwesomeModule, FormsModule],
       providers: [
-        provideMockStore({ stateTestData } as any), 
-        MockTodoService, 
+        provideMockStore({ stateTestData } as any),
+        TodoService,
         {
           provide: StorageProviderKey,
           useClass: MockLocalStorageProvider
@@ -52,12 +52,12 @@ describe('TabsComponent', () => {
     const el = fixture.nativeElement.querySelectorAll('#tabs div');
     el[1].click();
     fixture.detectChanges();
-    
+
     expect(funcSetTab).toHaveBeenCalled();
   });
 
   it('should change active tab', () => {
-    component.setTab(component.tabs[1].name);    
+    component.setTab(component.tabs[1].name);
     fixture.detectChanges();
 
     expect(component.active).toBe(component.tabs[1].name);
@@ -65,7 +65,7 @@ describe('TabsComponent', () => {
 
   it('should switch to search tab', () => {
     const el = fixture.nativeElement.querySelectorAll('#tabs div');
-    el[1].dispatchEvent(new Event('click'));    
+    el[1].dispatchEvent(new Event('click'));
     fixture.detectChanges();
 
     const searchTabEl = fixture.nativeElement.querySelector('app-search-todos');

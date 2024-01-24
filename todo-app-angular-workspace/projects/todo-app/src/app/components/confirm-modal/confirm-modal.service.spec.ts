@@ -24,7 +24,7 @@ describe("ConfirmModalService", () => {
   describe('confirm', () => {
     it('confirm should set confirm content', () => {
       const confirmationText = 'Are you sure?';
-      const dialogSize = 'modal-sm';
+      const dialogSize = 'modal-lg';
       const response = service.confirm(confirmationText, dialogSize);
 
       expect(bsModalService.show).toHaveBeenCalledOnceWith(ConfirmModalComponent, {class: `${dialogSize} modal-dialog-centered`, backdrop: 'static'});
@@ -33,5 +33,11 @@ describe("ConfirmModalService", () => {
       expect(response).toBe(subject);
     });
 
+    it('confirm should display large modal', () => {
+      const dialogSize = 'modal-sm';
+      const response = service.confirm('Are you sure?');
+
+      expect(bsModalService.show).toHaveBeenCalledOnceWith(ConfirmModalComponent, {class: `${dialogSize} modal-dialog-centered`, backdrop: 'static'});
+    });
   });
 });

@@ -1,12 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { first } from 'rxjs';
 import { ISort, SortDirection } from '../../shared/models/sort';
 import { IState } from '../../shared/state/state';
-import { TodoService } from '../../shared/services/todo.service';
 import { TodoListActions } from '../../shared/state/todo.actions';
-import { selectSort, selectTodos } from '../../shared/state/todo.selectors';
-import { ITodo } from '../../shared/models/todo';
+import { selectFilter, selectSearch, selectSort } from '../../shared/state/todo.selectors';
+import { IFilter } from '../../shared/models/filter';
+import { ISearch } from '../../shared/models/search';
 
 @Component({
   selector: 'app-sort-button',
@@ -18,38 +17,37 @@ export class SortButtonComponent {
   @Input() text: string = "";
 
   sortDirection!: string;
+  filter!: IFilter;
+  search: string = '';
 
-  constructor(private store: Store<IState>, private todoService: TodoService) {}
+  constructor(private store: Store<IState>) {}
 
   ngOnInit(): void {
     this.store.select(selectSort)
-    .pipe()
-    .subscribe((sort: ISort) => {
-      this.sortDirection = sort.column === this.column ? sort.direction : SortDirection.None;
-    });
+      .pipe()
+      .subscribe((sort: ISort) => {
+        this.sortDirection = sort.column === this.column ? sort.direction : SortDirection.None;
+      });
+    this.store.select(selectFilter)
+      .pipe()
+      .subscribe((filter: IFilter) => {
+        this.filter = filter
+      });
+    this.store.select(selectSearch)
+      .pipe()
+      .subscribe((search: ISearch) => {
+        this.search = search.searchTerm;
+      });
   }
 
-  sort(): void {
-    this.store.dispatch(TodoListActions.loadingStarted());
-    this.store.select(selectTodos)
-    .pipe(first())
-    .subscribe((todoList: IState) => {
-      const sort = {
+  onSort(): void {
+    this.store.dispatch(TodoListActions.sort({
+      filter: this.filter,
+      sort: {
         column: this.column,
         direction: this.sortDirection !== SortDirection.Asc ? SortDirection.Asc : SortDirection.Desc
-      } as ISort;
-
-      this.todoService.getList(
-        todoList.filter,
-        sort,
-        todoList.search.searchTerm)
-        .pipe(first())
-        .subscribe((list: ITodo[]) => {
-          this.store.dispatch(TodoListActions.sorted({
-            sort,
-            list
-          }));
-      });
-    });
+      } as ISort,
+      search: this.search
+    }));
   }
 }

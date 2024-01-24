@@ -4,7 +4,7 @@ import { delay, Observable, of } from "rxjs";
 export const StorageProviderKey = new InjectionToken('Storage InjectionToken');
 
 export interface IStorageProvider {
-  getItem(key: string): Observable<string | null>;
+  getItem(key: string): Observable<string | null | undefined>;
   setItem(key: string, value: any): Observable<any>;
 }
 
@@ -12,7 +12,7 @@ export interface IStorageProvider {
   providedIn: 'root'
 })
 export class LocalStorageProvider {
-  getItem(key: string): Observable<string | null> {
+  getItem(key: string): Observable<string | null | undefined> {
     return of(localStorage.getItem(key)).pipe(delay(800));
   }
 
@@ -24,7 +24,7 @@ export class LocalStorageProvider {
 }
 
 export class BackendStorageProvider {
-  getItem(key: string): Observable<string | null> {
+  getItem(key: string): Observable<string | null | undefined> {
     // TODO: read from backend API by using http request
     return of("");
   }
