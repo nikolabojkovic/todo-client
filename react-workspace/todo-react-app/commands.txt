@@ -1,0 +1,2 @@
+// generate code coverage
+npm run test -- --coverage --watchAll=false
