@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AddTodo component should match snapshot 1`] = `
+<form
+  className="todo-background p-1"
+>
+  <div
+    className="container-fluid"
+  >
+    <div
+      className="row row-cols-sm-3 row-cols-1"
+    >
+      <div
+        className="p-2 col-sm-5"
+      >
+        <input
+          className="form-control form-control-sm"
+          id="title"
+          name="title"
+          onChange={[Function]}
+          placeholder="Enter title"
+          type="text"
+          value=""
+        />
+      </div>
+      <div
+        className="p-2 col-sm-5"
+      >
+        <input
+          className="form-control form-control-sm"
+          id="description"
+          name="description"
+          onChange={[Function]}
+          placeholder="Enter description"
+          type="text"
+          value=""
+        />
+      </div>
+      <div
+        className="p-2 col-sm-2"
+      >
+        <button
+          className="action-button w-100 btn btn-outline-secondary btn-sm"
+          disabled={true}
+          onClick={[Function]}
+          type="button"
+        >
+          Add
+        </button>
+      </div>
+    </div>
+  </div>
+</form>
+`;

@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FilterTodos component should match snapshot 1`] = `
+<form
+  className="App__filter d-flex justify-content-start align-items-center"
+>
+  <div
+    className="hstack gap-3"
+  >
+    <div
+      className="dropdown"
+    >
+      <button
+        aria-expanded={false}
+        className="action-button ps-2 pe-2 dropdown-toggle btn btn-outline-secondary"
+        disabled={false}
+        id="dropdown-basic"
+        onClick={[Function]}
+        type="button"
+      >
+         
+        All
+         
+      </button>
+    </div>
+  </div>
+</form>
+`;

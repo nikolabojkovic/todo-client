@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Search component should match snapshot 1`] = `
+<form
+  className="todo-background p-1"
+>
+  <div
+    className="hstack gap-3"
+  >
+    <div
+      className="me-auto m-2 w-100"
+    >
+      <input
+        className="form-control form-control-sm"
+        onChange={[Function]}
+        placeholder="Please enter task name..."
+        type="text"
+        value=""
+      />
+    </div>
+    <button
+      className="me-2 action-button btn btn-outline-secondary btn-sm"
+      disabled={true}
+      onClick={[Function]}
+      type="button"
+    >
+      Search
+    </button>
+  </div>
+</form>
+`;

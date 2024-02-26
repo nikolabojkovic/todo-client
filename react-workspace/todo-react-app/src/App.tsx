@@ -1,7 +1,7 @@
 import './App.scss';
-import { Tabs } from './components/Tabs';
-import { Sorting } from './components/Sorting';
-import { TodoList } from './components/TodoList';
+import { Tabs } from './components/Tabs/Tabs';
+import { Sorting } from './components/Sort/Sorting';
+import { TodoList } from './components/TodoList/TodoList';
 import { TodoStateProvider } from './context/TodoListContext';
 
 import { State } from './context/IState';
