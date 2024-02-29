@@ -126,6 +126,7 @@ exports[`todo tabs should match snapshot 1`] = `
             >
               <input
                 className="form-control form-control-sm"
+                data-testid="title-input"
                 id="title"
                 name="title"
                 onChange={[Function]}
@@ -139,6 +140,7 @@ exports[`todo tabs should match snapshot 1`] = `
             >
               <input
                 className="form-control form-control-sm"
+                data-testid="description-input"
                 id="description"
                 name="description"
                 onChange={[Function]}
@@ -152,6 +154,7 @@ exports[`todo tabs should match snapshot 1`] = `
             >
               <button
                 className="action-button w-100 btn btn-outline-secondary btn-sm"
+                data-testid="add-todo-button"
                 disabled={true}
                 onClick={[Function]}
                 type="button"

@@ -28,6 +28,7 @@ export function AddTodo() {
           <Col sm={5} className="p-2">
             <Form.Control 
               id="title"
+              data-testid="title-input"
               name="title"
               type="text" 
               placeholder="Enter title" 
@@ -39,6 +40,7 @@ export function AddTodo() {
           <Col sm={5} className="p-2">
             <Form.Control 
               id="description"
+              data-testid="description-input"
               name="description"
               type="text" 
               placeholder="Enter description" 
@@ -49,10 +51,11 @@ export function AddTodo() {
           </Col>
           <Col sm={2} className="p-2">
             <Button 
+              data-testid="add-todo-button"
               variant="outline-secondary"
               className="action-button w-100"
               size="sm"
-              disabled={!title || title.trim() === '' || !description || description.trim() === ''}
+              disabled={title.trim() === '' || description.trim() === ''}
               onClick={handleAdd}
             >
               Add

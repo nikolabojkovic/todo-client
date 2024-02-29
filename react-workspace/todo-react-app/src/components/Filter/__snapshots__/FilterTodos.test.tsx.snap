@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`FilterTodos component should match snapshot 1`] = `
+exports[`FilterTodos component should render all option 1`] = `
 <form
   className="App__filter d-flex justify-content-start align-items-center"
 >
@@ -13,6 +13,7 @@ exports[`FilterTodos component should match snapshot 1`] = `
       <button
         aria-expanded={false}
         className="action-button ps-2 pe-2 dropdown-toggle btn btn-outline-secondary"
+        data-testid="selected-filter-option"
         disabled={false}
         id="dropdown-basic"
         onClick={[Function]}
@@ -20,6 +21,62 @@ exports[`FilterTodos component should match snapshot 1`] = `
       >
          
         All
+         
+      </button>
+    </div>
+  </div>
+</form>
+`;
+
+exports[`FilterTodos component should render completed option 1`] = `
+<form
+  className="App__filter d-flex justify-content-start align-items-center"
+>
+  <div
+    className="hstack gap-3"
+  >
+    <div
+      className="dropdown"
+    >
+      <button
+        aria-expanded={false}
+        className="action-button ps-2 pe-2 dropdown-toggle btn btn-outline-secondary"
+        data-testid="selected-filter-option"
+        disabled={false}
+        id="dropdown-basic"
+        onClick={[Function]}
+        type="button"
+      >
+         
+        Completed
+         
+      </button>
+    </div>
+  </div>
+</form>
+`;
+
+exports[`FilterTodos component should render uncompleted option 1`] = `
+<form
+  className="App__filter d-flex justify-content-start align-items-center"
+>
+  <div
+    className="hstack gap-3"
+  >
+    <div
+      className="dropdown"
+    >
+      <button
+        aria-expanded={false}
+        className="action-button ps-2 pe-2 dropdown-toggle btn btn-outline-secondary"
+        data-testid="selected-filter-option"
+        disabled={false}
+        id="dropdown-basic"
+        onClick={[Function]}
+        type="button"
+      >
+         
+        Uncompleted
          
       </button>
     </div>

@@ -8,6 +8,7 @@ import { Search } from '../Search/Search';
 import { FilterTodos } from '../Filter/FilterTodos';
 import { ImportExport } from '../ImportExport/ImportExport';
 import { useTodoList } from "../../context/TodoListContext";
+import { getList } from "../../providers/TodoProvider";
 
 type Tab = {
   name: string,
@@ -32,7 +33,7 @@ export function Tabs() {
     {
       name: 'filter-todos',
       icon: faFilter,
-      content: <FilterTodos filter={todoList.filter}/>
+      content: <FilterTodos filter={todoList.filter} getList={getList}/>
     },
     {
       name: 'import-export',
