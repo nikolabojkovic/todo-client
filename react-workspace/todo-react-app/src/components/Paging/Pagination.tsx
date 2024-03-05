@@ -1,7 +1,7 @@
-import Pagination from 'react-bootstrap/Pagination';
+import BootstrapPagination from 'react-bootstrap/Pagination';
 import { Col } from 'react-bootstrap';
 import { useTodoList, useTodoListDispatch } from '../../context/TodoListContext';
-import { IAction } from '../../models/Action';
+import { IAction, TodoActions } from '../../models/Action';
 
 type Props = {
   inputSelectRef: React.MutableRefObject<HTMLSelectElement | null>,
@@ -10,7 +10,7 @@ type Props = {
   maxVisiblePagesCount: number
 }
 
-export function CustomPagination({ inputSelectRef, rotate, pageCount, maxVisiblePagesCount }: Props) {
+export function Pagination({ inputSelectRef, rotate, pageCount, maxVisiblePagesCount }: Props) {
   const todoList = useTodoList();
   const dispatch = useTodoListDispatch();
 
@@ -83,9 +83,9 @@ export function CustomPagination({ inputSelectRef, rotate, pageCount, maxVisible
     return 1;
   };
 
-  function handlePaginationUpdate(activePage: number, itemsPerPage: number) {
+  function updatePagination(activePage: number, itemsPerPage: number) {
     dispatch({
-      type: 'paging-updated',
+      type: TodoActions.pagingUpdated,
       payload: {
         activePage,
         itemsPerPage
@@ -100,63 +100,63 @@ export function CustomPagination({ inputSelectRef, rotate, pageCount, maxVisible
 
   for (let pageNumber = firstPage; pageNumber <= lastPage; pageNumber++) {
     pages.push(
-      <Pagination.Item 
+      <BootstrapPagination.Item 
         key={pageNumber} 
         active={pageNumber === todoList.paging.activePage} 
-        onClick={() => handlePaginationUpdate(pageNumber, todoList.paging.itemsPerPage)}
+        onClick={() => updatePagination(pageNumber, todoList.paging.itemsPerPage)}
       >
         {pageNumber}
-      </Pagination.Item>
+      </BootstrapPagination.Item>
     );
   }
 
   return (
     <>
       <Col sm={5} className="p-3 pt-2 pb-2 d-flex justify-content-sm-end justify-content-center">
-        <Pagination size="sm" className='d-flex align-items-center'>
-          <Pagination.First 
+        <BootstrapPagination size="sm" className='d-flex align-items-center'>
+          <BootstrapPagination.First 
             key="first" 
             disabled={todoList.paging.activePage <= 1 }
-            onClick={() => handlePaginationUpdate(1, todoList.paging.itemsPerPage)}
+            onClick={() => updatePagination(1, todoList.paging.itemsPerPage)}
           />
-          <Pagination.Prev 
+          <BootstrapPagination.Prev 
             key="prev" 
             disabled={todoList.paging.activePage <= 1 }
-            onClick={() => handlePaginationUpdate(todoList.paging.activePage - 1 >= 1 ? todoList.paging.activePage - 1 : 1, todoList.paging.itemsPerPage)} 
+            onClick={() => updatePagination(todoList.paging.activePage - 1 >= 1 ? todoList.paging.activePage - 1 : 1, todoList.paging.itemsPerPage)} 
           />
           {
             (!rotate && (activeGroup > 1)) 
-            && <Pagination.Ellipsis 
+            && <BootstrapPagination.Ellipsis 
                   disabled={false} 
                   key="left-pages-link" 
                   className='page-ellipsis'
-                  onClick={() => handlePaginationUpdate(calculateLastPageOfTheGroup(activeGroup - 1), todoList.paging.itemsPerPage)}
+                  onClick={() => updatePagination(calculateLastPageOfTheGroup(activeGroup - 1), todoList.paging.itemsPerPage)}
                 />
           }
           {pages}
           { 
             (!rotate && (activeGroup < groupsCount)) 
-            && <Pagination.Ellipsis 
+            && <BootstrapPagination.Ellipsis 
                   disabled={false} 
                   key="right-pages-link" 
                   className='page-ellipsis'
-                  onClick={() => handlePaginationUpdate(calculateFirstPageOfTheGroup(activeGroup + 1), todoList.paging.itemsPerPage)}
+                  onClick={() => updatePagination(calculateFirstPageOfTheGroup(activeGroup + 1), todoList.paging.itemsPerPage)}
                 />
           }
-          <Pagination.Next
+          <BootstrapPagination.Next
             key="next" 
             disabled={todoList.paging.activePage === pageCount}
-            onClick={() => handlePaginationUpdate(
+            onClick={() => updatePagination(
               todoList.paging.activePage + 1 <= pageCount ? todoList.paging.activePage + 1 : pageCount,
               todoList.paging.itemsPerPage
             )} 
           />
-          <Pagination.Last 
+          <BootstrapPagination.Last 
             key="last"
             disabled={todoList.paging.activePage === pageCount}
-            onClick={() => handlePaginationUpdate(pageCount, todoList.paging.itemsPerPage)} 
+            onClick={() => updatePagination(pageCount, todoList.paging.itemsPerPage)} 
           />
-        </Pagination>
+        </BootstrapPagination>
       </Col>
     </>
   )

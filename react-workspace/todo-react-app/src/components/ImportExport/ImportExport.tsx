@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ChangeEvent, useRef, useState } from "react";
 import { Button, Col, Container, Form, InputGroup, Row } from "react-bootstrap";
 import { useTodoList, useTodoListDispatch } from "../../context/TodoListContext";
-import { IAction } from "../../models/Action";
+import { IAction, TodoActions } from "../../models/Action";
 import { ITodo, Todo } from "../../models/Todo";
 import { ConfirmModal } from "../ConfirmModal/ConfirmModal";
 
@@ -60,7 +60,7 @@ export function ImportExport() {
           
     setFile(null);
     dispatch({
-      type: 'imported',
+      type: TodoActions.imported,
       payload: {
         list: importedTodoList,
         activePage: 1

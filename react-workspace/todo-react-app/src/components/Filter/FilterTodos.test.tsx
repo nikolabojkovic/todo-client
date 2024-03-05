@@ -5,20 +5,14 @@ import { TodoStateProvider } from '../../context/TodoListContext';
 import { stateTestData } from '../../context/testData';
 import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Observable, of } from 'rxjs';
 
 describe('FilterTodos', () => {  
-  const api = {
-    getList: (): Observable<any> => { return of([])}
-  }
-
-  jest.doMock('../../providers/TodoProvider.ts', () => api.getList);
-  //jest.spyOn(api, 'getList');
+  const handleFilter = jest.fn();
 
   it('component should render all option', () => {
     const jsxElement =
       (<TodoStateProvider todoList={stateTestData}>
-        <FilterTodos filter={{ state: StateFilter.all } as IFilter} getList={api.getList} />
+        <FilterTodos filter={{ state: StateFilter.all } as IFilter} onFilter={handleFilter} />
       </TodoStateProvider>);
     const tree = renderer.create(jsxElement).toJSON();
     expect(tree).toMatchSnapshot();
@@ -27,7 +21,7 @@ describe('FilterTodos', () => {
   it('component should render completed option', () => {
     const jsxElement =
       (<TodoStateProvider todoList={stateTestData}>
-        <FilterTodos filter={{ state: StateFilter.completed } as IFilter} getList={api.getList} />
+        <FilterTodos filter={{ state: StateFilter.completed } as IFilter} onFilter={handleFilter}  />
       </TodoStateProvider>);
     const tree = renderer.create(jsxElement).toJSON();
     expect(tree).toMatchSnapshot();
@@ -36,7 +30,7 @@ describe('FilterTodos', () => {
   it('component should render uncompleted option', () => {
     const jsxElement =
       (<TodoStateProvider todoList={stateTestData}>
-        <FilterTodos filter={{ state: StateFilter.uncompleted } as IFilter} getList={api.getList} />
+        <FilterTodos filter={{ state: StateFilter.uncompleted } as IFilter} onFilter={handleFilter}  />
       </TodoStateProvider>);
     const tree = renderer.create(jsxElement).toJSON();
     expect(tree).toMatchSnapshot();
@@ -45,7 +39,7 @@ describe('FilterTodos', () => {
   it('should filter by all', async () => {
     render(
       (<TodoStateProvider todoList={stateTestData}>
-        <FilterTodos filter={{ state: StateFilter.all } as IFilter} getList={api.getList} />
+        <FilterTodos filter={{ state: StateFilter.uncompleted } as IFilter} onFilter={handleFilter}  />
       </TodoStateProvider>)
     ); 
     let selectedFilterOption = screen.getByTestId('selected-filter-option');
@@ -54,19 +48,19 @@ describe('FilterTodos', () => {
       return await userEvent.click(selectedFilterOption);    
     });
 
-    const filterDropdown = screen.getByTestId('filter-all-option');
+    const filterDropdown = screen.getByTestId('filter-option-all');
       
     fireEvent.click(filterDropdown);  
     selectedFilterOption = screen.getByTestId('selected-filter-option');
 
     expect(selectedFilterOption.textContent).toBe(' All ');    
-    //expect(api.getList).toHaveBeenCalled();
+    expect(handleFilter).toHaveBeenCalledWith({ state: StateFilter.all } as IFilter);
   });
 
   it('should filter by completed', async () => {
     render(
       (<TodoStateProvider todoList={stateTestData}>
-        <FilterTodos filter={{ state: StateFilter.all } as IFilter} getList={api.getList} />
+        <FilterTodos filter={{ state: StateFilter.all } as IFilter} onFilter={handleFilter}  />
       </TodoStateProvider>)
     ); 
     let selectedFilterOption = screen.getByTestId('selected-filter-option');
@@ -75,19 +69,19 @@ describe('FilterTodos', () => {
       return await userEvent.click(selectedFilterOption);    
     });
 
-    const filterDropdown = screen.getByTestId('filter-completed-option');
+    const filterDropdown = screen.getByTestId('filter-option-completed');
       
     fireEvent.click(filterDropdown);  
     selectedFilterOption = screen.getByTestId('selected-filter-option');
 
     expect(selectedFilterOption.textContent).toBe(' Completed ');
-    //expect(api.getList).toHaveBeenCalled();
+    expect(handleFilter).toHaveBeenCalledWith({ state: StateFilter.completed } as IFilter);
   });
 
   it('should filter by uncompleted', async () => {
     render(
       (<TodoStateProvider todoList={stateTestData}>
-        <FilterTodos filter={{ state: StateFilter.all } as IFilter} getList={api.getList} />
+        <FilterTodos filter={{ state: StateFilter.all } as IFilter} onFilter={handleFilter}  />
       </TodoStateProvider>)
     ); 
     let selectedFilterOption = screen.getByTestId('selected-filter-option');
@@ -96,12 +90,12 @@ describe('FilterTodos', () => {
       return await userEvent.click(selectedFilterOption);    
     });
 
-    const filterDropdown = screen.getByTestId('filter-uncompleted-option');
+    const filterDropdown = screen.getByTestId('filter-option-uncompleted');
       
     fireEvent.click(filterDropdown);  
     selectedFilterOption = screen.getByTestId('selected-filter-option');
 
     expect(selectedFilterOption.textContent).toBe(' Uncompleted ');
-    //expect(api.getList).toHaveBeenCalled();
+    expect(handleFilter).toHaveBeenCalledWith({ state: StateFilter.uncompleted } as IFilter);
   });
 });

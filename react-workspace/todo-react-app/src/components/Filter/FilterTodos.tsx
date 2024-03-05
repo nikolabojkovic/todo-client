@@ -1,22 +1,16 @@
 import { useState } from "react";
 import { Form, Stack } from "react-bootstrap";
-import { first } from "rxjs";
 import Dropdown from 'react-bootstrap/Dropdown';
-import { useTodoList, useTodoListDispatch } from "../../context/TodoListContext";
-import { IAction } from "../../models/Action";
+import { useTodoList } from "../../context/TodoListContext";
 import { IFilter, StateFilter } from "../../models/IFilter";
-import { ITodo } from "../../models/Todo";
-import { GetListProps } from "../../providers/TodoProvider";
-import { localStorageProvider } from "../../providers/StorageProvider";
 
 type Props = { 
   filter: IFilter,
-  getList: Function
+  onFilter: Function
 }
 
-export function FilterTodos({ filter, getList }: Props) {
+export function FilterTodos({ filter, onFilter: handleFilter }: Props) {
   const todoList = useTodoList();
-  const dispatch = useTodoListDispatch();
 
   // const [completedSwitch, setCompletedSwitch] = useState(completed);
   // const [uncompletedSwitch, setetUncompletedSwitch] = useState(uncompleted);
@@ -24,29 +18,9 @@ export function FilterTodos({ filter, getList }: Props) {
 
   function handleStateFilter(filterValue: StateFilter) {
     setStateFilter(filterValue);
-    dispatch({
-      type: 'loading-started'
-    } as IAction);
-    const filter = { 
-      state: stateFilter
-    } as IFilter;
-    getList({
-      provider: localStorageProvider,
-      filter, 
-      sort: todoList.sort,
-      searchTerm: todoList.search.searchTerm
-      } as GetListProps)
-    .pipe(first())
-    .subscribe((list: ITodo[]) => { 
-      dispatch({
-        type: 'filtered',
-        payload: {
-          activePage: 1,
-          list: list,
-          filter
-        }
-      } as IAction);
-    });
+    handleFilter({ 
+      state: filterValue
+    } as IFilter);
   }
 
   return (
@@ -84,9 +58,9 @@ export function FilterTodos({ filter, getList }: Props) {
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
-              <Dropdown.Item data-testid="filter-all-option" onClick={() => handleStateFilter(StateFilter.all)}>All</Dropdown.Item>
-              <Dropdown.Item data-testid="filter-completed-option" onClick={() => handleStateFilter(StateFilter.completed)}>Completed</Dropdown.Item>
-              <Dropdown.Item data-testid="filter-uncompleted-option" onClick={() => handleStateFilter(StateFilter.uncompleted)}>Uncompleted</Dropdown.Item>
+              <Dropdown.Item data-testid="filter-option-all" onClick={() => handleStateFilter(StateFilter.all)}>All</Dropdown.Item>
+              <Dropdown.Item data-testid="filter-option-completed" onClick={() => handleStateFilter(StateFilter.completed)}>Completed</Dropdown.Item>
+              <Dropdown.Item data-testid="filter-option-uncompleted" onClick={() => handleStateFilter(StateFilter.uncompleted)}>Uncompleted</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
       </Stack>

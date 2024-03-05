@@ -31,6 +31,7 @@ Array [
           <button
             aria-expanded={false}
             className="action-button dropdown-toggle btn btn-outline-secondary"
+            data-testid="selected-size-option"
             disabled={false}
             id="dropdown-basic"
             onClick={[Function]}

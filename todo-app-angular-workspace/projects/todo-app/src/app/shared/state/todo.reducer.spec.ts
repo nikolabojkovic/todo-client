@@ -5,11 +5,9 @@ import { todos } from "../../tests/test-data";
 import { TodoListActions } from "./todo.actions";
 import { IFilter } from "../models/filter";
 
-
-
 describe('todosReducer', () => {
   describe('fetched action', () => {
-    it('should retrieve all todos and update the state in an immutable way', () => {
+    it('should retrieve all todos and update the state in immutable way', () => {
       const initialState = {...new State(todos)} as IState;
       const newTodoList = [new Todo(1, "Task 1", "Description 1", false, new Date(2022, 1, 4))] as Todo[];
       const newState = {...new State(newTodoList)} as IState;
@@ -70,7 +68,7 @@ describe('todosReducer', () => {
   });
 
   describe('removed action', () => {
-    it('should remove one todo in original and display list', () => {
+    it('should remove one todo in the original and the display list', () => {
       const initialState = {...new State(todos)} as IState;
       const action = TodoListActions.removed({ todoId: 1 });
       const state = todosReducer(initialState, action);
@@ -80,7 +78,7 @@ describe('todosReducer', () => {
       expect(todos).not.toEqual(state.displayList);
     });
 
-    it('should remove one todo in original and display list and update active page', () => {
+    it('should remove one todo in the original and the display list and update the active page', () => {
       const initialState = {...new State(todos)} as IState;
       initialState.paging.activePage = 2;
       const action = TodoListActions.removed({ todoId: 5 });
@@ -93,7 +91,7 @@ describe('todosReducer', () => {
   });
 
   describe('filtered action', () => {
-    it('should filter todos in display list', () => {
+    it('should filter todos in the display list', () => {
       const initialState = {...new State(todos)} as IState;
       const newState = {...new State(todos.filter(x => x.completed === true))} as IState;
       const action = TodoListActions.filtered({ activePage: 1, filter: { completed: true, uncompleted: false } as IFilter, list: newState.originalList });

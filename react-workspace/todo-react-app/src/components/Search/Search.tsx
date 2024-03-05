@@ -2,43 +2,16 @@ import { Button, Form, Stack } from 'react-bootstrap';
 import { useTodoList, useTodoListDispatch } from '../../context/TodoListContext';
 import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { IAction } from '../../models/Action';
-import { getList, GetListProps } from '../../providers/TodoProvider';
-import { first } from 'rxjs';
-import { ITodo } from '../../models/Todo';
-import { localStorageProvider } from '../../providers/StorageProvider';
+import { IAction, TodoActions } from '../../models/Action';
 
 type Props = {
-  placeholder: string
+  placeholder: string,
+  handleSearch: Function
 };
 
-export function Search({ placeholder }: Props) {
+export function Search({ placeholder, handleSearch }: Props) {
   const dispatch = useTodoListDispatch();
   const todoList = useTodoList();
-
-  function handleSearch(searchTerm: string) {
-    dispatch({
-      type: 'loading-started'
-    } as IAction);
-
-    getList({
-      provider: localStorageProvider,
-      filter: todoList.filter, 
-      sort: todoList.sort,
-      searchTerm
-      } as GetListProps)
-      .pipe(first())
-      .subscribe((list: ITodo[]) => { 
-        dispatch({
-          type: 'searched',
-          payload: {
-            searchTerm,
-            list: list,
-            activePage: 1,
-          }
-        } as IAction);
-    });
-  }
 
   return (
     <Form className="todo-background p-1">
@@ -52,7 +25,7 @@ export function Search({ placeholder }: Props) {
             onChange={(e) => {
               const searchTerm = e.target.value;
                 dispatch({
-                  type: 'searchTerm-updated',
+                  type: TodoActions.searchTermUpdated,
                   payload: {
                     searchTerm
                   }
@@ -66,6 +39,12 @@ export function Search({ placeholder }: Props) {
             className="clear-icon" 
             icon={faCircleXmark}
             onClick={() => {
+              dispatch({
+                type: TodoActions.searchTermUpdated,
+                payload: {
+                  searchTerm: ''
+                }
+              } as IAction);
               handleSearch('');
             }}
           />}

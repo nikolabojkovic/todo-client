@@ -9,11 +9,97 @@ export const initialState: IState = new State([] as ITodo[]);
 
 export const todosReducer = createReducer(
   initialState,
+
+  on(TodoListActions.loadingStarted, (_state, { }) =>{
+    return {
+      ..._state,
+      isLoading: true
+    } as IState
+  }),
+
   on(TodoListActions.fetched, (_state, { list }) =>{
     return {
       ...new State(list)
     } as IState
   }),
+  on(TodoListActions.searched, (todoList, { searchTerm, activePage, list }) => {
+    return {
+      ...todoList,
+      isLoading: false,
+      displayList: [...list],
+      search: { searchTerm: searchTerm },
+      paging: {
+        ...todoList.paging,
+        activePage: activePage,
+        totalCount: list.length,
+        startIndex: (activePage - 1) * todoList.paging.itemsPerPage,
+        endIndex: activePage * todoList.paging.itemsPerPage
+      } as IPaging
+    } as IState
+  }),
+  on(TodoListActions.filtered, (todoList, { activePage, filter, list }) => {
+    return {
+      ...todoList,
+      isLoading: false,
+      displayList: [...list],
+      filter: {...filter},
+      paging: {
+        ...todoList.paging,
+        activePage: activePage,
+        totalCount: list.length,
+        startIndex: (activePage - 1) * todoList.paging.itemsPerPage,
+        endIndex: activePage * todoList.paging.itemsPerPage
+      } as IPaging
+    } as IState
+  }),
+  on(TodoListActions.sorted, (todoList, {sort, list} ) => {
+    return {
+      ...todoList,
+      isLoading: false,
+      displayList: [...list],
+      sort: {...sort},
+      paging: {...todoList.paging} as IPaging
+    } as IState
+  }),
+  on(TodoListActions.imported, (todoList, { activePage, list }) => {
+    return {
+      ...todoList,
+      originalList: [...list],
+      displayList: [...list],
+      search: { searchTerm: '' },
+      filter: {
+        completed: false,
+        uncompleted: false
+       },
+      paging: {
+        ...todoList.paging,
+        activePage: activePage,
+        totalCount: list.length,
+        startIndex: (activePage - 1) * todoList.paging.itemsPerPage,
+        endIndex: activePage * todoList.paging.itemsPerPage
+      } as IPaging
+    } as IState
+  }),
+
+  on(TodoListActions.pagingUpdated, (todoList, { activePage, itemsPerPage }) => {
+    return {
+      ...todoList,
+      paging: {
+        ...todoList.paging,
+        activePage: activePage,
+        itemsPerPage: itemsPerPage,
+        startIndex: (activePage - 1) * itemsPerPage,
+        endIndex: activePage * itemsPerPage
+      } as IPaging
+    } as IState
+  }),
+  on(TodoListActions.searchTermUpdated, (todoList, { searchTerm }) => {
+    return {
+      ...todoList,
+      search: { searchTerm },
+    }
+  }),
+
   on(TodoListActions.added, (todoList, { title, description } ) => {
     const id = todoList.originalList.length >= 1
     ? [...todoList.originalList]
@@ -74,88 +160,6 @@ export const todosReducer = createReducer(
     } as IState;
   }
   ),
-  on(TodoListActions.searched, (todoList, { searchTerm, activePage, list }) => {
-    return {
-      ...todoList,
-      isLoading: false,
-      displayList: [...list],
-      search: { searchTerm: searchTerm },
-      paging: {
-        ...todoList.paging,
-        activePage: activePage,
-        totalCount: list.length,
-        startIndex: (activePage - 1) * todoList.paging.itemsPerPage,
-        endIndex: activePage * todoList.paging.itemsPerPage
-      } as IPaging
-    } as IState
-  }),
-  on(TodoListActions.filtered, (todoList, { activePage, filter, list }) => {
-    return {
-      ...todoList,
-      isLoading: false,
-      displayList: [...list],
-      filter: {...filter},
-      paging: {
-        ...todoList.paging,
-        activePage: activePage,
-        totalCount: list.length,
-        startIndex: (activePage - 1) * todoList.paging.itemsPerPage,
-        endIndex: activePage * todoList.paging.itemsPerPage
-      } as IPaging
-    } as IState
-  }),
-  on(TodoListActions.pagingUpdated, (todoList, { activePage, itemsPerPage }) => {
-    return {
-      ...todoList,
-      paging: {
-        ...todoList.paging,
-        activePage: activePage,
-        itemsPerPage: itemsPerPage,
-        startIndex: (activePage - 1) * itemsPerPage,
-        endIndex: activePage * itemsPerPage
-      } as IPaging
-    } as IState
-  }),
-  on(TodoListActions.imported, (todoList, { activePage, list }) => {
-    return {
-      ...todoList,
-      originalList: [...list],
-      displayList: [...list],
-      search: { searchTerm: '' },
-      filter: {
-        completed: false,
-        uncompleted: false
-       },
-      paging: {
-        ...todoList.paging,
-        activePage: activePage,
-        totalCount: list.length,
-        startIndex: (activePage - 1) * todoList.paging.itemsPerPage,
-        endIndex: activePage * todoList.paging.itemsPerPage
-      } as IPaging
-    } as IState
-  }),
-  on(TodoListActions.sorted, (todoList, {sort, list} ) => {
-    return {
-      ...todoList,
-      isLoading: false,
-      displayList: [...list],
-      sort: {...sort},
-      paging: {...todoList.paging} as IPaging
-    } as IState
-  }),
-  on(TodoListActions.searchTermUpdated, (todoList, { searchTerm }) => {
-    return {
-      ...todoList,
-      search: { searchTerm },
-    }
-  }),
-  on(TodoListActions.loadingStarted, (_state, { }) =>{
-    return {
-      ..._state,
-      isLoading: true
-    } as IState
-  }),
 );
 
 function calculateActivePageOnDelete(paging: IPaging) {

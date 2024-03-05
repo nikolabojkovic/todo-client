@@ -10,7 +10,7 @@ export interface IState {
 	isLoading: boolean;
 	originalList: ITodo[];
 	displayList: ITodo[];
-	updateTriger: any | null;
+	effectTrigger: any | null;
 	search: ISearch;
 	filter: IFilter;
 	sort: ISort;
@@ -21,7 +21,7 @@ export class State implements IState {
 	isLoading: boolean;
 	originalList: ITodo[];
 	displayList: ITodo[];
-	updateTriger: any | null;
+	effectTrigger: any | null;
 	search: ISearch;
 	filter: IFilter;
 	sort: ISort;
@@ -31,7 +31,7 @@ export class State implements IState {
 		this.isLoading = false;
 		this.originalList = todos; 
 		this.displayList = todos;
-		this.updateTriger = null;
+		this.effectTrigger = null;
 		this.search = {
 			searchTerm: '',
 		};

@@ -2,7 +2,7 @@
 
 exports[`Paging component should match snapshot 1`] = `
 <section
-  className="paging-container p-0 mt-2"
+  className="footer p-0 mt-2"
 >
   <div
     className="container-fluid"
@@ -39,6 +39,7 @@ exports[`Paging component should match snapshot 1`] = `
               <button
                 aria-expanded={false}
                 className="action-button dropdown-toggle btn btn-outline-secondary"
+                data-testid="selected-size-option"
                 disabled={false}
                 id="dropdown-basic"
                 onClick={[Function]}

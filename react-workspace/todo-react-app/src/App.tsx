@@ -6,6 +6,7 @@ import { TodoStateProvider } from './context/TodoListContext';
 
 import { State } from './context/IState';
 import { ITodo } from './models/Todo';
+import { Footer } from './components/Footer/Footer';
 
 function App() {   
   return (
@@ -16,7 +17,8 @@ function App() {
       <TodoStateProvider todoList={new State([] as ITodo[])}>
         <Tabs/>
         <Sorting/>
-        <TodoList/>
+        <TodoList/>        
+        <Footer />
       </TodoStateProvider>
     </div>
   );

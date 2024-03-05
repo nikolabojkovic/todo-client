@@ -1,24 +1,25 @@
 import { Stack, Col } from 'react-bootstrap';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { useTodoList, useTodoListDispatch } from '../../context/TodoListContext';
-import { IAction } from '../../models/Action';
+import { IAction, TodoActions } from '../../models/Action';
 import { useState } from 'react';
 
 type Props = {
   inputSelectRef: any,
-  pageCount: number
+  pageCount: number,
+  pageSize: number
 };
 
-export function PageSize({ inputSelectRef, pageCount }: Props) {
+export function PageSize({ inputSelectRef, pageCount, pageSize = 5 }: Props) {
 
-  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [itemsPerPage, setItemsPerPage] = useState(pageSize);
 
   const todoList = useTodoList();
   const dispatch = useTodoListDispatch();
 
   function handlePageSizeChange(pageSize: number) {
     dispatch({
-      type: 'paging-updated',
+      type: TodoActions.pagingUpdated,
       payload: {
         activePage: 1,
         itemsPerPage: pageSize
@@ -40,6 +41,7 @@ export function PageSize({ inputSelectRef, pageCount }: Props) {
         <div className="">
           <Dropdown>
             <Dropdown.Toggle
+              data-testid="selected-size-option"
               variant="outline-secondary"
               className="action-button" 
               ref={inputSelectRef} 
@@ -50,10 +52,10 @@ export function PageSize({ inputSelectRef, pageCount }: Props) {
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
-              <Dropdown.Item href="#/action-1" onClick={() => handlePageSizeChange(5)}>5</Dropdown.Item>
-              <Dropdown.Item href="#/action-2" onClick={() => handlePageSizeChange(10)}>10</Dropdown.Item>
-              <Dropdown.Item href="#/action-3" onClick={() => handlePageSizeChange(50)}>50</Dropdown.Item>
-              <Dropdown.Item href="#/action-3" onClick={() => handlePageSizeChange(100)}>100</Dropdown.Item>
+              <Dropdown.Item data-testid="size-option-5" href="#/action-1" onClick={() => handlePageSizeChange(5)}>5</Dropdown.Item>
+              <Dropdown.Item data-testid="size-option-10" href="#/action-2" onClick={() => handlePageSizeChange(10)}>10</Dropdown.Item>
+              <Dropdown.Item data-testid="size-option-50" href="#/action-3" onClick={() => handlePageSizeChange(50)}>50</Dropdown.Item>
+              <Dropdown.Item data-testid="size-option-100" href="#/action-3" onClick={() => handlePageSizeChange(100)}>100</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         </div>

@@ -2,13 +2,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faAdd, faFilter, faDownload, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { Stack } from "react-bootstrap";
 import { useState } from "react";
-
 import { AddTodo } from '../AddTodo/AddTodo';
 import { Search } from '../Search/Search';
 import { FilterTodos } from '../Filter/FilterTodos';
 import { ImportExport } from '../ImportExport/ImportExport';
-import { useTodoList } from "../../context/TodoListContext";
-import { getList } from "../../providers/TodoProvider";
+import { useTodoList, useTodoListDispatch } from "../../context/TodoListContext";
+import { IFilter } from "../../models/IFilter";
+import { IAction, TodoActions } from "../../models/Action";
 
 type Tab = {
   name: string,
@@ -19,6 +19,29 @@ type Tab = {
 export function Tabs() {
   const [active, setActive] = useState('add-todo');
   const todoList = useTodoList();
+    const dispatch = useTodoListDispatch();
+
+  function handleFilter(filter: IFilter) {
+    dispatch({
+      type: TodoActions.filter,
+      payload: {
+        filter, 
+        sort: todoList.sort,
+        searchTerm: todoList.search.searchTerm
+      }
+    } as IAction);
+  }
+
+  function handleSearch(searchTerm: string) {
+    dispatch({
+      type: TodoActions.search,
+      payload: {
+        filter: todoList.filter, 
+        sort: todoList.sort,
+        searchTerm
+      }
+    } as IAction);
+  }
 
   const tabs: Tab[] = [{
       name: 'add-todo',
@@ -28,12 +51,12 @@ export function Tabs() {
     {
       name: 'search-todos',
       icon: faSearch,
-      content: <Search placeholder='Search by title or description' />
+      content: <Search placeholder='Search by title or description' handleSearch={handleSearch} />
     } as Tab,
     {
       name: 'filter-todos',
       icon: faFilter,
-      content: <FilterTodos filter={todoList.filter} getList={getList}/>
+      content: <FilterTodos filter={todoList.filter} onFilter={handleFilter}/>
     },
     {
       name: 'import-export',

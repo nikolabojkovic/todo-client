@@ -1,12 +1,8 @@
 import { useState } from "react";
-import { first } from "rxjs";
-import { IAction } from "../../models/Action";
-import { ITodo } from "../../models/Todo";
-import { getList, GetListProps } from "../../providers/TodoProvider";
+import { IAction, TodoActions } from "../../models/Action";
 import { useTodoList, useTodoListDispatch } from "../../context/TodoListContext";
 import { SortButton } from './SortButton';
-import { SortDirection } from "../../models/ISort";
-import { localStorageProvider } from "../../providers/StorageProvider";
+import { ISort, SortDirection } from "../../models/ISort";
 
 type Sort = {
   name: string,
@@ -39,29 +35,17 @@ export function Sorting() {
 
   function handleSorting(column: string, direction: SortDirection) {
     setActiveColumn(column);
-    const sort = {
-      column: column, 
-      direction: direction
-    }
     dispatch({
-      type: 'loading-started'
+      type: TodoActions.filter,
+      payload: {
+        filter: todoList.filter, 
+        sort: {
+          column: column, 
+          direction: direction
+        } as ISort,
+        searchTerm: todoList.search.searchTerm
+      }
     } as IAction);
-    getList({
-      provider: localStorageProvider,
-      filter: todoList.filter, 
-      sort,
-      searchTerm: todoList.search.searchTerm
-    } as GetListProps)
-      .pipe(first())
-      .subscribe((list: ITodo[]) => { 
-        dispatch({
-          type: 'sorted',
-          payload: {
-            sort,
-            list: list
-          }
-        } as IAction);
-    });
   }
 
   return (

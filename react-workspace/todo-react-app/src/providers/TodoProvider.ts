@@ -1,16 +1,9 @@
 import { map } from "rxjs";
 import { Observable } from "rxjs/internal/Observable";
 import { IFilter, StateFilter } from "../models/IFilter";
-import { ISort } from "../models/ISort";
+import { ISort, SortDirection } from "../models/ISort";
 import { ITodo } from "../models/Todo";
 import { IStorageProvider } from "./StorageProvider";
-
-export enum TodoActions {
-  added = 'added',
-  changed = 'changed',
-  deleted = 'deleted',
-  imported = 'imported'
-}
 
 export type GetListProps = {
   provider: IStorageProvider,
@@ -90,7 +83,7 @@ function sortList(list: ITodo[], sort: ISort) : ITodo[] {
   let sortResult = [];
   
   if (sort.column === 'createdAt') {
-    if (sort.direction === 'asc') {
+    if (sort.direction === SortDirection.Asc) {
       sortResult = [...list.sort((a: ITodo, b: ITodo) => a.createdAt > b.createdAt ? 1 : -1)]
     } else {
       sortResult = [...list.sort((a: ITodo, b: ITodo) => a.createdAt < b.createdAt ? 1 : -1)]
@@ -99,7 +92,7 @@ function sortList(list: ITodo[], sort: ISort) : ITodo[] {
     return sortResult;
   }
 
-  if (sort.direction === 'asc') {
+  if (sort.direction === SortDirection.Asc) {
     sortResult = [...list.sort((a: any, b: any) => a[sort.column] > b[sort.column] ? 1 : -1)]
   } else {
     sortResult = [...list.sort((a: any, b: any) => a[sort.column] < b[sort.column] ? 1 : -1)]
