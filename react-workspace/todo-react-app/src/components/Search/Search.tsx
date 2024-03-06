@@ -6,10 +6,10 @@ import { IAction, TodoActions } from '../../models/Action';
 
 type Props = {
   placeholder: string,
-  handleSearch: Function
+  onSearch: Function
 };
 
-export function Search({ placeholder, handleSearch }: Props) {
+export function Search({ placeholder, onSearch: handleSearch }: Props) {
   const dispatch = useTodoListDispatch();
   const todoList = useTodoList();
 
@@ -17,25 +17,27 @@ export function Search({ placeholder, handleSearch }: Props) {
     <Form className="todo-background p-1">
       <Stack direction="horizontal" gap={3}>
         <Form.Group className="me-auto m-2 w-100">
-          <Form.Control 
+          <Form.Control
+            data-testid="search-input"
             type="text" 
             placeholder={placeholder} 
             size="sm" 
             value={todoList.search.searchTerm}
             onChange={(e) => {
               const searchTerm = e.target.value;
-                dispatch({
-                  type: TodoActions.searchTermUpdated,
-                  payload: {
-                    searchTerm
-                  }
-                } as IAction);
-                if (searchTerm === '') {
-                  handleSearch(e.target.value);
+              dispatch({
+                type: TodoActions.searchTermUpdated,
+                payload: {
+                  searchTerm
                 }
-              }}
+              } as IAction);
+              if (searchTerm === '') {
+                handleSearch(e.target.value);
+              }
+            }}
           />
           {todoList.search.searchTerm !== '' && <FontAwesomeIcon 
+            data-testid="clear-search"
             className="clear-icon" 
             icon={faCircleXmark}
             onClick={() => {
@@ -50,6 +52,7 @@ export function Search({ placeholder, handleSearch }: Props) {
           />}
         </Form.Group>
         <Button 
+          data-testid="search-button"
           variant="outline-secondary"
           className="me-2 action-button"
           size="sm"

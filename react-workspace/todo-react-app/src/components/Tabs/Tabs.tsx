@@ -51,7 +51,7 @@ export function Tabs() {
     {
       name: 'search-todos',
       icon: faSearch,
-      content: <Search placeholder='Search by title or description' handleSearch={handleSearch} />
+      content: <Search placeholder='Search by title or description' onSearch={handleSearch} />
     } as Tab,
     {
       name: 'filter-todos',

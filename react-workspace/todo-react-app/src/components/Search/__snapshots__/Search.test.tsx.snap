@@ -12,6 +12,7 @@ exports[`Search component should match snapshot 1`] = `
     >
       <input
         className="form-control form-control-sm"
+        data-testid="search-input"
         onChange={[Function]}
         placeholder="Please enter task name..."
         type="text"
@@ -20,6 +21,7 @@ exports[`Search component should match snapshot 1`] = `
     </div>
     <button
       className="me-2 action-button btn btn-outline-secondary btn-sm"
+      data-testid="search-button"
       disabled={true}
       onClick={[Function]}
       type="button"
