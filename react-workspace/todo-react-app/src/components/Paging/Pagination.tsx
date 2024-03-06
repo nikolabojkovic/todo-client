@@ -42,17 +42,17 @@ export function Pagination({ inputSelectRef, rotate, pageCount, maxVisiblePagesC
       return todoList.paging.activePage;
     }
 
-    // Active page is at the beginning of the group
+    // Active page is at the beginning of the paging section
     if (todoList.paging.activePage <= (maxVisiblePagesCount - 1)) {
       return 1;
     }
 
-    // Active page is in the middle of the group
+    // Active page is in the middle of the paging section
     if (todoList.paging.activePage + 1 <= pageCount) {
       return todoList.paging.activePage - (maxVisiblePagesCount - 2);
     }
 
-    // Active page is at the end of the group
+    // Active page is at the end of the paging section
     if (todoList.paging.activePage === pageCount) {
       return pageCount - (maxVisiblePagesCount - 1)
     }   
@@ -100,7 +100,8 @@ export function Pagination({ inputSelectRef, rotate, pageCount, maxVisiblePagesC
 
   for (let pageNumber = firstPage; pageNumber <= lastPage; pageNumber++) {
     pages.push(
-      <BootstrapPagination.Item 
+      <BootstrapPagination.Item
+        data-testid={ "page-" + pageNumber } 
         key={pageNumber} 
         active={pageNumber === todoList.paging.activePage} 
         onClick={() => updatePagination(pageNumber, todoList.paging.itemsPerPage)}
@@ -115,43 +116,46 @@ export function Pagination({ inputSelectRef, rotate, pageCount, maxVisiblePagesC
       <Col sm={5} className="p-3 pt-2 pb-2 d-flex justify-content-sm-end justify-content-center">
         <BootstrapPagination size="sm" className='d-flex align-items-center'>
           <BootstrapPagination.First 
+            data-testid="first-page"
             key="first" 
             disabled={todoList.paging.activePage <= 1 }
             onClick={() => updatePagination(1, todoList.paging.itemsPerPage)}
           />
           <BootstrapPagination.Prev 
+            data-testid="prev-page"
             key="prev" 
             disabled={todoList.paging.activePage <= 1 }
-            onClick={() => updatePagination(todoList.paging.activePage - 1 >= 1 ? todoList.paging.activePage - 1 : 1, todoList.paging.itemsPerPage)} 
+            onClick={() => updatePagination(todoList.paging.activePage -1, todoList.paging.itemsPerPage)} 
           />
           {
             (!rotate && (activeGroup > 1)) 
             && <BootstrapPagination.Ellipsis 
-                  disabled={false} 
-                  key="left-pages-link" 
-                  className='page-ellipsis'
-                  onClick={() => updatePagination(calculateLastPageOfTheGroup(activeGroup - 1), todoList.paging.itemsPerPage)}
-                />
+                data-testid="prev-group"
+                disabled={false} 
+                key="left-pages-link" 
+                className='page-ellipsis'
+                onClick={() => updatePagination(calculateLastPageOfTheGroup(activeGroup - 1), todoList.paging.itemsPerPage)}
+              />
           }
           {pages}
           { 
             (!rotate && (activeGroup < groupsCount)) 
-            && <BootstrapPagination.Ellipsis 
-                  disabled={false} 
-                  key="right-pages-link" 
-                  className='page-ellipsis'
-                  onClick={() => updatePagination(calculateFirstPageOfTheGroup(activeGroup + 1), todoList.paging.itemsPerPage)}
-                />
+            && <BootstrapPagination.Ellipsis
+                data-testid="next-group" 
+                disabled={false} 
+                key="right-pages-link" 
+                className='page-ellipsis'
+                onClick={() => updatePagination(calculateFirstPageOfTheGroup(activeGroup + 1), todoList.paging.itemsPerPage)}
+              />
           }
           <BootstrapPagination.Next
+            data-testid="next-page"
             key="next" 
             disabled={todoList.paging.activePage === pageCount}
-            onClick={() => updatePagination(
-              todoList.paging.activePage + 1 <= pageCount ? todoList.paging.activePage + 1 : pageCount,
-              todoList.paging.itemsPerPage
-            )} 
+            onClick={() => updatePagination(todoList.paging.activePage + 1, todoList.paging.itemsPerPage)} 
           />
           <BootstrapPagination.Last 
+            data-testid="last-page"
             key="last"
             disabled={todoList.paging.activePage === pageCount}
             onClick={() => updatePagination(pageCount, todoList.paging.itemsPerPage)} 

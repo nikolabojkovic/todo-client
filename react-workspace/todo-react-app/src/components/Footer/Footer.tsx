@@ -9,7 +9,7 @@ export function Footer() {
 
   const inputSelectRef = useRef<HTMLSelectElement | null>(null);
   const pageCount = Math.ceil(todoList.paging.totalCount / todoList.paging.itemsPerPage);
-  const rotate = true;
+  const rotate = false;
   const maxVisiblePagesCount = 3
 
   return (

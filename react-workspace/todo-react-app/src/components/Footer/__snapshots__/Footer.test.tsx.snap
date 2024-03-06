@@ -64,6 +64,7 @@ exports[`Paging component should match snapshot 1`] = `
           >
             <span
               className="page-link"
+              data-testid="first-page"
               onClick={[Function]}
             >
               <span
@@ -83,6 +84,7 @@ exports[`Paging component should match snapshot 1`] = `
           >
             <span
               className="page-link"
+              data-testid="prev-page"
               onClick={[Function]}
             >
               <span
@@ -102,6 +104,7 @@ exports[`Paging component should match snapshot 1`] = `
           >
             <span
               className="page-link"
+              data-testid="page-1"
               onClick={[Function]}
             >
               1
@@ -117,6 +120,7 @@ exports[`Paging component should match snapshot 1`] = `
           >
             <a
               className="page-link"
+              data-testid="page-2"
               href="#"
               onClick={[Function]}
               onKeyDown={[Function]}
@@ -131,6 +135,7 @@ exports[`Paging component should match snapshot 1`] = `
           >
             <a
               className="page-link"
+              data-testid="next-page"
               href="#"
               onClick={[Function]}
               onKeyDown={[Function]}
@@ -154,6 +159,7 @@ exports[`Paging component should match snapshot 1`] = `
           >
             <a
               className="page-link"
+              data-testid="last-page"
               href="#"
               onClick={[Function]}
               onKeyDown={[Function]}

@@ -44,7 +44,7 @@ describe('PageSize', () => {
   it('should select page size 10', async () => {
     render(
       (<TodoStateProvider todoList={stateTestData}>
-        <PageSize inputSelectRef={inputSelectRef} pageCount={50} pageSize={10} />
+        <PageSize inputSelectRef={inputSelectRef} pageCount={50} pageSize={5} />
       </TodoStateProvider>)
     ); 
     let selectedFilterOption = screen.getByTestId('selected-size-option');
@@ -64,7 +64,7 @@ describe('PageSize', () => {
   it('should select page size 50', async () => {
     render(
       (<TodoStateProvider todoList={stateTestData}>
-        <PageSize inputSelectRef={inputSelectRef} pageCount={50} pageSize={10} />
+        <PageSize inputSelectRef={inputSelectRef} pageCount={50} pageSize={5} />
       </TodoStateProvider>)
     ); 
     let selectedFilterOption = screen.getByTestId('selected-size-option');
@@ -84,7 +84,7 @@ describe('PageSize', () => {
   it('should select page size 100', async () => {
     render(
       (<TodoStateProvider todoList={stateTestData}>
-        <PageSize inputSelectRef={inputSelectRef} pageCount={50} pageSize={10} />
+        <PageSize inputSelectRef={inputSelectRef} pageCount={50} pageSize={5} />
       </TodoStateProvider>)
     ); 
     let selectedFilterOption = screen.getByTestId('selected-size-option');
