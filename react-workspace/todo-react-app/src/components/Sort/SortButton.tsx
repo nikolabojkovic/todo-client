@@ -10,7 +10,7 @@ type Props = {
   onClick: (column: string, direction: SortDirection) => void
 };
 
-export function SortButton({ column, text, disabled, sortDirection, onClick }: Props) {
+export function SortButton({ column, text, disabled, sortDirection, onClick: handleSort }: Props) {
 
   const [direction, setDirection] = useState(sortDirection);
 
@@ -19,15 +19,18 @@ export function SortButton({ column, text, disabled, sortDirection, onClick }: P
   }, [sortDirection])
 
   return(
-    <div className={disabled ? "App__sorting__item App__sorting__item--disabled" : "App__sorting__item"} onClick={() => {
-      if (disabled) {
-        return;
-      }
+    <div 
+      data-testid={column + "-sort-button-direction-" + direction}
+      className={disabled ? "App__sorting__item App__sorting__item--disabled" : "App__sorting__item"} 
+      onClick={() => {
+        if (disabled) {
+          return;
+        }
 
-      const newDirectionState = direction !== SortDirection.Asc ? SortDirection.Asc : SortDirection.Desc;
-      setDirection(newDirectionState);
-      onClick(column, newDirectionState);
-    }}
+        const newDirectionState = direction !== SortDirection.Asc ? SortDirection.Asc : SortDirection.Desc;
+        setDirection(newDirectionState);
+        handleSort(column, newDirectionState);
+      }}
     >
       <span>{text}</span> 
       <SortIcon sortDirection={direction}/>

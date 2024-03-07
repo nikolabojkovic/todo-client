@@ -7,7 +7,7 @@ import { useState } from 'react';
 type Props = {
   inputSelectRef: any,
   pageCount: number,
-  pageSize: number
+  pageSize?: number | null | undefined;
 };
 
 export function PageSize({ inputSelectRef, pageCount, pageSize = 5 }: Props) {

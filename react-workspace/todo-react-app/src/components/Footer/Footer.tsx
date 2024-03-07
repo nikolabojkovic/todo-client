@@ -19,7 +19,6 @@ export function Footer() {
           <PageSize 
             pageCount={pageCount} 
             inputSelectRef={inputSelectRef}
-            pageSize={5}
           />
           <Pagination 
             pageCount={pageCount} 

@@ -6,6 +6,7 @@ exports[`ImportExport component should match snapshot 1`] = `
 >
   <div
     className="App__sorting__item"
+    data-testid="title-sort-button-direction-none"
     onClick={[Function]}
   >
     <span>
@@ -48,6 +49,7 @@ exports[`ImportExport component should match snapshot 1`] = `
   </div>
   <div
     className="App__sorting__item"
+    data-testid="description-sort-button-direction-none"
     onClick={[Function]}
   >
     <span>
@@ -90,6 +92,7 @@ exports[`ImportExport component should match snapshot 1`] = `
   </div>
   <div
     className="App__sorting__item"
+    data-testid="createdAt-sort-button-direction-asc"
     onClick={[Function]}
   >
     <span>
@@ -132,6 +135,7 @@ exports[`ImportExport component should match snapshot 1`] = `
   </div>
   <div
     className="App__sorting__item"
+    data-testid="completed-sort-button-direction-none"
     onClick={[Function]}
   >
     <span>

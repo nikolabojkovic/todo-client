@@ -12,10 +12,19 @@ describe('PageSize', () => {
     }
   };
 
-  it('component should match snapshot', () => {
+  it('component should match snapshot page size 10', () => {
     const jsxElement =
       (<TodoStateProvider todoList={stateTestData}>
-        <PageSize inputSelectRef={inputSelectRef} pageCount={0} pageSize={5} />
+        <PageSize inputSelectRef={inputSelectRef} pageCount={0} pageSize={10} />
+      </TodoStateProvider>);
+    const tree = renderer.create(jsxElement).toJSON();
+    expect(tree).toMatchSnapshot();
+  });
+
+  it('should display default page size', () => {
+    const jsxElement =
+      (<TodoStateProvider todoList={stateTestData}>
+        <PageSize inputSelectRef={inputSelectRef} pageCount={0} />
       </TodoStateProvider>);
     const tree = renderer.create(jsxElement).toJSON();
     expect(tree).toMatchSnapshot();

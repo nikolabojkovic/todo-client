@@ -3,6 +3,7 @@
 exports[`ImportExport component should match snapshot 1`] = `
 <div
   className="App__sorting__item"
+  data-testid="title-sort-button-direction-desc"
   onClick={[Function]}
 >
   <span>
