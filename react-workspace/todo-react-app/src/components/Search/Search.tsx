@@ -5,13 +5,23 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IAction, TodoActions } from '../../models/Action';
 
 type Props = {
-  placeholder: string,
-  onSearch: Function
+  placeholder: string
 };
 
-export function Search({ placeholder, onSearch: handleSearch }: Props) {
+export function Search({ placeholder}: Props) {
   const dispatch = useTodoListDispatch();
   const todoList = useTodoList();
+
+  function handleSearch(searchTerm: string) {
+    dispatch({
+      type: TodoActions.search,
+      payload: {
+        filter: todoList.filter, 
+        sort: todoList.sort,
+        searchTerm
+      }
+    } as IAction);
+  }
 
   return (
     <Form className="todo-background p-1">

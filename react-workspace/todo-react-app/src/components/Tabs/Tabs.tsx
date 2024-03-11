@@ -36,17 +36,6 @@ export function Tabs() {
     } as IAction);
   }
 
-  function handleSearch(searchTerm: string) {
-    dispatch({
-      type: TodoActions.search,
-      payload: {
-        filter: todoList.filter, 
-        sort: todoList.sort,
-        searchTerm
-      }
-    } as IAction);
-  }
-
   const tabs: Tab[] = [{
       name: 'add-todo',
       icon: faAdd,
@@ -55,7 +44,7 @@ export function Tabs() {
     {
       name: 'search-todos',
       icon: faSearch,
-      content: <Search placeholder='Search by title or description' onSearch={handleSearch} />
+      content: <Search placeholder='Search by title or description' />
     } as Tab,
     {
       name: 'filter-todos',

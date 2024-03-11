@@ -1,41 +1,64 @@
 import renderer from 'react-test-renderer';
-import { TodoStateProvider } from '../../context/TodoListContext';
+import { TodoStateProvider, TodosContext, TodosDispatchContext } from '../../context/TodoListContext';
 import { stateTestData } from '../../context/testData';
 import { Search } from './Search';
 import { fireEvent, render, screen } from '@testing-library/react';
+import { IAction, TodoActions } from '../../models/Action';
 
 describe('Search', () => {
-  const handleSearch = jest.fn();
-  it('component should match snapshot', () => {    
+  it('component should match snapshot', () => {
+    const context = {
+      state: stateTestData,
+      dispatch: jest.fn()
+    } as any;
     const jsxElement = 
-    (<TodoStateProvider initialState={stateTestData}>
-      <Search placeholder={"Please enter task name..."} onSearch={handleSearch} />
-    </TodoStateProvider>);
+    (<TodosContext.Provider value={context.state}>
+       <TodosDispatchContext.Provider value={context.dispatch} >
+         <Search placeholder={"Please enter task name..."} />
+       </TodosDispatchContext.Provider>
+     </TodosContext.Provider>);
     const tree = renderer.create(jsxElement).toJSON();
 
     expect(tree).toMatchSnapshot();
   });
 
   it('should trigger search', () => {
-    render(
-      (<TodoStateProvider initialState={stateTestData}>
-        <Search placeholder={"Please enter task name..."} onSearch={handleSearch} />
-      </TodoStateProvider>)
-    );
+    const context = {
+      state: {
+        ...stateTestData,
+        search: { searchTerm: 'Task 1' }
+      },
+      dispatch: jest.fn()
+    } as any;
+    const jsxElement = 
+    (<TodosContext.Provider value={context.state}>
+       <TodosDispatchContext.Provider value={context.dispatch} >
+         <Search placeholder={"Please enter task name..."} />
+       </TodosDispatchContext.Provider>
+     </TodosContext.Provider>);
+    render(jsxElement);
 
-    const searchInput = screen.getByTestId('search-input');
     const searchButton = screen.getByTestId('search-button');
-      
-    fireEvent.change(searchInput, {target: {value: 'Task 1'}});
     fireEvent.click(searchButton);  
 
-    expect(handleSearch).toBeCalled();
+    expect(context.dispatch).toBeCalledWith({
+      type: TodoActions.search,
+      payload: {
+        filter: context.state.filter, 
+        sort: context.state.sort,
+        searchTerm: 'Task 1'
+      }
+    } as IAction);
   });
 
   it('should disabled search button', () => {
+    const state = {
+      ...stateTestData,
+      search: { searchTerm: '' }
+    }
     render(
-      (<TodoStateProvider initialState={stateTestData}>
-        <Search placeholder={"Please enter task name..."} onSearch={handleSearch} />
+      (<TodoStateProvider initialState={state}>
+        <Search placeholder={"Please enter task name..."} />
       </TodoStateProvider>)
     );
 
@@ -51,7 +74,7 @@ describe('Search', () => {
     }
     render(
       (<TodoStateProvider initialState={state}>
-        <Search placeholder={"Please enter task name..."} onSearch={handleSearch} />
+        <Search placeholder={"Please enter task name..."} />
       </TodoStateProvider>)
     );
 
@@ -61,51 +84,92 @@ describe('Search', () => {
   });
 
   it('should update search input field', () => {
-    render(
-      (<TodoStateProvider initialState={stateTestData}>
-        <Search placeholder={"Please enter task name..."} onSearch={handleSearch} />
-      </TodoStateProvider>)
-    );
+    const context = {
+      state: stateTestData,
+      dispatch: jest.fn()
+    } as any;
+    const jsxElement = 
+    (<TodosContext.Provider value={context.state}>
+       <TodosDispatchContext.Provider value={context.dispatch} >
+         <Search placeholder={"Please enter task name..."} />
+       </TodosDispatchContext.Provider>
+     </TodosContext.Provider>);
+    render(jsxElement);
 
     const searchInput = screen.getByTestId('search-input');      
     fireEvent.change(searchInput, {target: {value: 'Task 1'}});
 
-    expect(handleSearch).not.toBeCalled();
+    expect(context.dispatch).toBeCalledWith({
+      type: TodoActions.searchTermUpdated,
+      payload: {
+        searchTerm: 'Task 1'
+      }
+    } as IAction);
   });
 
   it('should update search input field and trigger search', () => {
-    const state = {
-      ...stateTestData,
-      search: { searchTerm: 'Task 1' }
-    }
-    render(
-      (<TodoStateProvider initialState={state}>
-        <Search placeholder={"Please enter task name..."} onSearch={handleSearch} />
-      </TodoStateProvider>)
-    );
+    const context = {
+      state: {
+        ...stateTestData,
+        search: { searchTerm: 'Task 1' }
+      },
+      dispatch: jest.fn()
+    } as any;
+    const jsxElement = 
+    (<TodosContext.Provider value={context.state}>
+       <TodosDispatchContext.Provider value={context.dispatch} >
+         <Search placeholder={"Please enter task name..."} />
+       </TodosDispatchContext.Provider>
+     </TodosContext.Provider>);
+    render(jsxElement);
 
     const searchInput = screen.getByTestId('search-input');
     expect(searchInput).toBeTruthy();
       
     fireEvent.change(searchInput, {target: {value: ''}});
 
-    expect(handleSearch).toHaveBeenCalledWith('');
+    expect(context.dispatch).toBeCalledWith({
+      type: TodoActions.search,
+      payload: {
+        filter: context.state.filter, 
+        sort: context.state.sort,
+        searchTerm: ''
+      }
+    } as IAction);
+    expect(context.dispatch).toBeCalledWith({
+      type: TodoActions.searchTermUpdated,
+      payload: {
+        searchTerm: ''
+      }
+    } as IAction);
   });
 
   it('should clear search input field and trigger search', () => {
-    const state = {
-      ...stateTestData,
-      search: { searchTerm: 'Task 1' }
-    }
-    render(
-      (<TodoStateProvider initialState={state}>
-        <Search placeholder={'Please enter task name...'} onSearch={handleSearch} />
-      </TodoStateProvider>)
-    );
+    const context = {
+      state: {
+        ...stateTestData,
+        search: { searchTerm: 'Task 1' }
+      },
+      dispatch: jest.fn()
+    } as any;
+    const jsxElement = 
+    (<TodosContext.Provider value={context.state}>
+       <TodosDispatchContext.Provider value={context.dispatch} >
+         <Search placeholder={"Please enter task name..."} />
+       </TodosDispatchContext.Provider>
+     </TodosContext.Provider>);
+    render(jsxElement);
 
     const clearSearchButton = screen.getByTestId('clear-search');      
     fireEvent.click(clearSearchButton);
 
-    expect(handleSearch).toHaveBeenCalledWith('');
+    expect(context.dispatch).toBeCalledWith({
+      type: TodoActions.search,
+      payload: {
+        filter: context.state.filter, 
+        sort: context.state.sort,
+        searchTerm: ''
+      }
+    } as IAction);
   });
 });
