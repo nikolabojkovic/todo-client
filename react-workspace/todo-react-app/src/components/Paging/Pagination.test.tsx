@@ -14,7 +14,7 @@ describe('Pagination', () => {
 
   it('component should match snapshot', () => {
     const jsxElement = 
-    (<TodoStateProvider todoList={stateTestData}>
+    (<TodoStateProvider initialState={stateTestData}>
       <Pagination inputSelectRef={inputSelectRef} rotate={false} pageCount={5} maxVisiblePagesCount={3} />
     </TodoStateProvider>);
     const tree = renderer.create(jsxElement).toJSON();
@@ -28,7 +28,7 @@ describe('Pagination', () => {
         paging: { ...stateTestData.paging, activePage: 1}
       };
       render(
-        (<TodoStateProvider todoList={state}>
+        (<TodoStateProvider initialState={state}>
           <Pagination inputSelectRef={inputSelectRef} rotate={true} pageCount={5} maxVisiblePagesCount={3} />
         </TodoStateProvider>)
       ); 
@@ -43,7 +43,7 @@ describe('Pagination', () => {
         paging: { ...stateTestData.paging, activePage: 5}
       };
       render(
-        (<TodoStateProvider todoList={state}>
+        (<TodoStateProvider initialState={state}>
           <Pagination inputSelectRef={inputSelectRef} rotate={true} pageCount={5} maxVisiblePagesCount={3} />
         </TodoStateProvider>)
       ); 
@@ -58,7 +58,7 @@ describe('Pagination', () => {
         paging: { ...stateTestData.paging, activePage: 2}
       };
       render(
-        (<TodoStateProvider todoList={state}>
+        (<TodoStateProvider initialState={state}>
           <Pagination inputSelectRef={inputSelectRef} rotate={true} pageCount={5} maxVisiblePagesCount={1} />
         </TodoStateProvider>)
       ); 
@@ -74,7 +74,7 @@ describe('Pagination', () => {
         paging: { ...stateTestData.paging, activePage: 1}
       };
       render(
-        (<TodoStateProvider todoList={state}>
+        (<TodoStateProvider initialState={state}>
           <Pagination inputSelectRef={inputSelectRef} rotate={true} pageCount={1} maxVisiblePagesCount={2} />
         </TodoStateProvider>)
       ); 
@@ -88,7 +88,7 @@ describe('Pagination', () => {
         paging: { ...stateTestData.paging, activePage: 3}
       };
       render(
-        (<TodoStateProvider todoList={state}>
+        (<TodoStateProvider initialState={state}>
           <Pagination inputSelectRef={inputSelectRef} rotate={true} pageCount={5} maxVisiblePagesCount={3} />
         </TodoStateProvider>)
       ); 
@@ -105,7 +105,7 @@ describe('Pagination', () => {
         paging: { ...stateTestData.paging, activePage: 5}
       };
       render(
-        (<TodoStateProvider todoList={state}>
+        (<TodoStateProvider initialState={state}>
           <Pagination inputSelectRef={inputSelectRef} rotate={true} pageCount={5} maxVisiblePagesCount={3} />
         </TodoStateProvider>)
       ); 
@@ -122,7 +122,7 @@ describe('Pagination', () => {
         paging: { ...stateTestData.paging, activePage: 6}
       };
       render(
-        (<TodoStateProvider todoList={state}>
+        (<TodoStateProvider initialState={state}>
           <Pagination inputSelectRef={inputSelectRef} rotate={true} pageCount={5} maxVisiblePagesCount={3} />
         </TodoStateProvider>)
       ); 
@@ -140,7 +140,7 @@ describe('Pagination', () => {
         paging: { ...stateTestData.paging, activePage: 1}
       };
       render(
-        (<TodoStateProvider todoList={state}>
+        (<TodoStateProvider initialState={state}>
           <Pagination inputSelectRef={inputSelectRef} rotate={rotate} pageCount={5} maxVisiblePagesCount={3} />
         </TodoStateProvider>)
       ); 
@@ -155,7 +155,7 @@ describe('Pagination', () => {
         paging: { ...stateTestData.paging, activePage: 5}
       };
       render(
-        (<TodoStateProvider todoList={state}>
+        (<TodoStateProvider initialState={state}>
           <Pagination inputSelectRef={inputSelectRef} rotate={rotate} pageCount={5} maxVisiblePagesCount={3} />
         </TodoStateProvider>)
       ); 
@@ -167,7 +167,7 @@ describe('Pagination', () => {
     describe('should change active page', () => {  
       it('click on the next page button should select page no 2', () => {
         render(
-          (<TodoStateProvider todoList={stateTestData}>
+          (<TodoStateProvider initialState={stateTestData}>
             <Pagination inputSelectRef={inputSelectRef} rotate={rotate} pageCount={5} maxVisiblePagesCount={3} />
           </TodoStateProvider>)
         ); 
@@ -181,7 +181,7 @@ describe('Pagination', () => {
 
       it('click on the next page button should select page no 2 and should not focus inputElement', () => {
         render(
-          (<TodoStateProvider todoList={stateTestData}>
+          (<TodoStateProvider initialState={stateTestData}>
             <Pagination inputSelectRef={undefined as any} rotate={rotate} pageCount={5} maxVisiblePagesCount={3} />
           </TodoStateProvider>)
         ); 
@@ -195,7 +195,7 @@ describe('Pagination', () => {
     
       it('click on the last page button should select page no 5', () => {
         render(
-          (<TodoStateProvider todoList={stateTestData}>
+          (<TodoStateProvider initialState={stateTestData}>
             <Pagination inputSelectRef={inputSelectRef} rotate={rotate} pageCount={5} maxVisiblePagesCount={3} />
           </TodoStateProvider>)
         ); 
@@ -210,7 +210,7 @@ describe('Pagination', () => {
       it('click on the first page button should select page no 1', () => {
         stateTestData.paging.activePage = 2;
         render(
-          (<TodoStateProvider todoList={stateTestData}>
+          (<TodoStateProvider initialState={stateTestData}>
             <Pagination inputSelectRef={inputSelectRef} rotate={rotate} pageCount={5} maxVisiblePagesCount={3} />
           </TodoStateProvider>)
         ); 
@@ -224,7 +224,7 @@ describe('Pagination', () => {
       it('click on the second page button should select page no 2', () => {
         stateTestData.paging.activePage = 1;
         render(
-          (<TodoStateProvider todoList={stateTestData}>
+          (<TodoStateProvider initialState={stateTestData}>
             <Pagination inputSelectRef={inputSelectRef} rotate={rotate} pageCount={5} maxVisiblePagesCount={3} />
           </TodoStateProvider>)
         ); 
@@ -238,7 +238,7 @@ describe('Pagination', () => {
       it('click on the previous page button should select page no 2', () => {
         stateTestData.paging.activePage = 3;
         render(
-          (<TodoStateProvider todoList={stateTestData}>
+          (<TodoStateProvider initialState={stateTestData}>
             <Pagination inputSelectRef={inputSelectRef} rotate={rotate} pageCount={5} maxVisiblePagesCount={3} />
           </TodoStateProvider>)
         ); 
@@ -252,7 +252,7 @@ describe('Pagination', () => {
       it('click on the next group button should select page no 4', () => {
         stateTestData.paging.activePage = 1;
         render(
-          (<TodoStateProvider todoList={stateTestData}>
+          (<TodoStateProvider initialState={stateTestData}>
             <Pagination inputSelectRef={inputSelectRef} rotate={rotate} pageCount={5} maxVisiblePagesCount={3} />
           </TodoStateProvider>)
         ); 
@@ -266,7 +266,7 @@ describe('Pagination', () => {
       it('click on the previous group button should select page no 5', () => {
         stateTestData.paging.activePage = 5;
         render(
-          (<TodoStateProvider todoList={stateTestData}>
+          (<TodoStateProvider initialState={stateTestData}>
             <Pagination inputSelectRef={inputSelectRef} rotate={rotate} pageCount={5} maxVisiblePagesCount={3} />
           </TodoStateProvider>)
         ); 

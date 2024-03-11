@@ -16,6 +16,7 @@
     </div>
     <div class="col-12 col-sm-2 p-2">
       <button
+        id="import-button"
         type="button"
         class="btn btn-sm btn-outline-secondary action-button w-100"
         [disabled]="!this.file"
@@ -27,9 +28,10 @@
     </div>
     <div class="col-12 col-sm-2 p-2">
       <button
+        id="export-button"
         type="button"
         class="btn btn-sm btn-outline-secondary action-button w-100"
-        [disabled]="!this.items || this.items.length === 0"
+        [disabled]="ifExportDisabled"
         (click)="onExport()"
       >
         Export

@@ -14,7 +14,7 @@ describe('PageSize', () => {
 
   it('component should match snapshot page size 10', () => {
     const jsxElement =
-      (<TodoStateProvider todoList={stateTestData}>
+      (<TodoStateProvider initialState={stateTestData}>
         <PageSize inputSelectRef={inputSelectRef} pageCount={0} pageSize={10} />
       </TodoStateProvider>);
     const tree = renderer.create(jsxElement).toJSON();
@@ -23,7 +23,7 @@ describe('PageSize', () => {
 
   it('should display default page size', () => {
     const jsxElement =
-      (<TodoStateProvider todoList={stateTestData}>
+      (<TodoStateProvider initialState={stateTestData}>
         <PageSize inputSelectRef={inputSelectRef} pageCount={0} />
       </TodoStateProvider>);
     const tree = renderer.create(jsxElement).toJSON();
@@ -32,7 +32,7 @@ describe('PageSize', () => {
 
   it('should select page size 5', async () => {
     render(
-      (<TodoStateProvider todoList={stateTestData}>
+      (<TodoStateProvider initialState={stateTestData}>
         <PageSize inputSelectRef={inputSelectRef} pageCount={50} pageSize={10} />
       </TodoStateProvider>)
     ); 
@@ -52,7 +52,7 @@ describe('PageSize', () => {
 
   it('should select page size 10', async () => {
     render(
-      (<TodoStateProvider todoList={stateTestData}>
+      (<TodoStateProvider initialState={stateTestData}>
         <PageSize inputSelectRef={inputSelectRef} pageCount={50} pageSize={5} />
       </TodoStateProvider>)
     ); 
@@ -72,7 +72,7 @@ describe('PageSize', () => {
 
   it('should select page size 50', async () => {
     render(
-      (<TodoStateProvider todoList={stateTestData}>
+      (<TodoStateProvider initialState={stateTestData}>
         <PageSize inputSelectRef={inputSelectRef} pageCount={50} pageSize={5} />
       </TodoStateProvider>)
     ); 
@@ -92,7 +92,7 @@ describe('PageSize', () => {
 
   it('should select page size 100', async () => {
     render(
-      (<TodoStateProvider todoList={stateTestData}>
+      (<TodoStateProvider initialState={stateTestData}>
         <PageSize inputSelectRef={inputSelectRef} pageCount={50} pageSize={5} />
       </TodoStateProvider>)
     ); 

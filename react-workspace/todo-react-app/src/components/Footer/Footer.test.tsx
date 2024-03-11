@@ -6,7 +6,7 @@ import { stateTestData } from '../../context/testData';
 describe('Paging', () => {
   it('component should match snapshot', () => {
     const jsxElement = 
-    (<TodoStateProvider todoList={stateTestData}>
+    (<TodoStateProvider initialState={stateTestData}>
       <Footer />
     </TodoStateProvider>);
     const tree = renderer.create(jsxElement).toJSON();

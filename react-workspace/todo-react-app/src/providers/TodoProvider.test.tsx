@@ -3,7 +3,7 @@ import { ISort, SortDirection } from '../models/ISort';
 import { ITodo } from '../models/Todo';
 import { getList, GetListProps, saveList } from './TodoProvider';
 import { MockLocalStorageProvider } from '../Mocks/LocalStorageProvider.mock';
-import { concatMap, exhaustMap, first } from 'rxjs';
+import { exhaustMap, first } from 'rxjs';
 import { IStorageProvider } from './StorageProvider';
 
 describe('todo service', () => {

@@ -36,9 +36,9 @@ export function Sorting() {
   function handleSorting(column: string, direction: SortDirection) {
     setActiveColumn(column);
     dispatch({
-      type: TodoActions.filter,
+      type: TodoActions.sort,
       payload: {
-        filter: todoList.filter, 
+        filter: todoList.sort, 
         sort: {
           column: column, 
           direction: direction

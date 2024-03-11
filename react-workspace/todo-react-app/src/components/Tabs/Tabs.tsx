@@ -19,7 +19,11 @@ type Tab = {
 export function Tabs() {
   const [active, setActive] = useState('add-todo');
   const todoList = useTodoList();
-    const dispatch = useTodoListDispatch();
+  const dispatch = useTodoListDispatch();
+
+  const downloadLink = document.createElement('a');
+  downloadLink.setAttribute('data-test-id', 'download-link');
+  const fileReader = new FileReader(); 
 
   function handleFilter(filter: IFilter) {
     dispatch({
@@ -61,7 +65,7 @@ export function Tabs() {
     {
       name: 'import-export',
       icon: faDownload,
-      content: <ImportExport/>
+      content: <ImportExport downloadLink={downloadLink} fileReader={fileReader} alert={window.alert}/>
     } as Tab
   ] as Tab [];  
   const activeChild = tabs.find((item: Tab) => item.name === active);

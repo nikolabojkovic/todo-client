@@ -47,7 +47,7 @@ describe('AddTodo', () => {
   describe('Click the Add button', () => {
     it('Should add new todo', () => {
       render(
-        (<TodoStateProvider todoList={stateTestData}>
+        (<TodoStateProvider initialState={stateTestData}>
           <AddTodo />
         </TodoStateProvider>)
       );      

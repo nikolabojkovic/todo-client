@@ -13,6 +13,7 @@ import { todosReducer } from '../../shared/state/todo.reducer';
 import { MockLocalStorageProvider } from '../../tests/mocks/local-storage.provider.mock';
 import { ConfirmModalService } from '../confirm-modal/confirm-modal.service';
 import { ImportExportComponent } from "./import-export.component";
+import { By } from '@angular/platform-browser';
 
 describe("ImportExportComponent", () => {
   let component: ImportExportComponent;
@@ -49,76 +50,128 @@ describe("ImportExportComponent", () => {
     spyOn(store, 'dispatch').and.callThrough();
   });
 
-  describe('import', () => {
-    it('should not import from empty file', () => {
-      component.file = null;
-      component.onImport();
-
-      const action = TodoListActions.imported({
-        activePage: 1,
-        list: [] as Todo[]
-      });
-      expect(store.dispatch).not.toHaveBeenCalledWith(action);
-    });
-
-    it('should import from file', () => {
+  describe('choose file', () => {
+    it('should choose selected file', () => {
       const data = `[{"id":1,"title":"test","description":"des","completed":false,"createdAt":"2024-01-23T13:26:32.093Z"}]`;
-      spyOn(confirmModalService, 'confirm').and.returnValue(of(true));
-      spyOn(component.fileReader, 'readAsText').and.callThrough();
       let blobJson = new Blob([data], { type: 'application/json' });
       let mockFile = new File([blobJson], 'todo-list.json');
-      component.file = mockFile;
-      component.onImport();
+      const chooseFileEvent = { target: { files: [mockFile]} as any} as Event;
 
-      expect(component.fileReader.readAsText).toHaveBeenCalledWith(component.file);
+      component.onChooseFile(chooseFileEvent);
+
+      expect(component.file).toBe(mockFile);
+    });
+  });
+
+  describe('import', () => {
+    describe('fail', () => {
+      it('should not import when invalid array', () => {
+        const data = {};
+        const event = { target: { result: JSON.stringify(data)}} as ProgressEvent<FileReader>;
+        component.onLoad(event);
+
+        const action = TodoListActions.imported({
+          activePage: 1,
+          list: [] as Todo[]
+        });
+        expect(store.dispatch).not.toHaveBeenCalledWith(action);
+      });
+
+      it('should not import when invalid todo item', () => {
+        const todo = {test: 1, test2: 2};
+        const data = [todo];
+        const event = { target: { result: JSON.stringify(data)}} as ProgressEvent<FileReader>;
+        component.onLoad(event);
+
+        const action = TodoListActions.imported({
+          activePage: 1,
+          list: [] as Todo[]
+        });
+        expect(store.dispatch).not.toHaveBeenCalledWith(action);
+      });
+
+      it('should not import when confirm declined', () => {
+        const data = `[{"id":1,"title":"test","description":"des","completed":false,"createdAt":"2024-01-23T13:26:32.093Z"}]`;
+        spyOn(component.fileReader, 'readAsText').and.callThrough();
+        let blobJson = new Blob([data], { type: 'application/json' });
+        let mockFile = new File([blobJson], 'todo-list.json');
+
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(mockFile);
+
+        const chooseFileInput = fixture.debugElement.query(By.css('#choose-file'));
+        chooseFileInput.nativeElement.files = dataTransfer.files;
+
+        component.file = mockFile;
+        chooseFileInput.nativeElement.dispatchEvent(new InputEvent('change'));;
+        fixture.detectChanges();
+
+        expect(component.fileContainer.nativeElement.value).not.toBe('');
+        component.onConfirm(false);
+
+        expect(component.fileReader.readAsText).not.toHaveBeenCalledWith(component.file);
+        expect(component.file).toBe(mockFile);
+        expect(component.fileContainer.nativeElement.value).not.toBe('');
+      });
     });
 
+    describe('success', () => {
+      it('should trigger confirm modal', () => {
+        const data = `[{"id":1,"title":"test","description":"des","completed":false,"createdAt":"2024-01-23T13:26:32.093Z"}]`;
+        spyOn(confirmModalService, 'confirm').and.returnValue(of(true));
+        spyOn(component.fileReader, 'readAsText').and.callThrough();
+        let blobJson = new Blob([data], { type: 'application/json' });
+        let mockFile = new File([blobJson], 'todo-list.json');
+        component.file = mockFile;
+        component.onImport();
 
-    it('should execute onload function and import list', () => {
-      const todo = new Todo(1, "Task 1", "Description 1", false, new Date(2022, 1, 4));
-      const data = [todo] as Todo[];
-      const event = { target: { result: JSON.stringify(data)}} as ProgressEvent<FileReader>;
-      component.onLoad(event);
-
-      const action = TodoListActions.imported({
-        activePage: 1,
-        list: data
+        expect(confirmModalService.confirm).toHaveBeenCalledWith('Existing data will be lost. Are you sure?', 'modal-sm');
       });
-      expect(store.dispatch).toHaveBeenCalledWith(action);
-      expect(component.file).toBeNull();
-      expect(component.fileContainer.nativeElement.value).toBe('');
-    });
 
-    it('should execute onload function and not import list because of invalid array', () => {
-      const data = {};
-      const event = { target: { result: JSON.stringify(data)}} as ProgressEvent<FileReader>;
-      component.onLoad(event);
+      it('should import from file on confirm success', () => {
+        const data = `[{"id":1,"title":"test","description":"des","completed":false,"createdAt":"2024-01-23T13:26:32.093Z"}]`;
+        spyOn(component.fileReader, 'readAsText').and.callThrough();
+        let blobJson = new Blob([data], { type: 'application/json' });
+        let mockFile = new File([blobJson], 'todo-list.json');
 
-      const action = TodoListActions.imported({
-        activePage: 1,
-        list: [] as Todo[]
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(mockFile);
+
+        const chooseFileInput = fixture.debugElement.query(By.css('#choose-file'));
+        chooseFileInput.nativeElement.files = dataTransfer.files;
+
+        component.file = mockFile;
+        chooseFileInput.nativeElement.dispatchEvent(new InputEvent('change'));
+        fixture.detectChanges();
+
+        expect(component.fileContainer.nativeElement.value).not.toBe('');
+        component.onConfirm(true);
+
+        expect(component.fileReader.readAsText).toHaveBeenCalledWith(mockFile);
+        expect(component.file).toBeNull();
+        expect(component.fileContainer.nativeElement.value).toBe('');
       });
-      expect(store.dispatch).not.toHaveBeenCalledWith(action);
-    });
 
-    it('should execute onload function and not import list because of invalid todo item', () => {
-      const todo = {test: 1, test2: 2};
-      const data = [todo];
-      const event = { target: { result: JSON.stringify(data)}} as ProgressEvent<FileReader>;
-      component.onLoad(event);
+      it('should import from file when onload invoked', () => {
+        const todo = new Todo(1, "Task 1", "Description 1", false, new Date(2022, 1, 4));
+        const data = [todo] as Todo[];
+        const event = { target: { result: JSON.stringify(data)}} as ProgressEvent<FileReader>;
+        component.onLoad(event);
 
-      const action = TodoListActions.imported({
-        activePage: 1,
-        list: [] as Todo[]
+        const action = TodoListActions.imported({
+          activePage: 1,
+          list: data
+        });
+
+        expect(store.dispatch).toHaveBeenCalledWith(action);
       });
-      expect(store.dispatch).not.toHaveBeenCalledWith(action);
     });
   });
 
   describe('export', () => {
-    it('should import from file', () => {
+    it('should succeed', () => {
       const todo = new Todo(1, "Task 1", "Description 1", false, new Date(2022, 1, 4));
-      component.items = [todo] as Todo[]
+      component.items = [todo] as Todo[];
       const expectedJsonContent = `data:text/json;chatset=utf-8,${encodeURIComponent(
         JSON.stringify(component.items)
       )}`;
@@ -130,14 +183,12 @@ describe("ImportExportComponent", () => {
       expect(linkResult.download.startsWith('todo-list-')).toBeTrue();
       expect(linkResult.href).toBe(expectedJsonContent);
     });
-  });
 
-  describe('choose file', () => {
-    it('should choose selected file', () => {
-      const event = { target: { files: [{}]} as any} as any
-      component.onChooseFile(event);
+    it('should fail', () => {
+      component.items = [] as Todo[];
+      spyOn(component.downloadLink, 'click').and.callFake(() => {});
 
-      expect(component.file).not.toBeNull();
+      expect(component.ifExportDisabled).toBeTrue();
     });
   });
 })

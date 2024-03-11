@@ -6,7 +6,7 @@ import { stateTestData } from '../../context/testData';
 
 describe('todo list rendered', () => {
   it('match snapshot', () => {
-    const todoListJsxElements = (<TodoStateProvider todoList={stateTestData}>
+    const todoListJsxElements = (<TodoStateProvider initialState={stateTestData}>
                                    <TodoList/>
                                  </TodoStateProvider>);
     const tree = renderer.create(

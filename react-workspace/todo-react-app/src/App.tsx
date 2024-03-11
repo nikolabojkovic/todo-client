@@ -14,7 +14,7 @@ function App() {
       <header className="App-header">
         Todo List
       </header>
-      <TodoStateProvider todoList={new State([] as ITodo[])}>
+      <TodoStateProvider initialState={new State([] as ITodo[])}>
         <Tabs/>
         <Sorting/>
         <TodoList/>        

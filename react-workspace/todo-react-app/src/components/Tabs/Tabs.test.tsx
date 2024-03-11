@@ -7,7 +7,7 @@ import userEvent from '@testing-library/user-event'
 
 describe('todo tabs', () => {
   const todoTabsJsxElement = 
-      (<TodoStateProvider todoList={stateTestData}>
+      (<TodoStateProvider initialState={stateTestData}>
         <Tabs/>
       </TodoStateProvider>);
 

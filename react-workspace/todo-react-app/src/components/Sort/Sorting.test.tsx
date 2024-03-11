@@ -8,7 +8,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 describe('ImportExport', () => {
   it('component should match snapshot', () => {
     const jsxElement=
-    (<TodoStateProvider todoList={stateTestData}>
+    (<TodoStateProvider initialState={stateTestData}>
       <Sorting />
     </TodoStateProvider>);
     const tree = renderer.create(jsxElement).toJSON();
@@ -16,7 +16,7 @@ describe('ImportExport', () => {
   });
 
   it('should change active column from createdAt to title column', () => {
-    render((<TodoStateProvider todoList={stateTestData}>
+    render((<TodoStateProvider initialState={stateTestData}>
               <Sorting />
             </TodoStateProvider>)
     );
@@ -31,7 +31,7 @@ describe('ImportExport', () => {
   });
 
   it('should not change active column', () => {
-    render((<TodoStateProvider todoList={stateTestData}>
+    render((<TodoStateProvider initialState={stateTestData}>
               <Sorting />
             </TodoStateProvider>)
     );

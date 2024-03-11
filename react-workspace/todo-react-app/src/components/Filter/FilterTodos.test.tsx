@@ -11,25 +11,27 @@ describe('FilterTodos', () => {
 
   it('component should render all option', () => {
     const jsxElement =
-      (<TodoStateProvider todoList={stateTestData}>
+      (<TodoStateProvider initialState={stateTestData}>
         <FilterTodos filter={{ state: StateFilter.all } as IFilter} onFilter={handleFilter} />
       </TodoStateProvider>);
     const tree = renderer.create(jsxElement).toJSON();
+
     expect(tree).toMatchSnapshot();
   });
 
   it('component should render completed option', () => {
     const jsxElement =
-      (<TodoStateProvider todoList={stateTestData}>
+      (<TodoStateProvider initialState={stateTestData}>
         <FilterTodos filter={{ state: StateFilter.completed } as IFilter} onFilter={handleFilter}  />
       </TodoStateProvider>);
     const tree = renderer.create(jsxElement).toJSON();
+
     expect(tree).toMatchSnapshot();
   });
 
   it('component should render uncompleted option', () => {
     const jsxElement =
-      (<TodoStateProvider todoList={stateTestData}>
+      (<TodoStateProvider initialState={stateTestData}>
         <FilterTodos filter={{ state: StateFilter.uncompleted } as IFilter} onFilter={handleFilter}  />
       </TodoStateProvider>);
     const tree = renderer.create(jsxElement).toJSON();
@@ -38,7 +40,7 @@ describe('FilterTodos', () => {
 
   it('should filter by all', async () => {
     render(
-      (<TodoStateProvider todoList={stateTestData}>
+      (<TodoStateProvider initialState={stateTestData}>
         <FilterTodos filter={{ state: StateFilter.uncompleted } as IFilter} onFilter={handleFilter}  />
       </TodoStateProvider>)
     ); 
@@ -59,7 +61,7 @@ describe('FilterTodos', () => {
 
   it('should filter by completed', async () => {
     render(
-      (<TodoStateProvider todoList={stateTestData}>
+      (<TodoStateProvider initialState={stateTestData}>
         <FilterTodos filter={{ state: StateFilter.all } as IFilter} onFilter={handleFilter}  />
       </TodoStateProvider>)
     ); 
@@ -80,7 +82,7 @@ describe('FilterTodos', () => {
 
   it('should filter by uncompleted', async () => {
     render(
-      (<TodoStateProvider todoList={stateTestData}>
+      (<TodoStateProvider initialState={stateTestData}>
         <FilterTodos filter={{ state: StateFilter.all } as IFilter} onFilter={handleFilter}  />
       </TodoStateProvider>)
     ); 

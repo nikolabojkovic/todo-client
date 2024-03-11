@@ -12,6 +12,7 @@ export function ConfirmModal({ content, show, onConfirm, onCancel }: Props) {
 
   return (
     <Modal
+      data-testid="confirm-modal"
       id="confirm-modal"
       {...{show}}
       size="sm"
@@ -25,6 +26,7 @@ export function ConfirmModal({ content, show, onConfirm, onCancel }: Props) {
       </Modal.Body>
       <Modal.Footer className="todo-background border-0 d-flex justify-content-center">
         <Button 
+          data-testid="confirm-button"
           onClick={onConfirm} 
           className="action-button btn-sm"
           variant="default"
@@ -32,6 +34,7 @@ export function ConfirmModal({ content, show, onConfirm, onCancel }: Props) {
           Confirm
         </Button>
         <Button 
+          data-testid="cancel-button"
           onClick={onCancel} 
           variant="outline-light btn-sm" 
         >

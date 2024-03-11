@@ -8,7 +8,7 @@ describe('Search', () => {
   const handleSearch = jest.fn();
   it('component should match snapshot', () => {    
     const jsxElement = 
-    (<TodoStateProvider todoList={stateTestData}>
+    (<TodoStateProvider initialState={stateTestData}>
       <Search placeholder={"Please enter task name..."} onSearch={handleSearch} />
     </TodoStateProvider>);
     const tree = renderer.create(jsxElement).toJSON();
@@ -18,7 +18,7 @@ describe('Search', () => {
 
   it('should trigger search', () => {
     render(
-      (<TodoStateProvider todoList={stateTestData}>
+      (<TodoStateProvider initialState={stateTestData}>
         <Search placeholder={"Please enter task name..."} onSearch={handleSearch} />
       </TodoStateProvider>)
     );
@@ -34,14 +34,14 @@ describe('Search', () => {
 
   it('should disabled search button', () => {
     render(
-      (<TodoStateProvider todoList={stateTestData}>
+      (<TodoStateProvider initialState={stateTestData}>
         <Search placeholder={"Please enter task name..."} onSearch={handleSearch} />
       </TodoStateProvider>)
     );
 
     const searchButton = screen.getByTestId('search-button');
 
-    expect(searchButton.attributes.getNamedItem('disabled')).toBeTruthy();
+    expect(searchButton).toBeDisabled();
   });
 
   it('should not disable search button', () => {
@@ -50,25 +50,24 @@ describe('Search', () => {
       search: { searchTerm: 'Task 1' }
     }
     render(
-      (<TodoStateProvider todoList={state}>
+      (<TodoStateProvider initialState={state}>
         <Search placeholder={"Please enter task name..."} onSearch={handleSearch} />
       </TodoStateProvider>)
     );
 
     const searchButton = screen.getByTestId('search-button');
 
-    expect(searchButton.attributes.getNamedItem('disabled')).not.toBeTruthy();
+    expect(searchButton).toBeEnabled();
   });
 
   it('should update search input field', () => {
     render(
-      (<TodoStateProvider todoList={stateTestData}>
+      (<TodoStateProvider initialState={stateTestData}>
         <Search placeholder={"Please enter task name..."} onSearch={handleSearch} />
       </TodoStateProvider>)
     );
 
-    const searchInput = screen.getByTestId('search-input');
-      
+    const searchInput = screen.getByTestId('search-input');      
     fireEvent.change(searchInput, {target: {value: 'Task 1'}});
 
     expect(handleSearch).not.toBeCalled();
@@ -80,7 +79,7 @@ describe('Search', () => {
       search: { searchTerm: 'Task 1' }
     }
     render(
-      (<TodoStateProvider todoList={state}>
+      (<TodoStateProvider initialState={state}>
         <Search placeholder={"Please enter task name..."} onSearch={handleSearch} />
       </TodoStateProvider>)
     );
@@ -99,7 +98,7 @@ describe('Search', () => {
       search: { searchTerm: 'Task 1' }
     }
     render(
-      (<TodoStateProvider todoList={state}>
+      (<TodoStateProvider initialState={state}>
         <Search placeholder={'Please enter task name...'} onSearch={handleSearch} />
       </TodoStateProvider>)
     );

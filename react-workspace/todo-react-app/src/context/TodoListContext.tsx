@@ -10,13 +10,13 @@ export const TodosDispatchContext = createContext(null as any);
 
 type Props = {
   children: JSX.Element | JSX.Element[],
-  todoList: IState
+  initialState: IState
 }
 
-export function TodoStateProvider({ todoList, children }: Props) {
+export function TodoStateProvider({ initialState, children }: Props) {
   const [state, dispatch] = useReducer(
     todoStateReducer,
-    todoList
+    initialState
   );
 
   return (
@@ -35,6 +35,8 @@ export function useTodoList() {
 export function useTodoListDispatch() {
   return useContext(TodosDispatchContext);
 }
+
+export default TodosDispatchContext.Provider;
 
 function todoStateReducer(state: IState, action: IAction) {
   switch (action.type) { 

@@ -35,17 +35,22 @@ export class ImportExportComponent implements OnInit {
     this.fileReader.onload = this.onLoad;
   }
 
-  onImport(): void {
-    if (this.file === null)
-      return;
+  get ifExportDisabled() {
+    return !this.items || this.items.length === 0
+  }
 
+  onImport(): void {
     this.modalService.confirm('Existing data will be lost. Are you sure?', 'modal-sm')
-    .pipe(first())
-    .subscribe((confirmed) => {
-      if (confirmed) {
-        this.fileReader.readAsText(this.file!);
-      }
-    });
+      .pipe(first())
+      .subscribe(this.onConfirm);
+  }
+
+  onConfirm = (confirmed: boolean) => {
+    if (confirmed) {
+      this.fileReader.readAsText(this.file!);
+      this.file = null;
+      this.fileContainer.nativeElement.value = '';
+    }
   }
 
   onExport(): HTMLAnchorElement {
@@ -63,6 +68,7 @@ export class ImportExportComponent implements OnInit {
     this.file = ((e.target) as HTMLInputElement).files![0];
   }
 
+  // has to be arrow function because onLoad is invoked by fileReader and this.dispatch has to be bind to this component
   onLoad = (e: ProgressEvent<FileReader>) => {
     const text = e.target?.result;
     const list = JSON.parse(text as string) as Todo[];
@@ -87,8 +93,6 @@ export class ImportExportComponent implements OnInit {
       return;
     }
 
-    this.file = null;
-    this.fileContainer.nativeElement.value = '';
     this.store.dispatch(TodoListActions.imported({
       activePage: 1,
       list: importedTodoList

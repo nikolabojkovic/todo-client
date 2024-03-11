@@ -1,0 +1,5 @@
+// nodejs version
+nvm use 16.14.0
+
+// test coverage
+ng test --no-watch --code-coverage

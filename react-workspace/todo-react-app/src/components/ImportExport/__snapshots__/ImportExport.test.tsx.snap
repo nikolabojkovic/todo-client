@@ -21,6 +21,7 @@ exports[`ImportExport component should match snapshot 1`] = `
             aria-describedby="inputGroup-sizing-sm"
             aria-label="Choose File"
             className="form-control"
+            data-testid="choose-file"
             onChange={[Function]}
             readOnly={true}
             type="file"
@@ -32,6 +33,7 @@ exports[`ImportExport component should match snapshot 1`] = `
       >
         <button
           className="w-100 action-button btn btn-outline-secondary btn-sm"
+          data-testid="import-button"
           disabled={true}
           onClick={[Function]}
           type="button"
@@ -62,7 +64,8 @@ exports[`ImportExport component should match snapshot 1`] = `
       >
         <button
           className="w-100 action-button btn btn-outline-secondary btn-sm"
-          disabled={true}
+          data-testid="export-button"
+          disabled={false}
           onClick={[Function]}
           type="button"
         >

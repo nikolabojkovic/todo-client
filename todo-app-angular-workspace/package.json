@@ -13,7 +13,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "test:sort-button": "ng test --project='sort-button'",
-    "test:todo-app": "ng test --project='todo-app'"
+    "test:todo-app": "ng test --project='todo-app'",
+    "test:todo-app-coverage": "ng test --project='todo-app' --no-watch --code-coverage"
   },
   "private": true,
   "dependencies": {
