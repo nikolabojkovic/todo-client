@@ -24,21 +24,21 @@ describe('TodoItemComponent', () => {
       declarations: [TodoItemComponent],
       imports: [
         FontAwesomeModule,
-        StoreModule.forRoot({ todos: todosReducer }), 
+        StoreModule.forRoot({ todos: todosReducer }),
         EffectsModule.forRoot([TodoEffects])
       ],
       providers: [
-        ConfirmModalService, 
+        ConfirmModalService,
         BsModalService,
         {
           provide: StorageProviderKey,
           useClass: MockLocalStorageProvider
         }]
     });
-    store = TestBed.inject(Store);    
+    store = TestBed.inject(Store);
     fixture = TestBed.createComponent(TodoItemComponent);
-    component = fixture.componentInstance;    
-    spyOn(TestBed.inject(ConfirmModalService), 'confirm').and.returnValue(of(true)); 
+    component = fixture.componentInstance;
+    spyOn(TestBed.inject(ConfirmModalService), 'confirm').and.returnValue(of(true));
     spyOn(store, 'dispatch').and.callThrough();
   });
 
@@ -51,15 +51,15 @@ describe('TodoItemComponent', () => {
         createdAt: new Date(2023, 19, 10),
         id: 1
       } as ITodo;
-  
-      component.todo = expectedTodo;    
+
+      component.todo = expectedTodo;
       fixture.detectChanges();
-  
+
       const compiled = fixture.nativeElement as HTMLElement;
       const icons = compiled.querySelectorAll('.ng-fa-icon');
       expect(icons.length).toBe(2);
     });
-  
+
     it('completed todo should render complete icon disabled', () => {
       const expectedTodo = {
         title: "test title",
@@ -68,10 +68,10 @@ describe('TodoItemComponent', () => {
         createdAt: new Date(2023, 19, 10),
         id: 1
       } as ITodo;
-      
-      component.todo = expectedTodo;    
+
+      component.todo = expectedTodo;
       fixture.detectChanges();
-  
+
       const compiled = fixture.nativeElement as HTMLElement;
       const icons = compiled.querySelectorAll('.ng-fa-icon');
       expect(icons[0]?.className).toContain('action-icon--disabled');
@@ -87,15 +87,15 @@ describe('TodoItemComponent', () => {
         createdAt: new Date(2023, 19, 10),
         id: 1
       } as ITodo;
-  
-      component.todo = expectedTodo;   
+
+      component.todo = expectedTodo;
       component.onComplete();
 
-      const action = TodoListActions.completed({ todoId: expectedTodo.id }); 
+      const action = TodoListActions.completed({ todoId: expectedTodo.id });
       expect(store.dispatch).toHaveBeenCalledWith(action);
     });
-  
-    it('completed todo onComplete should return from function', () => {
+
+    it('completed todo onComplete should not complete todo', () => {
       const expectedTodo = {
         title: "test title",
         description: "test description",
@@ -103,13 +103,13 @@ describe('TodoItemComponent', () => {
         createdAt: new Date(2023, 19, 10),
         id: 1
       } as ITodo;
-  
-      component.todo = expectedTodo;    
+
+      component.todo = expectedTodo;
       component.onComplete();
 
-      const action = TodoListActions.completed({ todoId: expectedTodo.id }); 
+      const action = TodoListActions.completed({ todoId: expectedTodo.id });
       expect(store.dispatch).not.toHaveBeenCalledWith(action);
-    }); 
+    });
     it('onRemove should remove todo', () => {
       const expectedTodo = {
         title: "test title",
@@ -118,12 +118,12 @@ describe('TodoItemComponent', () => {
         createdAt: new Date(2023, 19, 10),
         id: 1
       } as ITodo;
-  
-      component.todo = expectedTodo;   
+
+      component.todo = expectedTodo;
       component.onRemove();
 
-      const action = TodoListActions.removed({ todoId: expectedTodo.id }); 
+      const action = TodoListActions.removed({ todoId: expectedTodo.id });
       expect(store.dispatch).toHaveBeenCalledWith(action);
     });
-  });  
+  });
 });

@@ -52,32 +52,38 @@ export function TodoItem({ todo }: Props){
                 : "App__todo-list__item-description"
               }>
                 <span>{todo.description}</span>
-                <span>
-                  {' ' + new Date(todo.createdAt).toDateString() + ' '}
-                </span>
+                { todo.createdAt && 
+                  <span>
+                    {' (' + new Date(todo.createdAt).toDateString() + ')'}
+                  </span> 
+                }
             </div>
-          </div>     
-          <FontAwesomeIcon 
-            icon={faCheckDouble} 
-            className={todo.completed ?  "ms-auto action-icon--disabled" : "ms-auto action-icon"}
-            onClick={() => {
-              if (todo.completed)
-                return;
+          </div>
+          <div className="ms-auto">
+            <FontAwesomeIcon 
+              icon={faCheckDouble} 
+              className={todo.completed ? "action-icon--disabled" : "action-icon"}
+              onClick={() => {
+                if (todo.completed)
+                  return;
 
-              onConfirm(() => handleComplete);
-              setConfirmDialogText('Are you sure you want to complete this item?');
-              setShowModal(true);
-            }}
-          />
-          <FontAwesomeIcon 
-            icon={faTrash} 
-            className="action-icon"
-            onClick={() => {
-              onConfirm(() => handleDelete);
-              setConfirmDialogText('Are you sure you want to delete this item?');
-              setShowModal(true);
-            }}
-          />
+                onConfirm(() => handleComplete);
+                setConfirmDialogText('Are you sure you want to complete this item?');
+                setShowModal(true);
+              }}
+            />
+          </div>
+          <div>
+            <FontAwesomeIcon 
+              icon={faTrash} 
+              className="action-icon"
+              onClick={() => {
+                onConfirm(() => handleDelete);
+                setConfirmDialogText('Are you sure you want to delete this item?');
+                setShowModal(true);
+              }}
+            />
+          </div>          
         </Stack>
         <ConfirmModal 
           content={confirmDialogText} 

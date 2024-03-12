@@ -15,7 +15,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-section { 
+section {
   color: $text-primary-color;
 }
 
@@ -80,22 +80,22 @@ code {
         font-size: $font-size-primary;
         text-align: left;
         text-decoration: none;
-  
+
         &--completed {
           color: $text-ternary-color;
           font-weight: bold;
           font-size: $font-size-primary;
-          text-align: left;      
+          text-align: left;
           text-decoration: line-through;
         }
       }
-  
+
       &-description {
         color: $text-ternary-color-2;
         font-size: $font-size-secondary;
         text-decoration: none;
         text-align: left;
-  
+
         &--compleated {
           color: $text-ternary-color;
           font-size: $font-size-secondary;
@@ -117,7 +117,7 @@ code {
       flex-direction: row;
       align-items: flex-end;
     }
-    
+
     &__content {
       position: relative;
       background-color: $background-secondary-color;
@@ -168,19 +168,20 @@ code {
       margin-top: 2px;
       background-color: $background-ternary-color-2;
       border-radius: 5px;
-      padding: 0px 5px;
+      padding: 0px 20px 0px 5px;
       text-transform: uppercase;
       font-weight: bold;
       font-size: smaller;
+      position: relative;
 
       &__icon-up {
-        left: 7px;
-        position: relative;
+        right: 5px;
+        position: absolute;
       }
 
       &__icon-down {
-        right: 1px;
-        position: relative;
+        right: 5px;
+        position: absolute;
       }
 
       .icon--inactive {
@@ -216,18 +217,17 @@ code {
 
 .action-button {
   background-color: $background-secondary-color;
-  color: $text-secondary-color; 
+  color: $text-secondary-color;
   min-width: 90px;
   border-radius: 20px;
   border-color: $text-secondary-color;
   width: 90px;
   padding: 4px;
-  max-height: 31px;
 
   &:hover {
     background-color: $text-secondary-color;
     border-color: $text-secondary-color;
-    color: $text-primary-color; 
+    color: $text-primary-color;
   }
 }
 
@@ -236,7 +236,7 @@ code {
   color: $text-primary-color;
 
   &--disabled, &--disabled:hover {
-    color: $text-ternary-color; 
+    color: $text-ternary-color;
     cursor: auto;
   }
 
@@ -273,7 +273,7 @@ code {
   height: 50px;
 
   &::before,
-  &::after {    
+  &::after {
     content: "";
     grid-area: 1/1;
     margin: 2px;
@@ -289,6 +289,11 @@ code {
   }
 }
 
-@keyframes l15{ 
+@keyframes l15{
   100%{transform: rotate(1turn)}
 }
+
+.fa-check-double {
+  min-width: 16px;
+}
+
