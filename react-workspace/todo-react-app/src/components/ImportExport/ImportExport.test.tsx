@@ -84,18 +84,20 @@ describe('ImportExport', () => {
       it('should not handle file content when invalid todo object provided', async () => {
         render(jsxElement);
         const data = `[{}]`;      
-        const progressEvent = { target: { result: data } } as unknown as ProgressEvent<FileReader>
-  
-        (fileReader as any).onload(progressEvent);
-  
-        expect(alert).toBeCalledWith("Invalid JSON file content. Objects in array are not valid Todo objects.");
-        expect(context.dispatch).not.toBeCalledWith({
+        const progressEvent = { target: { result: data } } as unknown as ProgressEvent<FileReader>;
+
+        const action = {
           type: TodoActions.imported,
           payload: {
             list: [] as Todo[],
             activePage: 1
           }
-        } as IAction);
+        } as IAction
+  
+        (fileReader as any).onload(progressEvent);
+  
+        expect(alert).toBeCalledWith("Invalid JSON file content. Objects in array are not valid Todo objects.");
+        expect(context.dispatch).not.toBeCalledWith(action);
       });
 
       it('should fail when import canceled', async () => {
@@ -122,9 +124,18 @@ describe('ImportExport', () => {
       it('should read content when import confirmed', async () => {
         render(jsxElement);
         const data = `[{"id":1,"title":"test","description":"des","completed":false,"createdAt":"2024-01-23T13:26:32.093Z"}]`;      
-        const progressEvent = { target: { result: data } } as unknown as ProgressEvent<FileReader>
+        const progressEvent = { target: { result: data } } as unknown as ProgressEvent<FileReader>;
         let blobJson = new Blob([data], { type: 'application/json' });
-        let mockFile = new File([blobJson], 'todo-list.json');
+        let mockFile = new File([blobJson], 'todo-list.json');        
+        const todo = JSON.parse(data)[0] as Todo;
+
+        const action = {
+          type: TodoActions.imported,
+          payload: {
+            list: [new Todo(todo.id, todo.title, todo.description, todo.completed, todo.createdAt)] as Todo[],
+            activePage: 1
+          }
+        } as IAction;
   
         const chooseFile = screen.getByTestId('choose-file') as any;
         fireEvent.change(chooseFile, {target: {files: [mockFile]}});
@@ -134,41 +145,31 @@ describe('ImportExport', () => {
         const confirmButton = screen.getByTestId('confirm-button');
         fireEvent.click(confirmButton);   
         
-        // await waitFor(async () => {
-          
-        // });
-        //await new Promise(resolve => setTimeout(resolve, 3000));
         expect(fileReader.readAsText).toBeCalledWith(mockFile);      
-        // expect(screen.queryByTestId('confirm-modal')).not.toBeInTheDocument();
         expect(importButton).toBeDisabled();
   
         (fileReader as any).onload(progressEvent);
   
-        const expected = JSON.parse(data)[0] as Todo;
-        expect(context.dispatch).toBeCalledWith({
-          type: TodoActions.imported,
-          payload: {
-            list: [new Todo(expected.id, expected.title, expected.description, expected.completed, expected.createdAt)] as Todo[],
-            activePage: 1
-          }
-        } as IAction);
+        expect(context.dispatch).toBeCalledWith(action);
       });
   
       it('should handle file content when onload invoked', async () => {
         render(jsxElement);
         const data = `[{"id":1,"title":"test","description":"des","completed":false,"createdAt":"2024-01-23T13:26:32.093Z"}]`;      
-        const progressEvent = { target: { result: data } } as unknown as ProgressEvent<FileReader>
-  
-        (fileReader as any).onload(progressEvent);
-        const expected = JSON.parse(data)[0] as Todo;
-  
-        expect(context.dispatch).toBeCalledWith({
+        const progressEvent = { target: { result: data } } as unknown as ProgressEvent<FileReader>;        
+        const todo = JSON.parse(data)[0] as Todo;
+
+        const action = {
           type: TodoActions.imported,
           payload: {
-            list: [new Todo(expected.id, expected.title, expected.description, expected.completed, expected.createdAt)] as Todo[],
+            list: [new Todo(todo.id, todo.title, todo.description, todo.completed, todo.createdAt)] as Todo[],
             activePage: 1
           }
-        } as IAction);
+        } as IAction;
+  
+        (fileReader as any).onload(progressEvent);
+  
+        expect(context.dispatch).toBeCalledWith(action);
       });
     });
   });

@@ -52,16 +52,16 @@ describe("SearchTodosComponent", () => {
       component.filter = filter;
       component.onTyping();
 
-      const actionSearchterm = TodoListActions.searchTermUpdated({
+      const searchTermAction = TodoListActions.searchTermUpdated({
         searchTerm: searchTerm
       });
-      const actionSearch = TodoListActions.search({
+      const searchAction = TodoListActions.search({
         filter,
         sort,
         search: searchTerm
       });
-      expect(store.dispatch).toHaveBeenCalledWith(actionSearchterm);
-      expect(store.dispatch).toHaveBeenCalledWith(actionSearch);
+      expect(store.dispatch).toHaveBeenCalledWith(searchTermAction);
+      expect(store.dispatch).toHaveBeenCalledWith(searchAction);
     });
 
     it('should only update search term', () => {
@@ -73,17 +73,17 @@ describe("SearchTodosComponent", () => {
       component.filter = filter;
       component.onTyping();
 
-      const actionSearchterm = TodoListActions.searchTermUpdated({
+      const searchTermAction = TodoListActions.searchTermUpdated({
         searchTerm: searchTerm
       });
-      const actionSearch = TodoListActions.search({
+      const searchAction = TodoListActions.search({
         filter,
         sort,
         search: searchTerm
       });
 
-      expect(store.dispatch).toHaveBeenCalledWith(actionSearchterm);
-      expect(store.dispatch).not.toHaveBeenCalledWith(actionSearch);
+      expect(store.dispatch).toHaveBeenCalledWith(searchTermAction);
+      expect(store.dispatch).not.toHaveBeenCalledWith(searchAction);
     });
   });
 
@@ -97,13 +97,13 @@ describe("SearchTodosComponent", () => {
       component.filter = filter;
       component.onSerach();
 
-      const actionSearch = TodoListActions.search({
+      const searchAction = TodoListActions.search({
         filter,
         sort,
         search: searchTerm
       });
 
-      expect(store.dispatch).toHaveBeenCalledWith(actionSearch);
+      expect(store.dispatch).toHaveBeenCalledWith(searchAction);
     });
   });
 
@@ -117,14 +117,14 @@ describe("SearchTodosComponent", () => {
       component.filter = filter;
       component.onClearSearch();
 
-      const actionSearch = TodoListActions.search({
+      const searchAction = TodoListActions.search({
         filter,
         sort,
         search: ''
       });
 
       expect(component.searchValue).toBe('');
-      expect(store.dispatch).toHaveBeenCalledWith(actionSearch);
+      expect(store.dispatch).toHaveBeenCalledWith(searchAction);
     });
   });
 })

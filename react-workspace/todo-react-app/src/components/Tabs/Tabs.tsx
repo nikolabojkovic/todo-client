@@ -6,9 +6,7 @@ import { AddTodo } from '../AddTodo/AddTodo';
 import { Search } from '../Search/Search';
 import { FilterTodos } from '../Filter/FilterTodos';
 import { ImportExport } from '../ImportExport/ImportExport';
-import { useTodoList, useTodoListDispatch } from "../../context/TodoListContext";
-import { IFilter } from "../../models/IFilter";
-import { IAction, TodoActions } from "../../models/Action";
+import { useTodoList } from "../../context/TodoListContext";
 
 type Tab = {
   name: string,
@@ -19,22 +17,12 @@ type Tab = {
 export function Tabs() {
   const [active, setActive] = useState('add-todo');
   const todoList = useTodoList();
-  const dispatch = useTodoListDispatch();
 
   const downloadLink = document.createElement('a');
   downloadLink.setAttribute('data-test-id', 'download-link');
   const fileReader = new FileReader(); 
 
-  function handleFilter(filter: IFilter) {
-    dispatch({
-      type: TodoActions.filter,
-      payload: {
-        filter, 
-        sort: todoList.sort,
-        searchTerm: todoList.search.searchTerm
-      }
-    } as IAction);
-  }
+
 
   const tabs: Tab[] = [{
       name: 'add-todo',
@@ -49,7 +37,7 @@ export function Tabs() {
     {
       name: 'filter-todos',
       icon: faFilter,
-      content: <FilterTodos filter={todoList.filter} onFilter={handleFilter}/>
+      content: <FilterTodos filter={todoList.filter} />
     },
     {
       name: 'import-export',

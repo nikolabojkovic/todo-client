@@ -38,17 +38,19 @@ describe('Search', () => {
      </TodosContext.Provider>);
     render(jsxElement);
 
-    const searchButton = screen.getByTestId('search-button');
-    fireEvent.click(searchButton);  
-
-    expect(context.dispatch).toBeCalledWith({
+    const action = {
       type: TodoActions.search,
       payload: {
         filter: context.state.filter, 
         sort: context.state.sort,
         searchTerm: 'Task 1'
       }
-    } as IAction);
+    } as IAction;
+
+    const searchButton = screen.getByTestId('search-button');
+    fireEvent.click(searchButton);  
+
+    expect(context.dispatch).toBeCalledWith(action);
   });
 
   it('should disabled search button', () => {
@@ -95,16 +97,18 @@ describe('Search', () => {
        </TodosDispatchContext.Provider>
      </TodosContext.Provider>);
     render(jsxElement);
-
-    const searchInput = screen.getByTestId('search-input');      
-    fireEvent.change(searchInput, {target: {value: 'Task 1'}});
-
-    expect(context.dispatch).toBeCalledWith({
+    
+    const action = {
       type: TodoActions.searchTermUpdated,
       payload: {
         searchTerm: 'Task 1'
       }
-    } as IAction);
+    } as IAction;
+
+    const searchInput = screen.getByTestId('search-input');      
+    fireEvent.change(searchInput, {target: {value: 'Task 1'}});
+
+    expect(context.dispatch).toBeCalledWith(action);
   });
 
   it('should update search input field and trigger search', () => {
@@ -123,25 +127,28 @@ describe('Search', () => {
      </TodosContext.Provider>);
     render(jsxElement);
 
-    const searchInput = screen.getByTestId('search-input');
-    expect(searchInput).toBeTruthy();
-      
-    fireEvent.change(searchInput, {target: {value: ''}});
-
-    expect(context.dispatch).toBeCalledWith({
+    const searchTermAction = {
+      type: TodoActions.searchTermUpdated,
+      payload: {
+        searchTerm: ''
+      }
+    } as IAction;
+    const searchAction = {
       type: TodoActions.search,
       payload: {
         filter: context.state.filter, 
         sort: context.state.sort,
         searchTerm: ''
       }
-    } as IAction);
-    expect(context.dispatch).toBeCalledWith({
-      type: TodoActions.searchTermUpdated,
-      payload: {
-        searchTerm: ''
-      }
-    } as IAction);
+    } as IAction;
+
+    const searchInput = screen.getByTestId('search-input');
+    expect(searchInput).toBeTruthy();
+      
+    fireEvent.change(searchInput, {target: {value: ''}});
+
+    expect(context.dispatch).toBeCalledWith(searchTermAction);
+    expect(context.dispatch).toBeCalledWith(searchAction);
   });
 
   it('should clear search input field and trigger search', () => {
@@ -160,16 +167,18 @@ describe('Search', () => {
      </TodosContext.Provider>);
     render(jsxElement);
 
-    const clearSearchButton = screen.getByTestId('clear-search');      
-    fireEvent.click(clearSearchButton);
-
-    expect(context.dispatch).toBeCalledWith({
+    const action = {
       type: TodoActions.search,
       payload: {
         filter: context.state.filter, 
         sort: context.state.sort,
         searchTerm: ''
       }
-    } as IAction);
+    } as IAction;
+
+    const clearSearchButton = screen.getByTestId('clear-search');      
+    fireEvent.click(clearSearchButton);
+
+    expect(context.dispatch).toBeCalledWith(action);
   });
 });

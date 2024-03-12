@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import { catchError, exhaustMap, first, map, tap } from 'rxjs/operators';
 import { ITodo } from '../models/todo';
-import { IState, State } from './state';
+import { IState } from './state';
 import { TodoService } from '../services/todo.service';
 import { TodoListActions } from './todo.actions';
 import { selectTodos } from './todo.selectors';

@@ -43,9 +43,28 @@ describe("FilterTodosComponent", () => {
   });
 
   describe('onFilter', () => {
-    it('should dispatch filter action', () => {
+    it('should dispatch filter action completed', () => {
       const sort = { column: 'title', direction: SortDirection.Asc } as ISort;
       const filter = { completed: true, uncompleted: false } as IFilter;
+      const searchTerm = '';
+      component.search = searchTerm;
+      component.sort = sort;
+      component.isCompleted = filter.completed
+      component.isUncompleted = filter.uncompleted;
+
+      const action = TodoListActions.filter({
+        filter,
+        sort,
+        search: searchTerm
+      });
+      component.onFilter();
+
+      expect(store.dispatch).toHaveBeenCalledWith(action);
+    });
+
+    it('should dispatch filter action uncompleted', () => {
+      const sort = { column: 'title', direction: SortDirection.Asc } as ISort;
+      const filter = { completed: false, uncompleted: true } as IFilter;
       const searchTerm = '';
       component.search = searchTerm;
       component.sort = sort;
