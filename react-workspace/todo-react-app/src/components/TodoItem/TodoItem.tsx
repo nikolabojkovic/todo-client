@@ -31,7 +31,7 @@ export function TodoItem({ todo }: Props){
       type: TodoActions.deleted,
       payload: {
         id: todo.id
-      }                
+      }
     } as IAction);
   }
 
@@ -61,6 +61,7 @@ export function TodoItem({ todo }: Props){
           </div>
           <div className="ms-auto">
             <FontAwesomeIcon 
+              data-testid='complete-button'
               icon={faCheckDouble} 
               className={todo.completed ? "action-icon--disabled" : "action-icon"}
               onClick={() => {
@@ -75,6 +76,7 @@ export function TodoItem({ todo }: Props){
           </div>
           <div>
             <FontAwesomeIcon 
+              data-testid="delete-button"
               icon={faTrash} 
               className="action-icon"
               onClick={() => {
@@ -85,7 +87,7 @@ export function TodoItem({ todo }: Props){
             />
           </div>          
         </Stack>
-        <ConfirmModal 
+        <ConfirmModal
           content={confirmDialogText} 
           show={showModal}
           onConfirm={() => { 

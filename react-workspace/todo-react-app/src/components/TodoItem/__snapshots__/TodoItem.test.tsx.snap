@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`todo item completed should match snapshot 1`] = `
+exports[`todo item todo item completed should match snapshot 1`] = `
 <div
   className="App__todo-list__item"
 >
@@ -32,6 +32,7 @@ exports[`todo item completed should match snapshot 1`] = `
         className="svg-inline--fa fa-check-double action-icon--disabled"
         data-icon="check-double"
         data-prefix="fas"
+        data-testid="complete-button"
         focusable="false"
         onClick={[Function]}
         role="img"
@@ -52,6 +53,7 @@ exports[`todo item completed should match snapshot 1`] = `
         className="svg-inline--fa fa-trash action-icon"
         data-icon="trash"
         data-prefix="fas"
+        data-testid="delete-button"
         focusable="false"
         onClick={[Function]}
         role="img"
@@ -70,7 +72,7 @@ exports[`todo item completed should match snapshot 1`] = `
 </div>
 `;
 
-exports[`todo item uncompleted should match snapshot 1`] = `
+exports[`todo item todo item uncompleted should match snapshot 1`] = `
 <div
   className="App__todo-list__item"
 >
@@ -102,6 +104,7 @@ exports[`todo item uncompleted should match snapshot 1`] = `
         className="svg-inline--fa fa-check-double action-icon"
         data-icon="check-double"
         data-prefix="fas"
+        data-testid="complete-button"
         focusable="false"
         onClick={[Function]}
         role="img"
@@ -122,6 +125,7 @@ exports[`todo item uncompleted should match snapshot 1`] = `
         className="svg-inline--fa fa-trash action-icon"
         data-icon="trash"
         data-prefix="fas"
+        data-testid="delete-button"
         focusable="false"
         onClick={[Function]}
         role="img"
