@@ -14,7 +14,7 @@ import { IAction, TodoActions } from '../../models/Action';
 
 type Props = {
   getList: ({ provider, filter, sort, searchTerm }: GetListProps) => Observable<ITodo[]>,
-  saveList: (provider: IStorageProvider, list: ITodo[]) => Observable<any>
+  saveList: (provider: IStorageProvider, list: ITodo[]) => Observable<unknown>
   localStorageProvider: IStorageProvider
 };
 
@@ -30,7 +30,7 @@ export function TodoList({ getList, saveList, localStorageProvider }: Props) {
           column: 'createdAt',
           direction: 'asc'
         } as ISort
-      } as any
+      }
     } as IAction);
   }, [dispatch]);
 
@@ -49,7 +49,7 @@ export function TodoList({ getList, saveList, localStorageProvider }: Props) {
       } as GetListProps)
       .pipe(first())
       .subscribe((list: ITodo[]) => {
-        if (todoList.effectTrigger.type === TodoActions.fetch) {
+        if (todoList.effectTrigger!.type === TodoActions.fetch) {
           dispatch({
             type: TodoActions.fetched,
             payload: {
@@ -58,33 +58,33 @@ export function TodoList({ getList, saveList, localStorageProvider }: Props) {
           } as IAction);
         }
 
-        if (todoList.effectTrigger.type === TodoActions.filter) {
+        if (todoList.effectTrigger!.type === TodoActions.filter) {
           dispatch({
             type: TodoActions.filtered,
             payload: {
               activePage: 1,
               list: list,
-              filter: todoList.effectTrigger.payload.filter
+              filter: todoList.effectTrigger!.payload.filter
             }
           } as IAction);
         }
 
-        if (todoList.effectTrigger.type === TodoActions.search) {
+        if (todoList.effectTrigger!.type === TodoActions.search) {
           dispatch({
             type: TodoActions.searched,
             payload: {
-              searchTerm: todoList.effectTrigger.payload.searchTerm,
+              searchTerm: todoList.effectTrigger!.payload.searchTerm,
               list: list,
               activePage: 1,
             }
           } as IAction);
         }
 
-        if (todoList.effectTrigger.type === TodoActions.sort) {
+        if (todoList.effectTrigger!.type === TodoActions.sort) {
           dispatch({
             type: TodoActions.sorted,
             payload: {
-              sort: todoList.effectTrigger.payload.sort,
+              sort: todoList.effectTrigger!.payload.sort,
               list: list
             }
           } as IAction);

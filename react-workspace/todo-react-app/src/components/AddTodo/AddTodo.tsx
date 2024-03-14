@@ -64,5 +64,5 @@ export function AddTodo() {
         </Row>
       </Container>
     </Form>
-  )
+  );
 }

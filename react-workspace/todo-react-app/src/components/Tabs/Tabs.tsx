@@ -77,5 +77,5 @@ export function Tabs() {
         </div>
       </section>     
     </section>
-  )
+  );
 }

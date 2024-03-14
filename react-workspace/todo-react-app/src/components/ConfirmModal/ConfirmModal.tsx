@@ -42,5 +42,5 @@ export function ConfirmModal({ content, show, onConfirm, onCancel }: Props) {
         </Button>
       </Modal.Footer>
     </Modal>
-  )
+  );
 }

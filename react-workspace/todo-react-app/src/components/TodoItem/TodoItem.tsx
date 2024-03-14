@@ -13,11 +13,11 @@ type Props = {
 
 export function TodoItem({ todo }: Props){
   const [showModal, setShowModal] = useState(false); 
-  const [confirm, onConfirm] = useState(null as any);   
+  const [confirm, onConfirm] = useState<null | (() => void)>(null);   
   const [confirmDialogText, setConfirmDialogText] = useState(''); 
   const dispatch = useTodoListDispatch();
 
-  let handleComplete = () => {
+  function handleComplete() {
     dispatch({
       type: TodoActions.changed,
       payload: {
@@ -26,7 +26,7 @@ export function TodoItem({ todo }: Props){
     } as IAction);
   }
 
-  let handleDelete = () => {
+  function handleDelete() {
     dispatch({
       type: TodoActions.deleted,
       payload: {
@@ -34,7 +34,6 @@ export function TodoItem({ todo }: Props){
       }
     } as IAction);
   }
-
 
   return (
       <div className="App__todo-list__item">
@@ -91,11 +90,11 @@ export function TodoItem({ todo }: Props){
           content={confirmDialogText} 
           show={showModal}
           onConfirm={() => { 
-            confirm(); 
+            ((confirm!)());
             setShowModal(false);
           }}
-          onCancel={() => { setShowModal(false) }}
+          onCancel={() => setShowModal(false)}
         />
       </div>
-  )
+  );
 }

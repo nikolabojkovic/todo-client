@@ -74,5 +74,5 @@ export function FilterTodos({ filter }: Props) {
       </Stack>
 
     </Form>
-  )
+  );
 }

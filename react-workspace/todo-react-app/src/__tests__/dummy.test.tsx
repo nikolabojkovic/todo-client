@@ -8,5 +8,5 @@ test('dummy test todos array', () => {
 describe('todo list', () => {
   it('first item has title', () => {
     expect(todoListTestData[0].title).toBe('Task 1');
-  })
+  });
 });

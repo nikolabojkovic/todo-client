@@ -4,7 +4,7 @@ import { useTodoList, useTodoListDispatch } from '../../context/TodoListContext'
 import { IAction, TodoActions } from '../../models/Action';
 
 type Props = {
-  inputSelectRef: React.MutableRefObject<HTMLSelectElement | null>,
+  inputSelectRef: React.MutableRefObject<HTMLButtonElement | null>,
   rotate: boolean,
   pageCount: number,
   maxVisiblePagesCount: number
@@ -14,8 +14,7 @@ export function Pagination({ inputSelectRef, rotate, pageCount, maxVisiblePagesC
   const todoList = useTodoList();
   const dispatch = useTodoListDispatch();
 
-  let pages = [];
-
+  const pages = [];
   const activeGroup = Math.ceil(todoList.paging.activePage / maxVisiblePagesCount);
   const groupsCount = Math.ceil(pageCount / maxVisiblePagesCount);
   const firstPage = rotate ? calculateFirstPage() : calculateFirstPageOfTheGroup(activeGroup);
@@ -24,8 +23,8 @@ export function Pagination({ inputSelectRef, rotate, pageCount, maxVisiblePagesC
   function calculateLastPageOfTheGroup(groupIndex: number){
     return groupIndex * maxVisiblePagesCount > pageCount 
       ? pageCount 
-      : groupIndex * maxVisiblePagesCount
-  };
+      : groupIndex * maxVisiblePagesCount;
+  }
 
   function calculateFirstPageOfTheGroup(groupIndex: number) {
     if (groupIndex === 0) {
@@ -34,8 +33,8 @@ export function Pagination({ inputSelectRef, rotate, pageCount, maxVisiblePagesC
 
     return groupIndex === 1
     ? 1
-    : ((groupIndex - 1) * maxVisiblePagesCount) + 1
-  };
+    : ((groupIndex - 1) * maxVisiblePagesCount) + 1;
+  }
 
   function calculateFirstPage() {
     if (maxVisiblePagesCount === 1) {
@@ -54,11 +53,11 @@ export function Pagination({ inputSelectRef, rotate, pageCount, maxVisiblePagesC
 
     // Active page is at the end of the paging section
     if (todoList.paging.activePage === pageCount) {
-      return pageCount - (maxVisiblePagesCount - 1)
+      return pageCount - (maxVisiblePagesCount - 1);
     }   
 
     return 1;
-  };
+  }
 
   function calculateLastPage() {
     if (maxVisiblePagesCount === 1) {
@@ -81,7 +80,7 @@ export function Pagination({ inputSelectRef, rotate, pageCount, maxVisiblePagesC
     }
 
     return 1;
-  };
+  }
 
   function updatePagination(activePage: number, itemsPerPage: number) {
     dispatch({
@@ -163,5 +162,5 @@ export function Pagination({ inputSelectRef, rotate, pageCount, maxVisiblePagesC
         </BootstrapPagination>
       </Col>
     </>
-  )
+  );
 }

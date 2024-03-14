@@ -43,7 +43,7 @@ describe('FilterTodos', () => {
         ...stateTestData
       },
       dispatch: jest.fn()
-    } as any;
+    };
     render(
       (
         <TodosContext.Provider value={context.state}>
@@ -84,7 +84,7 @@ describe('FilterTodos', () => {
         ...stateTestData
       },
       dispatch: jest.fn()
-    } as any;
+    };
     render(
       (
         <TodosContext.Provider value={context.state}>
@@ -126,7 +126,7 @@ describe('FilterTodos', () => {
         ...stateTestData
       },
       dispatch: jest.fn()
-    } as any;
+    };
     render(
       (
         <TodosContext.Provider value={context.state}>

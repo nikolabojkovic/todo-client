@@ -1,11 +1,11 @@
 import renderer from 'react-test-renderer';
 import { AddTodo } from './AddTodo';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { TodoStateProvider, useTodoList } from '../../context/TodoListContext';
+import { TodoStateProvider } from '../../context/TodoListContext';
 import { stateTestData } from '../../context/testData';
 
 describe('AddTodo', () => {
-  let jsxElement = <AddTodo />;
+  const jsxElement = <AddTodo />;
 
   it('component should match snapshot', () => {
     const component = renderer.create(jsxElement);
@@ -34,7 +34,7 @@ describe('AddTodo', () => {
 
     it('should enable add button if title and description are not empty', () => {
       render(jsxElement);
-      const titleInput = screen.getByTestId('title-input')
+      const titleInput = screen.getByTestId('title-input');
       const descriptionInput = screen.getByTestId('description-input');
       const addTodoButton = screen.getByTestId('add-todo-button');
       fireEvent.change(titleInput, {target: {value: 'todo title'}});
@@ -51,7 +51,7 @@ describe('AddTodo', () => {
           <AddTodo />
         </TodoStateProvider>)
       );      
-      const titleInput = screen.getByTestId('title-input')
+      const titleInput = screen.getByTestId('title-input');
       const descriptionInput = screen.getByTestId('description-input');
       const addTodoButton = screen.getByTestId('add-todo-button');
       fireEvent.change(titleInput, {target: {value: 'new title'}});

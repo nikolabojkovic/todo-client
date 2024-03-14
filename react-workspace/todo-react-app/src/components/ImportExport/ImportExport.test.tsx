@@ -1,8 +1,8 @@
 import renderer from 'react-test-renderer';
 import { ImportExport } from './ImportExport';
-import { render, screen, fireEvent, act, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, act } from '@testing-library/react';
 import { TodoStateProvider, TodosContext, TodosDispatchContext } from '../../context/TodoListContext';
-import * as TodoContextProvider from '../../context/TodoListContext';
+// import * as TodoContextProvider from '../../context/TodoListContext';
 import { stateTestData } from '../../context/testData';
 import userEvent from '@testing-library/user-event';
 import { IAction, TodoActions } from '../../models/Action';
@@ -12,7 +12,7 @@ describe('ImportExport', () => {
   const context = {
     state: stateTestData,
     dispatch: jest.fn()
-  } as any;
+  };
 
   //jest.spyOn(TodosContextAll, 'useTodoList').mockReturnValue(context);
   //jest.spyOn(TodoContextProvider, 'useTodoListDispatch').mockImplementation(context);
@@ -24,13 +24,10 @@ describe('ImportExport', () => {
     click: jest.fn()
   } as unknown as HTMLAnchorElement;
   const fileReader: FileReader = {
-    readAsText: jest.fn()
-  } as unknown as FileReader
+    readAsText: jest.fn(),
+  } as unknown as FileReader;
 
   const jsxElement = 
-    //(<TodoStateProvider initialState={stateTestData}>
-    //   <ImportExport downloadLink={downloadLink}/>
-    // </TodoStateProvider>);
     (
       <TodosContext.Provider value={context.state}>
         <TodosDispatchContext.Provider value={context.dispatch} >
@@ -39,7 +36,7 @@ describe('ImportExport', () => {
       </TodosContext.Provider>
     );
 
-  it('component should match snapshot', () => {;
+  it('component should match snapshot', () => {
     const tree = renderer.create(jsxElement).toJSON();
 
     expect(tree).toMatchSnapshot();
@@ -49,16 +46,16 @@ describe('ImportExport', () => {
     it('should choose selected file', async () => {
       render(jsxElement);
       const data = `[{"id":1,"title":"test","description":"des","completed":false,"createdAt":"2024-01-23T13:26:32.093Z"}]`;
-      let blobJson = new Blob([data], { type: 'application/json' });
-      let mockFile = new File([blobJson], 'todo-list.json');
+      const blobJson = new Blob([data], { type: 'application/json' });
+      const mockFile = new File([blobJson], 'todo-list.json');
 
-      const chooseFile = screen.getByTestId('choose-file') as any;
+      const chooseFile = screen.getByTestId('choose-file') as HTMLInputElement;
 
       await act(async () => {      
         return await userEvent.upload(chooseFile, [mockFile]);    
       });
 
-      expect(chooseFile.files.length).toBe(1);
+      expect(chooseFile.files!.length).toBe(1);
     });
   });
 
@@ -67,9 +64,9 @@ describe('ImportExport', () => {
       it('should not handle file content when invlid array provided', async () => {
         render(jsxElement);
         const data = `{}`;      
-        const progressEvent = { target: { result: data } } as unknown as ProgressEvent<FileReader>
+        const progressEvent = { target: { result: data } } as unknown as ProgressEvent<FileReader>;
   
-        (fileReader as any).onload(progressEvent);
+        (fileReader.onload!)(progressEvent);
   
         expect(alert).toBeCalledWith("Invalid JSON file content. Todo list should be an array.");
         expect(context.dispatch).not.toBeCalledWith({
@@ -92,9 +89,9 @@ describe('ImportExport', () => {
             list: [] as Todo[],
             activePage: 1
           }
-        } as IAction
+        } as IAction;
   
-        (fileReader as any).onload(progressEvent);
+        (fileReader.onload!)(progressEvent);
   
         expect(alert).toBeCalledWith("Invalid JSON file content. Objects in array are not valid Todo objects.");
         expect(context.dispatch).not.toBeCalledWith(action);
@@ -103,10 +100,10 @@ describe('ImportExport', () => {
       it('should fail when import canceled', async () => {
         render(jsxElement);
         const data = `[{"id":1,"title":"test","description":"des","completed":false,"createdAt":"2024-01-23T13:26:32.093Z"}]`;
-        let blobJson = new Blob([data], { type: 'application/json' });
-        let mockFile = new File([blobJson], 'todo-list.json');
+        const blobJson = new Blob([data], { type: 'application/json' });
+        const mockFile = new File([blobJson], 'todo-list.json');
   
-        const chooseFile = screen.getByTestId('choose-file') as any;
+        const chooseFile = screen.getByTestId('choose-file') as HTMLInputElement;
         fireEvent.change(chooseFile, {target: {files: [mockFile]}});
   
         const importButton = screen.getByTestId('import-button');
@@ -114,7 +111,7 @@ describe('ImportExport', () => {
         const cancelButton = screen.getByTestId('cancel-button');
         fireEvent.click(cancelButton);
         
-        expect(chooseFile.files.length).toBe(1);
+        expect(chooseFile.files!.length).toBe(1);
         expect(fileReader.readAsText).not.toBeCalledWith(mockFile);
         expect(importButton).toBeEnabled();
       });
@@ -125,8 +122,8 @@ describe('ImportExport', () => {
         render(jsxElement);
         const data = `[{"id":1,"title":"test","description":"des","completed":false,"createdAt":"2024-01-23T13:26:32.093Z"}]`;      
         const progressEvent = { target: { result: data } } as unknown as ProgressEvent<FileReader>;
-        let blobJson = new Blob([data], { type: 'application/json' });
-        let mockFile = new File([blobJson], 'todo-list.json');        
+        const blobJson = new Blob([data], { type: 'application/json' });
+        const mockFile = new File([blobJson], 'todo-list.json');        
         const todo = JSON.parse(data)[0] as Todo;
 
         const action = {
@@ -137,7 +134,7 @@ describe('ImportExport', () => {
           }
         } as IAction;
   
-        const chooseFile = screen.getByTestId('choose-file') as any;
+        const chooseFile = screen.getByTestId('choose-file') as HTMLInputElement;
         fireEvent.change(chooseFile, {target: {files: [mockFile]}});
   
         const importButton = screen.getByTestId('import-button');
@@ -148,7 +145,7 @@ describe('ImportExport', () => {
         expect(fileReader.readAsText).toBeCalledWith(mockFile);      
         expect(importButton).toBeDisabled();
   
-        (fileReader as any).onload(progressEvent);
+        (fileReader.onload!)(progressEvent);
   
         expect(context.dispatch).toBeCalledWith(action);
       });
@@ -167,7 +164,7 @@ describe('ImportExport', () => {
           }
         } as IAction;
   
-        (fileReader as any).onload(progressEvent);
+        (fileReader.onload!)(progressEvent);
   
         expect(context.dispatch).toBeCalledWith(action);
       });
@@ -193,7 +190,7 @@ describe('ImportExport', () => {
       const state = {
         ...stateTestData,
         originalList: []
-      }
+      };
       render(
         (<TodoStateProvider initialState={state}>
           <ImportExport downloadLink={downloadLink} fileReader={fileReader} alert={alert}/>

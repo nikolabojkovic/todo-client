@@ -10,7 +10,7 @@ describe('PageSize', () => {
     current: {
       focus: jest.fn()
     }
-  };
+  } as unknown as React.RefObject<HTMLButtonElement> | ((instance: HTMLButtonElement | null) => void) | null | undefined;
 
   it('component should match snapshot page size 10', () => {
     const jsxElement =

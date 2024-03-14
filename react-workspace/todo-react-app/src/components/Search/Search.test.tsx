@@ -10,7 +10,7 @@ describe('Search', () => {
     const context = {
       state: stateTestData,
       dispatch: jest.fn()
-    } as any;
+    };
     const jsxElement = 
     (<TodosContext.Provider value={context.state}>
        <TodosDispatchContext.Provider value={context.dispatch} >
@@ -29,7 +29,7 @@ describe('Search', () => {
         search: { searchTerm: 'Task 1' }
       },
       dispatch: jest.fn()
-    } as any;
+    };
     const jsxElement = 
     (<TodosContext.Provider value={context.state}>
        <TodosDispatchContext.Provider value={context.dispatch} >
@@ -57,7 +57,7 @@ describe('Search', () => {
     const state = {
       ...stateTestData,
       search: { searchTerm: '' }
-    }
+    };
     render(
       (<TodoStateProvider initialState={state}>
         <Search placeholder={"Please enter task name..."} />
@@ -73,7 +73,7 @@ describe('Search', () => {
     const state = {
       ...stateTestData,
       search: { searchTerm: 'Task 1' }
-    }
+    };
     render(
       (<TodoStateProvider initialState={state}>
         <Search placeholder={"Please enter task name..."} />
@@ -89,7 +89,7 @@ describe('Search', () => {
     const context = {
       state: stateTestData,
       dispatch: jest.fn()
-    } as any;
+    };
     const jsxElement = 
     (<TodosContext.Provider value={context.state}>
        <TodosDispatchContext.Provider value={context.dispatch} >
@@ -118,7 +118,7 @@ describe('Search', () => {
         search: { searchTerm: 'Task 1' }
       },
       dispatch: jest.fn()
-    } as any;
+    };
     const jsxElement = 
     (<TodosContext.Provider value={context.state}>
        <TodosDispatchContext.Provider value={context.dispatch} >
@@ -158,7 +158,7 @@ describe('Search', () => {
         search: { searchTerm: 'Task 1' }
       },
       dispatch: jest.fn()
-    } as any;
+    };
     const jsxElement = 
     (<TodosContext.Provider value={context.state}>
        <TodosDispatchContext.Provider value={context.dispatch} >

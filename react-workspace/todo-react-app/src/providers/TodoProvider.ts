@@ -12,7 +12,7 @@ export type GetListProps = {
   searchTerm: string | null,
 }
 
-const todoListName: string = 'todo-list';
+const todoListName = 'todo-list';
 
 export function getList ({provider, filter, sort, searchTerm}: GetListProps): Observable<ITodo[]> {
   return provider.getItem(todoListName).pipe(map((todoListData) => {
@@ -37,9 +37,9 @@ export function getList ({provider, filter, sort, searchTerm}: GetListProps): Ob
  
      return todos;
   }));
-};
+}
 
-export function saveList(provider: IStorageProvider, list: ITodo[]): Observable<any> {
+export function saveList(provider: IStorageProvider, list: ITodo[]): Observable<unknown> {
   return provider.setItem(todoListName, list);
 }
 
@@ -84,18 +84,20 @@ function sortList(list: ITodo[], sort: ISort) : ITodo[] {
   
   if (sort.column === 'createdAt') {
     if (sort.direction === SortDirection.Asc) {
-      sortResult = [...list.sort((a: ITodo, b: ITodo) => a.createdAt > b.createdAt ? 1 : -1)]
+      sortResult = [...list.sort((a: ITodo, b: ITodo) => a.createdAt > b.createdAt ? 1 : -1)];
     } else {
-      sortResult = [...list.sort((a: ITodo, b: ITodo) => a.createdAt < b.createdAt ? 1 : -1)]
+      sortResult = [...list.sort((a: ITodo, b: ITodo) => a.createdAt < b.createdAt ? 1 : -1)];
     }
 
     return sortResult;
   }
 
   if (sort.direction === SortDirection.Asc) {
-    sortResult = [...list.sort((a: any, b: any) => a[sort.column] > b[sort.column] ? 1 : -1)]
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    sortResult = [...list.sort((a: any, b: any) => a[sort.column] > b[sort.column] ? 1 : -1)];
   } else {
-    sortResult = [...list.sort((a: any, b: any) => a[sort.column] < b[sort.column] ? 1 : -1)]
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    sortResult = [...list.sort((a: any, b: any) => a[sort.column] < b[sort.column] ? 1 : -1)];
   }
 
   return sortResult;

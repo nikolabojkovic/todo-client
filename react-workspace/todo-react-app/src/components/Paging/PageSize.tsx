@@ -5,7 +5,7 @@ import { IAction, TodoActions } from '../../models/Action';
 import { useState } from 'react';
 
 type Props = {
-  inputSelectRef: any,
+  inputSelectRef: ((instance: HTMLButtonElement | null) => void) | React.RefObject<HTMLButtonElement> | null | undefined,
   pageCount: number,
   pageSize?: number | null | undefined;
 };
@@ -61,5 +61,5 @@ export function PageSize({ inputSelectRef, pageCount, pageSize = 5 }: Props) {
         </div>
       </Stack>
     </Col>
-  </>)
+  </>);
 }

@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { TodoStateProvider } from '../../context/TodoListContext';
 import { stateTestData } from '../../context/testData';
 import { Tabs } from './Tabs';
-import userEvent from '@testing-library/user-event'
+import userEvent from '@testing-library/user-event';
 
 describe('todo tabs', () => {
   const todoTabsJsxElement = 

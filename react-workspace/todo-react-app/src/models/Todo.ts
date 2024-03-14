@@ -26,7 +26,7 @@ export class Todo implements ITodo {
 			&& todo.title !== undefined
 			&& todo.description !== undefined
 			&& todo.completed !== undefined
-			&& todo.createdAt !== undefined
+			&& todo.createdAt !== undefined;
 	}
 }
 

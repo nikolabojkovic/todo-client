@@ -17,7 +17,7 @@ export class MockLocalStorageProvider implements IStorageProvider {
   }
 
   getItem(key: string): Observable<string | null> {
-    let value = this.storage.get(key);
+    const value = this.storage.get(key);
 
     if (!value)
       return of(null);
@@ -25,8 +25,8 @@ export class MockLocalStorageProvider implements IStorageProvider {
     return of(value);
   }
 
-  setItem(key: string, value: any): Observable<any> {
-    let json = JSON.stringify(value);
+  setItem(key: string, value: unknown): Observable<unknown> {
+    const json = JSON.stringify(value);
     this.storage.set(key, json);
     return of({});
   }

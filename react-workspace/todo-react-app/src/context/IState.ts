@@ -3,14 +3,15 @@ import { IPaging } from "../models/IPaging";
 import { IFilter } from "../models/IFilter";
 import { ISort, SortDirection } from "../models/ISort";
 import { ISearch } from "../models/ISearch";
-import { StateFilter } from '../models/IFilter'
+import { StateFilter } from '../models/IFilter';
+import { IAction } from "../models/Action";
 
 
 export interface IState {
 	isLoading: boolean;
 	originalList: ITodo[];
 	displayList: ITodo[];
-	effectTrigger: any | null;
+	effectTrigger: IAction | null;
 	search: ISearch;
 	filter: IFilter;
 	sort: ISort;
@@ -21,7 +22,7 @@ export class State implements IState {
 	isLoading: boolean;
 	originalList: ITodo[];
 	displayList: ITodo[];
-	effectTrigger: any | null;
+	effectTrigger: IAction | null;
 	search: ISearch;
 	filter: IFilter;
 	sort: ISort;
@@ -48,6 +49,6 @@ export class State implements IState {
 			startIndex: 0,
 			endIndex: todos.length > 5 ? 5 : todos.length,
 			itemsPerPage: 5
-		} as IPaging
+		} as IPaging;
 	}
 }

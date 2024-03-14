@@ -1,16 +1,16 @@
-/* eslint-disable testing-library/prefer-presence-queries */
 import renderer from 'react-test-renderer';
 import { Pagination } from './Pagination';
 import { stateTestData } from '../../context/testData';
 import { TodoStateProvider } from '../../context/TodoListContext';
 import { fireEvent, render, screen } from '@testing-library/react';
+import { MutableRefObject } from 'react';
 
 describe('Pagination', () => {
   const inputSelectRef = {
     current: {
       focus: jest.fn()
     }
-  } as any;
+  } as unknown as MutableRefObject<HTMLButtonElement | null>;
 
   it('component should match snapshot', () => {
     const jsxElement = 
@@ -182,7 +182,7 @@ describe('Pagination', () => {
       it('click on the next page button should select page no 2 and should not focus inputElement', () => {
         render(
           (<TodoStateProvider initialState={stateTestData}>
-            <Pagination inputSelectRef={undefined as any} rotate={rotate} pageCount={5} maxVisiblePagesCount={3} />
+            <Pagination inputSelectRef={null as unknown as  MutableRefObject<HTMLButtonElement | null>} rotate={rotate} pageCount={5} maxVisiblePagesCount={3} />
           </TodoStateProvider>)
         ); 
         const nextPageButton = screen.getByTestId('next-page');

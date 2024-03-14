@@ -4,7 +4,6 @@ import { stateTestData } from '../../context/testData';
 import { TodoStateProvider } from '../../context/TodoListContext';
 import { fireEvent, render, screen } from '@testing-library/react';
 
-/* eslint-disable testing-library/prefer-presence-queries */
 describe('ImportExport', () => {
   it('component should match snapshot', () => {
     const jsxElement=

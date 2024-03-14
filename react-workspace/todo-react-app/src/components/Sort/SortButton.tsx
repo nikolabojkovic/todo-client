@@ -16,7 +16,7 @@ export function SortButton({ column, text, disabled, sortDirection, onClick: han
 
   useEffect(() => {
     setDirection(sortDirection);
-  }, [sortDirection])
+  }, [sortDirection]);
 
   return(
     <div 
@@ -35,5 +35,5 @@ export function SortButton({ column, text, disabled, sortDirection, onClick: han
       <span>{text}</span> 
       <SortIcon sortDirection={direction}/>
     </div>
-  )
+  );
 }

@@ -7,10 +7,10 @@ import { Pagination } from '../Paging/Pagination';
 export function Footer() {
   const todoList = useTodoList();
 
-  const inputSelectRef = useRef<HTMLSelectElement | null>(null);
+  const inputSelectRef = useRef<HTMLButtonElement | null>(null);
   const pageCount = Math.ceil(todoList.paging.totalCount / todoList.paging.itemsPerPage);
   const rotate = false;
-  const maxVisiblePagesCount = 3
+  const maxVisiblePagesCount = 3;
 
   return (
     <section className="footer p-0 mt-2">      
@@ -29,5 +29,5 @@ export function Footer() {
         </Row>
       </Container>
     </section>
-  )
+  );
 }

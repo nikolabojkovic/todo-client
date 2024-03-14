@@ -10,7 +10,7 @@ import { IAction, TodoActions } from "../../models/Action";
 type Props = {
   downloadLink: HTMLAnchorElement,
   fileReader: FileReader,
-  alert: Function
+  alert: (message: string) => void
 }
 
 export function ImportExport({ downloadLink, fileReader, alert }: Props) {
@@ -37,7 +37,7 @@ export function ImportExport({ downloadLink, fileReader, alert }: Props) {
     const list = JSON.parse(text as string) as Todo[];
 
     if (!(list instanceof Array)) {
-      alert("Invalid JSON file content. Todo list should be an array.");
+      alert('Invalid JSON file content. Todo list should be an array.');
       return;
     }
 
@@ -52,7 +52,7 @@ export function ImportExport({ downloadLink, fileReader, alert }: Props) {
          || !(Todo.validateFields(importedTodoList[0]))
             )
         )) {
-      alert("Invalid JSON file content. Objects in array are not valid Todo objects.");
+      alert('Invalid JSON file content. Objects in array are not valid Todo objects.');
       return;
     }          
     
@@ -124,8 +124,8 @@ export function ImportExport({ downloadLink, fileReader, alert }: Props) {
           setFile(null);
           fileRef!.current!.value = '';
         }}
-        onCancel={() => { setShowModal(false) }}
+        onCancel={() => setShowModal(false)}
       />
     </>
-  )
+  );
 }

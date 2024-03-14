@@ -35,7 +35,7 @@ describe('todo item', () => {
       const icons = screen.getAllByRole('img', { hidden: true });
       expect(icons.length).toBe(2);
     });
-  })
+  });
   
   describe('todo item completed', () => {  
     it('should match snapshot', () => {
@@ -60,7 +60,7 @@ describe('todo item', () => {
           ...stateTestData,
         },
         dispatch: jest.fn()
-      } as any;
+      };
       const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >
@@ -91,7 +91,7 @@ describe('todo item', () => {
           ...stateTestData,
         },
         dispatch: jest.fn()
-      } as any;
+      };
       const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >
@@ -122,7 +122,7 @@ describe('todo item', () => {
           ...stateTestData,
         },
         dispatch: jest.fn()
-      } as any;
+      };
       const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >
@@ -151,7 +151,7 @@ describe('todo item', () => {
           ...stateTestData,
         },
         dispatch: jest.fn()
-      } as any;
+      };
       const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >

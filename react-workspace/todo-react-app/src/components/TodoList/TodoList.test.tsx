@@ -14,13 +14,13 @@ describe('todo list rendered', () => {
     getList: jest.fn().mockImplementation(() => of([])), // spred operator does not pick mockImplementation for some reason
     saveList: jest.fn().mockImplementation(() => of({})), // spred operator does not pick mockImplementation for some reason
     localStorageProvider: new MockLocalStorageProvider()
-  }
+  };
   const globalContext = {
     state: {
       ...stateTestData,
     },
     dispatch: jest.fn()
-  } as any;
+  };
 
   it('match snapshot list', () => {
     const context = {
@@ -75,7 +75,7 @@ describe('todo list rendered', () => {
           column: 'createdAt',
           direction: 'asc'
         } as ISort
-      } as any
+      }
     } as IAction;
 
     it('should fetch list', async () => {
@@ -133,7 +133,7 @@ describe('todo list rendered', () => {
       const api = {
         ...fromMockedApi,
         getList: jest.fn().mockImplementation(() => of(expectedList)),
-      }
+      };
       const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >
@@ -177,7 +177,7 @@ describe('todo list rendered', () => {
       const api = {
         ...fromMockedApi,
         getList: jest.fn().mockImplementation(() => of(expectedList)),
-      }
+      };
       const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >
@@ -203,6 +203,7 @@ describe('todo list rendered', () => {
     });
 
     it('should sort list', async () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const expectedList = [...stateTestData.originalList.sort((a: any, b: any) => a.title > b.title ? 1 : -1)];
       const expectedActionPayload = {
         filter: stateTestData.filter, 
@@ -211,8 +212,7 @@ describe('todo list rendered', () => {
           direction: SortDirection.Asc
         } as ISort,
         searchTerm: stateTestData.search.searchTerm
-      }
-
+      };
       const context = {
         ...globalContext,
         state: { 
@@ -224,7 +224,7 @@ describe('todo list rendered', () => {
       const api = {
         ...fromMockedApi,
         getList: jest.fn().mockImplementation(() => of(expectedList)),
-      }
+      };
       const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >

@@ -6,6 +6,7 @@ import { ITodo } from "../models/Todo";
 import { StateFilter } from "../models/IFilter";
  
 export const TodosContext = createContext({} as IState);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const TodosDispatchContext = createContext(null as any);
 
 type Props = {
@@ -45,35 +46,35 @@ export function todoStateReducer(state: IState, action: IAction) {
         ...state,
         effectTrigger: null,
         isLoading: true
-      } as IState
+      } as IState;
     }
     case TodoActions.fetch: {
       return { 
         ...state,
         effectTrigger: { type: TodoActions.fetch, payload: action.payload },
-      } as IState
+      } as IState;
     }
     case TodoActions.filter: {
       return { 
         ...state,
         effectTrigger: { type: TodoActions.filter, payload: action.payload },
-      } as IState
+      } as IState;
     }
     case TodoActions.search: {
       return { 
         ...state,
         effectTrigger: { type: TodoActions.search, payload: action.payload },
-      } as IState
+      } as IState;
     }
     case TodoActions.sort: {
       return { 
         ...state,
         effectTrigger: { type: TodoActions.sort, payload: action.payload },
-      } as IState
+      } as IState;
     }
 
     case TodoActions.fetched: {
-      return new State(action.payload.list)
+      return new State(action.payload.list);
     }
     case TodoActions.searched: {
       return {
@@ -89,7 +90,7 @@ export function todoStateReducer(state: IState, action: IAction) {
           startIndex: (action.payload.activePage - 1) * state.paging.itemsPerPage,
           endIndex: action.payload.activePage * state.paging.itemsPerPage
         } as IPaging
-      }
+      };
     }
     case TodoActions.filtered: {
       return {
@@ -105,7 +106,7 @@ export function todoStateReducer(state: IState, action: IAction) {
           startIndex: (action.payload.activePage - 1) * state.paging.itemsPerPage,
           endIndex: action.payload.activePage * state.paging.itemsPerPage
         } as IPaging
-      }
+      };
     }
     case TodoActions.sorted: {
       return {
@@ -115,7 +116,7 @@ export function todoStateReducer(state: IState, action: IAction) {
         displayList: [...action.payload.list],
         sort: {...action.payload.sort},
         paging: {...state.paging} as IPaging
-      }
+      };
     }
     case TodoActions.imported: {
       return {
@@ -134,7 +135,7 @@ export function todoStateReducer(state: IState, action: IAction) {
           startIndex: (action.payload.activePage - 1) * state.paging.itemsPerPage,
           endIndex: action.payload.activePage * state.paging.itemsPerPage
         } as IPaging
-      }
+      };
     }
 
     case TodoActions.searchTermUpdated: {
@@ -142,7 +143,7 @@ export function todoStateReducer(state: IState, action: IAction) {
         ...state,
         effectTrigger: null,
         search: { searchTerm: action.payload.searchTerm },
-      }
+      };
     }    
     case TodoActions.pagingUpdated: {
       return {
@@ -155,7 +156,7 @@ export function todoStateReducer(state: IState, action: IAction) {
           startIndex: (action.payload.activePage - 1) * action.payload.itemsPerPage,
           endIndex: action.payload.activePage * action.payload.itemsPerPage
         } as IPaging
-      } as IState
+      } as IState;
     }
 
     case TodoActions.added: {
