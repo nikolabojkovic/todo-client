@@ -7,11 +7,7 @@ import { exhaustMap, first } from 'rxjs';
 import { IStorageProvider } from './StorageProvider';
 
 describe('todo service', () => {
-  let mockLocalStorage: IStorageProvider = new MockLocalStorageProvider();
-
-  beforeEach(() => {
-    mockLocalStorage = new MockLocalStorageProvider();
-  });
+  const mockLocalStorage: IStorageProvider = new MockLocalStorageProvider();
   
   it('get todo list', (done) => {
     getList({provider: mockLocalStorage} as GetListProps)

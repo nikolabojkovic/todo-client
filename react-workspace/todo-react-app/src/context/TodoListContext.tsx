@@ -38,7 +38,7 @@ export function useTodoListDispatch() {
 
 export default TodosDispatchContext.Provider;
 
-function todoStateReducer(state: IState, action: IAction) {
+export function todoStateReducer(state: IState, action: IAction) {
   switch (action.type) { 
     case TodoActions.loadingStarted: {
       return { 
@@ -57,21 +57,18 @@ function todoStateReducer(state: IState, action: IAction) {
       return { 
         ...state,
         effectTrigger: { type: TodoActions.filter, payload: action.payload },
-        fetchPayload: action.payload
       } as IState
     }
     case TodoActions.search: {
       return { 
         ...state,
         effectTrigger: { type: TodoActions.search, payload: action.payload },
-        fetchPayload: action.payload
       } as IState
     }
     case TodoActions.sort: {
       return { 
         ...state,
         effectTrigger: { type: TodoActions.sort, payload: action.payload },
-        fetchPayload: action.payload
       } as IState
     }
 

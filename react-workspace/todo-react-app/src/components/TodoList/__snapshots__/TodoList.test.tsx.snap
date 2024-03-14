@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`todo list rendered match snapshot 1`] = `
+exports[`todo list rendered match snapshot list 1`] = `
 <main
   className="App__todo-list"
 >
@@ -353,5 +353,20 @@ exports[`todo list rendered match snapshot 1`] = `
       </div>
     </div>
   </section>
+</main>
+`;
+
+exports[`todo list rendered match snapshot loader 1`] = `
+<main
+  className="App__todo-list"
+>
+  <div
+    className="loader-container d-flex justify-content-center align-items-center fade-in"
+    data-testid="loader"
+  >
+    <div
+      className="loader"
+    />
+  </div>
 </main>
 `;

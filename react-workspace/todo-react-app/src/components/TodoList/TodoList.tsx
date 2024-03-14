@@ -1,16 +1,24 @@
+import { useEffect } from 'react';
+import { Observable, first } from 'rxjs';
 
-import { TodoItem } from '../TodoItem/TodoItem';
-import { useTodoList, useTodoListDispatch } from '../../context/TodoListContext';
-import { ITodo } from '../../models/Todo';
-import { GetListProps, getList, saveList } from '../../providers/TodoProvider';
-import { first } from 'rxjs';
-import { IAction, TodoActions } from '../../models/Action';
 import { ISort } from '../../models/ISort';
 import { Loader } from '../Loader/Loader';
-import { useEffect } from 'react';
-import { localStorageProvider } from '../../providers/StorageProvider';
 
-export function TodoList() {
+import { useTodoList, useTodoListDispatch } from '../../context/TodoListContext';
+import { IStorageProvider } from '../../providers/StorageProvider';
+
+import { GetListProps } from '../../providers/TodoProvider';
+import { TodoItem } from '../TodoItem/TodoItem';
+import { ITodo } from '../../models/Todo';
+import { IAction, TodoActions } from '../../models/Action';
+
+type Props = {
+  getList: ({ provider, filter, sort, searchTerm }: GetListProps) => Observable<ITodo[]>,
+  saveList: (provider: IStorageProvider, list: ITodo[]) => Observable<any>
+  localStorageProvider: IStorageProvider
+};
+
+export function TodoList({ getList, saveList, localStorageProvider }: Props) {
   const todoList = useTodoList();
   const dispatch = useTodoListDispatch();
 
@@ -26,7 +34,7 @@ export function TodoList() {
     } as IAction);
   }, [dispatch]);
 
-  useEffect(() => {    
+  useEffect(() => {  
     if (todoList.effectTrigger
      && (todoList.effectTrigger.type === TodoActions.fetch
       || todoList.effectTrigger.type === TodoActions.filter
@@ -40,7 +48,7 @@ export function TodoList() {
         provider: localStorageProvider,
       } as GetListProps)
       .pipe(first())
-      .subscribe((list: ITodo[]) => {           
+      .subscribe((list: ITodo[]) => {
         if (todoList.effectTrigger.type === TodoActions.fetch) {
           dispatch({
             type: TodoActions.fetched,
@@ -83,7 +91,7 @@ export function TodoList() {
         }
       });
     }
-  }, [todoList.effectTrigger, dispatch]);
+  }, [todoList.effectTrigger, dispatch, getList, localStorageProvider]);
 
   useEffect(() => {
     if (todoList.effectTrigger
@@ -93,7 +101,7 @@ export function TodoList() {
        || todoList.effectTrigger.type === TodoActions.imported)) {
        saveList(localStorageProvider, todoList.originalList).pipe(first()).subscribe();
      }
-  }, [todoList.effectTrigger, todoList.originalList]);
+  }, [todoList.effectTrigger, todoList.originalList, saveList, localStorageProvider]);
 
   return (
     <main className="App__todo-list">

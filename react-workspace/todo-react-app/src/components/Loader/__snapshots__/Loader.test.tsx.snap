@@ -3,6 +3,7 @@
 exports[`ImportExport component should match snapshot 1`] = `
 <div
   className="loader-container d-flex justify-content-center align-items-center fade-in"
+  data-testid="loader"
 >
   <div
     className="loader"

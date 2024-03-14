@@ -38,7 +38,7 @@ export function Sorting() {
     dispatch({
       type: TodoActions.sort,
       payload: {
-        filter: todoList.sort, 
+        filter: todoList.filter, 
         sort: {
           column: column, 
           direction: direction
