@@ -13,12 +13,12 @@ import { ITodo } from '../../models/Todo';
 import { IAction, TodoActions } from '../../models/Action';
 
 type Props = {
-  getList: ({ provider, filter, sort, searchTerm }: GetListProps) => Observable<ITodo[]>,
+  getList: ({ storageProvider, filter, sort, searchTerm }: GetListProps) => Observable<ITodo[]>,
   saveList: (provider: IStorageProvider, list: ITodo[]) => Observable<unknown>
-  localStorageProvider: IStorageProvider
+  storageProvider: IStorageProvider
 };
 
-export function TodoList({ getList, saveList, localStorageProvider }: Props) {
+export function TodoList({ getList, saveList, storageProvider }: Props) {
   const todoList = useTodoList();
   const dispatch = useTodoListDispatch();
 
@@ -45,7 +45,7 @@ export function TodoList({ getList, saveList, localStorageProvider }: Props) {
       } as IAction);
       getList({
         ...todoList.effectTrigger.payload,
-        provider: localStorageProvider,
+        storageProvider,
       } as GetListProps)
       .pipe(first())
       .subscribe((list: ITodo[]) => {
@@ -91,7 +91,7 @@ export function TodoList({ getList, saveList, localStorageProvider }: Props) {
         }
       });
     }
-  }, [todoList.effectTrigger, dispatch, getList, localStorageProvider]);
+  }, [todoList.effectTrigger, dispatch, getList, storageProvider]);
 
   useEffect(() => {
     if (todoList.effectTrigger
@@ -99,9 +99,9 @@ export function TodoList({ getList, saveList, localStorageProvider }: Props) {
        || todoList.effectTrigger.type === TodoActions.changed
        || todoList.effectTrigger.type === TodoActions.deleted
        || todoList.effectTrigger.type === TodoActions.imported)) {
-       saveList(localStorageProvider, todoList.originalList).pipe(first()).subscribe();
+       saveList(storageProvider, todoList.originalList).pipe(first()).subscribe();
      }
-  }, [todoList.effectTrigger, todoList.originalList, saveList, localStorageProvider]);
+  }, [todoList.effectTrigger, todoList.originalList, saveList, storageProvider]);
 
   return (
     <main className="App__todo-list">

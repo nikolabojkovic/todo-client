@@ -11,6 +11,7 @@ describe('todo service', () => {
   let todoService: TodoService;
 
   beforeEach(() => {
+    // TODO remove MockLocalStorageProvider and mock storageProvider with jasmin
     mockLocalStorage = new MockLocalStorageProvider();
     todoService = new TodoService(mockLocalStorage);
   });

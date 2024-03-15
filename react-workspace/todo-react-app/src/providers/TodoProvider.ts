@@ -6,7 +6,7 @@ import { ITodo } from "../models/Todo";
 import { IStorageProvider } from "./StorageProvider";
 
 export type GetListProps = {
-  provider: IStorageProvider,
+  storageProvider: IStorageProvider,
   filter: IFilter | null,
   sort: ISort | null,
   searchTerm: string | null,
@@ -14,8 +14,8 @@ export type GetListProps = {
 
 const todoListName = 'todo-list';
 
-export function getList ({provider, filter, sort, searchTerm}: GetListProps): Observable<ITodo[]> {
-  return provider.getItem(todoListName).pipe(map((todoListData) => {
+export function getList ({storageProvider, filter, sort, searchTerm}: GetListProps): Observable<ITodo[]> {
+  return storageProvider.getItem(todoListName).pipe(map((todoListData) => {
     if (todoListData === undefined 
       || todoListData === null) {
        return [] as ITodo[];
@@ -39,8 +39,8 @@ export function getList ({provider, filter, sort, searchTerm}: GetListProps): Ob
   }));
 }
 
-export function saveList(provider: IStorageProvider, list: ITodo[]): Observable<unknown> {
-  return provider.setItem(todoListName, list);
+export function saveList(storageProvider: IStorageProvider, list: ITodo[]): Observable<unknown> {
+  return storageProvider.setItem(todoListName, list);
 }
 
 function searchList(list: ITodo[], searchTerm: string): ITodo[] {

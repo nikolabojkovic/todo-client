@@ -1,7 +1,7 @@
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { useState } from 'react';
 import { useTodoListDispatch } from '../../context/TodoListContext';
-import { IAction } from '../../models/Action';
+import { IAction, TodoActions } from '../../models/Action';
 
 export function AddTodo() {
   const [title, setTitle] = useState('');
@@ -11,10 +11,11 @@ export function AddTodo() {
 
   function handleAdd() {
     dispatch({
-      type: 'added',
+      type: TodoActions.added,
       payload: {
         title, 
-        description
+        description,
+        createdAt: new Date()
       }
     } as IAction);
     setTitle('');

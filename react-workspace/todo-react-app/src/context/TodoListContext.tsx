@@ -169,7 +169,7 @@ export function todoStateReducer(state: IState, action: IAction) {
         title: action.payload.title,
         description: action.payload.description,
         completed: false, 
-        createdAt: new Date()
+        createdAt: action.payload.createdAt
       } as ITodo;
 
       return {

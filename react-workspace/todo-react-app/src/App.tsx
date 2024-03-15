@@ -20,7 +20,7 @@ function App() {
       <TodoStateProvider initialState={new State([] as ITodo[])}>
         <Tabs/>
         <Sorting/>
-        <TodoList getList={getList} saveList={saveList} localStorageProvider={localStorageProvider}/>        
+        <TodoList getList={getList} saveList={saveList} storageProvider={localStorageProvider}/>        
         <Footer />
       </TodoStateProvider>
     </div>

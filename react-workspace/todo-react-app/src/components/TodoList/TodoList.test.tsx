@@ -7,14 +7,25 @@ import { IAction, TodoActions } from '../../models/Action';
 import { ISort, SortDirection } from '../../models/ISort';
 import { of } from 'rxjs';
 import { IFilter, StateFilter } from '../../models/IFilter';
-import { MockLocalStorageProvider } from '../../Mocks/LocalStorageProvider.mock';
+import { IStorageProvider } from '../../providers/StorageProvider';
+import { Todo } from '../../models/Todo';
 
-describe('todo list rendered', () => {
-  const fromMockedApi = {
-    getList: jest.fn().mockImplementation(() => of([])), // spred operator does not pick mockImplementation for some reason
-    saveList: jest.fn().mockImplementation(() => of({})), // spred operator does not pick mockImplementation for some reason
-    localStorageProvider: new MockLocalStorageProvider()
+
+let fromMockedApi = {
+  getList: () => of([] as Todo[]),
+  saveList: () => of({}),
+  storageProvider: {} as IStorageProvider
+};
+
+beforeEach(() => {
+  fromMockedApi = {
+    getList: jest.fn().mockImplementation(() => of([] as Todo[])),
+    saveList: jest.fn().mockImplementation(() => of({})),
+    storageProvider: jest.fn().mockReturnValue({} as IStorageProvider)()
   };
+});
+
+describe('todo list rendered', () => {  
   const globalContext = {
     state: {
       ...stateTestData,
@@ -107,7 +118,7 @@ describe('todo list rendered', () => {
       } as IAction;
 
       expect(screen.getByTestId('loader')).toBeInTheDocument();
-      expect(api.getList).toBeCalledWith({ provider: api.localStorageProvider, ...actionFetch.payload} );
+      expect(api.getList).toBeCalledWith({ storageProvider: api.storageProvider, ...actionFetch.payload} );
       expect(context.dispatch).toBeCalledWith(actionLoadingStarted);
       expect(context.dispatch).toBeCalledWith(actionFetch);      
       expect(context.dispatch).toBeCalledWith(actionFetched);
@@ -152,7 +163,7 @@ describe('todo list rendered', () => {
       } as IAction;
 
       expect(screen.getByTestId('loader')).toBeInTheDocument();
-      expect(api.getList).toBeCalledWith({ provider: api.localStorageProvider, ...expectedActionPayload });
+      expect(api.getList).toBeCalledWith({ storageProvider: api.storageProvider, ...expectedActionPayload });
       expect(context.dispatch).toBeCalledWith(actionLoadingStarted);
       expect(context.dispatch).toBeCalledWith(actionFetch);
       expect(context.dispatch).toBeCalledWith(actionFiltered);
@@ -196,7 +207,7 @@ describe('todo list rendered', () => {
       } as IAction;
 
       expect(screen.getByTestId('loader')).toBeInTheDocument();
-      expect(api.getList).toBeCalledWith({ provider: api.localStorageProvider, ...expectedFilterActionPayload });
+      expect(api.getList).toBeCalledWith({ storageProvider: api.storageProvider, ...expectedFilterActionPayload });
       expect(context.dispatch).toBeCalledWith(actionLoadingStarted);
       expect(context.dispatch).toBeCalledWith(actionFetch);
       expect(context.dispatch).toBeCalledWith(actionSearched);
@@ -242,7 +253,7 @@ describe('todo list rendered', () => {
       } as IAction;
 
       expect(screen.getByTestId('loader')).toBeInTheDocument();
-      expect(api.getList).toBeCalledWith({ provider: api.localStorageProvider, ...expectedActionPayload });
+      expect(api.getList).toBeCalledWith({ storageProvider: api.storageProvider, ...expectedActionPayload });
       expect(context.dispatch).toBeCalledWith(actionLoadingStarted);
       expect(context.dispatch).toBeCalledWith(actionFetch);
       expect(context.dispatch).toBeCalledWith(actionSorted);
@@ -259,19 +270,15 @@ describe('todo list rendered', () => {
           isLoading: false
         }
       };
-      const api = {
-        ...fromMockedApi,
-        saveList: jest.fn().mockImplementation(() => of({})),
-      };
       const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoList {...api} />
+          <TodoList {...fromMockedApi} />
          </TodosDispatchContext.Provider>
        </TodosContext.Provider>);
       render(jsxElement);
   
-      expect(api.saveList).toBeCalledWith(api.localStorageProvider, stateTestData.originalList);
+      expect(fromMockedApi.saveList).toBeCalledWith(fromMockedApi.storageProvider, stateTestData.originalList);
     });
 
     it('should save list when todo item changed', async () => {
@@ -283,19 +290,15 @@ describe('todo list rendered', () => {
           isLoading: false
         }
       };
-      const api = {
-        ...fromMockedApi,
-        saveList: jest.fn().mockImplementation(() => of({})),
-      };
       const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoList {...api} />
+          <TodoList {...fromMockedApi} />
          </TodosDispatchContext.Provider>
        </TodosContext.Provider>);
       render(jsxElement);
   
-      expect(api.saveList).toBeCalledWith(api.localStorageProvider, stateTestData.originalList);
+      expect(fromMockedApi.saveList).toBeCalledWith(fromMockedApi.storageProvider, stateTestData.originalList);
     });
 
     it('should save list when todo item deleted', async () => {
@@ -307,19 +310,15 @@ describe('todo list rendered', () => {
           isLoading: false
         }
       };
-      const api = {
-        ...fromMockedApi,
-        saveList: jest.fn().mockImplementation(() => of({})),
-      };
       const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoList {...api} />
+          <TodoList {...fromMockedApi} />
          </TodosDispatchContext.Provider>
        </TodosContext.Provider>);
       render(jsxElement);
   
-      expect(api.saveList).toBeCalledWith(api.localStorageProvider, stateTestData.originalList);
+      expect(fromMockedApi.saveList).toBeCalledWith(fromMockedApi.storageProvider, stateTestData.originalList);
     });
 
     it('should save list when todo item imported', async () => {
@@ -331,19 +330,15 @@ describe('todo list rendered', () => {
           isLoading: false
         }
       };
-      const api = {
-        ...fromMockedApi,
-        saveList: jest.fn().mockImplementation(() => of({})),
-      };
       const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoList {...api} />
+          <TodoList {...fromMockedApi} />
          </TodosDispatchContext.Provider>
        </TodosContext.Provider>);
       render(jsxElement);
   
-      expect(api.saveList).toBeCalledWith(api.localStorageProvider, stateTestData.originalList);
+      expect(fromMockedApi.saveList).toBeCalledWith(fromMockedApi.storageProvider, stateTestData.originalList);
     });
   });
 });

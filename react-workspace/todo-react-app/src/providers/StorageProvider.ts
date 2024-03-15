@@ -5,15 +5,21 @@ export interface IStorageProvider {
   setItem(key: string, value: unknown): Observable<unknown>;
 }
 
-
 export class LocalStorageProvider implements IStorageProvider {
+
+  localStorage: Storage = window.localStorage;
+
+  get storage(): Storage {
+    return this.localStorage;
+  }
+
   getItem(key: string): Observable<string | null> {
-    return of(localStorage.getItem(key)).pipe(delay(800));
+    return of(this.storage.getItem(key)).pipe(delay(800));
   }
 
   setItem(key: string, value: unknown): Observable<unknown> {
-    const json = JSON.stringify(value);
-    localStorage.setItem(key, json);
+    const jsonAsText = JSON.stringify(value);
+    this.storage.setItem(key, jsonAsText);
     return of({});
   }
 }

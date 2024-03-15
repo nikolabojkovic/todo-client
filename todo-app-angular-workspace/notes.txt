@@ -3,3 +3,7 @@ nvm use 16.14.0
 
 // test coverage
 ng test --no-watch --code-coverage
+
+link local npm package
+npm install "file://./dist//sort-button-lib"
+
