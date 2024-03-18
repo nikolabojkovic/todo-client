@@ -10,10 +10,10 @@ import { IState } from '../../shared/state/state';
 import { TodoListActions } from '../../shared/state/todo.actions';
 import { TodoEffects } from '../../shared/state/todo.effects';
 import { todosReducer } from '../../shared/state/todo.reducer';
-import { MockLocalStorageProvider } from '../../tests/mocks/local-storage.provider.mock';
 import { ConfirmModalService } from '../confirm-modal/confirm-modal.service';
 import { ImportExportComponent } from "./import-export.component";
 import { By } from '@angular/platform-browser';
+import { todos } from '../../tests/test-data';
 
 describe("ImportExportComponent", () => {
   let component: ImportExportComponent;
@@ -30,8 +30,12 @@ describe("ImportExportComponent", () => {
         ConfirmModalService,
         {
           provide: StorageProviderKey,
-          useClass: MockLocalStorageProvider
-        }],
+          useValue: {
+            getItem: (key: string) => of(JSON.stringify(todos)),
+            setItem: (key: string, value: any) => of({})
+          }
+        }
+      ],
       imports:
       [
         StoreModule.forRoot({ todos: todosReducer }),

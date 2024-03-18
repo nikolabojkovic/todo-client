@@ -2,7 +2,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { EffectsModule } from '@ngrx/effects';
 import { Store, StoreModule } from '@ngrx/store';
-import { throwError } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { ITodo } from '../../shared/models/todo';
 import { StorageProviderKey } from '../../shared/services/storage.provider';
 import { TodoService } from '../../shared/services/todo.service';
@@ -10,8 +10,8 @@ import { IState } from '../../shared/state/state';
 import { TodoListActions } from '../../shared/state/todo.actions';
 import { TodoEffects } from '../../shared/state/todo.effects';
 import { todosReducer } from '../../shared/state/todo.reducer';
-import { MockLocalStorageProvider } from '../../tests/mocks/local-storage.provider.mock';
 import { TodoListComponent } from "./todo-list.component";
+import { todos } from '../../tests/test-data';
 
 describe("TodoListComponent", () => {
   let component: TodoListComponent;
@@ -27,7 +27,9 @@ describe("TodoListComponent", () => {
         TodoService,
         {
           provide: StorageProviderKey,
-          useClass: MockLocalStorageProvider
+          useValue: {
+            getItem: (key: string) => of(JSON.stringify(todos))
+          }
         }
       ],
       imports: [

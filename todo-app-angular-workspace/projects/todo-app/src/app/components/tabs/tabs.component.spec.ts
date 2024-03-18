@@ -2,16 +2,16 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AddTodoComponent } from '../add-todo/add-todo.component';
 import { provideMockStore, MockStore } from '@ngrx/store/testing';
-import { stateTestData } from '../../tests/test-data';
+import { stateTestData, todos } from '../../tests/test-data';
 import { IState } from '../../shared/state/state';
 
 import { TabsComponent } from './tabs.component';
 import { FormsModule } from '@angular/forms';
 import { SearchTodosComponent } from '../search-todos/search-todos.component';
 import { ImportExportComponent } from '../import-export/import-export.component';
-import { MockLocalStorageProvider } from '../../tests/mocks/local-storage.provider.mock';
 import { StorageProviderKey } from '../../shared/services/storage.provider';
 import { TodoService } from '../../shared/services/todo.service';
+import { of } from 'rxjs';
 
 describe('TabsComponent', () => {
   let component: TabsComponent;
@@ -33,8 +33,11 @@ describe('TabsComponent', () => {
         TodoService,
         {
           provide: StorageProviderKey,
-          useClass: MockLocalStorageProvider
-        },
+          useValue: {
+            getItem: (key: string) => of(JSON.stringify(todos)),
+            setItem: (key: string, value: any) => of({})
+          }
+        }
       ]
     });
     fixture = TestBed.createComponent(TabsComponent);

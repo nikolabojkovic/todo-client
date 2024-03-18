@@ -12,7 +12,8 @@ import { EffectsModule } from '@ngrx/effects';
 import { TodoEffects } from '../../shared/state/todo.effects';
 import { TodoListActions } from '../../shared/state/todo.actions';
 import { StorageProviderKey } from '../../shared/services/storage.provider';
-import { MockLocalStorageProvider } from '../../tests/mocks/local-storage.provider.mock';
+import { todos } from '../../tests/test-data';
+import { TodoService } from '../../shared/services/todo.service';
 
 describe('TodoItemComponent', () => {
   let component: TodoItemComponent;
@@ -31,15 +32,19 @@ describe('TodoItemComponent', () => {
         ConfirmModalService,
         BsModalService,
         {
-          provide: StorageProviderKey,
-          useClass: MockLocalStorageProvider
-        }]
+          provide: TodoService,
+          useValue: {
+            getList: () => of(todos),
+            saveList: () => of({})
+          }
+        }
+      ]
     });
     store = TestBed.inject(Store);
     fixture = TestBed.createComponent(TodoItemComponent);
     component = fixture.componentInstance;
     spyOn(TestBed.inject(ConfirmModalService), 'confirm').and.returnValue(of(true));
-    spyOn(store, 'dispatch').and.callThrough();
+    spyOn(store, 'dispatch').and.callFake(() => {});
   });
 
   describe('component render', () => {

@@ -3,7 +3,6 @@ import { IState } from '../../shared/state/state';
 import { SortButtonComponent } from './sort-button.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SortIconComponent } from '../sort-icon/sort-icon.component';
-import { MockLocalStorageProvider } from '../../tests/mocks/local-storage.provider.mock';
 import { StorageProviderKey } from '../../shared/services/storage.provider';
 import { Store, StoreModule } from '@ngrx/store';
 import { todosReducer } from '../../shared/state/todo.reducer';
@@ -12,6 +11,8 @@ import { TodoEffects } from '../../shared/state/todo.effects';
 import { ISort, SortDirection } from '../../shared/models/sort';
 import { IFilter } from '../../shared/models/filter';
 import { TodoListActions } from '../../shared/state/todo.actions';
+import { of } from 'rxjs';
+import { todos } from '../../tests/test-data';
 
 describe('SortButtonComponent', () => {
   let component: SortButtonComponent;
@@ -29,8 +30,11 @@ describe('SortButtonComponent', () => {
       providers: [
         {
           provide: StorageProviderKey,
-          useClass: MockLocalStorageProvider
-        },
+          useValue: {
+            getItem: (key: string) => of(JSON.stringify(todos)),
+            setItem: (key: string, value: any) => of({})
+          }
+        }
       ]
     });
     fixture = TestBed.createComponent(SortButtonComponent);

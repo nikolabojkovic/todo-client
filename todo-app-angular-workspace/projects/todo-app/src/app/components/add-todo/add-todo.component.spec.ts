@@ -9,8 +9,9 @@ import { IState } from '../../shared/state/state';
 import { TodoListActions } from '../../shared/state/todo.actions';
 import { TodoEffects } from '../../shared/state/todo.effects';
 import { todosReducer } from '../../shared/state/todo.reducer';
-import { MockLocalStorageProvider } from '../../tests/mocks/local-storage.provider.mock';
 import { AddTodoComponent } from "./add-todo.component";
+import { todos } from '../../tests/test-data';
+import { of } from 'rxjs';
 
 describe("AddTodoComponent", () => {
   let component: AddTodoComponent;
@@ -25,8 +26,12 @@ describe("AddTodoComponent", () => {
         BsModalService,
         {
           provide: StorageProviderKey,
-          useClass: MockLocalStorageProvider
-        }],
+          useValue: {
+            getItem: (key: string) => of(JSON.stringify(todos)),
+            setItem: (key: string, value: any) => of({})
+          }
+        }
+      ],
       imports: [
         FormsModule,
         StoreModule.forRoot({ todos: todosReducer }),

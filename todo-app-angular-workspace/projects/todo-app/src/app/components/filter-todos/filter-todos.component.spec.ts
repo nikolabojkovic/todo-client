@@ -9,8 +9,9 @@ import { IState } from '../../shared/state/state';
 import { TodoListActions } from '../../shared/state/todo.actions';
 import { TodoEffects } from '../../shared/state/todo.effects';
 import { todosReducer } from '../../shared/state/todo.reducer';
-import { MockLocalStorageProvider } from '../../tests/mocks/local-storage.provider.mock';
 import { FilterTodosComponent } from "./filter-todos.component";
+import { of } from 'rxjs';
+import { todos } from '../../tests/test-data';
 
 describe("FilterTodosComponent", () => {
   let component: FilterTodosComponent;
@@ -24,7 +25,10 @@ describe("FilterTodosComponent", () => {
       providers: [
         {
           provide: StorageProviderKey,
-          useClass: MockLocalStorageProvider
+          useValue: {
+            getItem: (key: string) => of(JSON.stringify(todos)),
+            setItem: (key: string, value: any) => of({})
+          }
         }
       ],
       imports: [

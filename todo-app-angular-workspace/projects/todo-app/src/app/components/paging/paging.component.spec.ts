@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideMockStore, MockStore } from '@ngrx/store/testing';
-import { stateTestData } from '../../tests/test-data';
+import { stateTestData, todos } from '../../tests/test-data';
 import { PagingComponent } from './paging.component';
 import { IState } from '../../shared/state/state';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -15,8 +15,8 @@ import { EffectsModule } from '@ngrx/effects';
 import { todosReducer } from '../../shared/state/todo.reducer';
 import { TodoEffects } from '../../shared/state/todo.effects';
 import { StorageProviderKey } from '../../shared/services/storage.provider';
-import { MockLocalStorageProvider } from '../../tests/mocks/local-storage.provider.mock';
 import { TodoListActions } from '../../shared/state/todo.actions';
+import { of } from 'rxjs';
 
 describe('PagingComponent', () => {
   let component: PagingComponent;
@@ -39,7 +39,10 @@ describe('PagingComponent', () => {
       ],
       providers: [{
         provide: StorageProviderKey,
-        useClass: MockLocalStorageProvider
+        useValue: {
+          getItem: (key: string) => of(JSON.stringify(todos)),
+          setItem: (key: string, value: any) => of({})
+        }
       }]
     });
     fixture = TestBed.createComponent(PagingComponent);
