@@ -6,11 +6,8 @@ export interface IStorageProvider {
 }
 
 export class LocalStorageProvider implements IStorageProvider {
-
-  localStorage: Storage = window.localStorage;
-
   get storage(): Storage {
-    return this.localStorage;
+    return window.localStorage;
   }
 
   getItem(key: string): Observable<string | null> {

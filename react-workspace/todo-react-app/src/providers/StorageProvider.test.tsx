@@ -43,4 +43,10 @@ describe('StorageProvider', () => {
 
     expect(localStorageMock.setItem).toBeCalledWith('todo-list-test', JSON.stringify(stateTestData.originalList));  
   });
+
+  it('should return global localStorage object', () => {
+    const localStorageProvider = new LocalStorageProvider();
+
+    expect(localStorageProvider.storage).toBe(localStorage);  
+  });
 });

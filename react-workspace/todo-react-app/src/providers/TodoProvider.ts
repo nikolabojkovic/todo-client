@@ -16,12 +16,13 @@ const todoListName = 'todo-list';
 
 export function getList ({storageProvider, filter, sort, searchTerm}: GetListProps): Observable<ITodo[]> {
   return storageProvider.getItem(todoListName).pipe(map((todoListData) => {
-    if (todoListData === undefined 
+    if (todoListData === ''
+      ||todoListData === undefined 
       || todoListData === null) {
        return [] as ITodo[];
      }
      
-     let todos = JSON.parse(todoListData ?? "[]") as ITodo[];
+     let todos = JSON.parse(todoListData) as ITodo[];
  
      if (filter) {
        todos = filterList(todos, filter);
@@ -44,39 +45,31 @@ export function saveList(storageProvider: IStorageProvider, list: ITodo[]): Obse
 }
 
 function searchList(list: ITodo[], searchTerm: string): ITodo[] {
-  let filteredList = list;
+  return list.filter((todo: ITodo) => {
+    const title = todo.title.trim()
+                            .toLocaleLowerCase()
+                            .includes(searchTerm.trim()
+                            .toLocaleLowerCase());
 
-  if (searchTerm !== '') {
-    filteredList = list.filter((todo: ITodo) => 
-      todo.title.trim()
-                .toLocaleLowerCase()
-                .includes(searchTerm.trim()
-                                    .toLocaleLowerCase()) 
-   || todo.description.trim()
-                      .toLocaleLowerCase()
-                      .includes(searchTerm.trim()
-                                          .toLocaleLowerCase()));
-  }
+    const description = todo.description.trim()
+                                        .toLocaleLowerCase()
+                                        .includes(searchTerm.trim()
+                                        .toLocaleLowerCase());
 
-  return filteredList;
+    return title || description;
+  });
 }
 
 function filterList(list: ITodo[], filter: IFilter) : ITodo[] {
-  let filteredList = list;
-
-  if (filter && filter.state === StateFilter.all) {
-    return [...filteredList];
-  }
-
   if (filter.state === StateFilter.completed) {
-    filteredList = filteredList.filter((todo: ITodo) => todo.completed === true);
+    return list.filter((todo: ITodo) => todo.completed === true);
   }
 
   if (filter.state === StateFilter.uncompleted) {
-    filteredList = filteredList.filter((todo: ITodo) => todo.completed === false);
+    return list.filter((todo: ITodo) => todo.completed === false);
   }
 
-  return [...filteredList];
+  return [...list];
 }
 
 function sortList(list: ITodo[], sort: ISort) : ITodo[] {

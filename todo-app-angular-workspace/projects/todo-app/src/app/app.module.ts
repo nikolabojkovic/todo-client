@@ -30,6 +30,7 @@ import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { ConfirmModalService } from './components/confirm-modal/confirm-modal.service';
 import { LoaderComponent } from './components/loader/loader.component';
+import { AlertService } from './shared/services/alert.service';
 
 
 @NgModule({
@@ -68,7 +69,8 @@ import { LoaderComponent } from './components/loader/loader.component';
       useClass: LocalStorageProvider
     },
     TodoService,
-    ConfirmModalService
+    ConfirmModalService,
+    AlertService
   ],
   bootstrap: [AppComponent]
 })

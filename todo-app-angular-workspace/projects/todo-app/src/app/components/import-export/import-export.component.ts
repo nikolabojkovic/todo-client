@@ -8,6 +8,7 @@ import { TodoListActions } from '../../shared/state/todo.actions';
 import { Event } from '../../shared/models/event';
 import { ConfirmModalService } from '../confirm-modal/confirm-modal.service';
 import { first } from 'rxjs';
+import { AlertService } from '../../shared/services/alert.service';
 
 @Component({
   selector: 'app-import-export',
@@ -25,7 +26,10 @@ export class ImportExportComponent implements OnInit {
   faFileExport = faFileExport;
   downloadLink: HTMLAnchorElement = document.createElement('a');
 
-  constructor(private store: Store<IState>, private modalService: ConfirmModalService) { }
+  constructor(
+    private store: Store<IState>,
+    private modalService: ConfirmModalService,
+    private alertService: AlertService) { }
 
   ngOnInit(): void {
     this.store.select(selectTodos)
@@ -74,7 +78,8 @@ export class ImportExportComponent implements OnInit {
     const list = JSON.parse(text as string) as Todo[];
 
     if (!(list instanceof Array)) {
-      alert("Invalid JSON file content. Todo list should be an array.");
+      this.alertService.alert("Invalid JSON file content. Todo list should be an array.");
+
       return;
     }
 
@@ -89,7 +94,8 @@ export class ImportExportComponent implements OnInit {
          || !(Todo.validateFields(importedTodoList[0]))
             )
         )) {
-      alert("Invalid JSON file content. Objects in array are not valid Todo objects.");
+      this.alertService.alert("Invalid JSON file content. Objects in array are not valid Todo objects.");
+
       return;
     }
 

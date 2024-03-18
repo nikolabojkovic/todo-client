@@ -45,39 +45,35 @@ export class TodoService {
   }
 
   private search(list: ITodo[], searchTerm: string,) {
-    let filteredList = list;
+    return list.filter((todo: ITodo) => {
+      const title = todo.title.trim()
+                              .toLocaleLowerCase()
+                              .includes(searchTerm.trim()
+                              .toLocaleLowerCase());
 
-    if (searchTerm !== '') {
-      filteredList = list.filter((todo: ITodo) =>
-        todo.title.trim()
-                  .toLocaleLowerCase()
-                  .includes(searchTerm.trim()
-                                      .toLocaleLowerCase())
-     || todo.description.trim()
-                        .toLocaleLowerCase()
-                        .includes(searchTerm.trim()
-                                            .toLocaleLowerCase()));
-    }
+      const description = todo.description.trim()
+                                          .toLocaleLowerCase()
+                                          .includes(searchTerm.trim()
+                                          .toLocaleLowerCase());
 
-    return filteredList;
+      return title || description;
+    });
   }
 
   private filter(list: ITodo[], filter: IFilter) : ITodo[] {
-    let filteredList = list;
-
-    if (filter && filter.completed && filter.uncompleted) {
-      return [...filteredList];
+    if (filter.completed && filter.uncompleted) {
+      return [...list];
     }
 
     if (filter?.completed) {
-      filteredList = filteredList.filter((todo: ITodo) => todo.completed === true);
+      return list.filter((todo: ITodo) => todo.completed === true);
     }
 
     if (filter?.uncompleted) {
-      filteredList = filteredList.filter((todo: ITodo) => todo.completed === false);
+      return list.filter((todo: ITodo) => todo.completed === false);
     }
 
-    return [...filteredList];
+    return [...list];
   }
 
   private sort(list: ITodo[], sort: ISort) : ITodo[] {

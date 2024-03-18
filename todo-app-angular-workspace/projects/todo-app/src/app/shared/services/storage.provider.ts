@@ -12,13 +12,17 @@ export interface IStorageProvider {
   providedIn: 'root'
 })
 export class LocalStorageProvider {
+  get storage(): Storage {
+    return localStorage;
+  }
+
   getItem(key: string): Observable<string | null | undefined> {
-    return of(localStorage.getItem(key)).pipe(delay(800));
+    return of(this.storage.getItem(key)).pipe(delay(800));
   }
 
   setItem(key: string, value: any): Observable<any> {
     let json = JSON.stringify(value);
-    localStorage.setItem(key, json);
+    this.storage.setItem(key, json);
     return of({});
   }
 }

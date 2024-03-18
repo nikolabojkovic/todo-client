@@ -1,15 +1,16 @@
+import { Observable, of } from 'rxjs';
 import { Todo } from '../models/todo';
 import { BackendStorageProvider, IStorageProvider, LocalStorageProvider } from './storage.provider';
+import { todos } from '../../tests/test-data';
 
 describe('local storage provider', () => {
-  let localStorageProvider: IStorageProvider;
-
-  beforeEach(() => {
-    localStorageProvider = new LocalStorageProvider();
-  });
-
   describe('getItem', () => {
     it('should get item from storage', (done: DoneFn) => {
+      const localStorageProvider = new LocalStorageProvider();
+      const mockedLocalStorage = {
+        getItem: (key: string): Observable<string | null | undefined> => of(JSON.stringify(todos)),
+        setItem: (key: string, value: any): Observable<any> => of({})
+      } as unknown as any;
       const data = `[{
         id: 1,
         title: "Task 1",
@@ -17,10 +18,12 @@ describe('local storage provider', () => {
         completed: false,
         createdAt: "2024-01-23T10:54:55.504Z"
       }]`;
-      spyOn(localStorage, 'getItem').and.returnValue(data);
+      spyOnProperty(localStorageProvider, 'storage', 'get').and.returnValue(mockedLocalStorage);
+      spyOn(mockedLocalStorage, 'getItem').and.returnValue(data);
+
       localStorageProvider.getItem('todo-list')
         .subscribe((value: string | null | undefined) => {
-          expect(localStorage.getItem).toHaveBeenCalledWith('todo-list');
+          expect(mockedLocalStorage.getItem).toHaveBeenCalledWith('todo-list');
           expect(value).toBe(data);
           done();
         });
@@ -28,21 +31,37 @@ describe('local storage provider', () => {
   });
 
   describe('setItem', () => {
-    const data = [{
-      id: 1,
-      title: "Task 1",
-      description: "Description 1",
-      completed: false,
-      createdAt: new Date(2022, 1, 4)
-    } as Todo] as Todo[];
     it('should set item to storage', (done: DoneFn) => {
-      spyOn(localStorage, 'setItem').and.returnValue();
+      const localStorageProvider = new LocalStorageProvider();
+      const mockedLocalStorage = {
+        getItem: (key: string): Observable<string | null | undefined> => of(JSON.stringify(todos)),
+        setItem: (key: string, value: any): Observable<any> => of({})
+      } as unknown as any;
+      const data = [{
+        id: 1,
+        title: "Task 1",
+        description: "Description 1",
+        completed: false,
+        createdAt: new Date(2022, 1, 4)
+      } as Todo] as Todo[];
+      spyOnProperty(localStorageProvider, 'storage', 'get').and.returnValue(mockedLocalStorage);
+      spyOn(mockedLocalStorage, 'getItem').and.returnValue({});
+      spyOn(mockedLocalStorage, 'setItem').and.returnValue({});
+
       localStorageProvider.setItem('todo-list',  data)
         .subscribe((response: any) => {
-          expect(localStorage.setItem).toHaveBeenCalledWith('todo-list', JSON.stringify(data));
+          expect(mockedLocalStorage.setItem).toHaveBeenCalledWith('todo-list', JSON.stringify(data));
           done();
         });
     }, 100);
+  });
+
+  describe('storage property', () => {
+    it('sould return global localStorage object', () => {
+      const localStorageProvider = new LocalStorageProvider();
+
+      expect(localStorageProvider.storage).toBe(localStorage)
+    });
   });
 });
 

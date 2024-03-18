@@ -14,6 +14,7 @@ import { ConfirmModalService } from '../confirm-modal/confirm-modal.service';
 import { ImportExportComponent } from "./import-export.component";
 import { By } from '@angular/platform-browser';
 import { todos } from '../../tests/test-data';
+import { AlertService } from '../../shared/services/alert.service';
 
 describe("ImportExportComponent", () => {
   let component: ImportExportComponent;
@@ -33,6 +34,12 @@ describe("ImportExportComponent", () => {
           useValue: {
             getItem: (key: string) => of(JSON.stringify(todos)),
             setItem: (key: string, value: any) => of({})
+          }
+        },
+        {
+          provide: AlertService,
+          useValue: {
+            alert: (message: string) => {}
           }
         }
       ],

@@ -6,9 +6,9 @@ import { getList, GetListProps, saveList } from './TodoProvider';
 import { first, of } from 'rxjs';
 
 const testData = [
-  {"id":1,"title":"Task 1","description":"Description 1","completed":false,"createdAt":"2022-02-03T23:00:00.000Z"},
-  {"id":4,"title":"Task 4","description":"Description 4","completed":true,"createdAt":"2022-02-06T23:00:00.000Z"},
-  {"id":7,"title":"Task 7","description":"desc","completed":false,"createdAt":"2023-03-27T13:01:43.461Z"}
+  {"id":1,"title":"Task 1","description":"Description 1","completed":false,"createdAt":"2022-02-03T23:00:00.000Z"},  
+  {"id":7,"title":"Task 7","description":"desc","completed":false,"createdAt":"2023-03-27T13:01:43.461Z"},
+  {"id":4,"title":"Task 4","description":"Description 4","completed":true,"createdAt":"2022-02-06T23:00:00.000Z"}
 ];
 let localStorageProvider: IStorageProvider;
 
@@ -20,7 +20,7 @@ beforeEach(() => {
 });
 
 describe('TodoProvider', () => {
-  it('get list should invoke getItem', (done) => {
+  it('should get list should invoke getItem', (done) => {
     getList({storageProvider: localStorageProvider} as GetListProps)
       .pipe(first())
       .subscribe(() => {
@@ -29,7 +29,7 @@ describe('TodoProvider', () => {
       });  
   }, 100);
 
-  it('get list should return list', (done) => {
+  it('should get list should return list', (done) => {
     getList({storageProvider: localStorageProvider} as GetListProps)
       .pipe(first())
       .subscribe((todoList: ITodo[]) => {
@@ -40,7 +40,18 @@ describe('TodoProvider', () => {
       });  
   }, 100);
 
-  it('filter completed todo list', (done) => {
+  it('should get list should return empty list', (done) => {
+    localStorageProvider.getItem = jest.fn().mockImplementation(() => of(undefined));
+    getList({storageProvider: localStorageProvider} as GetListProps)
+      .pipe(first())
+      .subscribe((todoList: ITodo[]) => {
+        expect(todoList !== null).toBeTruthy();
+        expect(todoList.length).toBe(0);
+        done();
+      });  
+  }, 100);
+
+  it('should filter completed todo list', (done) => {
     getList({storageProvider: localStorageProvider, filter: {state: StateFilter.completed} as IFilter} as GetListProps)
       .pipe(first())
       .subscribe((todoList: ITodo[]) => {
@@ -51,7 +62,7 @@ describe('TodoProvider', () => {
       });  
   }, 100);
 
-  it('filter uncopmleted todo list', (done) => {
+  it('should filter uncopmleted todo list', (done) => {
     getList({storageProvider: localStorageProvider, filter: {state: StateFilter.uncompleted} as IFilter} as GetListProps)
       .pipe(first())
       .subscribe((todoList: ITodo[]) => {
@@ -62,7 +73,17 @@ describe('TodoProvider', () => {
       });  
   }, 100);
 
-  it('search todo list', (done) => {
+  it('should filter all todo list', (done) => {
+    getList({storageProvider: localStorageProvider, filter: {state: StateFilter.all} as IFilter} as GetListProps)
+      .pipe(first())
+      .subscribe((todoList: ITodo[]) => {
+        expect(todoList !== null).toBeTruthy();
+        expect(todoList.length).toBe(3);
+        done();
+      });  
+  }, 100);
+
+  it('should search todo list and return one item', (done) => {
     const searchTerm = 'Task 1';
 
     getList({storageProvider: localStorageProvider, searchTerm} as GetListProps)
@@ -75,7 +96,19 @@ describe('TodoProvider', () => {
       });  
   });
 
-  it('sort todo list by title asc', (done) => {   
+  it('should search todo list and return all', (done) => {
+    const searchTerm = '';
+
+    getList({storageProvider: localStorageProvider, searchTerm} as GetListProps)
+      .pipe(first())  
+      .subscribe((todoList: ITodo[]) => {
+        expect(todoList !== null).toBeTruthy();
+        expect(todoList.length).toBe(3);
+        done();
+      });  
+  });
+
+  it('should sort todo list by title asc', (done) => {
     getList({storageProvider: localStorageProvider, sort: { column: 'title', direction: SortDirection.Asc} as ISort} as GetListProps)
       .pipe(first())
       .subscribe((todoList: ITodo[]) => {
@@ -86,7 +119,7 @@ describe('TodoProvider', () => {
       }); 
   }, 100);
 
-  it('sort todo list by title desc', (done) => {
+  it('should sort todo list by title desc', (done) => {
     getList({storageProvider: localStorageProvider, sort: { column: 'title', direction: SortDirection.Desc} as ISort} as GetListProps)
       .pipe(first())
       .subscribe((todoList: ITodo[]) => {
@@ -97,7 +130,7 @@ describe('TodoProvider', () => {
       });
   }, 100);
 
-  it('sort todo list by date asc', (done) => {   
+  it('should sort todo list by date asc', (done) => {
     getList({storageProvider: localStorageProvider, sort: { column: 'createdAt', direction: SortDirection.Asc} as ISort} as GetListProps)
       .pipe(first())
       .subscribe((todoList: ITodo[]) => {
@@ -109,7 +142,7 @@ describe('TodoProvider', () => {
       }); 
   }, 100);
 
-  it('sort todo list by date desc', (done) => {
+  it('should sort todo list by date desc', (done) => {
     getList({storageProvider: localStorageProvider, sort: { column: 'createdAt', direction: SortDirection.Desc} as ISort} as GetListProps)
       .pipe(first())
       .subscribe((todoList: ITodo[]) => {
@@ -121,7 +154,7 @@ describe('TodoProvider', () => {
       });
   }, 100);
 
-  it('save list', (done) => {
+  it('should save list', (done) => {
     const expectedList = [{
       id: 1,
       completed: false,
