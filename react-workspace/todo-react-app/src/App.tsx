@@ -1,20 +1,28 @@
 import './App.scss';
-import { Tabs } from './components/Tabs';
-import { Sorting } from './components/Sorting';
-import { TodoList } from './components/TodoList';
-import { TodoListProvider } from './context/TodosContext';
+import { TodoStateProvider } from './context/TodoListContext';
+import { getList, saveList } from './providers/TodoProvider';
 
-function App() {
+import { Tabs } from './components/Tabs/Tabs';
+import { Sorting } from './components/Sort/Sorting';
+import { TodoList } from './components/TodoList/TodoList';
+
+import { State } from './context/IState';
+import { ITodo } from './models/Todo';
+import { Footer } from './components/Footer/Footer';
+import { localStorageProvider } from './providers/StorageProvider';
+
+function App() {   
   return (
-    <div className="App">
+    <div className="App" data-bs-theme="dark">
       <header className="App-header">
         Todo List
       </header>
-      <TodoListProvider>
+      <TodoStateProvider initialState={new State([] as ITodo[])}>
         <Tabs/>
         <Sorting/>
-        <TodoList/>
-      </TodoListProvider>
+        <TodoList getList={getList} saveList={saveList} storageProvider={localStorageProvider}/>        
+        <Footer />
+      </TodoStateProvider>
     </div>
   );
 }

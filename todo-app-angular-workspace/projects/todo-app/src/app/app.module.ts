@@ -4,6 +4,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { SortButtonModule } from 'sort-button';
 import { todosReducer } from './shared/state/todo.reducer';
 import { StoreModule } from '@ngrx/store';
@@ -24,6 +25,12 @@ import { SortingComponent } from './components/sorting/sorting.component';
 import { SortButtonComponent } from './components/sort-button/sort-button.component';
 import { SortIconComponent } from './components/sort-icon/sort-icon.component';
 import { TodoEffects } from './shared/state/todo.effects';
+import { LocalStorageProvider, StorageProviderKey } from './shared/services/storage.provider';
+import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.component';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { ConfirmModalService } from './components/confirm-modal/confirm-modal.service';
+import { LoaderComponent } from './components/loader/loader.component';
+import { AlertService } from './shared/services/alert.service';
 
 
 @NgModule({
@@ -40,6 +47,8 @@ import { TodoEffects } from './shared/state/todo.effects';
     SortingComponent,
     SortButtonComponent,
     SortIconComponent,
+    ConfirmModalComponent,
+    LoaderComponent,
   ],
   imports: [
     BrowserModule,
@@ -48,11 +57,21 @@ import { TodoEffects } from './shared/state/todo.effects';
     FontAwesomeModule,
     SortButtonModule,
     PaginationModule.forRoot(),
+    BsDropdownModule,
     FormsModule,
     StoreModule.forRoot({ todos: todosReducer }),
     EffectsModule.forRoot([TodoEffects])
   ],
-  providers: [TodoService],
+  providers: [
+    BsModalService,
+    {
+      provide: StorageProviderKey,
+      useClass: LocalStorageProvider
+    },
+    TodoService,
+    ConfirmModalService,
+    AlertService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

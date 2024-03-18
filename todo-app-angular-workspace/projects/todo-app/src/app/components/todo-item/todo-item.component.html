@@ -1,4 +1,4 @@
-<div class="app__todo-list__item">
+<div class="app__todo-list__item fade-in">
   <div class="hstack gap-3">
     <div class="">
       <div [ngClass]="todo.completed ? 'app__todo-list__item-title--completed' : 'app__todo-list__item-title'">
@@ -6,26 +6,22 @@
       </div>
       <div [ngClass]="todo.completed ? 'app__todo-list__item-description--compleated' : 'app__todo-list__item-description'">
         <span>{{ todo.description }}</span>
-        {{ ' ' }}
-        <span>{{ todo.createdAt | date }}</span>
+        <span *ngIf="todo.createdAt">{{ " (" + (todo.createdAt | date:"EEE MMM dd yyyy") + ")"}}</span>
       </div>
     </div>
     <div class="ms-auto">
-      <button 
-        *ngIf="!todo.completed" 
-        class="btn confirm-button btn-outline-success btn-sm"
-        (click)="onComplete(todo.id)"
-      >
-        Complete
-      </button>
+      <fa-icon
+        [icon]="faCheckDouble"
+        [ngClass]="todo.completed ? 'action-icon--disabled' : 'action-icon'"
+        (click)="onComplete()"
+      ></fa-icon>
     </div>
-    <div [ngClass]="{'ms-todo' : todo.completed}">
-      <button 
-        class="btn confirm-button btn-outline-danger btn-sm" 
-        (click)="onRemove(todo.id)"
-      >
-        Delete
-      </button>
+    <div>
+      <fa-icon
+        [icon]="faTrash"
+        class="action-icon"
+        (click)="onRemove()"
+      ></fa-icon>
     </div>
   </div>
 </div>

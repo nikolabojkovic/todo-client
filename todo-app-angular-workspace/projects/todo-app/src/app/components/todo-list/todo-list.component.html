@@ -1,3 +1,7 @@
 <section class="app__todo-list">
-  <app-todo-item *ngFor="let item of items$ | async" [todo]="item"></app-todo-item>
+  <app-loader *ngIf="isLoading$ | async"></app-loader>
+  <section *ngIf="(isLoading$ | async) === false" class="fade-in">
+    <app-todo-item *ngFor="let item of items$ | async" [todo]="item"></app-todo-item>
+    <div *ngIf="(items$ | async)?.length === 0" class='text-light mt-5 mb-5'>No data</div>
+  </section>
 </section>

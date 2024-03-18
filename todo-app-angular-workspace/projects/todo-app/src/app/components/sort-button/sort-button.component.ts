@@ -1,9 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ISort, SortDirection } from '../../shared/models/sort';
-import { ITodoList } from '../../shared/models/todoList';
+import { IState } from '../../shared/state/state';
 import { TodoListActions } from '../../shared/state/todo.actions';
-import { selectSort } from '../../shared/state/todo.selectors';
+import { selectFilter, selectSearch, selectSort } from '../../shared/state/todo.selectors';
+import { IFilter } from '../../shared/models/filter';
+import { ISearch } from '../../shared/models/search';
 
 @Component({
   selector: 'app-sort-button',
@@ -15,21 +17,37 @@ export class SortButtonComponent {
   @Input() text: string = "";
 
   sortDirection!: string;
+  filter!: IFilter;
+  search: string = '';
 
-  constructor(private store: Store<ITodoList>) {}
+  constructor(private store: Store<IState>) {}
 
-  ngOnInit(): void {    
+  ngOnInit(): void {
     this.store.select(selectSort)
-    .pipe()
-    .subscribe((sort: ISort) => {
-      this.sortDirection = sort.column === this.column ? sort.direction : SortDirection.None;
-    });
+      .pipe()
+      .subscribe((sort: ISort) => {
+        this.sortDirection = sort.column === this.column ? sort.direction : SortDirection.None;
+      });
+    this.store.select(selectFilter)
+      .pipe()
+      .subscribe((filter: IFilter) => {
+        this.filter = filter
+      });
+    this.store.select(selectSearch)
+      .pipe()
+      .subscribe((search: ISearch) => {
+        this.search = search.searchTerm;
+      });
   }
 
-  sort(): void {
-    this.store.dispatch(TodoListActions.sorted({ 
-      column: this.column, 
-      direction: this.sortDirection !== SortDirection.Asc ? SortDirection.Asc : SortDirection.Desc
-    } as ISort));
+  onSort(): void {
+    this.store.dispatch(TodoListActions.sort({
+      filter: this.filter,
+      sort: {
+        column: this.column,
+        direction: this.sortDirection !== SortDirection.Asc ? SortDirection.Asc : SortDirection.Desc
+      } as ISort,
+      search: this.search
+    }));
   }
 }

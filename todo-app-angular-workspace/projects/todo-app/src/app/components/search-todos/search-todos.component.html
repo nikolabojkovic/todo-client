@@ -1,22 +1,29 @@
-<div class="row p-1">
-  <div class="col-12 col-sm-10 p-2">
-    <input 
+<div class="p-1">
+  <div class="hstack gap-3">
+    <div class="me-auto m-2 w-100">
+      <input 
       type="text" 
       class="form-control form-control-sm" 
       id="title" 
-      placeholder="Enter title"
+      placeholder="Search by title or description"
       [(ngModel)]="searchValue"
       (keyup)="onTyping()"
     >
-  </div>
-  <div class="col-12 col-sm-2 p-2">
-    <button 
+    <fa-icon 
+      *ngIf="searchValue !== ''" 
+      [icon]="faCircleXmark" 
+      class="clear-icon"
+      (click)="onClearSearch()"></fa-icon>
+    </div>
+    <div>
+      <button 
       type="button" 
-      class="btn btn-sm action-button" 
+      class="btn btn-sm btn-outline-secondary action-button me-2 " 
       [disabled]="ifSearchIsEmpty"
       (click)="onSerach()"
     >
       Search
     </button>
+    </div>
   </div>
 </div>

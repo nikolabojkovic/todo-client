@@ -1,0 +1,97 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PageSize component should match snapshot page size 10 1`] = `
+Array [
+  <div
+    className="p-3 pt-2 pb-2 d-flex justify-content-sm-start justify-content-center align-items-center col-sm-3"
+  >
+    Page 
+    1
+     of 
+    0
+  </div>,
+  <div
+    className="p-3 pt-2 pb-2 col-sm-4"
+  >
+    <div
+      className="justify-content-center hstack gap-2"
+    >
+      <div
+        className="ms-sm-auto"
+      >
+        Page size:
+         
+      </div>
+      <div
+        className=""
+      >
+        <div
+          className="dropdown"
+        >
+          <button
+            aria-expanded={false}
+            className="action-button dropdown-toggle btn btn-outline-secondary"
+            data-testid="selected-size-option"
+            disabled={false}
+            id="dropdown-basic"
+            onClick={[Function]}
+            type="button"
+          >
+             
+            10
+             
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>,
+]
+`;
+
+exports[`PageSize should display default page size 1`] = `
+Array [
+  <div
+    className="p-3 pt-2 pb-2 d-flex justify-content-sm-start justify-content-center align-items-center col-sm-3"
+  >
+    Page 
+    1
+     of 
+    0
+  </div>,
+  <div
+    className="p-3 pt-2 pb-2 col-sm-4"
+  >
+    <div
+      className="justify-content-center hstack gap-2"
+    >
+      <div
+        className="ms-sm-auto"
+      >
+        Page size:
+         
+      </div>
+      <div
+        className=""
+      >
+        <div
+          className="dropdown"
+        >
+          <button
+            aria-expanded={false}
+            className="action-button dropdown-toggle btn btn-outline-secondary"
+            data-testid="selected-size-option"
+            disabled={false}
+            id="dropdown-basic"
+            onClick={[Function]}
+            type="button"
+          >
+             
+            5
+             
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>,
+]
+`;

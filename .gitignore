@@ -39,6 +39,8 @@
 /libpeerconnection.log
 testem.log
 /typings
+**/coverage
+**/*/coverage
 
 # System files
 .DS_Store

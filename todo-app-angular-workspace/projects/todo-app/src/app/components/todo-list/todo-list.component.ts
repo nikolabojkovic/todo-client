@@ -1,11 +1,10 @@
 import { Store } from '@ngrx/store';
 import { Component, OnInit } from '@angular/core';
-import { TodoService } from '../../shared/services/todo.service';
-import { selectTodoDisplayList } from '../../shared/state/todo.selectors';
+import { selectLoader, selectTodoDisplayList } from '../../shared/state/todo.selectors';
 import { TodoListActions } from '../../shared/state/todo.actions';
 import { ITodo } from '../../shared/models/todo';
-import { ITodoList } from '../../shared/models/todoList';
-import { map, Observable, tap } from 'rxjs';
+import { IState } from '../../shared/state/state';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-todo-list',
@@ -15,8 +14,9 @@ import { map, Observable, tap } from 'rxjs';
 export class TodoListComponent implements OnInit {
 
   items$: Observable<ITodo[]> = this.store.select(selectTodoDisplayList);
+  isLoading$: Observable<boolean> = this.store.select(selectLoader);
 
-  constructor(private store: Store<ITodoList>) { }
+  constructor(private store: Store<IState>) { }
 
   ngOnInit(): void {
     this.store.dispatch(TodoListActions.fetch());

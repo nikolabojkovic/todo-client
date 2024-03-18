@@ -35,4 +35,8 @@ export class TabsComponent {
   setTab(name: string): void {
     this.active = name;
   }
+
+  tabTrackBy(index: number, tab: Tab) {
+    return tab.name;
+  }
 }

@@ -1,4 +1,9 @@
 export interface IFilter {
-	completed: boolean;
-	uncompleted: boolean;
+	state: StateFilter;
+}
+
+export enum StateFilter {
+  all = 'All',
+  completed = 'Completed',
+  uncompleted = 'Uncompleted'
 }
