@@ -1,15 +1,15 @@
-import { todosReducer } from "./todo.reducer";
+import { todosReducer } from './todo.reducer';
 import { IState, State } from './state';
 import { Todo } from '../models/todo';
-import { todos } from "../../tests/test-data";
-import { TodoListActions } from "./todo.actions";
-import { IFilter } from "../models/filter";
+import { todos } from '../../tests/test-data';
+import { TodoListActions } from './todo.actions';
+import { IFilter } from '../models/filter';
 
 describe('todosReducer', () => {
   describe('fetched action', () => {
     it('should retrieve all todos and update the state in immutable way', () => {
       const initialState = {...new State(todos)} as IState;
-      const newTodoList = [new Todo(1, "Task 1", "Description 1", false, new Date(2022, 1, 4))] as Todo[];
+      const newTodoList = [new Todo(1, 'Task 1', 'Description 1', false, new Date(2022, 1, 4))] as Todo[];
       const newState = {...new State(newTodoList)} as IState;
       const action = TodoListActions.fetched({ list: newTodoList });
       const state = todosReducer(initialState, action);
@@ -22,7 +22,7 @@ describe('todosReducer', () => {
   describe('added action', () => {
     it('should add one todo and go to the next page', () => {
       const initialState = {...new State(todos)} as IState;
-      const newTodoList = [...todos, new Todo(7, "Task 7", "Description 7", false, new Date(2022, 1, 4))] as Todo[];
+      const newTodoList = [...todos, new Todo(7, 'Task 7', 'Description 7', false, new Date(2022, 1, 4))] as Todo[];
       const newState = {...new State(newTodoList)} as IState;
       const action = TodoListActions.added({ title: 'Task 7', description: 'Description 7' });
       const state = todosReducer(initialState, action);
@@ -36,7 +36,7 @@ describe('todosReducer', () => {
     it('should add one todo and stay on the active page', () => {
       const initialState = {...new State(todos)} as IState;
       initialState.paging.activePage = 2;
-      const newTodoList = [...todos, new Todo(7, "Task 7", "Description 7", false, new Date(2022, 1, 4))] as Todo[];
+      const newTodoList = [...todos, new Todo(7, 'Task 7', 'Description 7', false, new Date(2022, 1, 4))] as Todo[];
       const newState = {...new State(newTodoList)} as IState;
       const action = TodoListActions.added({ title: 'Task 7', description: 'Description 7' });
       const state = todosReducer(initialState, action);

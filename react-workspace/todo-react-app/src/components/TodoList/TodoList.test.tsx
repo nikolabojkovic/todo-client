@@ -7,22 +7,18 @@ import { IAction, TodoActions } from '../../models/Action';
 import { ISort, SortDirection } from '../../models/ISort';
 import { of } from 'rxjs';
 import { IFilter, StateFilter } from '../../models/IFilter';
-import { IStorageProvider } from '../../providers/StorageProvider';
 import { Todo } from '../../models/Todo';
 
-
-let fromMockedApi = {
-  getList: () => of([] as Todo[]),
-  saveList: () => of({}),
-  storageProvider: {} as IStorageProvider
-};
+let todoListProvider = {
+  getList: jest.fn().mockImplementation(() => of([] as Todo[])),
+  saveList: jest.fn().mockImplementation(() => of({})),
+} ;
 
 beforeEach(() => {
-  fromMockedApi = {
+  todoListProvider = {
     getList: jest.fn().mockImplementation(() => of([] as Todo[])),
     saveList: jest.fn().mockImplementation(() => of({})),
-    storageProvider: jest.fn().mockReturnValue({} as IStorageProvider)()
-  };
+  } ;
 });
 
 describe('todo list rendered', () => {  
@@ -44,7 +40,7 @@ describe('todo list rendered', () => {
     const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoList {...fromMockedApi} />
+          <TodoList {...{todoListProvider}} />
          </TodosDispatchContext.Provider>
        </TodosContext.Provider>);
     const tree = renderer.create(
@@ -65,7 +61,7 @@ describe('todo list rendered', () => {
     const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoList {...fromMockedApi} />
+          <TodoList {...{ todoListProvider }} />
          </TodosDispatchContext.Provider>
        </TodosContext.Provider>);
     const tree = renderer.create(
@@ -98,14 +94,14 @@ describe('todo list rendered', () => {
           isLoading: true
         }
       };
-      const api = {
-        ...fromMockedApi,
-        getList: jest.fn().mockImplementation(() => of(context.state.originalList)),
+      todoListProvider = {
+        ...todoListProvider,
+        getList: jest.fn().mockImplementation(() => of(context.state.originalList))
       };
       const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoList {...api} />
+          <TodoList {... { todoListProvider }} />
          </TodosDispatchContext.Provider>
        </TodosContext.Provider>);
       render(jsxElement);
@@ -118,7 +114,7 @@ describe('todo list rendered', () => {
       } as IAction;
 
       expect(screen.getByTestId('loader')).toBeInTheDocument();
-      expect(api.getList).toBeCalledWith({ storageProvider: api.storageProvider, ...actionFetch.payload} );
+      expect(todoListProvider.getList).toBeCalledWith({...actionFetch.payload} );
       expect(context.dispatch).toBeCalledWith(actionLoadingStarted);
       expect(context.dispatch).toBeCalledWith(actionFetch);      
       expect(context.dispatch).toBeCalledWith(actionFetched);
@@ -141,14 +137,14 @@ describe('todo list rendered', () => {
           isLoading: true
         }
       };
-      const api = {
-        ...fromMockedApi,
-        getList: jest.fn().mockImplementation(() => of(expectedList)),
+      todoListProvider = {
+        ...todoListProvider,
+        getList: jest.fn().mockImplementation(() => of(expectedList))
       };
       const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoList {...api} />
+          <TodoList {...{ todoListProvider }} />
          </TodosDispatchContext.Provider>
        </TodosContext.Provider>);
       render(jsxElement);
@@ -163,7 +159,7 @@ describe('todo list rendered', () => {
       } as IAction;
 
       expect(screen.getByTestId('loader')).toBeInTheDocument();
-      expect(api.getList).toBeCalledWith({ storageProvider: api.storageProvider, ...expectedActionPayload });
+      expect(todoListProvider.getList).toBeCalledWith({...expectedActionPayload });
       expect(context.dispatch).toBeCalledWith(actionLoadingStarted);
       expect(context.dispatch).toBeCalledWith(actionFetch);
       expect(context.dispatch).toBeCalledWith(actionFiltered);
@@ -185,14 +181,14 @@ describe('todo list rendered', () => {
           isLoading: true
         }
       };
-      const api = {
-        ...fromMockedApi,
-        getList: jest.fn().mockImplementation(() => of(expectedList)),
+      todoListProvider = {
+        ...todoListProvider,
+        getList: jest.fn().mockImplementation(() => of(expectedList))
       };
       const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoList {...api} />
+          <TodoList {...{ todoListProvider }} />
          </TodosDispatchContext.Provider>
        </TodosContext.Provider>);
       render(jsxElement);
@@ -207,7 +203,7 @@ describe('todo list rendered', () => {
       } as IAction;
 
       expect(screen.getByTestId('loader')).toBeInTheDocument();
-      expect(api.getList).toBeCalledWith({ storageProvider: api.storageProvider, ...expectedFilterActionPayload });
+      expect(todoListProvider.getList).toBeCalledWith({...expectedFilterActionPayload });
       expect(context.dispatch).toBeCalledWith(actionLoadingStarted);
       expect(context.dispatch).toBeCalledWith(actionFetch);
       expect(context.dispatch).toBeCalledWith(actionSearched);
@@ -232,14 +228,14 @@ describe('todo list rendered', () => {
           isLoading: true
         }
       };
-      const api = {
-        ...fromMockedApi,
-        getList: jest.fn().mockImplementation(() => of(expectedList)),
+      todoListProvider = {
+        ...todoListProvider,
+        getList: jest.fn().mockImplementation(() => of(expectedList))
       };
       const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoList {...api} />
+          <TodoList {...{ todoListProvider }} />
          </TodosDispatchContext.Provider>
        </TodosContext.Provider>);
       render(jsxElement);
@@ -253,7 +249,7 @@ describe('todo list rendered', () => {
       } as IAction;
 
       expect(screen.getByTestId('loader')).toBeInTheDocument();
-      expect(api.getList).toBeCalledWith({ storageProvider: api.storageProvider, ...expectedActionPayload });
+      expect(todoListProvider.getList).toBeCalledWith({...expectedActionPayload });
       expect(context.dispatch).toBeCalledWith(actionLoadingStarted);
       expect(context.dispatch).toBeCalledWith(actionFetch);
       expect(context.dispatch).toBeCalledWith(actionSorted);
@@ -273,12 +269,12 @@ describe('todo list rendered', () => {
       const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoList {...fromMockedApi} />
+          <TodoList {...{ todoListProvider }} />
          </TodosDispatchContext.Provider>
        </TodosContext.Provider>);
       render(jsxElement);
   
-      expect(fromMockedApi.saveList).toBeCalledWith(fromMockedApi.storageProvider, stateTestData.originalList);
+      expect(todoListProvider.saveList).toBeCalledWith(stateTestData.originalList);
     });
 
     it('should save list when todo item changed', async () => {
@@ -293,12 +289,12 @@ describe('todo list rendered', () => {
       const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoList {...fromMockedApi} />
+          <TodoList {...{ todoListProvider }} />
          </TodosDispatchContext.Provider>
        </TodosContext.Provider>);
       render(jsxElement);
   
-      expect(fromMockedApi.saveList).toBeCalledWith(fromMockedApi.storageProvider, stateTestData.originalList);
+      expect(todoListProvider.saveList).toBeCalledWith(stateTestData.originalList);
     });
 
     it('should save list when todo item deleted', async () => {
@@ -313,12 +309,12 @@ describe('todo list rendered', () => {
       const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoList {...fromMockedApi} />
+          <TodoList {...{ todoListProvider }} />
          </TodosDispatchContext.Provider>
        </TodosContext.Provider>);
       render(jsxElement);
   
-      expect(fromMockedApi.saveList).toBeCalledWith(fromMockedApi.storageProvider, stateTestData.originalList);
+      expect(todoListProvider.saveList).toBeCalledWith(stateTestData.originalList);
     });
 
     it('should save list when todo item imported', async () => {
@@ -333,12 +329,12 @@ describe('todo list rendered', () => {
       const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoList {...fromMockedApi} />
+          <TodoList {...{ todoListProvider }} />
          </TodosDispatchContext.Provider>
        </TodosContext.Provider>);
       render(jsxElement);
   
-      expect(fromMockedApi.saveList).toBeCalledWith(fromMockedApi.storageProvider, stateTestData.originalList);
+      expect(todoListProvider.saveList).toBeCalledWith(stateTestData.originalList);
     });
   });
 });

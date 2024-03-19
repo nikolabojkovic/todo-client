@@ -9,8 +9,8 @@ import { IState } from '../../shared/state/state';
   styleUrls: ['./add-todo.component.scss']
 })
 export class AddTodoComponent implements OnInit {
-  title = ''
-  description = ''
+  title = '';
+  description = '';
 
   constructor(private store: Store<IState>) { }
 
@@ -26,6 +26,6 @@ export class AddTodoComponent implements OnInit {
   }
 
   get ifDataIsMissing(): boolean {
-    return this.title.trim() === '' || this.description.trim() === ''
+    return this.title.trim() === '' || this.description.trim() === '';
   }
 }

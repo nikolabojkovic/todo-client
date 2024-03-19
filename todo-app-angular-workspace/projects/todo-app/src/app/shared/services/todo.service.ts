@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { ITodo } from '../models/todo';
-import { map, Observable, of } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { IFilter } from '../models/filter';
 import { ISort, SortDirection } from '../models/sort';
 import { IStorageProvider, StorageProviderKey } from './storage.provider';
@@ -40,7 +40,7 @@ export class TodoService {
     }));
   }
 
-  saveList(list: ITodo[]): Observable<any> {
+  saveList(list: ITodo[]): Observable<unknown> {
     return this.localStorageProvider.setItem(this.todoListName, list);
   }
 
@@ -81,18 +81,20 @@ export class TodoService {
 
     if (sort.column === 'createdAt') {
       if (sort.direction === 'asc') {
-        sortResult = [...list.sort((a: ITodo , b: ITodo) => a.createdAt > b.createdAt ? 1 : -1)]
+        sortResult = [...list.sort((a: ITodo , b: ITodo) => a.createdAt > b.createdAt ? 1 : -1)];
       } else {
-        sortResult = [...list.sort((a: ITodo, b: ITodo) => a.createdAt < b.createdAt ? 1 : -1)]
+        sortResult = [...list.sort((a: ITodo, b: ITodo) => a.createdAt < b.createdAt ? 1 : -1)];
       }
 
       return sortResult;
     }
 
     if (sort.direction === SortDirection.Asc) {
-      sortResult = [...list.sort((a: any, b: any) => a[sort.column] > b[sort.column] ? 1 : -1)]
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      sortResult = [...list.sort((a: any, b: any) => a[sort.column] > b[sort.column] ? 1 : -1)];
     } else {
-      sortResult = [...list.sort((a: any, b: any) => a[sort.column] < b[sort.column] ? 1 : -1)]
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      sortResult = [...list.sort((a: any, b: any) => a[sort.column] < b[sort.column] ? 1 : -1)];
     }
 
     return sortResult;

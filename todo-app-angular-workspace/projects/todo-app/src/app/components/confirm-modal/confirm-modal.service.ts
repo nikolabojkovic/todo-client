@@ -1,8 +1,8 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BsModalService } from "ngx-bootstrap/modal";
+import { BsModalService } from 'ngx-bootstrap/modal';
 
-import { ConfirmModalComponent } from "./confirm-modal.component";
+import { ConfirmModalComponent } from './confirm-modal.component';
 
 @Injectable()
 export class ConfirmModalService {

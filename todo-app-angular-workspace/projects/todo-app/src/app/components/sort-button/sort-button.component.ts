@@ -13,8 +13,8 @@ import { ISearch } from '../../shared/models/search';
   styleUrls: ['./sort-button.component.scss']
 })
 export class SortButtonComponent {
-  @Input() column: string = "";
-  @Input() text: string = "";
+  @Input() column: string = '';
+  @Input() text: string = '';
 
   sortDirection!: string;
   filter!: IFilter;
@@ -31,7 +31,7 @@ export class SortButtonComponent {
     this.store.select(selectFilter)
       .pipe()
       .subscribe((filter: IFilter) => {
-        this.filter = filter
+        this.filter = filter;
       });
     this.store.select(selectSearch)
       .pipe()

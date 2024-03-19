@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { EffectsModule } from '@ngrx/effects';
 import { Store, StoreModule } from '@ngrx/store';
@@ -10,11 +10,11 @@ import { IState } from '../../shared/state/state';
 import { TodoListActions } from '../../shared/state/todo.actions';
 import { TodoEffects } from '../../shared/state/todo.effects';
 import { todosReducer } from '../../shared/state/todo.reducer';
-import { SearchTodosComponent } from "./search-todos.component";
+import { SearchTodosComponent } from './search-todos.component';
 import { of } from 'rxjs';
 import { todos } from '../../tests/test-data';
 
-describe("SearchTodosComponent", () => {
+describe('SearchTodosComponent', () => {
   let component: SearchTodosComponent;
   let fixture: ComponentFixture<SearchTodosComponent>;
   let store: Store<IState>;
@@ -26,8 +26,8 @@ describe("SearchTodosComponent", () => {
       providers: [{
         provide: StorageProviderKey,
         useValue: {
-          getItem: (key: string) => of(JSON.stringify(todos)),
-          setItem: (key: string, value: any) => of({})
+          getItem: () => of(JSON.stringify(todos)),
+          setItem: () => of({})
         }
       }],
       imports: [
@@ -131,4 +131,4 @@ describe("SearchTodosComponent", () => {
       expect(store.dispatch).toHaveBeenCalledWith(searchAction);
     });
   });
-})
+});

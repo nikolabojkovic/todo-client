@@ -20,8 +20,8 @@ export class TodoEffects {
       TodoListActions.completed,
       TodoListActions.removed,
       TodoListActions.imported),
-    concatLatestFrom(action => this.store.select(selectTodos)),
-      tap(([action, todoList]) => this.todoService.saveList(todoList.originalList))
+    concatLatestFrom(() => this.store.select(selectTodos)),
+      tap(([, todoList]) => this.todoService.saveList(todoList.originalList))
     ),
     { dispatch: false }
   );
@@ -38,8 +38,7 @@ export class TodoEffects {
         .pipe(
           first(),
           map((list: ITodo[]) => TodoListActions.fetched({ list })),
-          catchError((err) => {
-            // console.error("error catched in effect: " + err);
+          catchError(() => {
             return of(TodoListActions.fetched({ list: [] as ITodo[] }));
           })
         )
@@ -50,7 +49,7 @@ export class TodoEffects {
   searchTodoList$ = createEffect(() =>
     this.actions$.pipe(
       ofType(TodoListActions.search),
-      exhaustMap((action: any) =>
+      exhaustMap((action) =>
         this.todoService.getList(
           action.filter,
           action.sort,
@@ -72,7 +71,7 @@ export class TodoEffects {
   filterTodoList$ = createEffect(() =>
     this.actions$.pipe(
       ofType(TodoListActions.filter),
-      exhaustMap((action: any) =>
+      exhaustMap((action) =>
         this.todoService.getList(
           action.filter,
           action.sort,
@@ -94,7 +93,7 @@ export class TodoEffects {
   sortTodoList$ = createEffect(() =>
   this.actions$.pipe(
     ofType(TodoListActions.sort),
-    exhaustMap((action: any) =>
+    exhaustMap((action) =>
       this.todoService.getList(
         action.filter,
         action.sort,

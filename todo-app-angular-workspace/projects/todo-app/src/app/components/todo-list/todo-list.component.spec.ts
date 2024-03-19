@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { EffectsModule } from '@ngrx/effects';
 import { Store, StoreModule } from '@ngrx/store';
 import { of, throwError } from 'rxjs';
@@ -10,10 +10,10 @@ import { IState } from '../../shared/state/state';
 import { TodoListActions } from '../../shared/state/todo.actions';
 import { TodoEffects } from '../../shared/state/todo.effects';
 import { todosReducer } from '../../shared/state/todo.reducer';
-import { TodoListComponent } from "./todo-list.component";
+import { TodoListComponent } from './todo-list.component';
 import { todos } from '../../tests/test-data';
 
-describe("TodoListComponent", () => {
+describe('TodoListComponent', () => {
   let component: TodoListComponent;
   let fixture: ComponentFixture<TodoListComponent>;
   let store: Store<IState>;
@@ -28,7 +28,7 @@ describe("TodoListComponent", () => {
         {
           provide: StorageProviderKey,
           useValue: {
-            getItem: (key: string) => of(JSON.stringify(todos))
+            getItem: () => of(JSON.stringify(todos))
           }
         }
       ],
@@ -69,7 +69,7 @@ describe("TodoListComponent", () => {
     }, 100);
 
     it('should fetch with error', (done: DoneFn) => {
-      spyOn(todoService, 'getList').and.returnValue(throwError(() => new Error(`Invalid data`)));
+      spyOn(todoService, 'getList').and.returnValue(throwError(() => new Error('Invalid data')));
       component.ngOnInit();
 
       component.items$.subscribe((value: ITodo[]) => {
@@ -80,4 +80,4 @@ describe("TodoListComponent", () => {
       });
     }, 100);
   });
-})
+});

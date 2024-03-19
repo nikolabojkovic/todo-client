@@ -1,6 +1,6 @@
 import './App.scss';
 import { TodoStateProvider } from './context/TodoListContext';
-import { getList, saveList } from './providers/TodoProvider';
+import LocalTodoListProvider from './providers/TodoProvider';
 
 import { Tabs } from './components/Tabs/Tabs';
 import { Sorting } from './components/Sort/Sorting';
@@ -9,7 +9,6 @@ import { TodoList } from './components/TodoList/TodoList';
 import { State } from './context/IState';
 import { ITodo } from './models/Todo';
 import { Footer } from './components/Footer/Footer';
-import { localStorageProvider } from './providers/StorageProvider';
 
 function App() {   
   return (
@@ -20,7 +19,7 @@ function App() {
       <TodoStateProvider initialState={new State([] as ITodo[])}>
         <Tabs/>
         <Sorting/>
-        <TodoList getList={getList} saveList={saveList} storageProvider={localStorageProvider}/>        
+        <TodoList todoListProvider={new LocalTodoListProvider()}/>        
         <Footer />
       </TodoStateProvider>
     </div>

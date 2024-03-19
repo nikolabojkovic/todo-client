@@ -30,7 +30,7 @@ export class TabsComponent {
     } as Tab
   ];
 
-  active = 'add-todo'
+  active = 'add-todo';
 
   setTab(name: string): void {
     this.active = name;

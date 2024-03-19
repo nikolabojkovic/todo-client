@@ -17,7 +17,7 @@ import { AlertService } from '../../shared/services/alert.service';
 })
 export class ImportExportComponent implements OnInit {
 
-  @ViewChild("fileContainer") fileContainer!: ElementRef<HTMLInputElement>;
+  @ViewChild('fileContainer') fileContainer!: ElementRef<HTMLInputElement>;
 
   items: ITodo[] = [];
   file: File | null = null;
@@ -40,7 +40,7 @@ export class ImportExportComponent implements OnInit {
   }
 
   get ifExportDisabled() {
-    return !this.items || this.items.length === 0
+    return !this.items || this.items.length === 0;
   }
 
   onImport(): void {
@@ -55,7 +55,7 @@ export class ImportExportComponent implements OnInit {
       this.file = null;
       this.fileContainer.nativeElement.value = '';
     }
-  }
+  };
 
   onExport(): HTMLAnchorElement {
     const jsonContent = `data:text/json;chatset=utf-8,${encodeURIComponent(
@@ -78,7 +78,7 @@ export class ImportExportComponent implements OnInit {
     const list = JSON.parse(text as string) as Todo[];
 
     if (!(list instanceof Array)) {
-      this.alertService.alert("Invalid JSON file content. Todo list should be an array.");
+      this.alertService.alert('Invalid JSON file content. Todo list should be an array.');
 
       return;
     }
@@ -94,7 +94,7 @@ export class ImportExportComponent implements OnInit {
          || !(Todo.validateFields(importedTodoList[0]))
             )
         )) {
-      this.alertService.alert("Invalid JSON file content. Objects in array are not valid Todo objects.");
+      this.alertService.alert('Invalid JSON file content. Objects in array are not valid Todo objects.');
 
       return;
     }

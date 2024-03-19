@@ -27,7 +27,7 @@ export class SearchTodosComponent implements OnInit {
       .pipe()
       .subscribe((search: ISearch) => {
         this.searchValue = search.searchTerm;
-        this.ifSearchIsEmpty = search.searchTerm === ''
+        this.ifSearchIsEmpty = search.searchTerm === '';
       });
     this.store.select(selectFilter)
       .pipe()

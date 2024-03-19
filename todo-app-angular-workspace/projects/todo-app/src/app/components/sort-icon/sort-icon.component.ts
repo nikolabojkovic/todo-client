@@ -7,7 +7,7 @@ import { faSortDown, faSortUp } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./sort-icon.component.scss']
 })
 export class SortIconComponent {
-  @Input() sortDirection: string = "";
+  @Input() sortDirection: string = '';
 
   faSortUp = faSortUp;
   faSortDown = faSortDown;

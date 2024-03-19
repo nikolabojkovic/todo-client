@@ -31,8 +31,8 @@ describe('SortButtonComponent', () => {
         {
           provide: StorageProviderKey,
           useValue: {
-            getItem: (key: string) => of(JSON.stringify(todos)),
-            setItem: (key: string, value: any) => of({})
+            getItem: () => of(JSON.stringify(todos)),
+            setItem: () => of({})
           }
         }
       ]
@@ -55,7 +55,7 @@ describe('SortButtonComponent', () => {
       const searchTerm = '';
       component.search = searchTerm;
       component.sortDirection = sort.direction;
-      component.column = sort.column
+      component.column = sort.column;
       component.filter = filter;
       component.onSort();
 
@@ -74,7 +74,7 @@ describe('SortButtonComponent', () => {
       const searchTerm = '';
       component.search = searchTerm;
       component.sortDirection = sort.direction;
-      component.column = sort.column
+      component.column = sort.column;
       component.filter = filter;
       component.onSort();
 

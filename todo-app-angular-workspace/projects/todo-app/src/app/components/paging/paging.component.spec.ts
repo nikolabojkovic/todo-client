@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideMockStore, MockStore } from '@ngrx/store/testing';
-import { stateTestData, todos } from '../../tests/test-data';
+import { todos } from '../../tests/test-data';
 import { PagingComponent } from './paging.component';
 import { IState } from '../../shared/state/state';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -40,8 +39,8 @@ describe('PagingComponent', () => {
       providers: [{
         provide: StorageProviderKey,
         useValue: {
-          getItem: (key: string) => of(JSON.stringify(todos)),
-          setItem: (key: string, value: any) => of({})
+          getItem: () => of(JSON.stringify(todos)),
+          setItem: () => of({})
         }
       }]
     });

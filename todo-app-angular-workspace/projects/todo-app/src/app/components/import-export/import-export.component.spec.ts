@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { EffectsModule } from '@ngrx/effects';
 import { Store, StoreModule } from '@ngrx/store';
 import { BsModalService } from 'ngx-bootstrap/modal';
@@ -11,12 +11,12 @@ import { TodoListActions } from '../../shared/state/todo.actions';
 import { TodoEffects } from '../../shared/state/todo.effects';
 import { todosReducer } from '../../shared/state/todo.reducer';
 import { ConfirmModalService } from '../confirm-modal/confirm-modal.service';
-import { ImportExportComponent } from "./import-export.component";
+import { ImportExportComponent } from './import-export.component';
 import { By } from '@angular/platform-browser';
 import { todos } from '../../tests/test-data';
 import { AlertService } from '../../shared/services/alert.service';
 
-describe("ImportExportComponent", () => {
+describe('ImportExportComponent', () => {
   let component: ImportExportComponent;
   let fixture: ComponentFixture<ImportExportComponent>;
   let confirmModalService: ConfirmModalService;
@@ -32,14 +32,14 @@ describe("ImportExportComponent", () => {
         {
           provide: StorageProviderKey,
           useValue: {
-            getItem: (key: string) => of(JSON.stringify(todos)),
-            setItem: (key: string, value: any) => of({})
+            getItem: () => of(JSON.stringify(todos)),
+            setItem: () => of({})
           }
         },
         {
           provide: AlertService,
           useValue: {
-            alert: (message: string) => {}
+            alert: () => {}
           }
         }
       ],
@@ -63,10 +63,10 @@ describe("ImportExportComponent", () => {
 
   describe('choose file', () => {
     it('should choose selected file', () => {
-      const data = `[{"id":1,"title":"test","description":"des","completed":false,"createdAt":"2024-01-23T13:26:32.093Z"}]`;
-      let blobJson = new Blob([data], { type: 'application/json' });
-      let mockFile = new File([blobJson], 'todo-list.json');
-      const chooseFileEvent = { target: { files: [mockFile]} as any} as Event;
+      const data = '[{"id":1,"title":"test","description":"des","completed":false,"createdAt":"2024-01-23T13:26:32.093Z"}]';
+      const blobJson = new Blob([data], { type: 'application/json' });
+      const mockFile = new File([blobJson], 'todo-list.json');
+      const chooseFileEvent = { target: { files: [mockFile]} as unknown } as ProgressEvent<FileReader>;
 
       component.onChooseFile(chooseFileEvent);
 
@@ -102,10 +102,10 @@ describe("ImportExportComponent", () => {
       });
 
       it('should not import when confirm declined', () => {
-        const data = `[{"id":1,"title":"test","description":"des","completed":false,"createdAt":"2024-01-23T13:26:32.093Z"}]`;
+        const data = '[{"id":1,"title":"test","description":"des","completed":false,"createdAt":"2024-01-23T13:26:32.093Z"}]';
         spyOn(component.fileReader, 'readAsText').and.callThrough();
-        let blobJson = new Blob([data], { type: 'application/json' });
-        let mockFile = new File([blobJson], 'todo-list.json');
+        const blobJson = new Blob([data], { type: 'application/json' });
+        const mockFile = new File([blobJson], 'todo-list.json');
 
         const dataTransfer = new DataTransfer();
         dataTransfer.items.add(mockFile);
@@ -114,7 +114,7 @@ describe("ImportExportComponent", () => {
         chooseFileInput.nativeElement.files = dataTransfer.files;
 
         component.file = mockFile;
-        chooseFileInput.nativeElement.dispatchEvent(new InputEvent('change'));;
+        chooseFileInput.nativeElement.dispatchEvent(new InputEvent('change'));
         fixture.detectChanges();
 
         expect(component.fileContainer.nativeElement.value).not.toBe('');
@@ -128,11 +128,11 @@ describe("ImportExportComponent", () => {
 
     describe('success', () => {
       it('should trigger confirm modal', () => {
-        const data = `[{"id":1,"title":"test","description":"des","completed":false,"createdAt":"2024-01-23T13:26:32.093Z"}]`;
+        const data = '[{"id":1,"title":"test","description":"des","completed":false,"createdAt":"2024-01-23T13:26:32.093Z"}]';
         spyOn(confirmModalService, 'confirm').and.returnValue(of(true));
         spyOn(component.fileReader, 'readAsText').and.callThrough();
-        let blobJson = new Blob([data], { type: 'application/json' });
-        let mockFile = new File([blobJson], 'todo-list.json');
+        const blobJson = new Blob([data], { type: 'application/json' });
+        const mockFile = new File([blobJson], 'todo-list.json');
         component.file = mockFile;
         component.onImport();
 
@@ -140,10 +140,10 @@ describe("ImportExportComponent", () => {
       });
 
       it('should import from file on confirm success', () => {
-        const data = `[{"id":1,"title":"test","description":"des","completed":false,"createdAt":"2024-01-23T13:26:32.093Z"}]`;
+        const data = '[{"id":1,"title":"test","description":"des","completed":false,"createdAt":"2024-01-23T13:26:32.093Z"}]';
         spyOn(component.fileReader, 'readAsText').and.callThrough();
-        let blobJson = new Blob([data], { type: 'application/json' });
-        let mockFile = new File([blobJson], 'todo-list.json');
+        const blobJson = new Blob([data], { type: 'application/json' });
+        const mockFile = new File([blobJson], 'todo-list.json');
 
         const dataTransfer = new DataTransfer();
         dataTransfer.items.add(mockFile);
@@ -164,7 +164,7 @@ describe("ImportExportComponent", () => {
       });
 
       it('should import from file when onload invoked', () => {
-        const todo = new Todo(1, "Task 1", "Description 1", false, new Date(2022, 1, 4));
+        const todo = new Todo(1, 'Task 1', 'Description 1', false, new Date(2022, 1, 4));
         const data = [todo] as Todo[];
         const event = { target: { result: JSON.stringify(data)}} as ProgressEvent<FileReader>;
         component.onLoad(event);
@@ -181,7 +181,7 @@ describe("ImportExportComponent", () => {
 
   describe('export', () => {
     it('should succeed', () => {
-      const todo = new Todo(1, "Task 1", "Description 1", false, new Date(2022, 1, 4));
+      const todo = new Todo(1, 'Task 1', 'Description 1', false, new Date(2022, 1, 4));
       component.items = [todo] as Todo[];
       const expectedJsonContent = `data:text/json;chatset=utf-8,${encodeURIComponent(
         JSON.stringify(component.items)
@@ -202,4 +202,4 @@ describe("ImportExportComponent", () => {
       expect(component.ifExportDisabled).toBeTrue();
     });
   });
-})
+});

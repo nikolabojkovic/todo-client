@@ -1,24 +1,21 @@
 import { useEffect } from 'react';
-import { Observable, first } from 'rxjs';
+import { first } from 'rxjs';
 
 import { ISort } from '../../models/ISort';
 import { Loader } from '../Loader/Loader';
 
 import { useTodoList, useTodoListDispatch } from '../../context/TodoListContext';
-import { IStorageProvider } from '../../providers/StorageProvider';
 
-import { GetListProps } from '../../providers/TodoProvider';
+import { GetListProps, ITodoListProvider } from '../../providers/TodoProvider';
 import { TodoItem } from '../TodoItem/TodoItem';
 import { ITodo } from '../../models/Todo';
 import { IAction, TodoActions } from '../../models/Action';
 
 type Props = {
-  getList: ({ storageProvider, filter, sort, searchTerm }: GetListProps) => Observable<ITodo[]>,
-  saveList: (provider: IStorageProvider, list: ITodo[]) => Observable<unknown>
-  storageProvider: IStorageProvider
+  todoListProvider: ITodoListProvider
 };
 
-export function TodoList({ getList, saveList, storageProvider }: Props) {
+export function TodoList({ todoListProvider }: Props) {
   const todoList = useTodoList();
   const dispatch = useTodoListDispatch();
 
@@ -43,9 +40,8 @@ export function TodoList({ getList, saveList, storageProvider }: Props) {
       dispatch({
         type: TodoActions.loadingStarted
       } as IAction);
-      getList({
+      todoListProvider.getList({
         ...todoList.effectTrigger.payload,
-        storageProvider,
       } as GetListProps)
       .pipe(first())
       .subscribe((list: ITodo[]) => {
@@ -91,7 +87,7 @@ export function TodoList({ getList, saveList, storageProvider }: Props) {
         }
       });
     }
-  }, [todoList.effectTrigger, dispatch, getList, storageProvider]);
+  }, [todoList.effectTrigger, dispatch, todoListProvider]);
 
   useEffect(() => {
     if (todoList.effectTrigger
@@ -99,9 +95,9 @@ export function TodoList({ getList, saveList, storageProvider }: Props) {
        || todoList.effectTrigger.type === TodoActions.changed
        || todoList.effectTrigger.type === TodoActions.deleted
        || todoList.effectTrigger.type === TodoActions.imported)) {
-       saveList(storageProvider, todoList.originalList).pipe(first()).subscribe();
+      todoListProvider.saveList(todoList.originalList).pipe(first()).subscribe();
      }
-  }, [todoList.effectTrigger, todoList.originalList, saveList, storageProvider]);
+  }, [todoList.effectTrigger, todoList.originalList, todoListProvider]);
 
   return (
     <main className="App__todo-list">

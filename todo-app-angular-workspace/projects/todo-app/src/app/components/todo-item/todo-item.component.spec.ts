@@ -11,7 +11,6 @@ import { todosReducer } from '../../shared/state/todo.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { TodoEffects } from '../../shared/state/todo.effects';
 import { TodoListActions } from '../../shared/state/todo.actions';
-import { StorageProviderKey } from '../../shared/services/storage.provider';
 import { todos } from '../../tests/test-data';
 import { TodoService } from '../../shared/services/todo.service';
 
@@ -50,8 +49,8 @@ describe('TodoItemComponent', () => {
   describe('component render', () => {
     it('uncompleted todo should render 2 icons', () => {
       const expectedTodo = {
-        title: "test title",
-        description: "test description",
+        title: 'test title',
+        description: 'test description',
         completed: false,
         createdAt: new Date(2023, 19, 10),
         id: 1
@@ -67,8 +66,8 @@ describe('TodoItemComponent', () => {
 
     it('completed todo should render complete icon disabled', () => {
       const expectedTodo = {
-        title: "test title",
-        description: "test description",
+        title: 'test title',
+        description: 'test description',
         completed: true,
         createdAt: new Date(2023, 19, 10),
         id: 1
@@ -86,8 +85,8 @@ describe('TodoItemComponent', () => {
   describe('component behavours', () => {
     it('not completed todo onComplete should complete todo', () => {
       const expectedTodo = {
-        title: "test title",
-        description: "test description",
+        title: 'test title',
+        description: 'test description',
         completed: false,
         createdAt: new Date(2023, 19, 10),
         id: 1
@@ -102,8 +101,8 @@ describe('TodoItemComponent', () => {
 
     it('completed todo onComplete should not complete todo', () => {
       const expectedTodo = {
-        title: "test title",
-        description: "test description",
+        title: 'test title',
+        description: 'test description',
         completed: true,
         createdAt: new Date(2023, 19, 10),
         id: 1
@@ -117,8 +116,8 @@ describe('TodoItemComponent', () => {
     });
     it('onRemove should remove todo', () => {
       const expectedTodo = {
-        title: "test title",
-        description: "test description",
+        title: 'test title',
+        description: 'test description',
         completed: false,
         createdAt: new Date(2023, 19, 10),
         id: 1

@@ -1,5 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { EffectsModule } from '@ngrx/effects';
 import { Store, StoreModule } from '@ngrx/store';
 import { IFilter } from '../../shared/models/filter';
@@ -9,11 +9,11 @@ import { IState } from '../../shared/state/state';
 import { TodoListActions } from '../../shared/state/todo.actions';
 import { TodoEffects } from '../../shared/state/todo.effects';
 import { todosReducer } from '../../shared/state/todo.reducer';
-import { FilterTodosComponent } from "./filter-todos.component";
+import { FilterTodosComponent } from './filter-todos.component';
 import { of } from 'rxjs';
 import { todos } from '../../tests/test-data';
 
-describe("FilterTodosComponent", () => {
+describe('FilterTodosComponent', () => {
   let component: FilterTodosComponent;
   let fixture: ComponentFixture<FilterTodosComponent>;
   let store: Store<IState>;
@@ -26,8 +26,8 @@ describe("FilterTodosComponent", () => {
         {
           provide: StorageProviderKey,
           useValue: {
-            getItem: (key: string) => of(JSON.stringify(todos)),
-            setItem: (key: string, value: any) => of({})
+            getItem: () => of(JSON.stringify(todos)),
+            setItem: () => of({})
           }
         }
       ],
@@ -53,7 +53,7 @@ describe("FilterTodosComponent", () => {
       const searchTerm = '';
       component.search = searchTerm;
       component.sort = sort;
-      component.isCompleted = filter.completed
+      component.isCompleted = filter.completed;
       component.isUncompleted = filter.uncompleted;
 
       const action = TodoListActions.filter({
@@ -72,7 +72,7 @@ describe("FilterTodosComponent", () => {
       const searchTerm = '';
       component.search = searchTerm;
       component.sort = sort;
-      component.isCompleted = filter.completed
+      component.isCompleted = filter.completed;
       component.isUncompleted = filter.uncompleted;
 
       const action = TodoListActions.filter({
@@ -86,4 +86,4 @@ describe("FilterTodosComponent", () => {
     });
 
   });
-})
+});

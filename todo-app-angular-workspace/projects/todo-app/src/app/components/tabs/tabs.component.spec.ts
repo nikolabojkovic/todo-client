@@ -1,22 +1,22 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AddTodoComponent } from '../add-todo/add-todo.component';
-import { provideMockStore, MockStore } from '@ngrx/store/testing';
+import { provideMockStore,  } from '@ngrx/store/testing';
+import { of } from 'rxjs';
+
 import { stateTestData, todos } from '../../tests/test-data';
-import { IState } from '../../shared/state/state';
 
 import { TabsComponent } from './tabs.component';
 import { FormsModule } from '@angular/forms';
 import { SearchTodosComponent } from '../search-todos/search-todos.component';
 import { ImportExportComponent } from '../import-export/import-export.component';
 import { StorageProviderKey } from '../../shared/services/storage.provider';
+
 import { TodoService } from '../../shared/services/todo.service';
-import { of } from 'rxjs';
 
 describe('TabsComponent', () => {
   let component: TabsComponent;
   let fixture: ComponentFixture<TabsComponent>;
-  let store: MockStore<IState>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -29,20 +29,19 @@ describe('TabsComponent', () => {
       ],
       imports: [FontAwesomeModule, FormsModule],
       providers: [
-        provideMockStore({ stateTestData } as any),
+        provideMockStore({ stateTestData } as never),
         TodoService,
         {
           provide: StorageProviderKey,
           useValue: {
-            getItem: (key: string) => of(JSON.stringify(todos)),
-            setItem: (key: string, value: any) => of({})
+            getItem: () => of(JSON.stringify(todos)),
+            setItem: () => of({})
           }
         }
       ]
     });
     fixture = TestBed.createComponent(TabsComponent);
     component = fixture.componentInstance;
-    store = TestBed.inject(MockStore);
     fixture.detectChanges();
   });
 

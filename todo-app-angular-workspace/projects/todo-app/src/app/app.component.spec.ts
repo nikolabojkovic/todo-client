@@ -4,9 +4,8 @@ import { AppComponent } from './app.component';
 import { SortingComponent } from './components/sorting/sorting.component';
 import { TabsComponent } from './components/tabs/tabs.component';
 import { TodoListComponent } from './components/todo-list/todo-list.component';
-import { provideMockStore, MockStore } from '@ngrx/store/testing';
+import { provideMockStore } from '@ngrx/store/testing';
 import { stateTestData, todos } from './tests/test-data';
-import { IState } from './shared/state/state';
 import { PagingComponent } from './components/paging/paging.component';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { AddTodoComponent } from './components/add-todo/add-todo.component';
@@ -20,8 +19,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
 
 describe('AppComponent', () => {
-  let store: MockStore<IState>;
-
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
@@ -42,17 +39,16 @@ describe('AppComponent', () => {
         BsDropdownModule
       ],
       providers: [
-        provideMockStore({ stateTestData } as any),
+        provideMockStore({ stateTestData } as never),
         {
           provide: StorageProviderKey,
           useValue: {
-            getItem: (key: string) => of(JSON.stringify(todos)),
-            setItem: (key: string, value: any) => of({})
+            getItem: () => of(JSON.stringify(todos)),
+            setItem: () => of({})
           }
         },
       ]
     });
-    store = TestBed.inject(MockStore);
   });
 
   it('should create the app', () => {
@@ -61,7 +57,7 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'todo-client-angular'`, () => {
+  it('should have as title \'todo-client-angular\'', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app.title).toEqual('todo-client-angular');

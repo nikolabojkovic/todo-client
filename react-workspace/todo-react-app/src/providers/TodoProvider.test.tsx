@@ -2,7 +2,7 @@ import { IFilter, StateFilter } from '../models/IFilter';
 import { ISort, SortDirection } from '../models/ISort';
 import { ITodo } from '../models/Todo';
 import { IStorageProvider } from './StorageProvider';
-import { getList, GetListProps, saveList } from './TodoProvider';
+import LocalTodoListProvider, { GetListProps } from './TodoProvider';
 import { first, of } from 'rxjs';
 
 const testData = [
@@ -11,17 +11,19 @@ const testData = [
   {"id":4,"title":"Task 4","description":"Description 4","completed":true,"createdAt":"2022-02-06T23:00:00.000Z"}
 ];
 let localStorageProvider: IStorageProvider;
+const localTodoListProvider = new LocalTodoListProvider();
 
 beforeEach(() => {
   localStorageProvider = {
     getItem: jest.fn().mockImplementation(() => of(JSON.stringify(testData))),
     setItem: jest.fn().mockImplementation(() => of({}))
   } as unknown as IStorageProvider;
+  localTodoListProvider.storageProvider = localStorageProvider;
 });
 
 describe('TodoProvider', () => {
   it('should get list should invoke getItem', (done) => {
-    getList({storageProvider: localStorageProvider} as GetListProps)
+    localTodoListProvider.getList({} as GetListProps)
       .pipe(first())
       .subscribe(() => {
         expect(localStorageProvider.getItem).toBeCalledWith('todo-list');
@@ -30,7 +32,7 @@ describe('TodoProvider', () => {
   }, 100);
 
   it('should get list should return list', (done) => {
-    getList({storageProvider: localStorageProvider} as GetListProps)
+    localTodoListProvider.getList({} as GetListProps)
       .pipe(first())
       .subscribe((todoList: ITodo[]) => {
         expect(todoList !== null).toBeTruthy();
@@ -42,7 +44,7 @@ describe('TodoProvider', () => {
 
   it('should get list should return empty list', (done) => {
     localStorageProvider.getItem = jest.fn().mockImplementation(() => of(undefined));
-    getList({storageProvider: localStorageProvider} as GetListProps)
+    localTodoListProvider.getList({} as GetListProps)
       .pipe(first())
       .subscribe((todoList: ITodo[]) => {
         expect(todoList !== null).toBeTruthy();
@@ -52,7 +54,7 @@ describe('TodoProvider', () => {
   }, 100);
 
   it('should filter completed todo list', (done) => {
-    getList({storageProvider: localStorageProvider, filter: {state: StateFilter.completed} as IFilter} as GetListProps)
+    localTodoListProvider.getList({filter: {state: StateFilter.completed} as IFilter} as GetListProps)
       .pipe(first())
       .subscribe((todoList: ITodo[]) => {
         expect(todoList !== null).toBeTruthy();
@@ -63,7 +65,7 @@ describe('TodoProvider', () => {
   }, 100);
 
   it('should filter uncopmleted todo list', (done) => {
-    getList({storageProvider: localStorageProvider, filter: {state: StateFilter.uncompleted} as IFilter} as GetListProps)
+    localTodoListProvider.getList({filter: {state: StateFilter.uncompleted} as IFilter} as GetListProps)
       .pipe(first())
       .subscribe((todoList: ITodo[]) => {
         expect(todoList !== null).toBeTruthy();
@@ -74,7 +76,7 @@ describe('TodoProvider', () => {
   }, 100);
 
   it('should filter all todo list', (done) => {
-    getList({storageProvider: localStorageProvider, filter: {state: StateFilter.all} as IFilter} as GetListProps)
+    localTodoListProvider.getList({filter: {state: StateFilter.all} as IFilter} as GetListProps)
       .pipe(first())
       .subscribe((todoList: ITodo[]) => {
         expect(todoList !== null).toBeTruthy();
@@ -86,7 +88,7 @@ describe('TodoProvider', () => {
   it('should search todo list and return one item', (done) => {
     const searchTerm = 'Task 1';
 
-    getList({storageProvider: localStorageProvider, searchTerm} as GetListProps)
+    localTodoListProvider.getList({searchTerm} as GetListProps)
       .pipe(first())  
       .subscribe((todoList: ITodo[]) => {
         expect(todoList !== null).toBeTruthy();
@@ -99,7 +101,7 @@ describe('TodoProvider', () => {
   it('should search todo list and return all', (done) => {
     const searchTerm = '';
 
-    getList({storageProvider: localStorageProvider, searchTerm} as GetListProps)
+    localTodoListProvider.getList({searchTerm} as GetListProps)
       .pipe(first())  
       .subscribe((todoList: ITodo[]) => {
         expect(todoList !== null).toBeTruthy();
@@ -109,7 +111,7 @@ describe('TodoProvider', () => {
   });
 
   it('should sort todo list by title asc', (done) => {
-    getList({storageProvider: localStorageProvider, sort: { column: 'title', direction: SortDirection.Asc} as ISort} as GetListProps)
+    localTodoListProvider.getList({sort: { column: 'title', direction: SortDirection.Asc} as ISort} as GetListProps)
       .pipe(first())
       .subscribe((todoList: ITodo[]) => {
         expect(todoList !== null).toBeTruthy();
@@ -120,7 +122,7 @@ describe('TodoProvider', () => {
   }, 100);
 
   it('should sort todo list by title desc', (done) => {
-    getList({storageProvider: localStorageProvider, sort: { column: 'title', direction: SortDirection.Desc} as ISort} as GetListProps)
+    localTodoListProvider.getList({sort: { column: 'title', direction: SortDirection.Desc} as ISort} as GetListProps)
       .pipe(first())
       .subscribe((todoList: ITodo[]) => {
         expect(todoList !== null).toBeTruthy();
@@ -131,7 +133,7 @@ describe('TodoProvider', () => {
   }, 100);
 
   it('should sort todo list by date asc', (done) => {
-    getList({storageProvider: localStorageProvider, sort: { column: 'createdAt', direction: SortDirection.Asc} as ISort} as GetListProps)
+    localTodoListProvider.getList({sort: { column: 'createdAt', direction: SortDirection.Asc} as ISort} as GetListProps)
       .pipe(first())
       .subscribe((todoList: ITodo[]) => {
         expect(todoList !== null).toBeTruthy();
@@ -143,7 +145,7 @@ describe('TodoProvider', () => {
   }, 100);
 
   it('should sort todo list by date desc', (done) => {
-    getList({storageProvider: localStorageProvider, sort: { column: 'createdAt', direction: SortDirection.Desc} as ISort} as GetListProps)
+    localTodoListProvider.getList({sort: { column: 'createdAt', direction: SortDirection.Desc} as ISort} as GetListProps)
       .pipe(first())
       .subscribe((todoList: ITodo[]) => {
         expect(todoList !== null).toBeTruthy();
@@ -163,7 +165,7 @@ describe('TodoProvider', () => {
       title: "Test created title"
     } as ITodo] as ITodo[];
 
-    saveList(localStorageProvider, expectedList)
+    localTodoListProvider.saveList(expectedList)
       .pipe(first())
       .subscribe(() => {
         expect(localStorageProvider.setItem).toBeCalledWith('todo-list', expectedList);
