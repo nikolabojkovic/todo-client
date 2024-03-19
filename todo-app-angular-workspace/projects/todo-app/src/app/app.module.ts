@@ -20,8 +20,8 @@ import { FilterTodosComponent } from './components/filter-todos/filter-todos.com
 import { ImportExportComponent } from './components/import-export/import-export.component';
 import { PagingComponent } from './components/paging/paging.component';
 import { SortingComponent } from './components/sorting/sorting.component';
-import { SortButtonComponent } from './components/sort-button/sort-button.component';
-import { SortIconComponent } from './components/sort-icon/sort-icon.component';
+import { SortButtonComponent } from './components/sorting/sort-button/sort-button.component';
+import { SortIconComponent } from './components/sorting/sort-icon/sort-icon.component';
 import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.component';
 import { LoaderComponent } from './components/loader/loader.component';
 

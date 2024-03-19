@@ -1,11 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { ISort, SortDirection } from '../../shared/models/sort';
-import { IState } from '../../shared/state/state';
-import { TodoListActions } from '../../shared/state/todo.actions';
-import { selectFilter, selectLoader, selectSearch, selectSort } from '../../shared/state/todo.selectors';
-import { IFilter } from '../../shared/models/filter';
-import { ISearch } from '../../shared/models/search';
+import { ISort, SortDirection } from '../../../shared/models/sort';
+import { IState } from '../../../shared/state/state';
+import { TodoListActions } from '../../../shared/state/todo.actions';
+import { selectFilter, selectLoader, selectSearch, selectSort } from '../../../shared/state/todo.selectors';
+import { IFilter } from '../../../shared/models/filter';
+import { ISearch } from '../../../shared/models/search';
 
 @Component({
   selector: 'app-sort-button',

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { IState } from '../../shared/state/state';
+import { IState } from '../../../shared/state/state';
 import { SortButtonComponent } from './sort-button.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SortIconComponent } from '../sort-icon/sort-icon.component';
-import { StorageProviderKey } from '../../shared/services/storage.provider';
+import { StorageProviderKey } from '../../../shared/services/storage.provider';
 import { Store, StoreModule } from '@ngrx/store';
-import { todosReducer } from '../../shared/state/todo.reducer';
+import { todosReducer } from '../../../shared/state/todo.reducer';
 import { EffectsModule } from '@ngrx/effects';
-import { TodoEffects } from '../../shared/state/todo.effects';
-import { ISort, SortDirection } from '../../shared/models/sort';
-import { IFilter, StateFilter } from '../../shared/models/filter';
-import { TodoListActions } from '../../shared/state/todo.actions';
+import { TodoEffects } from '../../../shared/state/todo.effects';
+import { ISort, SortDirection } from '../../../shared/models/sort';
+import { IFilter, StateFilter } from '../../../shared/models/filter';
+import { TodoListActions } from '../../../shared/state/todo.actions';
 import { of } from 'rxjs';
-import { todos } from '../../tests/test-data';
+import { todos } from '../../../tests/test-data';
 
 describe('SortButtonComponent', () => {
   let component: SortButtonComponent;
