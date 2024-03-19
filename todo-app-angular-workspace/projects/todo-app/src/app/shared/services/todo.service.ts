@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { ITodo } from '../models/todo';
 import { map, Observable } from 'rxjs';
-import { IFilter } from '../models/filter';
+import { IFilter, StateFilter } from '../models/filter';
 import { ISort, SortDirection } from '../models/sort';
 import { IStorageProvider, StorageProviderKey } from './storage.provider';
 
@@ -61,15 +61,11 @@ export class TodoService {
   }
 
   private filter(list: ITodo[], filter: IFilter) : ITodo[] {
-    if (filter.completed && filter.uncompleted) {
-      return [...list];
-    }
-
-    if (filter?.completed) {
+    if (filter.state === StateFilter.completed) {
       return list.filter((todo: ITodo) => todo.completed === true);
     }
 
-    if (filter?.uncompleted) {
+    if (filter.state === StateFilter.uncompleted) {
       return list.filter((todo: ITodo) => todo.completed === false);
     }
 

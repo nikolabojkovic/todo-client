@@ -9,7 +9,7 @@ import { todosReducer } from '../../shared/state/todo.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { TodoEffects } from '../../shared/state/todo.effects';
 import { ISort, SortDirection } from '../../shared/models/sort';
-import { IFilter } from '../../shared/models/filter';
+import { IFilter, StateFilter } from '../../shared/models/filter';
 import { TodoListActions } from '../../shared/state/todo.actions';
 import { of } from 'rxjs';
 import { todos } from '../../tests/test-data';
@@ -51,7 +51,7 @@ describe('SortButtonComponent', () => {
   describe('onSort', () => {
     it('should sort Desc', () => {
       const sort = { column: 'title', direction: SortDirection.Asc } as ISort;
-      const filter = { completed: false, uncompleted: false } as IFilter;
+      const filter = { state: StateFilter.all } as IFilter;
       const searchTerm = '';
       component.search = searchTerm;
       component.sortDirection = sort.direction;
@@ -70,7 +70,7 @@ describe('SortButtonComponent', () => {
 
     it('should sort Asc', () => {
       const sort = { column: 'title', direction: SortDirection.Desc } as ISort;
-      const filter = { completed: false, uncompleted: false } as IFilter;
+      const filter = { state: StateFilter.all } as IFilter;
       const searchTerm = '';
       component.search = searchTerm;
       component.sortDirection = sort.direction;

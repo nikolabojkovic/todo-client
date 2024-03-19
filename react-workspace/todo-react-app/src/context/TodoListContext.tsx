@@ -127,7 +127,7 @@ export function todoStateReducer(state: IState, action: IAction) {
         search: { searchTerm: '' },
         filter: {
           state: StateFilter.all
-         },
+        },
         paging: {
           ...state.paging,
           activePage: action.payload.activePage,

@@ -2,6 +2,7 @@ import { IPaging } from '../shared/models/paging';
 import { SortDirection } from '../shared/models/sort';
 import { IState } from '../shared/state/state';
 import { ITodo } from '../shared/models/todo';
+import { StateFilter } from '../shared/models/filter';
 
 export const todos: ITodo[] = [
   {
@@ -54,7 +55,7 @@ export const stateTestData: IState =
   originalList: todos,
   displayList: todos,
   search: { searchTerm: '' },
-  filter: { completed: false, uncompleted: false },
+  filter: { state: StateFilter.all },
   sort: { column: 'createdAt', direction: SortDirection.Asc},
   paging: {
     totalCount: 6,

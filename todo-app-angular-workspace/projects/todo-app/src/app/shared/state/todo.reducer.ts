@@ -4,6 +4,7 @@ import { TodoListActions } from './todo.actions';
 import { IState, State } from './state';
 import { IPaging } from '../models/paging';
 import { ITodo } from '../models/todo';
+import { StateFilter } from '../models/filter';
 
 export const initialState: IState = new State([] as ITodo[]);
 
@@ -68,9 +69,8 @@ export const todosReducer = createReducer(
       displayList: [...list],
       search: { searchTerm: '' },
       filter: {
-        completed: false,
-        uncompleted: false
-       },
+        state: StateFilter.all
+      },
       paging: {
         ...todoList.paging,
         activePage: activePage,

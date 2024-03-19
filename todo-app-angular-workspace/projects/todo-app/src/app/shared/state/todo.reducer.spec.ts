@@ -3,7 +3,7 @@ import { IState, State } from './state';
 import { Todo } from '../models/todo';
 import { todos } from '../../tests/test-data';
 import { TodoListActions } from './todo.actions';
-import { IFilter } from '../models/filter';
+import { IFilter, StateFilter } from '../models/filter';
 
 describe('todosReducer', () => {
   describe('fetched action', () => {
@@ -94,7 +94,7 @@ describe('todosReducer', () => {
     it('should filter todos in the display list', () => {
       const initialState = {...new State(todos)} as IState;
       const newState = {...new State(todos.filter(x => x.completed === true))} as IState;
-      const action = TodoListActions.filtered({ activePage: 1, filter: { completed: true, uncompleted: false } as IFilter, list: newState.originalList });
+      const action = TodoListActions.filtered({ activePage: 1, filter: { state: StateFilter.completed } as IFilter, list: newState.originalList });
       const state = todosReducer(initialState, action);
 
       expect(state.originalList.length).toBe(6);

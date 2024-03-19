@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { EffectsModule } from '@ngrx/effects';
 import { Store, StoreModule } from '@ngrx/store';
-import { IFilter } from '../../shared/models/filter';
+import { IFilter, StateFilter } from '../../shared/models/filter';
 import { ISort, SortDirection } from '../../shared/models/sort';
 import { StorageProviderKey } from '../../shared/services/storage.provider';
 import { IState } from '../../shared/state/state';
@@ -49,7 +49,7 @@ describe('SearchTodosComponent', () => {
   describe('onTyping', () => {
     it('should update search term and do search', () => {
       const sort = { column: 'title', direction: SortDirection.Asc } as ISort;
-      const filter = { completed: false, uncompleted: false } as IFilter;
+      const filter = { state: StateFilter.all } as IFilter;
       const searchTerm = '';
       component.searchValue = searchTerm;
       component.sort = sort;
@@ -70,7 +70,7 @@ describe('SearchTodosComponent', () => {
 
     it('should only update search term', () => {
       const sort = { column: 'title', direction: SortDirection.Asc } as ISort;
-      const filter = { completed: false, uncompleted: false } as IFilter;
+      const filter = { state: StateFilter.all } as IFilter;
       const searchTerm = 'test';
       component.searchValue = searchTerm;
       component.sort = sort;
@@ -94,7 +94,7 @@ describe('SearchTodosComponent', () => {
   describe('onSearch', () => {
     it('should search', () => {
       const sort = { column: 'title', direction: SortDirection.Asc } as ISort;
-      const filter = { completed: false, uncompleted: false } as IFilter;
+      const filter = { state: StateFilter.all } as IFilter;
       const searchTerm = 'test';
       component.searchValue = searchTerm;
       component.sort = sort;
@@ -114,7 +114,7 @@ describe('SearchTodosComponent', () => {
   describe('onClearSearch', () => {
     it('should clear search value and do search', () => {
       const sort = { column: 'title', direction: SortDirection.Asc } as ISort;
-      const filter = { completed: false, uncompleted: false } as IFilter;
+      const filter = { state: StateFilter.all } as IFilter;
       const searchTerm = 'test';
       component.searchValue = searchTerm;
       component.sort = sort;

@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { ISort, SortDirection } from '../../shared/models/sort';
 import { IState } from '../../shared/state/state';
 import { TodoListActions } from '../../shared/state/todo.actions';
-import { selectFilter, selectSearch, selectSort } from '../../shared/state/todo.selectors';
+import { selectFilter, selectLoader, selectSearch, selectSort } from '../../shared/state/todo.selectors';
 import { IFilter } from '../../shared/models/filter';
 import { ISearch } from '../../shared/models/search';
 
@@ -19,6 +19,7 @@ export class SortButtonComponent {
   sortDirection!: string;
   filter!: IFilter;
   search: string = '';
+  isLoading: boolean = false;
 
   constructor(private store: Store<IState>) {}
 
@@ -38,14 +39,24 @@ export class SortButtonComponent {
       .subscribe((search: ISearch) => {
         this.search = search.searchTerm;
       });
+    this.store.select(selectLoader)
+    .pipe()
+    .subscribe((isLoading: boolean) => {
+      this.isLoading = isLoading;
+    });
   }
 
   onSort(): void {
+    if (this.isLoading) {
+      return;
+    }
+
+    this.sortDirection = this.sortDirection !== SortDirection.Asc ? SortDirection.Asc : SortDirection.Desc;
     this.store.dispatch(TodoListActions.sort({
       filter: this.filter,
       sort: {
         column: this.column,
-        direction: this.sortDirection !== SortDirection.Asc ? SortDirection.Asc : SortDirection.Desc
+        direction: this.sortDirection
       } as ISort,
       search: this.search
     }));

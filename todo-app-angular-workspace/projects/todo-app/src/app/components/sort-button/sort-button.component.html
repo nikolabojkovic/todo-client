@@ -1,4 +1,8 @@
-<div class="app__sorting__item" (click)="onSort()">
+<div
+  class="app__sorting__item"
+  (click)="onSort()"
+  [ngClass]="{'app__sorting__item--disabled': isLoading}"
+>
   <span>{{text}}</span>
   <app-sort-icon [sortDirection]="sortDirection"></app-sort-icon>
 </div>

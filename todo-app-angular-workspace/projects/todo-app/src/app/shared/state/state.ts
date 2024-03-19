@@ -1,4 +1,4 @@
-import { IFilter } from '../models/filter';
+import { IFilter, StateFilter } from '../models/filter';
 import { IPaging } from '../models/paging';
 import { ISearch } from '../models/search';
 import { ISort, SortDirection } from '../models/sort';
@@ -31,8 +31,7 @@ export class State implements IState {
         searchTerm: '',
       };
       this.filter = {
-        completed: false,
-        uncompleted: false,
+        state: StateFilter.all,
       } as IFilter;
       this.sort = {
 				column: 'createdAt',
