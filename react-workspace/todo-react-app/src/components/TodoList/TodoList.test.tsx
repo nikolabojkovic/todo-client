@@ -12,13 +12,13 @@ import { Todo } from '../../models/Todo';
 let todoListProvider = {
   getList: jest.fn().mockImplementation(() => of([] as Todo[])),
   saveList: jest.fn().mockImplementation(() => of({})),
-} ;
+};
 
 beforeEach(() => {
   todoListProvider = {
     getList: jest.fn().mockImplementation(() => of([] as Todo[])),
     saveList: jest.fn().mockImplementation(() => of({})),
-  } ;
+  };
 });
 
 describe('todo list rendered', () => {  

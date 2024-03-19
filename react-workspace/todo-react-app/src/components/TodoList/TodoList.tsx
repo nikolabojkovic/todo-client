@@ -3,13 +3,14 @@ import { first } from 'rxjs';
 
 import { ISort } from '../../models/ISort';
 import { Loader } from '../Loader/Loader';
+import { ITodo } from '../../models/Todo';
+import { IAction, TodoActions } from '../../models/Action';
 
 import { useTodoList, useTodoListDispatch } from '../../context/TodoListContext';
 
 import { GetListProps, ITodoListProvider } from '../../providers/TodoProvider';
+
 import { TodoItem } from '../TodoItem/TodoItem';
-import { ITodo } from '../../models/Todo';
-import { IAction, TodoActions } from '../../models/Action';
 
 type Props = {
   todoListProvider: ITodoListProvider
