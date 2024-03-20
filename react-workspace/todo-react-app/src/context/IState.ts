@@ -5,6 +5,7 @@ import { ISort, SortDirection } from "../models/ISort";
 import { ISearch } from "../models/ISearch";
 import { StateFilter } from '../models/IFilter';
 import { IAction } from "../models/Action";
+import { ISettings } from "../models/ISettings";
 
 
 export interface IState {
@@ -16,6 +17,8 @@ export interface IState {
 	filter: IFilter;
 	sort: ISort;
 	paging: IPaging;
+	settings: ISettings;
+	activeTab: string;
 }
 
 export class State implements IState {
@@ -27,6 +30,8 @@ export class State implements IState {
 	filter: IFilter;
 	sort: ISort;
 	paging: IPaging;
+	settings: ISettings;
+	activeTab: string;
 
 	constructor(todos: ITodo[]) {
 		this.isLoading = false;
@@ -50,5 +55,9 @@ export class State implements IState {
 			endIndex: todos.length > 5 ? 5 : todos.length,
 			itemsPerPage: 5
 		} as IPaging;
+		this.settings = {
+
+		} as ISettings;
+		this.activeTab = 'add-todo';
 	}
 }

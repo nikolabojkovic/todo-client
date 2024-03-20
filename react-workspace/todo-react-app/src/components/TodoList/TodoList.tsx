@@ -101,21 +101,25 @@ export function TodoList({ todoListProvider }: Props) {
   }, [todoList.effectTrigger, todoList.originalList, todoListProvider]);
 
   return (
-    <main className="App__todo-list">
-      {todoList.isLoading && 
-        <Loader />
-      }
-      {!todoList.isLoading && 
-      <section className=''>
-        {
-          (todoList.paging.totalCount > 0 ?
-            todoList.displayList
-                  .slice(todoList.paging.startIndex, todoList.paging.endIndex)
-                  .map((todo: ITodo) => <TodoItem key={todo.id} todo={todo} />) 
-          : <div className='text-light mt-5 mb-5 fade-in'>No data</div>)
+    <>
+    { todoList.activeTab !== 'settings' && 
+      <main className="App__todo-list">
+        {todoList.isLoading && 
+          <Loader />
         }
-      </section>
-      }
-    </main>
+        {!todoList.isLoading && 
+        <section className=''>
+          {
+            (todoList.paging.totalCount > 0 ?
+              todoList.displayList
+                    .slice(todoList.paging.startIndex, todoList.paging.endIndex)
+                    .map((todo: ITodo) => <TodoItem key={todo.id} todo={todo} />) 
+            : <div className='text-light mt-5 mb-5 fade-in'>No data</div>)
+          }
+        </section>
+        }
+      </main>
+    }
+    </>
   );
 }

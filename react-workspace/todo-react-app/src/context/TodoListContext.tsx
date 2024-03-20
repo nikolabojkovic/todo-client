@@ -48,6 +48,12 @@ export function todoStateReducer(state: IState, action: IAction) {
         isLoading: true
       } as IState;
     }
+    case TodoActions.activeTabChanged: {
+      return { 
+        ...state,
+        activeTab: action.payload.activeTab
+      } as IState;
+    }
     case TodoActions.fetch: {
       return { 
         ...state,

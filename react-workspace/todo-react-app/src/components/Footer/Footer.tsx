@@ -13,21 +13,25 @@ export function Footer() {
   const maxVisiblePagesCount = 3;
 
   return (
-    <section className="footer p-0 mt-2">      
-      <Container fluid>
-        <Row xs={1} sm={3}>
-          <PageSize 
-            pageCount={pageCount} 
-            inputSelectRef={inputSelectRef}
-          />
-          <Pagination 
-            pageCount={pageCount} 
-            inputSelectRef={inputSelectRef} 
-            maxVisiblePagesCount={maxVisiblePagesCount} 
-            rotate={rotate} 
-          />
-        </Row>
-      </Container>
-    </section>
+    <>
+      {todoList.activeTab !== 'settings' && 
+        <section className="footer p-0 mt-2">      
+          <Container fluid>
+            <Row xs={1} sm={3}>
+              <PageSize 
+                pageCount={pageCount} 
+                inputSelectRef={inputSelectRef}
+              />
+              <Pagination 
+                pageCount={pageCount} 
+                inputSelectRef={inputSelectRef} 
+                maxVisiblePagesCount={maxVisiblePagesCount} 
+                rotate={rotate} 
+              />
+            </Row>
+          </Container>
+        </section>
+      }
+    </>
   );
 }

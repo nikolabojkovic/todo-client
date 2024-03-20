@@ -49,19 +49,23 @@ export function Sorting() {
   }
 
   return (
-    <section className="App__sorting d-flex flex-wrap">
-      {
-        sortByColumns.map((item: Sort) => (
-          <SortButton 
-            key={item.name}
-            column={item.name}
-            text={item.text}
-            disabled={todoList.isLoading}
-            sortDirection={activeColumn === item.name ? SortDirection.Asc : SortDirection.None}
-            onClick={handleSorting}
-          />
-        ))
-      }
-    </section>
+    <>
+    {todoList.activeTab !== 'settings' &&
+      <section className="App__sorting d-flex flex-wrap">
+        {
+          sortByColumns.map((item: Sort) => (
+            <SortButton 
+              key={item.name}
+              column={item.name}
+              text={item.text}
+              disabled={todoList.isLoading}
+              sortDirection={activeColumn === item.name ? SortDirection.Asc : SortDirection.None}
+              onClick={handleSorting}
+            />
+          ))
+        }
+      </section>
+    }
+    </>    
   );
 }

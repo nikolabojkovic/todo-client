@@ -16,6 +16,7 @@ export enum TodoActions {
   searched = 'searched',
   imported = 'imported',
   loadingStarted = 'loading-started',
+  activeTabChanged = 'active-tab-changed',
 
   searchTermUpdated = 'searchTerm-updated',
   pagingUpdated = 'paging-updated',
