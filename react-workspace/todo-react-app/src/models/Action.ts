@@ -19,7 +19,10 @@ export enum TodoActions {
   activeTabChanged = 'active-tab-changed',
 
   searchTermUpdated = 'searchTerm-updated',
+  pagingFatched = 'paging-fatched',
   pagingUpdated = 'paging-updated',
+  settingsFetched = 'settings-fetched',
+  settingsUpdated = 'settings-updated',
 
   added = 'added',
   changed = 'changed',

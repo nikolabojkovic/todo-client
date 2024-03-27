@@ -1,13 +1,20 @@
-import { useState } from "react";
 import { Form, Stack } from "react-bootstrap";
+import { useTodoList, useTodoListDispatch } from "../../../context/TodoListContext";
+import { ISearchSettings } from "../../../models/ISettings";
+import { IAction, TodoActions } from "../../../models/Action";
 
 export function SearchSettings() {
+  const todoList = useTodoList();
+  const dispatch = useTodoListDispatch();
 
-  const [keyPressSwitch, setKeyPressSwitch] = useState(true);
-  const [debounceTimeInput, setDebounceTimeInput] = useState('500');
-
-  function handleKeyPressSwitch(enabled: boolean) {
-    console.log(enabled);
+  function handleSettingsUpdate(settingsPayload: ISearchSettings) {
+    dispatch({
+      type: TodoActions.settingsUpdated,
+      payload: {
+        ...todoList.settings,
+        search: {...settingsPayload}
+      }
+    } as IAction);
   }
 
   return (
@@ -15,20 +22,23 @@ export function SearchSettings() {
       <label className='App__settings__group-label'>Search</label>
       <div className='App__settings__group__item'>
         <Stack direction="horizontal" gap={2}>
-          <label>Comfirm on change/remove</label>
+          <label>Search on key press</label>
           <Form.Check 
             className='ms-auto'
+            data-testid="search-on-keypress-switch"
             type="switch"
             id={`keyPress-switch`}
-            checked={keyPressSwitch}
+            checked={todoList.settings.search.isSearchOnKeyPressEnabled}
             onChange={(e) => {
-              setKeyPressSwitch(e.target.checked);
-              handleKeyPressSwitch(e.target.checked);
+              handleSettingsUpdate({
+                ...todoList.settings.search,
+                isSearchOnKeyPressEnabled: e.target.checked
+              });
             }}
           /> 
         </Stack>
       </div>
-      { keyPressSwitch &&
+      { todoList.settings.search.isSearchOnKeyPressEnabled &&
         <div className='App__settings__group__item ms-5'>
           <Stack direction="horizontal" gap={2}>
             <label>Debounce time (ms)</label>
@@ -38,9 +48,12 @@ export function SearchSettings() {
               type="number" 
               placeholder={'0'} 
               size="sm" 
-              value={debounceTimeInput}
+              value={todoList.settings.search.debounceTime}
               onChange={(e) => {
-                setDebounceTimeInput(e.target.value);
+                handleSettingsUpdate({
+                  ...todoList.settings.search,
+                  debounceTime: +e.target.value
+                });
               }}
             />
           </Stack>

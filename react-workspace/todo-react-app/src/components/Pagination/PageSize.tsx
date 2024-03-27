@@ -1,20 +1,18 @@
 import { Stack, Col } from 'react-bootstrap';
 import Dropdown from 'react-bootstrap/Dropdown';
-import { useTodoList, useTodoListDispatch } from '../../context/TodoListContext';
+import { useTodoListDispatch } from '../../context/TodoListContext';
 import { IAction, TodoActions } from '../../models/Action';
 import { useState } from 'react';
 
 type Props = {
   inputSelectRef: ((instance: HTMLButtonElement | null) => void) | React.RefObject<HTMLButtonElement> | null | undefined,
-  pageCount: number,
-  pageSize?: number | null | undefined;
+  pageCount: number,  
+  activePage: number,
+  totalCount: number,
+  pageSize?: number | null | undefined
 };
 
-export function PageSize({ inputSelectRef, pageCount, pageSize = 5 }: Props) {
-
-  const [itemsPerPage, setItemsPerPage] = useState(pageSize);
-
-  const todoList = useTodoList();
+export function PageSize({ inputSelectRef, pageCount, activePage, totalCount, pageSize = 5 }: Props) {
   const dispatch = useTodoListDispatch();
 
   function handlePageSizeChange(pageSize: number) {
@@ -25,13 +23,12 @@ export function PageSize({ inputSelectRef, pageCount, pageSize = 5 }: Props) {
         itemsPerPage: pageSize
       }
     } as IAction);
-    setItemsPerPage(pageSize);
   }
-  
+
   return (
   <>
     <Col sm={3} className="p-3 pt-2 pb-2 d-flex justify-content-sm-start justify-content-center align-items-center">
-      Page {todoList.paging.activePage} of {pageCount}
+      Page {activePage} of {pageCount}
     </Col>
     <Col sm={4} className="p-3 pt-2 pb-2">
       <Stack direction="horizontal" gap={2} className="justify-content-center">
@@ -46,9 +43,9 @@ export function PageSize({ inputSelectRef, pageCount, pageSize = 5 }: Props) {
               className="action-button" 
               ref={inputSelectRef} 
               id="dropdown-basic"
-              disabled={todoList.paging.totalCount === 0}
+              disabled={totalCount === 0}
             >
-              {' '}{itemsPerPage}{' '}
+              {' '}{pageSize}{' '}
             </Dropdown.Toggle>
 
             <Dropdown.Menu>

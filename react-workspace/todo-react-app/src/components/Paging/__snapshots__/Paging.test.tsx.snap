@@ -2,7 +2,7 @@
 
 exports[`Paging component should match snapshot 1`] = `
 <section
-  className="footer p-0 mt-2"
+  className="paging p-0 mt-2"
 >
   <div
     className="container-fluid"

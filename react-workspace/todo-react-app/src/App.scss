@@ -175,7 +175,7 @@
         padding: 0px 10px;
         position: absolute;
         left: 35px;
-        top: -12px;
+        top: -14px;
 
         &--disabled {
           color: $text-ternary-color;
@@ -205,13 +205,13 @@
 
   .clear-icon {
     position: absolute;
-    right: 129px;
-    top: 20px;
+    right: 8px;
+    top: 8px;
     color: $text-ternary-color;
     cursor: pointer;
   }
 
-  .footer {
+  .paging {
     color: $text-ternary-color-2;
     background-color: $background-secondary-color;
     padding: 10px 10px;

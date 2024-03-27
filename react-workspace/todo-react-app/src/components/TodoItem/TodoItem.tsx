@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Stack } from 'react-bootstrap';
 import { faTrash, faCheckDouble } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useTodoListDispatch } from '../../context/TodoListContext';
+import { useTodoList, useTodoListDispatch } from '../../context/TodoListContext';
 import { IAction, TodoActions } from '../../models/Action';
 import { ITodo } from '../../models/Todo';
 import { ConfirmModal } from '../ConfirmModal/ConfirmModal';
@@ -11,11 +11,13 @@ type Props = {
   todo: ITodo;
 };
 
-export function TodoItem({ todo }: Props){
-  const [showModal, setShowModal] = useState(false); 
-  const [confirm, onConfirm] = useState<null | (() => void)>(null);   
-  const [confirmDialogText, setConfirmDialogText] = useState(''); 
+export function TodoItem({ todo }: Props) {
+  const todoList = useTodoList();
   const dispatch = useTodoListDispatch();
+
+  const [showModal, setShowModal] = useState(false);   
+  const [confirmDialogText, setConfirmDialogText] = useState('');  
+  const [confirm, onConfirm] = useState<null | (() => void)>(null); 
 
   function handleComplete() {
     dispatch({
@@ -67,9 +69,15 @@ export function TodoItem({ todo }: Props){
                 if (todo.completed)
                   return;
 
-                onConfirm(() => handleComplete);
-                setConfirmDialogText('Are you sure you want to complete this item?');
-                setShowModal(true);
+                if (todoList.settings.general.isConfirmEnabled) {
+                  onConfirm(() => handleComplete);
+                  setConfirmDialogText('Are you sure you want to complete this item?');
+                  setShowModal(true);
+
+                  return;
+                }
+
+                handleComplete();
               }}
             />
           </div>
@@ -79,9 +87,15 @@ export function TodoItem({ todo }: Props){
               icon={faTrash} 
               className="action-icon"
               onClick={() => {
-                onConfirm(() => handleDelete);
-                setConfirmDialogText('Are you sure you want to delete this item?');
-                setShowModal(true);
+                if (todoList.settings.general.isConfirmEnabled) {
+                  onConfirm(() => handleDelete);
+                  setConfirmDialogText('Are you sure you want to delete this item?');
+                  setShowModal(true);
+
+                  return;
+                }
+
+                handleDelete();
               }}
             />
           </div>          

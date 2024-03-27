@@ -1,33 +1,32 @@
-import { useState } from "react";
 import { Dropdown, Form, Stack } from "react-bootstrap";
+import { useTodoList, useTodoListDispatch } from "../../../context/TodoListContext";
+import { IAction, TodoActions } from "../../../models/Action";
+import { IGeneralSettings, ListContainerType } from "../../../models/ISettings";
 
 export type Props = {
   paginationSwitch: boolean;
   onPaginationSwitch: (enabled: boolean) => void
 }
 
-export function GeneralSettings({paginationSwitch, onPaginationSwitch: setPaginationSwitch}: Props) {
-  const [confirmSwitch, setConfirmSwitch] = useState(true);  
-  const [infiniteScrollSwitch, setInfiniteScrollSwitch] = useState(false);
+export function GeneralSettings() {
+  const todoList = useTodoList();
+  const dispatch = useTodoListDispatch();
 
-  const [listSizeSelect, setListSizeSelect] = useState('Fixed');
-  const [sizeInput, setSizeInput] = useState('200');
-
-  function handleConfirmSwitch(enabled: boolean) {
-    console.log(enabled);
+  function handleSettingsUpdate(settingsPayload: IGeneralSettings) {
+    dispatch({
+      type: TodoActions.settingsUpdated,
+      payload: {
+        ...todoList.settings,
+        general: {...settingsPayload}
+      }
+    } as IAction);
   }
-
-  function handlePaginationSwitch(enabled: boolean) {
-    console.log(enabled);
-  }
-
-  function handleInfiniteScrollSwitch(enabled: boolean) {
-    console.log(enabled);
-  }
-
-  function handleListSizeSelect(option: string) {
-    setListSizeSelect(option);
-    console.log(option);
+  
+  function handleListSizeSelect(otpion: string) {
+    handleSettingsUpdate({
+      ...todoList.settings.general,
+      listSizeType: otpion
+    });
   }
 
   return (
@@ -40,10 +39,12 @@ export function GeneralSettings({paginationSwitch, onPaginationSwitch: setPagina
               className='ms-auto'
               type="switch"
               id={`comfirm-enabled`}
-              checked={confirmSwitch}
+              checked={todoList.settings.general.isConfirmEnabled}
               onChange={(e) => {
-                setConfirmSwitch(e.target.checked);
-                handleConfirmSwitch(e.target.checked);
+                handleSettingsUpdate({
+                  ...todoList.settings.general,
+                  isConfirmEnabled: e.target.checked
+                });
               }}
             /> 
           </Stack>
@@ -55,11 +56,13 @@ export function GeneralSettings({paginationSwitch, onPaginationSwitch: setPagina
               className='ms-auto'
               type="switch"
               id={`pagination-enabled`}
-              checked={paginationSwitch}
+              checked={todoList.settings.general.isPaginationEnabled}
               onChange={(e) => {
-                setPaginationSwitch(e.target.checked);
-                setInfiniteScrollSwitch(false);
-                handlePaginationSwitch(e.target.checked);
+                handleSettingsUpdate({
+                  ...todoList.settings.general,
+                  isPaginationEnabled: e.target.checked,
+                  isInfiniteScrollEnabled: false
+                });
               }}
             /> 
           </Stack>
@@ -71,11 +74,13 @@ export function GeneralSettings({paginationSwitch, onPaginationSwitch: setPagina
               className='ms-auto'
               type="switch"
               id={`infinite-scroll-enabled`}
-              checked={infiniteScrollSwitch}
+              checked={todoList.settings.general.isInfiniteScrollEnabled}
               onChange={(e) => {
-                setInfiniteScrollSwitch(e.target.checked);
-                setPaginationSwitch(false);
-                handleInfiniteScrollSwitch(e.target.checked);
+                handleSettingsUpdate({
+                  ...todoList.settings.general,
+                  isPaginationEnabled: false,
+                  isInfiniteScrollEnabled: e.target.checked
+                });
               }}
             /> 
           </Stack>
@@ -91,16 +96,26 @@ export function GeneralSettings({paginationSwitch, onPaginationSwitch: setPagina
                 id="dropdown-basic"
                 disabled={false}
               >
-                {' '}{listSizeSelect}{' '}
+                {' '}{todoList.settings.general.listSizeType}{' '}
               </Dropdown.Toggle>
               <Dropdown.Menu>
-                <Dropdown.Item data-testid="filter-option-fixed" onClick={() => handleListSizeSelect('Fixed')}>Fixed</Dropdown.Item>
-                <Dropdown.Item data-testid="filter-option-dynamic" onClick={() => handleListSizeSelect('Dynamic')}>Dynamic</Dropdown.Item>
+                <Dropdown.Item 
+                  data-testid="list-size-option-fixed" 
+                  onClick={() => handleListSizeSelect(ListContainerType.Fixed)}
+                >
+                  { ListContainerType.Fixed }
+                </Dropdown.Item>
+                <Dropdown.Item 
+                  data-testid="list-size-option-dynamic" 
+                  onClick={() => handleListSizeSelect(ListContainerType.Dynamic)}
+                  >
+                    { ListContainerType.Dynamic }
+                  </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           </Stack>
         </div>
-        { listSizeSelect === 'Fixed' &&
+        { todoList.settings.general.listSizeType === 'Fixed' &&
           <div className='App__settings__group__item ms-5'>
             <Stack direction="horizontal" gap={2}>
               <label>Size (px)</label>
@@ -110,9 +125,12 @@ export function GeneralSettings({paginationSwitch, onPaginationSwitch: setPagina
                 type="number" 
                 placeholder={'0'} 
                 size="sm" 
-                value={sizeInput}
+                value={todoList.settings.general.fixedListSize}
                 onChange={(e) => {
-                  setSizeInput(e.target.value);
+                  handleSettingsUpdate({
+                    ...todoList.settings.general,
+                    fixedListSize: (+e.target.value)
+                  });
                 }}
               />
             </Stack>

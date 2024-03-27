@@ -18,11 +18,13 @@ export interface ITodoListProvider {
   saveList(list: ITodo[]): Observable<unknown>;
 }
 
+// additionaly implement one more provider, RemoteTodoListProvider which will load list from web api by invoking HTTP request
+
 export default class LocalTodoListProvider {
   storageProvider: IStorageProvider;
 
   constructor() {
-    this.storageProvider = new LocalStorageProvider;
+    this.storageProvider = new LocalStorageProvider();
   }  
 
   getList({filter, sort, searchTerm}: GetListProps): Observable<ITodo[]> {

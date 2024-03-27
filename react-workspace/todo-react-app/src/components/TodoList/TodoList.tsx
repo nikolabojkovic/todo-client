@@ -11,6 +11,7 @@ import { useTodoList, useTodoListDispatch } from '../../context/TodoListContext'
 import { GetListProps, ITodoListProvider } from '../../providers/TodoProvider';
 
 import { TodoItem } from '../TodoItem/TodoItem';
+import { ListContainerType } from '../../models/ISettings';
 
 type Props = {
   todoListProvider: ITodoListProvider
@@ -100,23 +101,39 @@ export function TodoList({ todoListProvider }: Props) {
      }
   }, [todoList.effectTrigger, todoList.originalList, todoListProvider]);
 
+  function getDisplayList() {
+    if (todoList.settings.general.isPaginationEnabled) {
+      return todoList.displayList
+        .slice(todoList.paging.startIndex, todoList.paging.endIndex)
+        .map((todo: ITodo) => <TodoItem key={todo.id} todo={todo} />);
+    }
+      
+    return todoList.displayList.map((todo: ITodo) => <TodoItem key={todo.id} todo={todo} />);
+  }
+
   return (
     <>
     { todoList.activeTab !== 'settings' && 
       <main className="App__todo-list">
-        {todoList.isLoading && 
-          <Loader />
-        }
-        {!todoList.isLoading && 
-        <section className=''>
-          {
-            (todoList.paging.totalCount > 0 ?
-              todoList.displayList
-                    .slice(todoList.paging.startIndex, todoList.paging.endIndex)
-                    .map((todo: ITodo) => <TodoItem key={todo.id} todo={todo} />) 
-            : <div className='text-light mt-5 mb-5 fade-in'>No data</div>)
-          }
-        </section>
+        { 
+          todoList.isLoading 
+          ? <Loader />
+          : <section 
+              className='' 
+              style={ 
+                todoList.settings.general.listSizeType === ListContainerType.Fixed 
+                ? { 
+                    height: todoList.settings.general.fixedListSize,
+                    overflow: 'overlay'
+                  } 
+                : {}
+                }>
+              {
+                (todoList.paging.totalCount > 0 ?
+                  getDisplayList() 
+                : <div className='text-light mt-5 mb-5 fade-in'>No data</div>)
+              }
+            </section>
         }
       </main>
     }

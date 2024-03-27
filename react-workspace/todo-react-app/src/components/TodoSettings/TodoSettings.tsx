@@ -1,17 +1,27 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import { GeneralSettings } from "./GeneralSettings/GeneralSettings";
 import { PaginationSettings } from "./PaginationSettings/PaginationSettings";
 import { SearchSettings } from "./SearchSettings/SearchSettings";
+import { ISettingsProvider, LocalSettingsProvider } from "../../providers/LocalSettingsProvider";
+import { useTodoList } from "../../context/TodoListContext";
+import { TodoActions } from "../../models/Action";
+import { first } from "rxjs";
 
 export function Settings() {
-  
-  const [paginationEnabled, setPaginationSwitch] = useState(true);
-  
+  const todoList = useTodoList();
+  const settingsProvider: ISettingsProvider = new LocalSettingsProvider();
+
+  useEffect(() => {
+    if(todoList.effectTrigger && todoList.effectTrigger.type === TodoActions.settingsUpdated) {
+      settingsProvider.saveSettings(todoList.settings).pipe(first()).subscribe();
+    }
+  }, [todoList.effectTrigger, todoList.settings]);
+
   return (
     <div className='App__settings'>
-      <GeneralSettings {...{paginationSwitch: paginationEnabled, onPaginationSwitch: setPaginationSwitch}}></GeneralSettings>
+      <GeneralSettings></GeneralSettings>
       <SearchSettings></SearchSettings>
-      <PaginationSettings isDisabled={!paginationEnabled}></PaginationSettings>
+      <PaginationSettings></PaginationSettings>
     </div>
   );
 }

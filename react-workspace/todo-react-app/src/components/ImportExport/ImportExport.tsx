@@ -30,6 +30,12 @@ export function ImportExport({ downloadLink, fileReader, alert }: Props) {
     downloadLink.click();
   }
 
+  function handleImport() {
+    fileReader.readAsText(file!);          
+    setFile(null);
+    fileRef!.current!.value = '';
+  }
+
   fileReader.onload = handleFileContent;
 
   function handleFileContent(e: ProgressEvent<FileReader>) {
@@ -92,7 +98,15 @@ export function ImportExport({ downloadLink, fileReader, alert }: Props) {
                 variant="outline-secondary"
                 className="w-100 action-button"
                 size="sm"
-                onClick={() => setShowModal(true)}
+                onClick={() => { 
+                  if (todoList.settings.general.isConfirmEnabled) {
+                    setShowModal(true);
+
+                    return;
+                  }
+
+                  handleImport();
+                }}
                 disabled={!file}
               >
                 Import {' '}
@@ -118,11 +132,9 @@ export function ImportExport({ downloadLink, fileReader, alert }: Props) {
       <ConfirmModal 
         content={'Existing data will be lost. Are you sure?'} 
         show={showModal}
-        onConfirm={() => { 
-          fileReader.readAsText(file!);          
+        onConfirm={() => {          
           setShowModal(false);
-          setFile(null);
-          fileRef!.current!.value = '';
+          handleImport();
         }}
         onCancel={() => setShowModal(false)}
       />

@@ -1,20 +1,33 @@
 export interface ISettings {
 	general: IGeneralSettings;
+	search: ISearchSettings;
 	pagination: IPaginationSettings;	
 }
 
-interface IGeneralSettings {
-	confirmEnabled: boolean;
-	paginationEnabled: boolean;
-	infiniteScrollEnabled: boolean;
+export interface IGeneralSettings {
+	isConfirmEnabled: boolean;
+	isPaginationEnabled: boolean;
+	isInfiniteScrollEnabled: boolean;
+	listSizeType: string;
+	fixedListSize: number;
 }
 
-interface IPaginationSettings {
+export interface ISearchSettings {
+	isSearchOnKeyPressEnabled: boolean;
+	debounceTime: number;
+}
+
+export interface IPaginationSettings {
 	paginationType: PaginationType;
 	maxVisiblePages: number;
 }
 
-enum PaginationType {
-	rotate = 'Rotate',
-	clasic = 'Clasic'
+export enum PaginationType {
+	Rotate = 'Rotate',
+	Classic = 'Classic'
+}
+
+export enum ListContainerType {
+	Fixed = 'Fixed',
+	Dynamic = 'Dynamic'
 }

@@ -1,9 +1,10 @@
 import { createContext, useContext, useReducer } from "react";
 import { IAction, TodoActions } from "../models/Action";
 import { IPaging } from "../models/IPaging";
-import { IState, State } from "./IState";
+import { IState } from "./IState";
 import { ITodo } from "../models/Todo";
 import { StateFilter } from "../models/IFilter";
+import { ISettings } from "../models/ISettings";
  
 export const TodosContext = createContext({} as IState);
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -80,7 +81,14 @@ export function todoStateReducer(state: IState, action: IAction) {
     }
 
     case TodoActions.fetched: {
-      return new State(action.payload.list);
+      return {
+        ...state,
+        isLoading: false,
+        originalList: action.payload.list,
+        displayList: action.payload.list,
+        effectTrigger: null
+        // TODO: handle paging if fetched return no records and merge fetch list, fetch settings and fetch paging
+      };
     }
     case TodoActions.searched: {
       return {
@@ -88,7 +96,6 @@ export function todoStateReducer(state: IState, action: IAction) {
         isLoading: false,
         effectTrigger: null,
         displayList: [...action.payload.list],
-        search: { searchTerm: action.payload.searchTerm },
         paging: {
           ...state.paging,
           activePage: action.payload.activePage,
@@ -151,10 +158,25 @@ export function todoStateReducer(state: IState, action: IAction) {
         search: { searchTerm: action.payload.searchTerm },
       };
     }    
-    case TodoActions.pagingUpdated: {
+    case TodoActions.pagingFatched: {
       return {
         ...state,
         effectTrigger: null,
+        paging: { 
+          ...state.paging,
+          totalCount: action.payload.totalCount,
+          activePage: action.payload.activePage,
+          itemsPerPage: action.payload.itemsPerPage,
+          startIndex: (action.payload.activePage - 1) * action.payload.itemsPerPage,
+          endIndex: action.payload.activePage * action.payload.itemsPerPage
+        } as IPaging
+      } as IState;
+    }
+
+    case TodoActions.pagingUpdated: {
+      return {
+        ...state,
+        effectTrigger: { type: TodoActions.pagingUpdated },
         paging: {
           ...state.paging,
           activePage: action.payload.activePage,
@@ -163,6 +185,25 @@ export function todoStateReducer(state: IState, action: IAction) {
           endIndex: action.payload.activePage * action.payload.itemsPerPage
         } as IPaging
       } as IState;
+    }
+
+    case TodoActions.settingsFetched: {
+      return {
+        ...state,
+        effectTrigger: null,
+        settings: {
+          ...action.payload
+        } as ISettings
+      };
+    }
+    case TodoActions.settingsUpdated: {
+      return {
+        ...state,
+        effectTrigger: { type: TodoActions.settingsUpdated },
+        settings: {
+          ...action.payload
+        } as ISettings
+      };
     }
 
     case TodoActions.added: {

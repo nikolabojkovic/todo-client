@@ -3,6 +3,7 @@ import { IPaging } from "../models/IPaging";
 import { IState } from "./IState";
 import { ISort, SortDirection } from "../models/ISort";
 import { IFilter, StateFilter } from "../models/IFilter";
+import { IGeneralSettings, IPaginationSettings, ISearchSettings, ISettings, ListContainerType, PaginationType } from "../models/ISettings";
 
 export const todoListTestData: ITodo[] = [
   {
@@ -62,5 +63,22 @@ export const stateTestData: IState =
     itemsPerPage: 5,
     startIndex: 0,
     endIndex: 5,
-  } as IPaging
+  } as IPaging,
+  settings: {
+    general: {
+      isConfirmEnabled: true,
+      isPaginationEnabled: true,
+      isInfiniteScrollEnabled: false,
+      listSizeType: ListContainerType.Dynamic,
+      fixedListSize: 200
+    } as IGeneralSettings,
+    search: {
+      isSearchOnKeyPressEnabled: false,
+      debounceTime: 500
+    } as ISearchSettings,
+    pagination: {
+      paginationType: PaginationType.Classic,
+      maxVisiblePages: 3
+    } as IPaginationSettings
+  } as ISettings
 } as IState;

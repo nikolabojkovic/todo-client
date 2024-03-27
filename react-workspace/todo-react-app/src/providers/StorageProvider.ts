@@ -21,8 +21,6 @@ export class LocalStorageProvider implements IStorageProvider {
   }
 }
 
-export const localStorageProvider: IStorageProvider = new LocalStorageProvider(); 
-
 // export class BackendStorageProvider implements IStorageProvider {
 //   getItem(key: string): Observable<string | null> {
 //     // TODO: read from backend API by using http request

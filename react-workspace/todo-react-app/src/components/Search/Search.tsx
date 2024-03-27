@@ -3,6 +3,9 @@ import { useTodoList, useTodoListDispatch } from '../../context/TodoListContext'
 import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IAction, TodoActions } from '../../models/Action';
+import useDebounce from '../../hooks/UseDebounce';
+// import { useEffect, useState } from 'react';
+// import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 
 type Props = {
   placeholder: string
@@ -11,6 +14,17 @@ type Props = {
 export function Search({ placeholder}: Props) {
   const dispatch = useTodoListDispatch();
   const todoList = useTodoList();
+  const [, setSearchValue] = useDebounce(todoList.settings.search.debounceTime, '', handleSearch);
+  
+  // const [onSearch$] = useState(() => new Subject<string>());
+  // useEffect(() => {
+  //   const subscription = onSearch$.pipe(
+  //       distinctUntilChanged(),
+  //       debounceTime(todoList.settings.search.debounceTime)
+  //     )
+  //     .subscribe(handleSearch);
+  //   return () => subscription.unsubscribe();
+  // }, [todoList.settings.search.debounceTime, onSearch$]);
 
   function handleSearch(searchTerm: string) {
     dispatch({
@@ -25,8 +39,8 @@ export function Search({ placeholder}: Props) {
 
   return (
     <Form className="todo-background p-1">
-      <Stack direction="horizontal" gap={3}>
-        <Form.Group className="me-auto m-2 w-100">
+      <Stack direction="horizontal" gap={2}>
+        <Form.Group className="m-2 w-100 position-relative">
           <Form.Control
             data-testid="search-input"
             type="text" 
@@ -34,6 +48,11 @@ export function Search({ placeholder}: Props) {
             size="sm" 
             value={todoList.search.searchTerm}
             onChange={(e) => {
+              if (todoList.settings.search.isSearchOnKeyPressEnabled) {
+                //onSearch$.next(e.target.value);
+                setSearchValue(e.target.value);
+              }
+
               const searchTerm = e.target.value;
               dispatch({
                 type: TodoActions.searchTermUpdated,
@@ -41,14 +60,14 @@ export function Search({ placeholder}: Props) {
                   searchTerm
                 }
               } as IAction);
-              if (searchTerm === '') {
+              if (searchTerm === '' && !todoList.settings.search.isSearchOnKeyPressEnabled) {
                 handleSearch(e.target.value);
               }
             }}
           />
           {todoList.search.searchTerm !== '' && <FontAwesomeIcon 
             data-testid="clear-search"
-            className="clear-icon" 
+            className="clear-icon"
             icon={faCircleXmark}
             onClick={() => {
               dispatch({
@@ -61,18 +80,20 @@ export function Search({ placeholder}: Props) {
             }}
           />}
         </Form.Group>
-        <Button 
-          data-testid="search-button"
-          variant="outline-secondary"
-          className="me-2 action-button"
-          size="sm"
-          disabled={!todoList.search.searchTerm || todoList.search.searchTerm.trim() === ''}
-          onClick={() => {
-            handleSearch(todoList.search.searchTerm);
-          }}
-        >
-          Search
-        </Button>
+        { !todoList.settings.search.isSearchOnKeyPressEnabled &&
+          <Button 
+            data-testid="search-button"
+            variant="outline-secondary"
+            className="me-2 action-button"
+            size="sm"
+            disabled={!todoList.search.searchTerm || todoList.search.searchTerm.trim() === ''}
+            onClick={() => {
+              handleSearch(todoList.search.searchTerm);
+            }}
+          >
+            Search
+          </Button> 
+        }
       </Stack>
     </Form>
   );
