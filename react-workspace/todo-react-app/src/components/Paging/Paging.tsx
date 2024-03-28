@@ -11,6 +11,7 @@ import { IPaging } from '../../models/IPaging';
 import { IAction, TodoActions } from '../../models/Action';
 
 const storageProvider = new LocalStorageProvider();
+const pagingLocalStorageKey = 'todo-paging';
 
 export function Paging() {
   const todoList = useTodoList();
@@ -20,7 +21,7 @@ export function Paging() {
   const pageCount = Math.ceil(todoList.paging.totalCount / todoList.paging.itemsPerPage);
 
   useEffect(() => {
-    storageProvider.getItem('todo-paging')
+    storageProvider.getItem(pagingLocalStorageKey)
       .pipe(
         first(),
         map((pagingData: string | null) => {
@@ -39,8 +40,11 @@ export function Paging() {
   }, [dispatch]);
 
   useEffect(() => {
-    if (todoList.effectTrigger && todoList.effectTrigger.type === TodoActions.pagingUpdated) {
-      storageProvider.setItem('todo-paging', todoList.paging).pipe(first()).subscribe();
+    if (todoList.effectTrigger 
+      && (todoList.effectTrigger.type === TodoActions.pagingUpdated
+       || todoList.effectTrigger.type === TodoActions.added  
+       || todoList.effectTrigger.type === TodoActions.deleted)) {
+      storageProvider.setItem(pagingLocalStorageKey, todoList.paging).pipe(first()).subscribe();
     }
   }, [todoList.paging, todoList.effectTrigger]);
 

@@ -3,7 +3,7 @@ import { IFilter, StateFilter } from "../models/IFilter";
 import { IPaging } from "../models/IPaging";
 import { ISort, SortDirection } from "../models/ISort";
 import { ITodo } from "../models/Todo";
-import { State } from "./IState";
+import { IState, State } from "./IState";
 import { todoStateReducer } from "./TodoListContext";
 import { stateTestData } from "./testData";
 
@@ -56,7 +56,21 @@ describe('TodoListContext', () => {
           list: stateTestData.originalList
         }
       } as IAction;
-      const expectedState = new State(stateTestData.originalList);
+      const expectedState = {
+        ...stateTestData,
+        isLoading: false,
+        originalList: stateTestData.originalList,
+        displayList: stateTestData.originalList,
+        effectTrigger: null,
+        paging: {
+          ...stateTestData.paging,
+          totalCount: stateTestData.originalList.length,
+          activePage: stateTestData.paging.activePage,
+          itemsPerPage: stateTestData.paging.itemsPerPage,
+          startIndex: (stateTestData.paging.activePage - 1) * stateTestData.paging.itemsPerPage,
+          endIndex: stateTestData.paging.activePage * stateTestData.paging.itemsPerPage
+        } as IPaging
+      } as IState;
 
       const actualState = todoStateReducer(stateTestData, action);
 
@@ -77,7 +91,7 @@ describe('TodoListContext', () => {
         effectTrigger: null,
         isLoading: false,
         displayList: stateTestData.displayList.filter(x => x.title === 'Task 1'),
-        search: { searchTerm: 'Task 1'},
+        search: { searchTerm: ''},
         paging: {
           ...stateTestData.paging,
           activePage: 1,

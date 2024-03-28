@@ -1,0 +1,110 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`General settings match snapshot general settings 1`] = `
+<div
+  className="App__settings__group"
+>
+  <label
+    className="App__settings__group-label"
+  >
+    General
+  </label>
+  <div
+    className="App__settings__group__item"
+  >
+    <div
+      className="hstack gap-2"
+    >
+      <label>
+        Comfirm on change/remove
+      </label>
+      <div
+        className="ms-auto form-switch"
+      >
+        <input
+          checked={true}
+          className="form-check-input"
+          disabled={false}
+          id="comfirm-enabled"
+          onChange={[Function]}
+          type="checkbox"
+        />
+      </div>
+    </div>
+  </div>
+  <div
+    className="App__settings__group__item"
+  >
+    <div
+      className="hstack gap-2"
+    >
+      <label>
+        Pagination
+      </label>
+      <div
+        className="ms-auto form-switch"
+      >
+        <input
+          checked={true}
+          className="form-check-input"
+          disabled={false}
+          id="pagination-enabled"
+          onChange={[Function]}
+          type="checkbox"
+        />
+      </div>
+    </div>
+  </div>
+  <div
+    className="App__settings__group__item"
+  >
+    <div
+      className="hstack gap-2"
+    >
+      <label>
+        Infinite Scroll
+      </label>
+      <div
+        className="ms-auto form-switch"
+      >
+        <input
+          checked={false}
+          className="form-check-input"
+          disabled={false}
+          id="infinite-scroll-enabled"
+          onChange={[Function]}
+          type="checkbox"
+        />
+      </div>
+    </div>
+  </div>
+  <div
+    className="App__settings__group__item"
+  >
+    <div
+      className="hstack gap-2"
+    >
+      <label>
+        List container size
+      </label>
+      <div
+        className="ms-auto dropdown"
+      >
+        <button
+          aria-expanded={false}
+          className="action-button ps-2 pe-2 dropdown-toggle btn btn-outline-secondary"
+          data-testid="selected-list-size-option"
+          disabled={false}
+          id="dropdown-basic"
+          onClick={[Function]}
+          type="button"
+        >
+           
+          Dynamic
+           
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;

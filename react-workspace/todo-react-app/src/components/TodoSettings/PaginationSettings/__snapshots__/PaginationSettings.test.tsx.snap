@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` match snapshot pagination settings 1`] = `
+<div
+  className="App__settings__group"
+>
+  <label
+    className="App__settings__group-label"
+  >
+    Pagination
+  </label>
+  <div
+    className="App__settings__group__item"
+  >
+    <div
+      className="hstack gap-2"
+    >
+      <label>
+        Pagination type
+      </label>
+      <div
+        className="ms-auto dropdown"
+      >
+        <button
+          aria-expanded={false}
+          className="action-button ps-2 pe-2 dropdown-toggle btn btn-outline-secondary"
+          data-testid="selected-pagination-type-option"
+          disabled={false}
+          id="dropdown-basic"
+          onClick={[Function]}
+          type="button"
+        >
+           
+          Classic
+           
+        </button>
+      </div>
+    </div>
+  </div>
+  <div
+    className="App__settings__group__item"
+  >
+    <div
+      className="hstack gap-2"
+    >
+      <label>
+        Visible pages in navigation group
+      </label>
+      <div
+        className="ms-auto dropdown"
+      >
+        <button
+          aria-expanded={false}
+          className="action-button ps-2 pe-2 dropdown-toggle btn btn-outline-secondary"
+          data-testid="selected-visible-pages-option"
+          disabled={false}
+          id="dropdown-basic"
+          onClick={[Function]}
+          type="button"
+        >
+           
+          3
+           
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;

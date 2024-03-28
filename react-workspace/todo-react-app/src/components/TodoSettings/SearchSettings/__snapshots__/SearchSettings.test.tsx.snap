@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` match snapshot pagination settings 1`] = `
+<div
+  className="App__settings__group"
+>
+  <label
+    className="App__settings__group-label"
+  >
+    Search
+  </label>
+  <div
+    className="App__settings__group__item"
+  >
+    <div
+      className="hstack gap-2"
+    >
+      <label>
+        Search on key press
+      </label>
+      <div
+        className="ms-auto form-switch"
+      >
+        <input
+          checked={false}
+          className="form-check-input"
+          data-testid="search-on-keypress-switch"
+          disabled={false}
+          id="keyPress-switch"
+          onChange={[Function]}
+          type="checkbox"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;

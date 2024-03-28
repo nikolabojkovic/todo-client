@@ -86,8 +86,15 @@ export function todoStateReducer(state: IState, action: IAction) {
         isLoading: false,
         originalList: action.payload.list,
         displayList: action.payload.list,
-        effectTrigger: null
-        // TODO: handle paging if fetched return no records and merge fetch list, fetch settings and fetch paging
+        effectTrigger: null,
+        paging: {
+          ...state.paging,
+          totalCount: action.payload.list.length,
+          activePage: state.paging.activePage,
+          itemsPerPage: state.paging.itemsPerPage,
+          startIndex: (state.paging.activePage - 1) * state.paging.itemsPerPage,
+          endIndex: state.paging.activePage * state.paging.itemsPerPage
+        } as IPaging,
       };
     }
     case TodoActions.searched: {

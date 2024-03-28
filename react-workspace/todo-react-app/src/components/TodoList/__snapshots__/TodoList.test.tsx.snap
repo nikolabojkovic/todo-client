@@ -6,6 +6,7 @@ exports[`todo list rendered match snapshot list 1`] = `
 >
   <section
     className=""
+    style={Object {}}
   >
     <div
       className="App__todo-list__item"
