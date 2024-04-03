@@ -12,6 +12,7 @@ import { todosReducer } from '../../shared/state/todo.reducer';
 import { AddTodoComponent } from './add-todo.component';
 import { todos } from '../../tests/test-data';
 import { of } from 'rxjs';
+import { SettingsProviderKey } from '../../shared/services/settings.service';
 
 describe('AddTodoComponent', () => {
   let component: AddTodoComponent;
@@ -29,6 +30,13 @@ describe('AddTodoComponent', () => {
           useValue: {
             getItem: () => of(JSON.stringify(todos)),
             setItem: () => of({})
+          }
+        },
+        {
+          provide: SettingsProviderKey,
+          useValue: {
+            loadSettings: () => of({}),
+            saveSettings: () => of({})
           }
         }
       ],

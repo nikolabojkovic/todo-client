@@ -7,7 +7,7 @@ import { ITodo } from '../models/todo';
 import { IState, State as TodoState } from './state';
 import { TodoService } from '../services/todo.service';
 import { TodoListActions } from './todo.actions';
-import { selectPaging, selectSettings, selectTodos } from './todo.selectors';
+import { selectPaging, selectTodos } from './todo.selectors';
 import { IFilter } from '../models/filter';
 import { ISort } from '../models/sort';
 import { ISettingsService, SettingsProviderKey } from '../services/settings.service';
@@ -18,13 +18,14 @@ import { IPaging } from '../models/paging';
 @Injectable()
 export class TodoEffects {
 
-  saveTodoList$ = createEffect(() => this.actions$.pipe(
-    ofType(
-      TodoListActions.added,
-      TodoListActions.completed,
-      TodoListActions.removed,
-      TodoListActions.imported),
-    concatLatestFrom(() => this.store.select(selectTodos).pipe(first())),
+  saveTodoList$ = createEffect(() => this.actions$
+    .pipe(
+      ofType(
+        TodoListActions.added,
+        TodoListActions.completed,
+        TodoListActions.removed,
+        TodoListActions.imported),
+      concatLatestFrom(() => this.store.select(selectTodos).pipe(first())),
       tap(([, todoList]) => this.todoService.saveList(todoList.originalList).pipe(first()))
     ),
     { dispatch: false }
@@ -53,20 +54,20 @@ export class TodoEffects {
   searchTodoList$ = createEffect(() =>
     this.actions$.pipe(
       ofType(TodoListActions.search),
-      exhaustMap((action) =>
-        this.todoService.getList(
-          action.filter,
-          action.sort,
-          action.search)
-          .pipe(
-            first(),
-            map((list: ITodo[]) =>
-              TodoListActions.searched({
-                activePage: 1,
-                list: list
-              })
-            )
+      concatLatestFrom(() => this.store.select(selectTodos).pipe(first())),
+      exhaustMap(([action, state]) => this.todoService.getList(
+        state.filter,
+        state.sort,
+        action.search)
+        .pipe(
+          first(),
+          map((list: ITodo[]) =>
+            TodoListActions.searched({
+              activePage: 1,
+              list: list
+            })
           )
+        )
       )
     )
   );
@@ -74,11 +75,11 @@ export class TodoEffects {
   filterTodoList$ = createEffect(() =>
     this.actions$.pipe(
       ofType(TodoListActions.filter),
-      exhaustMap((action) =>
-        this.todoService.getList(
+      concatLatestFrom(() => this.store.select(selectTodos).pipe(first())),
+      exhaustMap(([action, state]) => this.todoService.getList(
           action.filter,
-          action.sort,
-          action.search)
+          state.sort,
+          state.search.searchTerm)
           .pipe(
             first(),
             map((list: ITodo[]) =>
@@ -96,11 +97,11 @@ export class TodoEffects {
   sortTodoList$ = createEffect(() =>
   this.actions$.pipe(
     ofType(TodoListActions.sort),
-    exhaustMap((action) =>
-      this.todoService.getList(
-        action.filter,
+    concatLatestFrom(() => this.store.select(selectTodos).pipe(first())),
+    exhaustMap(([action, state]) => this.todoService.getList(
+        state.filter,
         action.sort,
-        action.search)
+        state.search.searchTerm)
         .pipe(
           first(),
           map((list: ITodo[]) =>
@@ -130,13 +131,10 @@ export class TodoEffects {
 
   saveSettings$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(
-        TodoListActions.settingsUpdated
-      ),
-      concatLatestFrom(() => this.store.select(selectSettings).pipe(first())),
-        tap(([, settings]) => this.settingsService.saveSettings(settings).pipe(first()))
-      ),
-      { dispatch: false }
+      ofType(TodoListActions.settingsUpdated),
+      exhaustMap((action) => this.settingsService.saveSettings(action.payload).pipe(first()))
+    ),
+    { dispatch: false }
   );
 
   loadSettings$ = createEffect(() =>

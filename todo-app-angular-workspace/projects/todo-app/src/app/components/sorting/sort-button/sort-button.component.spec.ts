@@ -9,10 +9,10 @@ import { todosReducer } from '../../../shared/state/todo.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { TodoEffects } from '../../../shared/state/todo.effects';
 import { ISort, SortDirection } from '../../../shared/models/sort';
-import { IFilter, StateFilter } from '../../../shared/models/filter';
 import { TodoListActions } from '../../../shared/state/todo.actions';
 import { of } from 'rxjs';
 import { todos } from '../../../tests/test-data';
+import { SettingsProviderKey } from '../../../shared/services/settings.service';
 
 describe('SortButtonComponent', () => {
   let component: SortButtonComponent;
@@ -34,6 +34,13 @@ describe('SortButtonComponent', () => {
             getItem: () => of(JSON.stringify(todos)),
             setItem: () => of({})
           }
+        },
+        {
+          provide: SettingsProviderKey,
+          useValue: {
+            loadSettings: () => of({}),
+            saveSettings: () => of({})
+          }
         }
       ]
     });
@@ -51,18 +58,12 @@ describe('SortButtonComponent', () => {
   describe('onSort', () => {
     it('should sort Desc', () => {
       const sort = { column: 'title', direction: SortDirection.Asc } as ISort;
-      const filter = { state: StateFilter.all } as IFilter;
-      const searchTerm = '';
-      component.search = searchTerm;
       component.sortDirection = sort.direction;
       component.column = sort.column;
-      component.filter = filter;
       component.onSort();
 
       const action = TodoListActions.sort({
-        filter,
-        sort: { column: 'title', direction: SortDirection.Desc } as ISort,
-        search: searchTerm
+        sort: { column: 'title', direction: SortDirection.Desc } as ISort
       });
 
       expect(store.dispatch).toHaveBeenCalledWith(action);
@@ -70,18 +71,12 @@ describe('SortButtonComponent', () => {
 
     it('should sort Asc', () => {
       const sort = { column: 'title', direction: SortDirection.Desc } as ISort;
-      const filter = { state: StateFilter.all } as IFilter;
-      const searchTerm = '';
-      component.search = searchTerm;
       component.sortDirection = sort.direction;
       component.column = sort.column;
-      component.filter = filter;
       component.onSort();
 
       const action = TodoListActions.sort({
-        filter,
-        sort: { column: 'title', direction: SortDirection.Asc } as ISort,
-        search: searchTerm
+        sort: { column: 'title', direction: SortDirection.Asc } as ISort
       });
 
       expect(store.dispatch).toHaveBeenCalledWith(action);

@@ -65,8 +65,6 @@ describe('FilterTodos', () => {
         filter: { 
           state: StateFilter.all
         } as IFilter, 
-        sort: context.state.sort,
-        searchTerm: context.state.search.searchTerm
       }
     } as IAction;
     const filterDropdown = screen.getByTestId('filter-option-all');
@@ -101,8 +99,6 @@ describe('FilterTodos', () => {
         filter: { 
           state: StateFilter.completed
         } as IFilter, 
-        sort: context.state.sort,
-        searchTerm: context.state.search.searchTerm
       }
     } as IAction;
     let selectedFilterOption = screen.getByTestId('selected-filter-option');
@@ -142,9 +138,7 @@ describe('FilterTodos', () => {
       payload: {
         filter: { 
           state: StateFilter.uncompleted
-        } as IFilter, 
-        sort: context.state.sort,
-        searchTerm: context.state.search.searchTerm
+        } as IFilter,
       }
     } as IAction;
     

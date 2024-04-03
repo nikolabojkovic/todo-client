@@ -1,10 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AddTodoComponent } from '../add-todo/add-todo.component';
-import { provideMockStore,  } from '@ngrx/store/testing';
 import { of } from 'rxjs';
 
-import { stateTestData, todos } from '../../tests/test-data';
+import { todos } from '../../tests/test-data';
 
 import { TabsComponent } from './tabs.component';
 import { FormsModule } from '@angular/forms';
@@ -13,6 +12,11 @@ import { ImportExportComponent } from '../import-export/import-export.component'
 import { StorageProviderKey } from '../../shared/services/storage.provider';
 
 import { TodoService } from '../../shared/services/todo.service';
+import { SettingsProviderKey } from '../../shared/services/settings.service';
+import { StoreModule } from '@ngrx/store';
+import { todosReducer } from '../../shared/state/todo.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { TodoEffects } from '../../shared/state/todo.effects';
 
 describe('TabsComponent', () => {
   let component: TabsComponent;
@@ -27,15 +31,31 @@ describe('TabsComponent', () => {
         SearchTodosComponent,
         ImportExportComponent
       ],
-      imports: [FontAwesomeModule, FormsModule],
+      imports: [
+        FontAwesomeModule,
+        FormsModule,
+        StoreModule.forRoot({ todos: todosReducer }),
+        EffectsModule.forRoot([TodoEffects])
+      ],
       providers: [
-        provideMockStore({ stateTestData } as never),
-        TodoService,
+        {
+          provide: TodoService,
+          useValue: {
+            getList: () => of(todos),
+            saveList: () => of({})
+          }
+        },
         {
           provide: StorageProviderKey,
           useValue: {
-            getItem: () => of(JSON.stringify(todos)),
-            setItem: () => of({})
+            getItem: () => of(JSON.stringify(todos))
+          }
+        },
+        {
+          provide: SettingsProviderKey,
+          useValue: {
+            loadSettings: () => of({}),
+            saveSettings: () => of({})
           }
         }
       ]
@@ -60,7 +80,6 @@ describe('TabsComponent', () => {
 
   it('should change active tab', () => {
     component.setTab(component.tabs[1].name);
-    fixture.detectChanges();
 
     expect(component.active).toBe(component.tabs[1].name);
   });

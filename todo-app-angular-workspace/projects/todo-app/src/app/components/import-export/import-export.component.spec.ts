@@ -15,6 +15,7 @@ import { ImportExportComponent } from './import-export.component';
 import { By } from '@angular/platform-browser';
 import { todos } from '../../tests/test-data';
 import { AlertService } from '../../shared/services/alert.service';
+import { SettingsProviderKey } from '../../shared/services/settings.service';
 
 describe('ImportExportComponent', () => {
   let component: ImportExportComponent;
@@ -40,6 +41,13 @@ describe('ImportExportComponent', () => {
           provide: AlertService,
           useValue: {
             alert: () => {}
+          }
+        },
+        {
+          provide: SettingsProviderKey,
+          useValue: {
+            loadSettings: () => of({}),
+            saveSettings: () => of({})
           }
         }
       ],

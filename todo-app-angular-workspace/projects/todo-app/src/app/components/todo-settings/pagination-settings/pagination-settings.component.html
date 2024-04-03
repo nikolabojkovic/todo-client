@@ -5,14 +5,14 @@
       <label>Pagination type</label>
       <div
         class="btn-group ms-auto"
-        dropdown
-        [isDisabled]="isPaginationDisabled">
+        dropdown>
         <button
           id="button-pagination-type"
           dropdownToggle
           type="button"
           class="action-button dropdown-toggle btn btn-outline-secondary"
           aria-controls="dropdown-paging"
+          [disabled]="isPaginationDisabled"
         >
           {{paginationType}}
         </button>
@@ -30,13 +30,14 @@
       <div
         class="btn-group ms-auto"
         dropdown
-        [isDisabled]="isPaginationDisabled">
+      >
         <button
           id="button-visible-pages"
           dropdownToggle
           type="button"
           class="action-button dropdown-toggle btn btn-outline-secondary"
           aria-controls="dropdown-paging"
+          [disabled]="isPaginationDisabled"
         >
           {{maxVisiblePages}}
         </button>

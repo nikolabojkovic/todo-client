@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { IState } from '../../shared/state/state';
 import { ITodo, Todo } from '../../shared/models/todo';
@@ -15,7 +15,7 @@ import { AlertService } from '../../shared/services/alert.service';
   templateUrl: './import-export.component.html',
   styleUrls: ['./import-export.component.scss']
 })
-export class ImportExportComponent implements OnInit {
+export class ImportExportComponent implements OnInit, OnDestroy {
 
   @ViewChild('fileContainer') fileContainer!: ElementRef<HTMLInputElement>;
 

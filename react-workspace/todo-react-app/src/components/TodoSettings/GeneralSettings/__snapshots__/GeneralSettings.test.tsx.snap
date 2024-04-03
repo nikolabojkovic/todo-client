@@ -95,7 +95,7 @@ exports[`General settings match snapshot general settings 1`] = `
           className="action-button ps-2 pe-2 dropdown-toggle btn btn-outline-secondary"
           data-testid="selected-list-size-option"
           disabled={false}
-          id="dropdown-basic"
+          id="dropdown-list-size-type"
           onClick={[Function]}
           type="button"
         >

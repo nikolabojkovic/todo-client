@@ -132,7 +132,7 @@ exports[`todo tabs should match snapshot 1`] = `
     className="App__tabs__content"
   >
     <div
-      className=""
+      className="fade-in"
       data-testid="tab-content-add-todo"
     >
       <form

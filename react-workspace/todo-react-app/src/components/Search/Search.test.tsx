@@ -41,8 +41,6 @@ describe('Search', () => {
     const action = {
       type: TodoActions.search,
       payload: {
-        filter: context.state.filter, 
-        sort: context.state.sort,
         searchTerm: 'Task 1'
       }
     } as IAction;
@@ -136,8 +134,6 @@ describe('Search', () => {
     const searchAction = {
       type: TodoActions.search,
       payload: {
-        filter: context.state.filter, 
-        sort: context.state.sort,
         searchTerm: ''
       }
     } as IAction;
@@ -170,8 +166,6 @@ describe('Search', () => {
     const action = {
       type: TodoActions.search,
       payload: {
-        filter: context.state.filter, 
-        sort: context.state.sort,
         searchTerm: ''
       }
     } as IAction;

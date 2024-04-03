@@ -3,7 +3,7 @@ import { todos } from '../../tests/test-data';
 import { PagingComponent } from './paging.component';
 import { IState } from '../../shared/state/state';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { PageChangedEvent, PaginationModule } from 'ngx-bootstrap/pagination';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { FormsModule } from '@angular/forms';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { SortButtonModule } from 'sort-button';
@@ -16,6 +16,7 @@ import { TodoEffects } from '../../shared/state/todo.effects';
 import { StorageProviderKey } from '../../shared/services/storage.provider';
 import { TodoListActions } from '../../shared/state/todo.actions';
 import { of } from 'rxjs';
+import { SettingsProviderKey } from '../../shared/services/settings.service';
 
 describe('PagingComponent', () => {
   let component: PagingComponent;
@@ -36,13 +37,22 @@ describe('PagingComponent', () => {
         StoreModule.forRoot({ todos: todosReducer }),
         EffectsModule.forRoot([TodoEffects])
       ],
-      providers: [{
-        provide: StorageProviderKey,
-        useValue: {
-          getItem: () => of(JSON.stringify(todos)),
-          setItem: () => of({})
+      providers: [
+        {
+          provide: StorageProviderKey,
+          useValue: {
+            getItem: () => of(JSON.stringify(todos)),
+            setItem: () => of({})
+          }
+        },
+        {
+          provide: SettingsProviderKey,
+          useValue: {
+            loadSettings: () => of({}),
+            saveSettings: () => of({})
+          }
         }
-      }]
+      ]
     });
     fixture = TestBed.createComponent(PagingComponent);
     component = fixture.componentInstance;
@@ -52,9 +62,9 @@ describe('PagingComponent', () => {
   });
 
   it('should change page on pageChange', () => {
-    component.activePage = 1;
+    component.activePage = 3;
     component.itemsPerPage = 10;
-    component.onPageChange({page: 3} as PageChangedEvent);
+    component.onPageClick();
 
     const action = TodoListActions.pagingUpdated({
       activePage: 3,

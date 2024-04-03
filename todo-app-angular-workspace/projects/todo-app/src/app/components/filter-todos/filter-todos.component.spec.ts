@@ -3,7 +3,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { EffectsModule } from '@ngrx/effects';
 import { Store, StoreModule } from '@ngrx/store';
 import { IFilter, StateFilter } from '../../shared/models/filter';
-import { ISort, SortDirection } from '../../shared/models/sort';
 import { StorageProviderKey } from '../../shared/services/storage.provider';
 import { IState } from '../../shared/state/state';
 import { TodoListActions } from '../../shared/state/todo.actions';
@@ -12,6 +11,7 @@ import { todosReducer } from '../../shared/state/todo.reducer';
 import { FilterTodosComponent } from './filter-todos.component';
 import { of } from 'rxjs';
 import { todos } from '../../tests/test-data';
+import { SettingsProviderKey } from '../../shared/services/settings.service';
 
 describe('FilterTodosComponent', () => {
   let component: FilterTodosComponent;
@@ -28,6 +28,13 @@ describe('FilterTodosComponent', () => {
           useValue: {
             getItem: () => of(JSON.stringify(todos)),
             setItem: () => of({})
+          }
+        },
+        {
+          provide: SettingsProviderKey,
+          useValue: {
+            loadSettings: () => of({}),
+            saveSettings: () => of({})
           }
         }
       ],
@@ -48,17 +55,11 @@ describe('FilterTodosComponent', () => {
 
   describe('onFilter', () => {
     it('should dispatch filter action completed', () => {
-      const sort = { column: 'title', direction: SortDirection.Asc } as ISort;
       const filter = { state: StateFilter.completed } as IFilter;
-      const searchTerm = '';
-      component.search = searchTerm;
-      component.sort = sort;
       component.stateFilter = filter.state;
 
       const action = TodoListActions.filter({
-        filter,
-        sort,
-        search: searchTerm
+        filter
       });
       component.onFilter(StateFilter.completed);
 
@@ -66,17 +67,11 @@ describe('FilterTodosComponent', () => {
     });
 
     it('should dispatch filter action uncompleted', () => {
-      const sort = { column: 'title', direction: SortDirection.Asc } as ISort;
       const filter = { state: StateFilter.uncompleted } as IFilter;
-      const searchTerm = '';
-      component.search = searchTerm;
-      component.sort = sort;
       component.stateFilter = filter.state;
 
       const action = TodoListActions.filter({
-        filter,
-        sort,
-        search: searchTerm
+        filter
       });
       component.onFilter(StateFilter.uncompleted);
 

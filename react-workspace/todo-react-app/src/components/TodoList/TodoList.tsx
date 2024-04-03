@@ -21,7 +21,7 @@ export function TodoList({ todoListProvider }: Props) {
   const todoList = useTodoList();
   const dispatch = useTodoListDispatch();
 
-  useEffect(() => {   
+  useEffect(() => { 
     dispatch({
       type: TodoActions.fetch,
       payload: {
@@ -43,7 +43,15 @@ export function TodoList({ todoListProvider }: Props) {
         type: TodoActions.loadingStarted
       } as IAction);
       todoListProvider.getList({
-        ...todoList.effectTrigger.payload,
+        filter: todoList.effectTrigger.payload.filter 
+          ? todoList.effectTrigger.payload.filter 
+          : todoList.filter,
+        searchTerm: todoList.effectTrigger.payload.searchTerm 
+          ? todoList.effectTrigger.payload.searchTerm 
+          : todoList.search.searchTerm,
+        sort: todoList.effectTrigger.payload.sort 
+          ? todoList.effectTrigger.payload.sort 
+          : todoList.sort,
       } as GetListProps)
       .pipe(first())
       .subscribe((list: ITodo[]) => {

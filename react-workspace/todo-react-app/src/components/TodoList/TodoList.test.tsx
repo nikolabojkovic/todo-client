@@ -114,9 +114,13 @@ describe('todo list rendered', () => {
       } as IAction;
 
       expect(screen.getByTestId('loader')).toBeInTheDocument();
-      expect(todoListProvider.getList).toBeCalledWith({...actionFetch.payload} );
+      expect(todoListProvider.getList).toBeCalledWith({
+        filter: globalContext.state.filter,
+        searchTerm: globalContext.state.search.searchTerm,
+        sort: actionFetch.payload.sort
+      });
+      expect(context.dispatch).toBeCalledWith(actionFetch);
       expect(context.dispatch).toBeCalledWith(actionLoadingStarted);
-      expect(context.dispatch).toBeCalledWith(actionFetch);      
       expect(context.dispatch).toBeCalledWith(actionFetched);
     });
 
@@ -160,8 +164,8 @@ describe('todo list rendered', () => {
 
       expect(screen.getByTestId('loader')).toBeInTheDocument();
       expect(todoListProvider.getList).toBeCalledWith({...expectedActionPayload });
-      expect(context.dispatch).toBeCalledWith(actionLoadingStarted);
       expect(context.dispatch).toBeCalledWith(actionFetch);
+      expect(context.dispatch).toBeCalledWith(actionLoadingStarted);
       expect(context.dispatch).toBeCalledWith(actionFiltered);
     });
 
@@ -183,7 +187,7 @@ describe('todo list rendered', () => {
       };
       todoListProvider = {
         ...todoListProvider,
-        getList: jest.fn().mockImplementation(() => of(expectedList))
+        getList: jest.fn().mockImplementation(() => of(expectedList).pipe())
       };
       const jsxElement = 
       (<TodosContext.Provider value={context.state}>
@@ -196,35 +200,34 @@ describe('todo list rendered', () => {
       const actionSearched = {
         type: TodoActions.searched,
         payload: {
-          searchTerm: expectedFilterActionPayload.searchTerm,
           list: expectedList,
           activePage: 1,
         }
       } as IAction;
 
       expect(screen.getByTestId('loader')).toBeInTheDocument();
-      expect(todoListProvider.getList).toBeCalledWith({...expectedFilterActionPayload });
-      expect(context.dispatch).toBeCalledWith(actionLoadingStarted);
+      expect(todoListProvider.getList).toBeCalledWith({...expectedFilterActionPayload });            
       expect(context.dispatch).toBeCalledWith(actionFetch);
+      expect(context.dispatch).toBeCalledWith(actionLoadingStarted);
       expect(context.dispatch).toBeCalledWith(actionSearched);
     });
 
     it('should sort list', async () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const expectedList = [...stateTestData.originalList.sort((a: any, b: any) => a.title > b.title ? 1 : -1)];
-      const expectedActionPayload = {
-        filter: stateTestData.filter, 
+      const expectedFetchActionPayload = {
+        filter: globalContext.state.filter,
+        searchTerm: globalContext.state.search.searchTerm,
         sort: {
           column: 'title', 
           direction: SortDirection.Asc
-        } as ISort,
-        searchTerm: stateTestData.search.searchTerm
+        } as ISort
       };
       const context = {
         ...globalContext,
         state: { 
           ...globalContext.state,
-          effectTrigger: { type: TodoActions.sort, payload: expectedActionPayload },
+          effectTrigger: { type: TodoActions.sort, payload: expectedFetchActionPayload },
           isLoading: true
         }
       };
@@ -243,15 +246,14 @@ describe('todo list rendered', () => {
       const actionSorted = {
         type: TodoActions.sorted,
         payload: {
-          sort: expectedActionPayload.sort,
+          sort: expectedFetchActionPayload.sort,
           list: expectedList
         }
       } as IAction;
 
       expect(screen.getByTestId('loader')).toBeInTheDocument();
-      expect(todoListProvider.getList).toBeCalledWith({...expectedActionPayload });
+      expect(todoListProvider.getList).toBeCalledWith({...expectedFetchActionPayload });
       expect(context.dispatch).toBeCalledWith(actionLoadingStarted);
-      expect(context.dispatch).toBeCalledWith(actionFetch);
       expect(context.dispatch).toBeCalledWith(actionSorted);
     });
   });

@@ -38,12 +38,10 @@ export function Sorting() {
     dispatch({
       type: TodoActions.sort,
       payload: {
-        filter: todoList.filter, 
         sort: {
           column: column, 
           direction: direction
-        } as ISort,
-        searchTerm: todoList.search.searchTerm
+        } as ISort
       }
     } as IAction);
   }

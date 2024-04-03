@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import { IPaging } from '../../shared/models/paging';
@@ -13,7 +13,7 @@ import { ISettings, PaginationType } from '../../shared/models/settings';
   templateUrl: './paging.component.html',
   styleUrls: ['./paging.component.scss']
 })
-export class PagingComponent implements OnInit {
+export class PagingComponent implements OnInit, OnDestroy {
 
   totalCount: number = 0;
   pageCount: number = 1;

@@ -1,5 +1,5 @@
 import { Store } from '@ngrx/store';
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription, first } from 'rxjs';
 import { faCheckDouble, faTrash } from '@fortawesome/free-solid-svg-icons';
 
@@ -15,11 +15,11 @@ import { selectSettings } from '../../shared/state/todo.selectors';
   templateUrl: './todo-item.component.html',
   styleUrls: ['./todo-item.component.scss']
 })
-export class TodoItemComponent {
+export class TodoItemComponent implements OnInit, OnDestroy {
   @Input() todo: ITodo = {} as ITodo;
   faCheckDouble = faCheckDouble;
   faTrash = faTrash;
-  settings: ISettings = {} as ISettings;
+  settings!: ISettings;
   private subscription!: Subscription;
 
   constructor(private store: Store<IState>, private modalService: ConfirmModalService) {}
@@ -38,7 +38,7 @@ export class TodoItemComponent {
     if (this.todo.completed)
       return;
 
-    if (!this.settings.general.isConfirmEnabled) {
+    if (this.settings?.general?.isConfirmEnabled) {
       this.store.dispatch(TodoListActions.completed({ todoId: this.todo.id }));
       return;
     }
@@ -53,7 +53,7 @@ export class TodoItemComponent {
   }
 
   onRemove() {
-    if (!this.settings.general.isConfirmEnabled) {
+    if (this.settings?.general?.isConfirmEnabled) {
       this.store.dispatch(TodoListActions.removed({ todoId: this.todo.id }));
       return;
     }

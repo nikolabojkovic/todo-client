@@ -22,9 +22,7 @@ export function FilterTodos({ filter }: Props) {
       payload: {
         filter: { 
           state: filterValue
-        } as IFilter, 
-        sort: todoList.sort,
-        searchTerm: todoList.search.searchTerm
+        } as IFilter
       }
     } as IAction);
   }

@@ -13,6 +13,8 @@ import { TodoEffects } from '../../shared/state/todo.effects';
 import { TodoListActions } from '../../shared/state/todo.actions';
 import { todos } from '../../tests/test-data';
 import { TodoService } from '../../shared/services/todo.service';
+import { SettingsProviderKey } from '../../shared/services/settings.service';
+import { StorageProviderKey } from '../../shared/services/storage.provider';
 
 describe('TodoItemComponent', () => {
   let component: TodoItemComponent;
@@ -36,12 +38,26 @@ describe('TodoItemComponent', () => {
             getList: () => of(todos),
             saveList: () => of({})
           }
+        },
+        {
+          provide: StorageProviderKey,
+          useValue: {
+            getItem: () => of(JSON.stringify(todos))
+          }
+        },
+        {
+          provide: SettingsProviderKey,
+          useValue: {
+            loadSettings: () => of({}),
+            saveSettings: () => of({})
+          }
         }
       ]
     });
     store = TestBed.inject(Store);
     fixture = TestBed.createComponent(TodoItemComponent);
     component = fixture.componentInstance;
+    fixture.detectChanges();
     spyOn(TestBed.inject(ConfirmModalService), 'confirm').and.returnValue(of(true));
     spyOn(store, 'dispatch').and.callFake(() => {});
   });

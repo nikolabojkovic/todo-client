@@ -26,7 +26,7 @@ exports[` match snapshot pagination settings 1`] = `
           className="action-button ps-2 pe-2 dropdown-toggle btn btn-outline-secondary"
           data-testid="selected-pagination-type-option"
           disabled={false}
-          id="dropdown-basic"
+          id="dropdown-pagination-type"
           onClick={[Function]}
           type="button"
         >
@@ -54,7 +54,7 @@ exports[` match snapshot pagination settings 1`] = `
           className="action-button ps-2 pe-2 dropdown-toggle btn btn-outline-secondary"
           data-testid="selected-visible-pages-option"
           disabled={false}
-          id="dropdown-basic"
+          id="dropdown-visible-pages-number"
           onClick={[Function]}
           type="button"
         >

@@ -18,8 +18,6 @@ export function Search({ placeholder}: Props) {
     dispatch({
       type: TodoActions.search,
       payload: {
-        filter: todoList.filter, 
-        sort: todoList.sort,
         searchTerm
       }
     } as IAction);

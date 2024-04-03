@@ -4,13 +4,27 @@ import { Todo } from '../models/todo';
 import { todos } from '../../tests/test-data';
 import { TodoListActions } from './todo.actions';
 import { IFilter, StateFilter } from '../models/filter';
+import { IPaging } from '../models/paging';
 
 describe('todosReducer', () => {
   describe('fetched action', () => {
     it('should retrieve all todos and update the state in immutable way', () => {
       const initialState = {...new State(todos)} as IState;
       const newTodoList = [new Todo(1, 'Task 1', 'Description 1', false, new Date(2022, 1, 4))] as Todo[];
-      const newState = {...new State(newTodoList)} as IState;
+      const newState = {
+        ...initialState,
+        isLoading: false,
+        originalList: newTodoList,
+        displayList: newTodoList,
+        paging: {
+          ...initialState.paging,
+          totalCount: newTodoList.length,
+          activePage: 1,
+          itemsPerPage: initialState.paging.itemsPerPage,
+          startIndex: 0,
+          endIndex: initialState.paging.itemsPerPage
+        } as IPaging,
+      } as IState;
       const action = TodoListActions.fetched({ list: newTodoList });
       const state = todosReducer(initialState, action);
 
