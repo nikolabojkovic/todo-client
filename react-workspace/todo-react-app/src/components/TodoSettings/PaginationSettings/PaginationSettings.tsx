@@ -48,7 +48,7 @@ export function PaginationSettings() {
               data-testid="selected-pagination-type-option"
               variant="outline-secondary"
               className="action-button ps-2 pe-2"
-              id="dropdown-basic"
+              id="dropdown-pagination-type"
               disabled={ifDisabled}
             >
               {' '}{todoList.settings.pagination.paginationType}{' '}
@@ -78,7 +78,7 @@ export function PaginationSettings() {
               data-testid="selected-visible-pages-option"
               variant="outline-secondary"
               className="action-button ps-2 pe-2"
-              id="dropdown-basic"
+              id="dropdown-visible-pages-number"
               disabled={ifDisabled}
             >
               {' '}{todoList.settings.pagination.maxVisiblePages}{' '}

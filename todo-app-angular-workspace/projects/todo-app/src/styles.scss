@@ -198,10 +198,59 @@ code {
     }
   }
 
+  &__settings {
+    padding: 40px 20px 20px 20px;
+    text-align: left;
+
+    &__group {
+      position: relative;
+      padding: 10px 0px 0px 0px;
+      margin-bottom: 20px;
+      border: 1px solid $text-secondary-color;
+      border-radius: 20px;
+
+      &--disabled {
+        border-color: $text-ternary-color;
+      }
+
+      &-label {
+        color: $text-secondary-color;
+        background: $background-secondary-color;
+        padding: 0px 10px;
+        position: absolute;
+        left: 35px;
+        top: -14px;
+
+        &--disabled {
+          color: $text-ternary-color;
+        }
+      }
+
+      &__item {
+        margin: 10px 20px;
+        color: $text-ternary-color-2;
+
+        &--disabled {
+          color: $text-ternary-color;
+        }
+
+        input {
+          width: 90px;
+          text-align: right;
+        }
+
+        .form-switch {
+          padding: 0px;
+          text-align: right;
+        }
+      }
+    }
+  }
+
   .clear-icon {
     position: absolute;
-    right: 129px;
-    top: 16px;
+    right: 8px;
+    top: 4px;
     color: $text-ternary-color;
     cursor: pointer;
   }

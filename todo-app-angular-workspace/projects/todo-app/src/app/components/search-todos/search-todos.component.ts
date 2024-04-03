@@ -4,9 +4,11 @@ import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import { ISearch } from '../../shared/models/search';
 import { IState } from '../../shared/state/state';
 import { TodoListActions } from '../../shared/state/todo.actions';
-import { selectFilter, selectSearch, selectSort } from '../../shared/state/todo.selectors';
+import { selectFilter, selectSearch, selectSettings, selectSort } from '../../shared/state/todo.selectors';
 import { IFilter } from '../../shared/models/filter';
 import { ISort } from '../../shared/models/sort';
+import { Subject, Subscription, concatMap, debounceTime, filter, first, tap } from 'rxjs';
+import { ISettings } from '../../shared/models/settings';
 
 @Component({
   selector: 'app-search-todos',
@@ -18,28 +20,49 @@ export class SearchTodosComponent implements OnInit {
   searchValue = '';
   filter!: IFilter;
   sort!: ISort;
+  settings!: ISettings;
   faCircleXmark = faCircleXmark;
+  private subscriptions: Subscription[] = [];
+  private searchOnKeyup$ = new Subject<string>();
 
   constructor(private store: Store<IState>) { }
 
   ngOnInit(): void {
     this.store.select(selectSearch)
-      .pipe()
+      .pipe(
+        first()
+      )
       .subscribe((search: ISearch) => {
         this.searchValue = search.searchTerm;
         this.ifSearchIsEmpty = search.searchTerm === '';
       });
-    this.store.select(selectFilter)
+    this.subscriptions.push(this.store.select(selectFilter)
       .pipe()
       .subscribe((filter: IFilter) => {
         this.filter = filter;
-      });
-
-    this.store.select(selectSort)
+      }));
+    this.subscriptions.push(this.store.select(selectSort)
       .pipe()
       .subscribe((sort: ISort) => {
         this.sort = sort;
-      });
+      }));
+    this.subscriptions.push(
+      this.store.select(selectSettings)
+        .pipe(
+          tap((settings: ISettings) => this.settings = settings),
+          filter((settings: ISettings) => settings.search.isSearchOnKeyPressEnabled),
+          concatMap((settings: ISettings) => this.searchOnKeyup$
+            .pipe(
+              filter((value: string) => !!value),
+              debounceTime(settings.search.debounceTime),
+            )),
+        )
+        .subscribe(() => this.onSerach())
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   onTyping(): void {
@@ -50,6 +73,10 @@ export class SearchTodosComponent implements OnInit {
 
     if (this.searchValue.trim() === '') {
       this.onSerach();
+    }
+
+    if (this.settings.search.isSearchOnKeyPressEnabled) {
+      this.searchOnKeyup$.next(this.searchValue);
     }
   }
 

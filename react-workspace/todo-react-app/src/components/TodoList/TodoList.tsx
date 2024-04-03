@@ -71,7 +71,6 @@ export function TodoList({ todoListProvider }: Props) {
           dispatch({
             type: TodoActions.searched,
             payload: {
-              searchTerm: todoList.effectTrigger!.payload.searchTerm,
               list: list,
               activePage: 1,
             }

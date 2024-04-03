@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectorRef, Component, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ISort, SortDirection } from '../../../shared/models/sort';
 import { IState } from '../../../shared/state/state';
@@ -6,6 +6,7 @@ import { TodoListActions } from '../../../shared/state/todo.actions';
 import { selectFilter, selectLoader, selectSearch, selectSort } from '../../../shared/state/todo.selectors';
 import { IFilter } from '../../../shared/models/filter';
 import { ISearch } from '../../../shared/models/search';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-sort-button',
@@ -20,30 +21,36 @@ export class SortButtonComponent {
   filter!: IFilter;
   search: string = '';
   isLoading: boolean = false;
+  private subscriptions: Subscription[] = [];
 
-  constructor(private store: Store<IState>) {}
+  constructor(private store: Store<IState>, private ref: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    this.store.select(selectSort)
+    this.subscriptions.push(this.store.select(selectSort)
       .pipe()
       .subscribe((sort: ISort) => {
         this.sortDirection = sort.column === this.column ? sort.direction : SortDirection.None;
-      });
-    this.store.select(selectFilter)
+      }));
+    this.subscriptions.push(this.store.select(selectFilter)
       .pipe()
       .subscribe((filter: IFilter) => {
         this.filter = filter;
-      });
-    this.store.select(selectSearch)
+      }));
+    this.subscriptions.push(this.store.select(selectSearch)
       .pipe()
       .subscribe((search: ISearch) => {
         this.search = search.searchTerm;
-      });
-    this.store.select(selectLoader)
-    .pipe()
-    .subscribe((isLoading: boolean) => {
-      this.isLoading = isLoading;
-    });
+      }));
+    this.subscriptions.push(this.store.select(selectLoader)
+      .pipe()
+      .subscribe((isLoading: boolean) => {
+        this.isLoading = isLoading;
+        this.ref.detectChanges();
+      }));
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   onSort(): void {

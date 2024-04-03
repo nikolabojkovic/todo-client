@@ -179,7 +179,6 @@ export function todoStateReducer(state: IState, action: IAction) {
         } as IPaging
       } as IState;
     }
-
     case TodoActions.pagingUpdated: {
       return {
         ...state,
@@ -193,7 +192,6 @@ export function todoStateReducer(state: IState, action: IAction) {
         } as IPaging
       } as IState;
     }
-
     case TodoActions.settingsFetched: {
       return {
         ...state,

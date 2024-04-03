@@ -13,7 +13,8 @@ import { IAction, TodoActions } from "../../models/Action";
 type Tab = {
   name: string,
   icon: IconDefinition,
-  content: JSX.Element
+  content: JSX.Element,
+  className: string,
 }
 
 export function Tabs() {
@@ -28,27 +29,32 @@ export function Tabs() {
   const tabs: Tab[] = [{
       name: 'add-todo',
       icon: faAdd,
-      content: <AddTodo/>
+      content: <AddTodo/>,
+      className: 'fade-in'
     } as Tab,
     {
       name: 'search-todos',
       icon: faSearch,
-      content: <Search placeholder='Search by title or description' />
+      content: <Search placeholder='Search by title or description' />,
+      className: 'fade-in'
     } as Tab,
     {
       name: 'filter-todos',
       icon: faFilter,
-      content: <FilterTodos filter={todoList.filter} />
+      content: <FilterTodos filter={todoList.filter} />,
+      className: ''
     },
     {
       name: 'import-export',
       icon: faDownload,
-      content: <ImportExport downloadLink={downloadLink} fileReader={fileReader} alert={window.alert}/>
+      content: <ImportExport downloadLink={downloadLink} fileReader={fileReader} alert={window.alert}/>,
+      className: 'fade-in'
     } as Tab,
     {
       name: 'settings',
       icon: faGear,
-      content: <Settings />
+      content: <Settings />,
+      className: 'fade-in'
     } as Tab
   ] as Tab [];  
   const activeChild = tabs.find((item: Tab) => item.name === active);
@@ -87,7 +93,7 @@ export function Tabs() {
         <div 
           data-testid={"tab-content-" + activeChild?.name}
           key={"tab-content-" + activeChild?.name}
-          className=""
+          className={activeChild?.className}
         >
           {activeChild?.content}
         </div>

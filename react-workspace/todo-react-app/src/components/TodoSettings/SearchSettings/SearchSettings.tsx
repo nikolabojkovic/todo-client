@@ -27,7 +27,7 @@ export function SearchSettings() {
             className='ms-auto'
             data-testid="search-on-keypress-switch"
             type="switch"
-            id={`keyPress-switch`}
+            id="keyPress-switch"
             checked={todoList.settings.search.isSearchOnKeyPressEnabled}
             onChange={(e) => {
               handleSettingsUpdate({
@@ -46,6 +46,7 @@ export function SearchSettings() {
               className="ms-auto"
               data-testid="debounce-time-input"
               type="number" 
+              id="debounce-time-input"
               placeholder={'0'} 
               size="sm" 
               value={todoList.settings.search.debounceTime}

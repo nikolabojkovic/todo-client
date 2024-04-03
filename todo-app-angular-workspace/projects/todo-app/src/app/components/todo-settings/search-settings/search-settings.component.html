@@ -1,0 +1,22 @@
+<div class='app__settings__group'>
+  <label class='app__settings__group-label'>Search</label>
+  <div class='app__settings__group__item'>
+    <div class="hstack gap-2">
+      <label>Search on key press</label>
+      <mat-slide-toggle class="ms-auto" [(ngModel)]="isSearchOnKeyPressEnabled" (click)="onSettingsUpdate()"></mat-slide-toggle>
+    </div>
+  </div>
+  <div *ngIf="isSearchOnKeyPressEnabled" class='app__settings__group__item ms-5'>
+    <div class="hstack gap-2">
+      <label>Debounce time (ms)</label>
+      <input
+        type="number"
+        class="form-control form-control-sm ms-auto"
+        id="debounce-time"
+        placeholder="Enter debounce time"
+        [(ngModel)]="debounceTime"
+        (change)="onSettingsUpdate()"
+      />
+    </div>
+  </div>
+</div>

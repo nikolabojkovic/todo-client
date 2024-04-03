@@ -35,6 +35,11 @@ import { LocalStorageProvider, StorageProviderKey } from './shared/services/stor
 import { AlertService } from './shared/services/alert.service';
 import { TodoService } from './shared/services/todo.service';
 import { ConfirmModalService } from './components/confirm-modal/confirm-modal.service';
+import { TodoSettingsComponent } from './components/todo-settings/todo-settings.component';
+import { GeneralSettingsComponent } from './components/todo-settings/general-settings/general-settings.component';
+import { SearchSettingsComponent } from './components/todo-settings/search-settings/search-settings.component';
+import { PaginationSettingsComponent } from './components/todo-settings/pagination-settings/pagination-settings.component';
+import { LocalSettingsService, SettingsProviderKey } from './shared/services/settings.service';
 
 
 @NgModule({
@@ -53,6 +58,10 @@ import { ConfirmModalService } from './components/confirm-modal/confirm-modal.se
     SortIconComponent,
     ConfirmModalComponent,
     LoaderComponent,
+    TodoSettingsComponent,
+    GeneralSettingsComponent,
+    SearchSettingsComponent,
+    PaginationSettingsComponent
   ],
   imports: [
     BrowserModule,
@@ -71,6 +80,10 @@ import { ConfirmModalService } from './components/confirm-modal/confirm-modal.se
     {
       provide: StorageProviderKey,
       useClass: LocalStorageProvider
+    },
+    {
+      provide: SettingsProviderKey,
+      useClass: LocalSettingsService
     },
     TodoService,
     ConfirmModalService,

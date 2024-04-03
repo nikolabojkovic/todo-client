@@ -10,18 +10,18 @@
             Page size:{{' '}}
           </div>
           <div>
-            <div 
-              class="btn-group" 
-              dropdown                             
+            <div
+              class="btn-group"
+              dropdown
               [isDisabled]="totalCount === 0">
-              <button 
-                id="button-basic" 
-                dropdownToggle 
-                type="button" 
+              <button
+                id="button-basic"
+                dropdownToggle
+                type="button"
                 class="action-button dropdown-toggle btn btn-outline-secondary"
-                aria-controls="dropdown-paging" 
+                aria-controls="dropdown-paging"
               >
-                {{itemsPerPage}} 
+                {{itemsPerPage}}
               </button>
               <ul id="dropdown-paging" *dropdownMenu class="dropdown-menu"
                   role="menu" aria-labelledby="button-paging">
@@ -35,19 +35,19 @@
         </div>
       </div>
       <div class="col-sm-5 p-3 pt-2 pb-2 d-flex justify-content-sm-end justify-content-center">
-        <pagination 
+        <pagination
           class="pagination pagination-sm d-flex align-items-center"
-          previousText="&lsaquo;" 
-          nextText="&rsaquo;" 
-          firstText="&laquo;" 
+          previousText="&lsaquo;"
+          nextText="&rsaquo;"
+          firstText="&laquo;"
           lastText="&raquo;"
-          [rotate]=false
-          [boundaryLinks]=true 
+          [rotate]=rotate
+          [boundaryLinks]=true
           [totalItems]=totalCount
-          [maxSize]=3
+          [maxSize]=maxVisiblePages
           [itemsPerPage]=itemsPerPage
-          [ngModel]=activePage 
-          (pageChanged)="onPageChange($event)"
+          [(ngModel)]=activePage
+          (click)="onPageClick()"
         >
         </pagination>
       </div>

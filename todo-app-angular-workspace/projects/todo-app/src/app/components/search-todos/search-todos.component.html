@@ -1,10 +1,11 @@
 <div class="p-1">
-  <div class="hstack gap-3">
-    <div class="me-auto m-2 w-100">
+  <div class="hstack gap-2">
+    <div class="m-2 w-100 position-relative">
       <input
       type="text"
       class="form-control form-control-sm"
-      id="title"
+      id="search-input"
+      #searchInput
       placeholder="Search by title or description"
       [(ngModel)]="searchValue"
       (keyup)="onTyping()"
@@ -15,8 +16,8 @@
       class="clear-icon"
       (click)="onClearSearch()"></fa-icon>
     </div>
-    <div>
-      <button
+    <button
+      *ngIf="!settings.search.isSearchOnKeyPressEnabled"
       type="button"
       class="btn btn-sm btn-outline-secondary action-button me-2 "
       [disabled]="ifSearchIsEmpty"
@@ -24,6 +25,5 @@
     >
       Search
     </button>
-    </div>
   </div>
 </div>

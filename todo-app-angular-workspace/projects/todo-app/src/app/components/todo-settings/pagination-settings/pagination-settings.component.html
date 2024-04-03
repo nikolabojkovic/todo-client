@@ -1,0 +1,54 @@
+<div class='app__settings__group' [class]="{ 'app__settings__group--disabled': isPaginationDisabled }">
+  <label class='app__settings__group-label' [class]="{ 'app__settings__group-label--disabled': isPaginationDisabled }">Pagination</label>
+  <div class='app__settings__group__item' [class]="{ 'app__settings__group__item--disabled': isPaginationDisabled }">
+    <div class="hstack gap-2">
+      <label>Pagination type</label>
+      <div
+        class="btn-group ms-auto"
+        dropdown
+        [isDisabled]="isPaginationDisabled">
+        <button
+          id="button-pagination-type"
+          dropdownToggle
+          type="button"
+          class="action-button dropdown-toggle btn btn-outline-secondary"
+          aria-controls="dropdown-paging"
+        >
+          {{paginationType}}
+        </button>
+        <ul id="dropdown-paging" *dropdownMenu class="dropdown-menu"
+            role="menu" aria-labelledby="button-paging">
+          <li role="menuitem" (click)="onPaginationTypeChange(PaginationType.Classic)"><a class="dropdown-item" href="#">{{ PaginationType.Classic }}</a></li>
+          <li role="menuitem" (click)="onPaginationTypeChange(PaginationType.Rotate)"><a class="dropdown-item" href="#">{{ PaginationType.Rotate }}</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class='app__settings__group__item' [class]="{ 'app__settings__group__item--disabled': isPaginationDisabled }">
+    <div class="hstack gap-2">
+      <label>Visible pages in navigation group</label>
+      <div
+        class="btn-group ms-auto"
+        dropdown
+        [isDisabled]="isPaginationDisabled">
+        <button
+          id="button-visible-pages"
+          dropdownToggle
+          type="button"
+          class="action-button dropdown-toggle btn btn-outline-secondary"
+          aria-controls="dropdown-paging"
+        >
+          {{maxVisiblePages}}
+        </button>
+        <ul id="dropdown-paging" *dropdownMenu class="dropdown-menu"
+            role="menu" aria-labelledby="button-paging">
+          <li role="menuitem" (click)="onMaxVisiblePagesChange(1)"><a class="dropdown-item" href="#">1</a></li>
+          <li role="menuitem" (click)="onMaxVisiblePagesChange(2)"><a class="dropdown-item" href="#">2</a></li>
+          <li role="menuitem" (click)="onMaxVisiblePagesChange(3)"><a class="dropdown-item" href="#">3</a></li>
+          <li role="menuitem" (click)="onMaxVisiblePagesChange(4)"><a class="dropdown-item" href="#">4</a></li>
+          <li role="menuitem" (click)="onMaxVisiblePagesChange(5)"><a class="dropdown-item" href="#">5</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

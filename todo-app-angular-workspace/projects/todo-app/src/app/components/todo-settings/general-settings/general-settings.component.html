@@ -1,0 +1,76 @@
+<div class='app__settings__group'>
+  <label class='app__settings__group-label'>General</label>
+  <div class='app__settings__group__item'>
+    <div class="hstack gap-2">
+      <label>Comfirm on change/remove</label>
+      <mat-slide-toggle class="ms-auto" [(ngModel)]="isConfirmEnabled" (click)="onSettingsUpdate({
+        isConfirmEnabled,
+        isPaginationEnabled,
+        isInfiniteScrollEnabled,
+        listSizeType,
+        fixedListSize
+      })"></mat-slide-toggle>
+    </div>
+  </div>
+  <div class='app__settings__group__item'>
+    <div class="hstack gap-2">
+      <label>Pagination</label>
+      <mat-slide-toggle class="ms-auto" [(ngModel)]="isPaginationEnabled" (click)="onSettingsUpdate({
+        isConfirmEnabled,
+        isPaginationEnabled,
+        isInfiniteScrollEnabled: false,
+        listSizeType,
+        fixedListSize
+      })"></mat-slide-toggle>
+    </div>
+  </div>
+  <div class='app__settings__group__item'>
+    <div class="hstack gap-2">
+      <label>Infinite Scroll</label>
+      <mat-slide-toggle class="ms-auto" [(ngModel)]="isInfiniteScrollEnabled" (click)="onSettingsUpdate({
+        isConfirmEnabled,
+        isPaginationEnabled: false,
+        isInfiniteScrollEnabled,
+        listSizeType,
+        fixedListSize
+      })"></mat-slide-toggle>
+    </div>
+  </div>
+  <div class='app__settings__group__item'>
+    <div class="hstack gap-2">
+      <label>List container size</label>
+      <div
+        class="btn-group ms-auto"
+        dropdown
+        [isDisabled]="false">
+        <button
+          id="button-list-size-type"
+          dropdownToggle
+          type="button"
+          class="action-button dropdown-toggle btn btn-outline-secondary"
+          aria-controls="dropdown-paging"
+        >
+          {{listSizeType}}
+        </button>
+        <ul id="dropdown-paging" *dropdownMenu class="dropdown-menu"
+            role="menu" aria-labelledby="button-paging">
+          <li role="menuitem" (click)="onListSizeTypeChange(ListContainerType.Fixed)"><a class="dropdown-item" href="#">{{ ListContainerType.Fixed }}</a></li>
+          <li role="menuitem" (click)="onListSizeTypeChange(ListContainerType.Dynamic)"><a class="dropdown-item" href="#">{{ ListContainerType.Dynamic }}</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="listSizeType === ListContainerType.Fixed" class='app__settings__group__item ms-5'>
+    <div class="hstack gap-2">
+      <label>Size (px)</label>
+      <input
+        type="number"
+        class="form-control form-control-sm ms-auto"
+        id="list-size"
+        placeholder="Enter size"
+        [(ngModel)]="fixedListSize"
+        (change)="onFixedListSizeChange()"
+      />
+    </div>
+  </div>
+</div>

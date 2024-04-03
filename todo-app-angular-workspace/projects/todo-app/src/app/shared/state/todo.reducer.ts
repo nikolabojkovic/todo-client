@@ -5,30 +5,46 @@ import { IState, State } from './state';
 import { IPaging } from '../models/paging';
 import { ITodo } from '../models/todo';
 import { StateFilter } from '../models/filter';
+import { ISettings } from '../models/settings';
 
 export const initialState: IState = new State([] as ITodo[]);
 
 export const todosReducer = createReducer(
   initialState,
 
-  on(TodoListActions.loadingStarted, (_state) => {
+  on(TodoListActions.loadingStarted, (state) => {
     return {
-      ..._state,
+      ...state,
       isLoading: true
     } as IState;
   }),
-
-  on(TodoListActions.fetched, (_state, { list }) => {
+  on(TodoListActions.activeTabChanged, (state, { activeTab }) => {
     return {
-      ...new State(list)
+      ...state,
+      activeTab
     } as IState;
   }),
-  on(TodoListActions.searched, (todoList, { searchTerm, activePage, list }) => {
+  on(TodoListActions.fetched, (state, { list }) => {
+    return {
+      ...state,
+      isLoading: false,
+      originalList: list,
+      displayList: list,
+      paging: {
+        ...state.paging,
+        totalCount: list.length,
+        activePage: 1,
+        itemsPerPage: state.paging.itemsPerPage,
+        startIndex: 0,
+        endIndex: state.paging.itemsPerPage
+      } as IPaging,
+    };
+  }),
+  on(TodoListActions.searched, (todoList, { activePage, list }) => {
     return {
       ...todoList,
       isLoading: false,
       displayList: [...list],
-      search: { searchTerm: searchTerm },
       paging: {
         ...todoList.paging,
         activePage: activePage,
@@ -81,6 +97,25 @@ export const todosReducer = createReducer(
     } as IState;
   }),
 
+  on(TodoListActions.searchTermUpdated, (todoList, { searchTerm }) => {
+    return {
+      ...todoList,
+      search: { searchTerm },
+    };
+  }),
+  on(TodoListActions.pagingFetched, (state, { paging }) => {
+    return {
+      ...state,
+      paging: {
+        ...state.paging,
+        totalCount: paging.totalCount,
+        activePage: paging.activePage,
+        itemsPerPage: paging.itemsPerPage,
+        startIndex: (paging.activePage - 1) * paging.itemsPerPage,
+        endIndex: paging.activePage * paging.itemsPerPage
+      } as IPaging
+    } as IState;
+  }),
   on(TodoListActions.pagingUpdated, (todoList, { activePage, itemsPerPage }) => {
     return {
       ...todoList,
@@ -93,10 +128,20 @@ export const todosReducer = createReducer(
       } as IPaging
     } as IState;
   }),
-  on(TodoListActions.searchTermUpdated, (todoList, { searchTerm }) => {
+  on(TodoListActions.settingsFetched,(state, { payload }) => {
+    return {
+      ...state,
+      settings: {
+        ...payload
+      } as ISettings
+    };
+  }),
+  on(TodoListActions.settingsUpdated, (todoList, { payload }) => {
     return {
       ...todoList,
-      search: { searchTerm },
+      settings: {
+        ...payload
+      } as ISettings
     };
   }),
 

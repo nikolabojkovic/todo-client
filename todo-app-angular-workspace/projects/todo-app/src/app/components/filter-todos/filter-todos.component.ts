@@ -6,7 +6,7 @@ import { TodoListActions } from '../../shared/state/todo.actions';
 import { selectFilter, selectLoader, selectSearch, selectSort } from '../../shared/state/todo.selectors';
 import { ISort } from '../../shared/models/sort';
 import { ISearch } from '../../shared/models/search';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-filter-todos',
@@ -22,23 +22,28 @@ export class FilterTodosComponent implements OnInit {
   stateFilter: StateFilter = StateFilter.all;
   StateFilter = StateFilter;
   isLoading$: Observable<boolean> = this.store.select(selectLoader);
+  private subscriptions: Subscription[] = [];
 
   ngOnInit(): void {
-    this.store.select(selectFilter)
+    this.subscriptions.push(this.store.select(selectFilter)
         .pipe()
         .subscribe((filter: IFilter) => {
           this.stateFilter = filter.state;
-        });
-    this.store.select(selectSearch)
+        }));
+    this.subscriptions.push(this.store.select(selectSearch)
       .pipe()
       .subscribe((search: ISearch) => {
         this.search = search.searchTerm;
-      });
-    this.store.select(selectSort)
+      }));
+    this.subscriptions.push(this.store.select(selectSort)
       .pipe()
       .subscribe((sort: ISort) => {
         this.sort = sort;
-      });
+      }));
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   onFilter(state: StateFilter): void {

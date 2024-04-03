@@ -7,7 +7,7 @@ import { faFileExport, faFileImport } from '@fortawesome/free-solid-svg-icons';
 import { TodoListActions } from '../../shared/state/todo.actions';
 import { Event } from '../../shared/models/event';
 import { ConfirmModalService } from '../confirm-modal/confirm-modal.service';
-import { first } from 'rxjs';
+import { Subscription, first } from 'rxjs';
 import { AlertService } from '../../shared/services/alert.service';
 
 @Component({
@@ -30,13 +30,18 @@ export class ImportExportComponent implements OnInit {
     private store: Store<IState>,
     private modalService: ConfirmModalService,
     private alertService: AlertService) { }
+    private subscription!: Subscription;
 
   ngOnInit(): void {
-    this.store.select(selectTodos)
+    this.subscription = this.store.select(selectTodos)
       .pipe()
       .subscribe((todoList: IState) => this.items = todoList.originalList);
 
     this.fileReader.onload = this.onLoad;
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   get ifExportDisabled() {
