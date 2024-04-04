@@ -36,11 +36,11 @@ export function PaginationSettings() {
   }
 
   return (
-    <div className={ ifDisabled ? 'App__settings__group App__settings__group--disabled' : 'App__settings__group'}>
-      <label className={ ifDisabled ? 'App__settings__group-label App__settings__group-label--disabled' : 'App__settings__group-label' }>
+    <div className={ "App__settings__group" + (ifDisabled ? " App__settings__group--disabled" : "") }>
+      <label className={"App__settings__group-label" + (ifDisabled ? " App__settings__group-label--disabled" : "") }>
         Pagination
       </label>
-      <div className={ ifDisabled ? 'App__settings__group__item App__settings__group__item--disabled' : 'App__settings__group__item' }>
+      <div className={ "App__settings__group__item" + (ifDisabled ? " App__settings__group__item--disabled" : "") }>
         <Stack direction="horizontal" gap={2}>
           <label>Pagination type</label>
           <Dropdown className="ms-auto">
@@ -70,7 +70,7 @@ export function PaginationSettings() {
           </Dropdown>
         </Stack>
       </div>
-      <div className={ ifDisabled ? 'App__settings__group__item App__settings__group__item--disabled' : 'App__settings__group__item' }>
+      <div className={ "App__settings__group__item" + (ifDisabled ? " App__settings__group__item--disabled" : "") }>
         <Stack direction="horizontal" gap={2}>
           <label>Visible pages in navigation group</label>
           <Dropdown className="ms-auto">

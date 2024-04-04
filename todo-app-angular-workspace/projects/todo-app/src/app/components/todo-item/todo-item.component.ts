@@ -38,7 +38,7 @@ export class TodoItemComponent implements OnInit, OnDestroy {
     if (this.todo.completed)
       return;
 
-    if (this.settings?.general?.isConfirmEnabled) {
+    if (!this.settings?.general?.isConfirmEnabled) {
       this.store.dispatch(TodoListActions.completed({ todoId: this.todo.id }));
       return;
     }
@@ -53,7 +53,7 @@ export class TodoItemComponent implements OnInit, OnDestroy {
   }
 
   onRemove() {
-    if (this.settings?.general?.isConfirmEnabled) {
+    if (!this.settings?.general?.isConfirmEnabled) {
       this.store.dispatch(TodoListActions.removed({ todoId: this.todo.id }));
       return;
     }

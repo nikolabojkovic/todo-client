@@ -18,8 +18,12 @@
         </button>
         <ul id="dropdown-paging" *dropdownMenu class="dropdown-menu"
             role="menu" aria-labelledby="button-paging">
-          <li role="menuitem" (click)="onPaginationTypeChange(PaginationType.Classic)"><a class="dropdown-item" href="#">{{ PaginationType.Classic }}</a></li>
-          <li role="menuitem" (click)="onPaginationTypeChange(PaginationType.Rotate)"><a class="dropdown-item" href="#">{{ PaginationType.Rotate }}</a></li>
+          <li role="menuitem" (click)="onPaginationTypeChange(PaginationType.Classic)">
+            <a class="dropdown-item" href="#">{{ PaginationType.Classic }}</a>
+          </li>
+          <li role="menuitem" (click)="onPaginationTypeChange(PaginationType.Rotate)">
+            <a class="dropdown-item" href="#">{{ PaginationType.Rotate }}</a>
+          </li>
         </ul>
       </div>
     </div>
