@@ -1,12 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
-import { ISearch } from '../../shared/models/search';
-import { IState } from '../../shared/state/state';
-import { TodoListActions } from '../../shared/state/todo.actions';
-import { selectSearch, selectSettings } from '../../shared/state/todo.selectors';
 import { Subject, Subscription, concatMap, debounceTime, filter, first, tap } from 'rxjs';
-import { ISettings } from '../../shared/models/settings';
+
+import { ISettings, ISearch } from '../../shared/models';
+import { IState, TodoListActions, selectSearch, selectSettings } from '../../shared/state';
 
 @Component({
   selector: 'app-search-todos',

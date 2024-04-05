@@ -1,10 +1,9 @@
 import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { ISort, SortDirection } from '../../../shared/models/sort';
-import { IState } from '../../../shared/state/state';
-import { TodoListActions } from '../../../shared/state/todo.actions';
-import { selectLoader, selectSort } from '../../../shared/state/todo.selectors';
 import { Subscription, first } from 'rxjs';
+
+import { ISort, SortDirection } from '../../../shared/models';
+import { IState, TodoListActions, selectLoader, selectSort } from '../../../shared/state';
 
 @Component({
   selector: 'app-sort-button',

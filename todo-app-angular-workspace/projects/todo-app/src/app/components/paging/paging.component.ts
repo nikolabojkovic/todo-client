@@ -1,12 +1,9 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 
-import { IPaging } from '../../shared/models/paging';
-import { IState } from '../../shared/state/state';
-import { TodoListActions } from '../../shared/state/todo.actions';
-import { selectPaging, selectSettings } from '../../shared/state/todo.selectors';
-import { Subscription } from 'rxjs';
-import { ISettings, PaginationType } from '../../shared/models/settings';
+import { IPaging, ISettings, PaginationType } from '../../shared/models';
+import { IState, selectPaging, selectSettings, TodoListActions } from '../../shared/state';
 
 @Component({
   selector: 'app-paging',

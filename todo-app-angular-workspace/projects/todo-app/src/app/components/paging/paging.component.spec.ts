@@ -1,22 +1,22 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { todos } from '../../tests/test-data';
-import { PagingComponent } from './paging.component';
-import { IState } from '../../shared/state/state';
+import { FormsModule } from '@angular/forms';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
-import { FormsModule } from '@angular/forms';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { SortButtonModule } from 'sort-button';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { BrowserModule } from '@angular/platform-browser';
+
 import { Store, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { todosReducer } from '../../shared/state/todo.reducer';
-import { TodoEffects } from '../../shared/state/todo.effects';
-import { StorageProviderKey } from '../../shared/services/storage.provider';
-import { TodoListActions } from '../../shared/state/todo.actions';
 import { of } from 'rxjs';
-import { SettingsProviderKey } from '../../shared/services/settings.service';
+
+import { SortButtonModule } from 'sort-button';
+
+import { todos } from '../../tests/test-data';
+import { PagingComponent } from './paging.component';
+import { IState, todosReducer, TodoEffects, TodoListActions } from '../../shared/state';
+import { StorageProviderKey, SettingsProviderKey } from '../../shared/services';
 
 describe('PagingComponent', () => {
   let component: PagingComponent;

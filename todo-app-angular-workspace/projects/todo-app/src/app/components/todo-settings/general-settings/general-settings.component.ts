@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { IGeneralSettings, ISettings, ListContainerType } from '../../../shared/models/settings';
 import { Store } from '@ngrx/store';
-import { IState } from '../../../shared/state/state';
-import { TodoListActions } from '../../../shared/state/todo.actions';
-import { selectSettings } from '../../../shared/state/todo.selectors';
 import { Subscription } from 'rxjs';
+
+import { IGeneralSettings, ISettings, ListContainerType } from '../../../shared/models';
+import { IState, TodoListActions, selectSettings } from '../../../shared/state';
 
 @Component({
   selector: 'app-general-settings',

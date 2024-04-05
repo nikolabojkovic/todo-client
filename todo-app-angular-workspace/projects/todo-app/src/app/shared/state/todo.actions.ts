@@ -1,9 +1,12 @@
 import { createActionGroup, props, emptyProps } from '@ngrx/store';
-import { IFilter } from '../models/filter';
-import { ITodo } from '../models/todo';
-import { ISort } from '../models/sort';
-import { IPaging } from '../models/paging';
-import { ISettings } from '../models/settings';
+
+import {
+  IFilter,
+  ITodo,
+  ISort,
+  IPaging,
+  ISettings
+} from '../models';
 
 export const TodoListActions = createActionGroup({
   source: 'todos',

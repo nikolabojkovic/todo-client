@@ -1,16 +1,13 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { GeneralSettingsComponent } from './general-settings.component';
 import { EffectsModule } from '@ngrx/effects';
 import { Store, StoreModule } from '@ngrx/store';
-import { todosReducer } from '../../../shared/state/todo.reducer';
-import { TodoEffects } from '../../../shared/state/todo.effects';
-import { IState } from '../../../shared/state/state';
-import { TodoService } from '../../../shared/services/todo.service';
-import { todos } from '../../../tests/test-data';
 import { of } from 'rxjs';
-import { StorageProviderKey } from '../../../shared/services/storage.provider';
-import { SettingsProviderKey } from '../../../shared/services/settings.service';
+import { GeneralSettingsComponent } from './general-settings.component';
+
+import { IState, todosReducer, TodoEffects } from '../../../shared/state';
+import { todos } from '../../../tests/test-data';
+import { TodoService, StorageProviderKey, SettingsProviderKey } from '../../../shared/services';
 
 describe('GeneralSettingsComponent', () => {
   let component: GeneralSettingsComponent;

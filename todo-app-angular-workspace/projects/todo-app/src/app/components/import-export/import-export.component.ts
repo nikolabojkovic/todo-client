@@ -1,14 +1,12 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { IState } from '../../shared/state/state';
-import { ITodo, Todo } from '../../shared/models/todo';
-import { selectTodos } from '../../shared/state/todo.selectors';
-import { faFileExport, faFileImport } from '@fortawesome/free-solid-svg-icons';
-import { TodoListActions } from '../../shared/state/todo.actions';
-import { Event } from '../../shared/models/event';
-import { ConfirmModalService } from '../confirm-modal/confirm-modal.service';
 import { Subscription, first } from 'rxjs';
-import { AlertService } from '../../shared/services/alert.service';
+import { faFileExport, faFileImport } from '@fortawesome/free-solid-svg-icons';
+
+import { IState, selectTodos, TodoListActions } from '../../shared/state';
+import { ITodo, Todo, Event } from '../../shared/models';
+import { ConfirmModalService } from '../';
+import { AlertService } from '../../shared/services';
 
 @Component({
   selector: 'app-import-export',

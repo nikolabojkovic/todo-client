@@ -1,19 +1,29 @@
 import { Inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType, concatLatestFrom } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { of } from 'rxjs';
-import { catchError, exhaustMap, first, map, tap, combineLatestWith } from 'rxjs/operators';
-import { ITodo } from '../models/todo';
-import { IState, State as TodoState } from './state';
-import { TodoService } from '../services/todo.service';
-import { TodoListActions } from './todo.actions';
-import { selectPaging, selectTodos } from './todo.selectors';
-import { IFilter } from '../models/filter';
-import { ISort } from '../models/sort';
-import { ISettingsService, SettingsProviderKey } from '../services/settings.service';
-import { ISettings } from '../models/settings';
-import { IStorageProvider, StorageProviderKey } from '../services/storage.provider';
-import { IPaging } from '../models/paging';
+import { EMPTY, of } from 'rxjs';
+import { catchError, exhaustMap, filter, first, map, tap } from 'rxjs/operators';
+
+import {
+  ITodo,
+  ISettings,
+  IFilter,
+  ISort
+} from '../models';
+import {
+  IState,
+  State as TodoState,
+  TodoListActions,
+  selectPaging,
+  selectTodos
+} from './';
+import {
+  TodoService,
+  ISettingsService,
+  SettingsProviderKey,
+  IStorageProvider,
+  StorageProviderKey
+} from '../services';
 
 @Injectable()
 export class TodoEffects {
@@ -169,14 +179,14 @@ export class TodoEffects {
   loadPaging$ = createEffect(() =>
     this.actions$.pipe(
       ofType(TodoListActions.pagingFetch),
-      combineLatestWith(this.store.select(selectPaging).pipe(first())),
-      exhaustMap(([, paging]: [unknown, IPaging]) =>
+      exhaustMap(() =>
         this.storageProvider.getItem('todo-paging')
           .pipe(
             first(),
-            map((pagingData: string | null | undefined) => TodoListActions.pagingFetched({ paging: pagingData ? JSON.parse(pagingData) : paging})),
+            filter(data => !!data),
+            map((pagingData: string | null | undefined) => TodoListActions.pagingFetched({ paging: JSON.parse(pagingData!)})),
             catchError(() => {
-              return of(TodoListActions.settingsFetched({ payload: new TodoState([]).settings }));
+              return EMPTY;
             })
           )
       )

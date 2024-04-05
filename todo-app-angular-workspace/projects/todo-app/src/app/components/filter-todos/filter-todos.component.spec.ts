@@ -2,16 +2,13 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { EffectsModule } from '@ngrx/effects';
 import { Store, StoreModule } from '@ngrx/store';
-import { IFilter, StateFilter } from '../../shared/models/filter';
-import { StorageProviderKey } from '../../shared/services/storage.provider';
-import { IState } from '../../shared/state/state';
-import { TodoListActions } from '../../shared/state/todo.actions';
-import { TodoEffects } from '../../shared/state/todo.effects';
-import { todosReducer } from '../../shared/state/todo.reducer';
-import { FilterTodosComponent } from './filter-todos.component';
 import { of } from 'rxjs';
+
+import { IFilter, StateFilter } from '../../shared/models/filter';
+import { StorageProviderKey, SettingsProviderKey } from '../../shared/services';
+import { IState, TodoListActions, TodoEffects, todosReducer } from '../../shared/state';
+import { FilterTodosComponent } from './filter-todos.component';
 import { todos } from '../../tests/test-data';
-import { SettingsProviderKey } from '../../shared/services/settings.service';
 
 describe('FilterTodosComponent', () => {
   let component: FilterTodosComponent;

@@ -4,18 +4,14 @@ import { EffectsModule } from '@ngrx/effects';
 import { Store, StoreModule } from '@ngrx/store';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { of } from 'rxjs';
-import { Todo } from '../../shared/models/todo';
-import { StorageProviderKey } from '../../shared/services/storage.provider';
-import { IState } from '../../shared/state/state';
-import { TodoListActions } from '../../shared/state/todo.actions';
-import { TodoEffects } from '../../shared/state/todo.effects';
-import { todosReducer } from '../../shared/state/todo.reducer';
+import { By } from '@angular/platform-browser';
+
+import { Todo } from '../../shared/models';
+import { StorageProviderKey, SettingsProviderKey, AlertService } from '../../shared/services';
+import { IState, TodoListActions, TodoEffects, todosReducer } from '../../shared/state';
 import { ConfirmModalService } from '../confirm-modal/confirm-modal.service';
 import { ImportExportComponent } from './import-export.component';
-import { By } from '@angular/platform-browser';
 import { todos } from '../../tests/test-data';
-import { AlertService } from '../../shared/services/alert.service';
-import { SettingsProviderKey } from '../../shared/services/settings.service';
 
 describe('ImportExportComponent', () => {
   let component: ImportExportComponent;

@@ -1,18 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { IState } from '../../../shared/state/state';
-import { SortButtonComponent } from './sort-button.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { SortIconComponent } from '../sort-icon/sort-icon.component';
-import { StorageProviderKey } from '../../../shared/services/storage.provider';
 import { Store, StoreModule } from '@ngrx/store';
-import { todosReducer } from '../../../shared/state/todo.reducer';
 import { EffectsModule } from '@ngrx/effects';
-import { TodoEffects } from '../../../shared/state/todo.effects';
-import { ISort, SortDirection } from '../../../shared/models/sort';
-import { TodoListActions } from '../../../shared/state/todo.actions';
 import { of } from 'rxjs';
+
+import { IState, todosReducer, TodoEffects, TodoListActions } from '../../../shared/state';
+import { SortButtonComponent, SortIconComponent } from '../';
+import { StorageProviderKey, SettingsProviderKey } from '../../../shared/services';
+import { ISort, SortDirection } from '../../../shared/models';
 import { todos } from '../../../tests/test-data';
-import { SettingsProviderKey } from '../../../shared/services/settings.service';
 
 describe('SortButtonComponent', () => {
   let component: SortButtonComponent;

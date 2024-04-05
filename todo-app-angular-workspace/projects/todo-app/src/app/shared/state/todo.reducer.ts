@@ -1,11 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 
-import { TodoListActions } from './todo.actions';
-import { IState, State } from './state';
-import { IPaging } from '../models/paging';
-import { ITodo } from '../models/todo';
-import { StateFilter } from '../models/filter';
-import { ISettings } from '../models/settings';
+import { IState, State, TodoListActions } from './';
+import { IPaging, ITodo, StateFilter, ISettings } from '../models';
 
 export const initialState: IState = new State([] as ITodo[]);
 
@@ -34,9 +30,9 @@ export const todosReducer = createReducer(
         ...state.paging,
         totalCount: list.length,
         activePage: 1,
-        itemsPerPage: state.paging.itemsPerPage,
+        itemsPerPage: 5,
         startIndex: 0,
-        endIndex: state.paging.itemsPerPage
+        endIndex: 5
       } as IPaging,
     };
   }),

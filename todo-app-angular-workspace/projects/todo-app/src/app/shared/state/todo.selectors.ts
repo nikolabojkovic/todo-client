@@ -1,5 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { IState } from './state';
+
+import { IState } from './';
 
 export const selectTodos = createFeatureSelector<IState>('todos');
 

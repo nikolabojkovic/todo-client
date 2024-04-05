@@ -1,20 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { IState } from '../../shared/state/state';
-import { TodoItemComponent } from './todo-item.component';
-import { ITodo } from '../../shared/models/todo';
+import { Store, StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { of } from 'rxjs';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { ConfirmModalService } from '../confirm-modal/confirm-modal.service';
-import { of } from 'rxjs';
-import { Store, StoreModule } from '@ngrx/store';
-import { todosReducer } from '../../shared/state/todo.reducer';
-import { EffectsModule } from '@ngrx/effects';
-import { TodoEffects } from '../../shared/state/todo.effects';
-import { TodoListActions } from '../../shared/state/todo.actions';
+
+import { ITodo } from '../../shared/models/todo';
 import { todos } from '../../tests/test-data';
-import { TodoService } from '../../shared/services/todo.service';
-import { SettingsProviderKey } from '../../shared/services/settings.service';
-import { StorageProviderKey } from '../../shared/services/storage.provider';
+import { ConfirmModalService, TodoItemComponent } from '../';
+import { TodoService, SettingsProviderKey, StorageProviderKey } from '../../shared/services';
+import { IState, todosReducer, TodoEffects, TodoListActions } from '../../shared/state';
 
 describe('TodoItemComponent', () => {
   let component: TodoItemComponent;

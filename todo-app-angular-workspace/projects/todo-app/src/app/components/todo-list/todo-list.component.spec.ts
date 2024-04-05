@@ -1,18 +1,14 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { of } from 'rxjs';
 import { EffectsModule } from '@ngrx/effects';
 import { Store, StoreModule } from '@ngrx/store';
-import { of } from 'rxjs';
-import { ITodo } from '../../shared/models/todo';
-import { StorageProviderKey } from '../../shared/services/storage.provider';
-import { TodoService } from '../../shared/services/todo.service';
-import { TodoEffects } from '../../shared/state/todo.effects';
-import { todosReducer } from '../../shared/state/todo.reducer';
+
+import { ITodo } from '../../shared/models';
+import { TodoService, SettingsProviderKey, StorageProviderKey } from '../../shared/services';
+import { IState, TodoEffects, todosReducer, TodoListActions } from '../../shared/state';
 import { TodoListComponent } from './todo-list.component';
 import { todos } from '../../tests/test-data';
-import { SettingsProviderKey } from '../../shared/services/settings.service';
-import { IState } from '../../shared/state/state';
-import { TodoListActions } from '../../shared/state/todo.actions';
 
 describe('TodoListComponent', () => {
   let component: TodoListComponent;

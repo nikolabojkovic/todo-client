@@ -1,18 +1,15 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { EffectsModule } from '@ngrx/effects';
+import { of } from 'rxjs';
 import { Store, StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BsModalService } from 'ngx-bootstrap/modal';
-import { StorageProviderKey } from '../../shared/services/storage.provider';
-import { IState } from '../../shared/state/state';
-import { TodoListActions } from '../../shared/state/todo.actions';
-import { TodoEffects } from '../../shared/state/todo.effects';
-import { todosReducer } from '../../shared/state/todo.reducer';
+
+import { StorageProviderKey, SettingsProviderKey } from '../../shared/services';
+import { IState, TodoListActions, TodoEffects, todosReducer } from '../../shared/state';
 import { AddTodoComponent } from './add-todo.component';
 import { todos } from '../../tests/test-data';
-import { of } from 'rxjs';
-import { SettingsProviderKey } from '../../shared/services/settings.service';
 
 describe('AddTodoComponent', () => {
   let component: AddTodoComponent;

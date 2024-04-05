@@ -1,8 +1,12 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { IState } from './shared/state/state';
-import { selectActiveTab, selectSettings } from './shared/state/todo.selectors';
-import { TodoListActions } from './shared/state/todo.actions';
+
+import {
+  IState,
+  selectActiveTab,
+  selectSettings,
+  TodoListActions
+} from './shared/state';
 
 @Component({
   selector: 'app-root',

@@ -1,22 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { AddTodoComponent } from '../add-todo/add-todo.component';
+import { FormsModule } from '@angular/forms';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 import { of } from 'rxjs';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { todos } from '../../tests/test-data';
-
-import { TabsComponent } from './tabs.component';
-import { FormsModule } from '@angular/forms';
-import { SearchTodosComponent } from '../search-todos/search-todos.component';
-import { ImportExportComponent } from '../import-export/import-export.component';
-import { StorageProviderKey } from '../../shared/services/storage.provider';
-
-import { TodoService } from '../../shared/services/todo.service';
-import { SettingsProviderKey } from '../../shared/services/settings.service';
-import { StoreModule } from '@ngrx/store';
-import { todosReducer } from '../../shared/state/todo.reducer';
-import { EffectsModule } from '@ngrx/effects';
-import { TodoEffects } from '../../shared/state/todo.effects';
+import { SearchTodosComponent, TabsComponent, ImportExportComponent, AddTodoComponent } from '../';
+import { TodoService, SettingsProviderKey, StorageProviderKey } from '../../shared/services';
+import { todosReducer, TodoEffects } from '../../shared/state';
 
 describe('TabsComponent', () => {
   let component: TabsComponent;

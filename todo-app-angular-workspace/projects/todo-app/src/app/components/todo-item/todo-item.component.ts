@@ -3,12 +3,9 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription, first } from 'rxjs';
 import { faCheckDouble, faTrash } from '@fortawesome/free-solid-svg-icons';
 
-import { ITodo } from '../../shared/models/todo';
-import { TodoListActions } from '../../shared/state/todo.actions';
-import { IState } from '../../shared/state/state';
-import { ConfirmModalService } from '../confirm-modal/confirm-modal.service';
-import { ISettings } from '../../shared/models/settings';
-import { selectSettings } from '../../shared/state/todo.selectors';
+import { ITodo, ISettings } from '../../shared/models';
+import { IState, TodoListActions, selectSettings } from '../../shared/state';
+import { ConfirmModalService } from '../';
 
 @Component({
   selector: 'app-todo-item',

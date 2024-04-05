@@ -3,16 +3,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { EffectsModule } from '@ngrx/effects';
 import { Store, StoreModule } from '@ngrx/store';
-import { StorageProviderKey } from '../../shared/services/storage.provider';
-import { IState } from '../../shared/state/state';
-import { TodoListActions } from '../../shared/state/todo.actions';
-import { TodoEffects } from '../../shared/state/todo.effects';
-import { todosReducer } from '../../shared/state/todo.reducer';
-import { SearchTodosComponent } from './search-todos.component';
 import { of } from 'rxjs';
+
+import { StorageProviderKey } from '../../shared/services/storage.provider';
+import { IState, TodoListActions, TodoEffects, todosReducer } from '../../shared/state';
+import { SearchTodosComponent } from './search-todos.component';
 import { todos } from '../../tests/test-data';
-import { SettingsProviderKey } from '../../shared/services/settings.service';
-import { TodoService } from '../../shared/services/todo.service';
+import { SettingsProviderKey, TodoService } from '../../shared/services';
 
 describe('SearchTodosComponent', () => {
   let component: SearchTodosComponent;

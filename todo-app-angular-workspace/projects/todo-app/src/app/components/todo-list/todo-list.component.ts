@@ -1,10 +1,9 @@
 import { Store } from '@ngrx/store';
 import { Component, OnInit } from '@angular/core';
-import { selectLoader, selectSettings, selectTodoDisplayList } from '../../shared/state/todo.selectors';
-import { ITodo } from '../../shared/models/todo';
-import { IState } from '../../shared/state/state';
 import { Observable } from 'rxjs';
-import { ListContainerType } from '../../shared/models/settings';
+
+import { IState, selectLoader, selectSettings, selectTodoDisplayList } from '../../shared/state';
+import { ITodo, ListContainerType } from '../../shared/models';
 
 @Component({
   selector: 'app-todo-list',

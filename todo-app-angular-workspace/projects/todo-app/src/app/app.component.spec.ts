@@ -1,30 +1,28 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { AppComponent } from './app.component';
-import { SortingComponent } from './components/sorting/sorting.component';
-import { TabsComponent } from './components/tabs/tabs.component';
-import { TodoListComponent } from './components/todo-list/todo-list.component';
-import { provideMockStore } from '@ngrx/store/testing';
-import { stateTestData, todos } from './tests/test-data';
-import { PagingComponent } from './components/paging/paging.component';
-import { PaginationModule } from 'ngx-bootstrap/pagination';
-import { AddTodoComponent } from './components/add-todo/add-todo.component';
 import { FormsModule } from '@angular/forms';
-import { SortButtonComponent } from './components/sorting/sort-button/sort-button.component';
-import { SortIconComponent } from './components/sorting/sort-icon/sort-icon.component';
-import { StorageProviderKey } from './shared/services/storage.provider';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { provideMockStore } from '@ngrx/store/testing';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { of, throwError } from 'rxjs';
-import { TodoListActions } from './shared/state/todo.actions';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { Store, StoreModule } from '@ngrx/store';
-import { todosReducer } from './shared/state/todo.reducer';
 import { EffectsModule } from '@ngrx/effects';
-import { TodoEffects } from './shared/state/todo.effects';
-import { SettingsProviderKey } from './shared/services/settings.service';
-import { IState } from './shared/state/state';
-import { TodoService } from './shared/services/todo.service';
+import { of, throwError } from 'rxjs';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
+
+import { AppComponent } from './app.component';
+import { SortButtonComponent } from './components/sorting/sort-button/sort-button.component';
+import {
+  SortingComponent,
+  TabsComponent,
+  TodoListComponent,
+  PagingComponent,
+  AddTodoComponent,
+  SortIconComponent
+} from './components';
+import { stateTestData, todos } from './tests/test-data';
+import { TodoService, StorageProviderKey, SettingsProviderKey } from './shared/services';
+import { IState, TodoListActions, TodoEffects, todosReducer } from './shared/state';
 
 describe('AppComponent', () => {
   let component: AppComponent;

@@ -1,9 +1,18 @@
-import { IFilter, StateFilter } from '../models/filter';
-import { IPaging } from '../models/paging';
-import { ISearch } from '../models/search';
-import { IGeneralSettings, IPaginationSettings, ISearchSettings, ISettings, ListContainerType, PaginationType } from '../models/settings';
-import { ISort, SortDirection } from '../models/sort';
-import { ITodo } from '../models/todo';
+import {
+  IFilter,
+  StateFilter,
+  IPaging,
+  ISearch,
+  IGeneralSettings,
+  IPaginationSettings,
+  ISearchSettings,
+  ISettings,
+  ListContainerType,
+  PaginationType,
+  ITodo,
+  ISort,
+  SortDirection
+} from '../models';
 
 export interface IState {
 	isLoading: boolean;

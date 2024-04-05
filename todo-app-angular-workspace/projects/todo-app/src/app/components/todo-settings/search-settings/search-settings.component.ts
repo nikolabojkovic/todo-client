@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { TodoListActions } from '../../../shared/state/todo.actions';
-import { Store } from '@ngrx/store';
-import { IState } from '../../../shared/state/state';
-import { ISettings } from '../../../shared/models/settings';
-import { selectSettings } from '../../../shared/state/todo.selectors';
 import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
+
+import { IState, TodoListActions, selectSettings } from '../../../shared/state';
+import { ISettings } from '../../../shared/models';
 
 @Component({
   selector: 'app-search-settings',

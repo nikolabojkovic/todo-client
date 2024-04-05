@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { IFilter, StateFilter } from '../../shared/models/filter';
-import { IState } from '../../shared/state/state';
-import { TodoListActions } from '../../shared/state/todo.actions';
-import { selectFilter, selectLoader } from '../../shared/state/todo.selectors';
 import { Observable, first } from 'rxjs';
+import { Store } from '@ngrx/store';
+
+import { IFilter, StateFilter } from '../../shared/models';
+import { IState, TodoListActions, selectFilter, selectLoader } from '../../shared/state';
 
 @Component({
   selector: 'app-filter-todos',

@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { faAdd, faSearch, faFilter, faDownload, faGear, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { Store } from '@ngrx/store';
-import { IState } from '../../shared/state/state';
-import { TodoListActions } from '../../shared/state/todo.actions';
+
+import { IState, TodoListActions } from '../../shared/state';
 
 type Tab = {
   name: string,

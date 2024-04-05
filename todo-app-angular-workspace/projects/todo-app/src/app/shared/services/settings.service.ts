@@ -1,8 +1,9 @@
 import { Observable, map } from 'rxjs';
-import { ISettings } from '../models/settings';
 import { Inject, Injectable, InjectionToken } from '@angular/core';
-import { IStorageProvider, StorageProviderKey } from './storage.provider';
-import { State } from '../state/state';
+
+import { ISettings } from '../models';
+import { IStorageProvider, StorageProviderKey } from './';
+import { State } from '../state';
 
 export const SettingsProviderKey = new InjectionToken('Setting InjectionToken');
 

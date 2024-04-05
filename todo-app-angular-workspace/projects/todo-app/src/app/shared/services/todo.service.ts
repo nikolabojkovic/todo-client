@@ -1,9 +1,8 @@
 import { Inject, Injectable } from '@angular/core';
-import { ITodo } from '../models/todo';
 import { map, Observable } from 'rxjs';
-import { IFilter, StateFilter } from '../models/filter';
-import { ISort, SortDirection } from '../models/sort';
-import { IStorageProvider, StorageProviderKey } from './storage.provider';
+
+import { IFilter, StateFilter, ISort, SortDirection, ITodo } from '../models';
+import { IStorageProvider, StorageProviderKey } from './';
 
 @Injectable({
   providedIn: 'root'
