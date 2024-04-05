@@ -90,10 +90,10 @@ export function todoStateReducer(state: IState, action: IAction) {
         paging: {
           ...state.paging,
           totalCount: action.payload.list.length,
-          activePage: state.paging.activePage,
+          activePage: state.paging.activePage === 0 ? 1 : state.paging.activePage,
           itemsPerPage: state.paging.itemsPerPage,
-          startIndex: (state.paging.activePage - 1) * state.paging.itemsPerPage,
-          endIndex: state.paging.activePage * state.paging.itemsPerPage
+          startIndex: ((state.paging.activePage === 0 ? 1 : state.paging.activePage) - 1) * state.paging.itemsPerPage,
+          endIndex: (state.paging.activePage === 0 ? 1 : state.paging.activePage) * state.paging.itemsPerPage
         } as IPaging,
       };
     }

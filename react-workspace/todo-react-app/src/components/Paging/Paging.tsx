@@ -6,7 +6,7 @@ import { Pagination } from '../Pagination/Pagination';
 import { PaginationType } from '../../models/ISettings';
 import { LocalStorageProvider } from '../../providers/StorageProvider';
 import { useEffect } from 'react';
-import { first, map } from 'rxjs';
+import { filter, first, map } from 'rxjs';
 import { IPaging } from '../../models/IPaging';
 import { IAction, TodoActions } from '../../models/Action';
 
@@ -24,13 +24,8 @@ export function Paging() {
     storageProvider.getItem(pagingLocalStorageKey)
       .pipe(
         first(),
-        map((pagingData: string | null) => {
-          if (!pagingData) {
-            return todoList.paging;
-          }
-
-          return JSON.parse(pagingData) as IPaging;
-        })
+        filter((data) => !!data),
+        map((pagingData: string | null) => JSON.parse(pagingData!) as IPaging)
       ).subscribe((paging: IPaging) => {
         dispatch({
           type: TodoActions.pagingFatched,

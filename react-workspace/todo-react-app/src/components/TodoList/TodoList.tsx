@@ -42,50 +42,78 @@ export function TodoList({ todoListProvider }: Props) {
       dispatch({
         type: TodoActions.loadingStarted
       } as IAction);
+    }
+  }, [todoList.effectTrigger, dispatch]);
+
+  useEffect(() => {  
+    if (todoList.effectTrigger && todoList.effectTrigger.type === TodoActions.fetch) {
       todoListProvider.getList({
-        filter: todoList.effectTrigger.payload.filter 
-          ? todoList.effectTrigger.payload.filter 
-          : todoList.filter,
-        searchTerm: todoList.effectTrigger.payload.searchTerm 
-          ? todoList.effectTrigger.payload.searchTerm 
-          : todoList.search.searchTerm,
-        sort: todoList.effectTrigger.payload.sort 
-          ? todoList.effectTrigger.payload.sort 
-          : todoList.sort,
+        filter: todoList.filter,
+        searchTerm: todoList.search.searchTerm,
+        sort: todoList.effectTrigger.payload.sort
       } as GetListProps)
       .pipe(first())
       .subscribe((list: ITodo[]) => {
-        if (todoList.effectTrigger!.type === TodoActions.fetch) {
-          dispatch({
-            type: TodoActions.fetched,
-            payload: {
-              list: list
-            }
-          } as IAction);
-        }
+        dispatch({
+          type: TodoActions.fetched,
+          payload: {
+            list: list
+          }
+        } as IAction);
+      });
+    }
+  }, [todoList.effectTrigger, dispatch, todoListProvider]);
 
-        if (todoList.effectTrigger!.type === TodoActions.filter) {
-          dispatch({
-            type: TodoActions.filtered,
-            payload: {
-              activePage: 1,
-              list: list,
-              filter: todoList.effectTrigger!.payload.filter
-            }
-          } as IAction);
-        }
+  useEffect(() => {  
+    if (todoList.effectTrigger && todoList.effectTrigger.type === TodoActions.filter) {
+      todoListProvider.getList({
+        filter: todoList.effectTrigger.payload.filter,
+        searchTerm: todoList.search.searchTerm,
+        sort: todoList.sort
+      } as GetListProps)
+      .pipe(first())
+      .subscribe((list: ITodo[]) => {
+        dispatch({
+          type: TodoActions.filtered,
+          payload: {
+            activePage: 1,
+            list: list,
+            filter: todoList.effectTrigger!.payload.filter
+          }
+        } as IAction);
+      });
+    }
+  }, [todoList.effectTrigger, dispatch, todoListProvider]);
 
-        if (todoList.effectTrigger!.type === TodoActions.search) {
-          dispatch({
-            type: TodoActions.searched,
-            payload: {
-              list: list,
-              activePage: 1,
-            }
-          } as IAction);
-        }
+  useEffect(() => {  
+    if (todoList.effectTrigger && todoList.effectTrigger.type === TodoActions.search) {
+      todoListProvider.getList({
+        filter: todoList.filter,
+        searchTerm: todoList.effectTrigger.payload.searchTerm ,
+        sort: todoList.sort
+      } as GetListProps)
+      .pipe(first())
+      .subscribe((list: ITodo[]) => {
+        dispatch({
+          type: TodoActions.searched,
+          payload: {
+            list: list,
+            activePage: 1,
+          }
+        } as IAction);
+      });
+    }
+  }, [todoList.effectTrigger, dispatch, todoListProvider]);
 
-        if (todoList.effectTrigger!.type === TodoActions.sort) {
+  useEffect(() => {  
+    if (todoList.effectTrigger && todoList.effectTrigger.type === TodoActions.sort) {
+      todoListProvider.getList({
+        filter: todoList.filter,
+        searchTerm: todoList.search.searchTerm,
+        sort: todoList.effectTrigger.payload.sort 
+      } as GetListProps)
+      .pipe(first())
+      .subscribe((list: ITodo[]) => {
           dispatch({
             type: TodoActions.sorted,
             payload: {
@@ -93,7 +121,6 @@ export function TodoList({ todoListProvider }: Props) {
               list: list
             }
           } as IAction);
-        }
       });
     }
   }, [todoList.effectTrigger, dispatch, todoListProvider]);
@@ -121,20 +148,22 @@ export function TodoList({ todoListProvider }: Props) {
   return (
     <>
     { todoList.activeTab !== 'settings' && 
-      <main className="App__todo-list">
+      <main className="App__todo-list"      
+        style={ 
+          todoList.settings.general.listSizeType === ListContainerType.Fixed 
+          ? { 
+              height: todoList.settings.general.fixedListSize,
+              overflow: 'overlay'
+            } 
+          : {}
+          }
+        >
         { 
           todoList.isLoading 
           ? <Loader />
           : <section 
-              className='' 
-              style={ 
-                todoList.settings.general.listSizeType === ListContainerType.Fixed 
-                ? { 
-                    height: todoList.settings.general.fixedListSize,
-                    overflow: 'overlay'
-                  } 
-                : {}
-                }>
+              className=''
+            >
               {
                 (todoList.paging.totalCount > 0 ?
                   getDisplayList() 
