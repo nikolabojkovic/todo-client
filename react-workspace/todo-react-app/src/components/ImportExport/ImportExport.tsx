@@ -1,11 +1,11 @@
 import { faFileExport, faFileImport } from "@fortawesome/free-solid-svg-icons";
+import { Button, Col, Container, Form, InputGroup, Row } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ChangeEvent, useRef, useState } from "react";
-import { Button, Col, Container, Form, InputGroup, Row } from "react-bootstrap";
-import { useTodoList, useTodoListDispatch } from "../../context/TodoListContext";
+
+import { useTodoList, useTodoListDispatch } from "../../context";
 import { ConfirmModal } from "../ConfirmModal/ConfirmModal";
-import { ITodo, Todo } from "../../models/Todo";
-import { IAction, TodoActions } from "../../models/Action";
+import { ITodo, Todo, IAction, TodoActions } from "../../models";
 
 type Props = {
   downloadLink: HTMLAnchorElement,
@@ -28,6 +28,12 @@ export function ImportExport({ downloadLink, fileReader, alert }: Props) {
     downloadLink.href = jsonContent;
     downloadLink.download = `todo-list-${new Date().toLocaleDateString()}-${new Date().toLocaleTimeString()}.json`;
     downloadLink.click();
+  }
+
+  function handleImport() {
+    fileReader.readAsText(file!);          
+    setFile(null);
+    fileRef!.current!.value = '';
   }
 
   fileReader.onload = handleFileContent;
@@ -92,7 +98,15 @@ export function ImportExport({ downloadLink, fileReader, alert }: Props) {
                 variant="outline-secondary"
                 className="w-100 action-button"
                 size="sm"
-                onClick={() => setShowModal(true)}
+                onClick={() => { 
+                  if (todoList.settings.general.isConfirmEnabled) {
+                    setShowModal(true);
+
+                    return;
+                  }
+
+                  handleImport();
+                }}
                 disabled={!file}
               >
                 Import {' '}
@@ -118,11 +132,9 @@ export function ImportExport({ downloadLink, fileReader, alert }: Props) {
       <ConfirmModal 
         content={'Existing data will be lost. Are you sure?'} 
         show={showModal}
-        onConfirm={() => { 
-          fileReader.readAsText(file!);          
+        onConfirm={() => {          
           setShowModal(false);
-          setFile(null);
-          fileRef!.current!.value = '';
+          handleImport();
         }}
         onCancel={() => setShowModal(false)}
       />

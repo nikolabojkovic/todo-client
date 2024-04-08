@@ -1,20 +1,17 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { EffectsModule } from '@ngrx/effects';
 import { Store, StoreModule } from '@ngrx/store';
-import { IFilter } from '../../shared/models/filter';
-import { ISort, SortDirection } from '../../shared/models/sort';
-import { StorageProviderKey } from '../../shared/services/storage.provider';
-import { IState } from '../../shared/state/state';
-import { TodoListActions } from '../../shared/state/todo.actions';
-import { TodoEffects } from '../../shared/state/todo.effects';
-import { todosReducer } from '../../shared/state/todo.reducer';
-import { SearchTodosComponent } from "./search-todos.component";
 import { of } from 'rxjs';
-import { todos } from '../../tests/test-data';
 
-describe("SearchTodosComponent", () => {
+import { StorageProviderKey } from '../../shared/services/storage.provider';
+import { IState, TodoListActions, TodoEffects, todosReducer } from '../../shared/state';
+import { SearchTodosComponent } from './search-todos.component';
+import { todos } from '../../tests/test-data';
+import { SettingsProviderKey, TodoService } from '../../shared/services';
+
+describe('SearchTodosComponent', () => {
   let component: SearchTodosComponent;
   let fixture: ComponentFixture<SearchTodosComponent>;
   let store: Store<IState>;
@@ -23,13 +20,28 @@ describe("SearchTodosComponent", () => {
     await TestBed.configureTestingModule({
       declarations: [SearchTodosComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      providers: [{
-        provide: StorageProviderKey,
-        useValue: {
-          getItem: (key: string) => of(JSON.stringify(todos)),
-          setItem: (key: string, value: any) => of({})
+      providers: [
+        {
+          provide: TodoService,
+          useValue: {
+            getList: () => of(todos),
+            saveList: () => of({})
+          }
+        },
+        {
+          provide: StorageProviderKey,
+          useValue: {
+            getItem: () => of(JSON.stringify(todos))
+          }
+        },
+        {
+          provide: SettingsProviderKey,
+          useValue: {
+            loadSettings: () => of({}),
+            saveSettings: () => of({})
+          }
         }
-      }],
+      ],
       imports: [
         FormsModule,
         StoreModule.forRoot({ todos: todosReducer }),
@@ -48,20 +60,15 @@ describe("SearchTodosComponent", () => {
 
   describe('onTyping', () => {
     it('should update search term and do search', () => {
-      const sort = { column: 'title', direction: SortDirection.Asc } as ISort;
-      const filter = { completed: false, uncompleted: false } as IFilter;
       const searchTerm = '';
       component.searchValue = searchTerm;
-      component.sort = sort;
-      component.filter = filter;
+
       component.onTyping();
 
       const searchTermAction = TodoListActions.searchTermUpdated({
         searchTerm: searchTerm
       });
       const searchAction = TodoListActions.search({
-        filter,
-        sort,
         search: searchTerm
       });
       expect(store.dispatch).toHaveBeenCalledWith(searchTermAction);
@@ -69,20 +76,14 @@ describe("SearchTodosComponent", () => {
     });
 
     it('should only update search term', () => {
-      const sort = { column: 'title', direction: SortDirection.Asc } as ISort;
-      const filter = { completed: false, uncompleted: false } as IFilter;
       const searchTerm = 'test';
       component.searchValue = searchTerm;
-      component.sort = sort;
-      component.filter = filter;
       component.onTyping();
 
       const searchTermAction = TodoListActions.searchTermUpdated({
         searchTerm: searchTerm
       });
       const searchAction = TodoListActions.search({
-        filter,
-        sort,
         search: searchTerm
       });
 
@@ -93,17 +94,11 @@ describe("SearchTodosComponent", () => {
 
   describe('onSearch', () => {
     it('should search', () => {
-      const sort = { column: 'title', direction: SortDirection.Asc } as ISort;
-      const filter = { completed: false, uncompleted: false } as IFilter;
       const searchTerm = 'test';
       component.searchValue = searchTerm;
-      component.sort = sort;
-      component.filter = filter;
       component.onSerach();
 
       const searchAction = TodoListActions.search({
-        filter,
-        sort,
         search: searchTerm
       });
 
@@ -113,17 +108,11 @@ describe("SearchTodosComponent", () => {
 
   describe('onClearSearch', () => {
     it('should clear search value and do search', () => {
-      const sort = { column: 'title', direction: SortDirection.Asc } as ISort;
-      const filter = { completed: false, uncompleted: false } as IFilter;
       const searchTerm = 'test';
       component.searchValue = searchTerm;
-      component.sort = sort;
-      component.filter = filter;
       component.onClearSearch();
 
       const searchAction = TodoListActions.search({
-        filter,
-        sort,
         search: ''
       });
 
@@ -131,4 +120,4 @@ describe("SearchTodosComponent", () => {
       expect(store.dispatch).toHaveBeenCalledWith(searchAction);
     });
   });
-})
+});

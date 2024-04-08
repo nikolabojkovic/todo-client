@@ -1,29 +1,29 @@
 <div class="p-1">
-  <div class="hstack gap-3">
-    <div class="me-auto m-2 w-100">
-      <input 
-      type="text" 
-      class="form-control form-control-sm" 
-      id="title" 
+  <div class="hstack gap-2">
+    <div class="m-2 w-100 position-relative">
+      <input
+      type="text"
+      class="form-control form-control-sm"
+      id="search-input"
+      #searchInput
       placeholder="Search by title or description"
       [(ngModel)]="searchValue"
       (keyup)="onTyping()"
     >
-    <fa-icon 
-      *ngIf="searchValue !== ''" 
-      [icon]="faCircleXmark" 
+    <fa-icon
+      *ngIf="searchValue !== ''"
+      [icon]="faCircleXmark"
       class="clear-icon"
       (click)="onClearSearch()"></fa-icon>
     </div>
-    <div>
-      <button 
-      type="button" 
-      class="btn btn-sm btn-outline-secondary action-button me-2 " 
+    <button
+      *ngIf="!settings.search.isSearchOnKeyPressEnabled"
+      type="button"
+      class="btn btn-sm btn-outline-secondary action-button me-2 "
       [disabled]="ifSearchIsEmpty"
       (click)="onSerach()"
     >
       Search
     </button>
-    </div>
   </div>
 </div>

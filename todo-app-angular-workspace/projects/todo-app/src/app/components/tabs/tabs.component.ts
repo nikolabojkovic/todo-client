@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
-import { faAdd, faSearch, faFilter, faDownload, IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { faAdd, faSearch, faFilter, faDownload, faGear, IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { Store } from '@ngrx/store';
+
+import { IState, TodoListActions } from '../../shared/state';
 
 type Tab = {
   name: string,
@@ -27,13 +30,22 @@ export class TabsComponent {
     {
       name: 'import-export',
       icon: faDownload
+    } as Tab,
+    {
+      name: 'todo-settings',
+      icon: faGear
     } as Tab
   ];
 
-  active = 'add-todo'
+  active = 'add-todo';
+
+  constructor(private store: Store<IState>) {}
 
   setTab(name: string): void {
     this.active = name;
+    this.store.dispatch(TodoListActions.activeTabChanged({
+      activeTab: this.active
+    }));
   }
 
   tabTrackBy(index: number, tab: Tab) {

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { SortDirection } from "../../models/ISort";
+
+import { SortDirection } from "../../models";
 import { SortIcon } from "./SortIcon";
 
 type Props = {
@@ -21,7 +22,7 @@ export function SortButton({ column, text, disabled, sortDirection, onClick: han
   return(
     <div 
       data-testid={column + "-sort-button-direction-" + direction}
-      className={disabled ? "App__sorting__item App__sorting__item--disabled" : "App__sorting__item"} 
+      className={"App__sorting__item" + (disabled ? " App__sorting__item--disabled" : "")} 
       onClick={() => {
         if (disabled) {
           return;

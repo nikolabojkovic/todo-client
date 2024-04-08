@@ -1,28 +1,38 @@
 import './App.scss';
-import { TodoStateProvider } from './context/TodoListContext';
-import { getList, saveList } from './providers/TodoProvider';
 
-import { Tabs } from './components/Tabs/Tabs';
-import { Sorting } from './components/Sort/Sorting';
-import { TodoList } from './components/TodoList/TodoList';
+import { useEffect } from 'react';
+import { first } from 'rxjs';
 
-import { State } from './context/IState';
-import { ITodo } from './models/Todo';
-import { Footer } from './components/Footer/Footer';
-import { localStorageProvider } from './providers/StorageProvider';
+import LocalTodoListProvider from './providers/TodoProvider';
+import { Tabs, Sorting, TodoList, Paging } from './components';
+import { LocalSettingsProvider } from './providers';
+import { useTodoListDispatch } from './context';
+import { IAction, TodoActions } from './models';
+
+const todoListProvider = new LocalTodoListProvider();
+const settingsProvider = new LocalSettingsProvider();
 
 function App() {   
+  const dispatch = useTodoListDispatch();
+
+  useEffect(() => {
+    settingsProvider.loadSettings().pipe(first()).subscribe((settings) => {
+      dispatch({
+        type: TodoActions.settingsFetched,
+        payload: settings
+      } as IAction);
+    });
+  }, [dispatch]);
+
   return (
     <div className="App" data-bs-theme="dark">
       <header className="App-header">
         Todo List
-      </header>
-      <TodoStateProvider initialState={new State([] as ITodo[])}>
-        <Tabs/>
-        <Sorting/>
-        <TodoList getList={getList} saveList={saveList} storageProvider={localStorageProvider}/>        
-        <Footer />
-      </TodoStateProvider>
+      </header>      
+      <Tabs/>
+      <Sorting/>
+      <TodoList {...{todoListProvider}}/>        
+      <Paging />      
     </div>
   );
 }

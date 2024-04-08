@@ -1,12 +1,12 @@
 import renderer from 'react-test-renderer';
-import { ImportExport } from './ImportExport';
 import { render, screen, fireEvent, act } from '@testing-library/react';
-import { TodoStateProvider, TodosContext, TodosDispatchContext } from '../../context/TodoListContext';
-// import * as TodoContextProvider from '../../context/TodoListContext';
-import { stateTestData } from '../../context/testData';
 import userEvent from '@testing-library/user-event';
-import { IAction, TodoActions } from '../../models/Action';
-import { Todo } from '../../models/Todo';
+
+import { IAction, TodoActions, Todo } from '../../models';
+import { TodoStateProvider, TodosContext, TodosDispatchContext, stateTestData } from '../../context';
+import { ImportExport } from './ImportExport';
+
+// import * as TodoContextProvider from '../../context/TodoListContext';
 
 describe('ImportExport', () => {
   const context = {

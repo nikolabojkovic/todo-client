@@ -1,10 +1,11 @@
 import { first } from "rxjs";
-import { stateTestData } from "../context/testData";
-import { LocalStorageProvider, localStorageProvider } from "./StorageProvider";
 
-const storageProvider = localStorageProvider as LocalStorageProvider;
+import { stateTestData } from "../context";
+import { LocalStorageProvider } from "./StorageProvider";
+
 let storageProviderSpy: jest.SpyInstance<Storage, []>;
 let localStorageMock: Storage;
+const storageProvider = new LocalStorageProvider();
 
 beforeEach(() => {
   storageProviderSpy = jest.spyOn(storageProvider, 'storage', 'get').mockReturnValue(({    

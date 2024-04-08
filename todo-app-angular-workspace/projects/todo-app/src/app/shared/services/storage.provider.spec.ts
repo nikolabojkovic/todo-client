@@ -8,9 +8,9 @@ describe('local storage provider', () => {
     it('should get item from storage', (done: DoneFn) => {
       const localStorageProvider = new LocalStorageProvider();
       const mockedLocalStorage = {
-        getItem: (key: string): Observable<string | null | undefined> => of(JSON.stringify(todos)),
-        setItem: (key: string, value: any): Observable<any> => of({})
-      } as unknown as any;
+        getItem: (): Observable<string | null | undefined> => of(JSON.stringify(todos)),
+        setItem: (): Observable<unknown> => of({})
+      } as unknown as Storage;
       const data = `[{
         id: 1,
         title: "Task 1",
@@ -34,22 +34,22 @@ describe('local storage provider', () => {
     it('should set item to storage', (done: DoneFn) => {
       const localStorageProvider = new LocalStorageProvider();
       const mockedLocalStorage = {
-        getItem: (key: string): Observable<string | null | undefined> => of(JSON.stringify(todos)),
-        setItem: (key: string, value: any): Observable<any> => of({})
-      } as unknown as any;
+        getItem: (): Observable<string | null | undefined> => of(JSON.stringify(todos)),
+        setItem: (): Observable<unknown> => of({})
+      } as unknown as Storage;
       const data = [{
         id: 1,
-        title: "Task 1",
-        description: "Description 1",
+        title: 'Task 1',
+        description: 'Description 1',
         completed: false,
         createdAt: new Date(2022, 1, 4)
       } as Todo] as Todo[];
       spyOnProperty(localStorageProvider, 'storage', 'get').and.returnValue(mockedLocalStorage);
-      spyOn(mockedLocalStorage, 'getItem').and.returnValue({});
-      spyOn(mockedLocalStorage, 'setItem').and.returnValue({});
+      spyOn(mockedLocalStorage, 'getItem').and.returnValue('');
+      spyOn(mockedLocalStorage, 'setItem').and.returnValue();
 
       localStorageProvider.setItem('todo-list',  data)
-        .subscribe((response: any) => {
+        .subscribe(() => {
           expect(mockedLocalStorage.setItem).toHaveBeenCalledWith('todo-list', JSON.stringify(data));
           done();
         });
@@ -60,7 +60,7 @@ describe('local storage provider', () => {
     it('sould return global localStorage object', () => {
       const localStorageProvider = new LocalStorageProvider();
 
-      expect(localStorageProvider.storage).toBe(localStorage)
+      expect(localStorageProvider.storage).toBe(localStorage);
     });
   });
 });
@@ -74,15 +74,8 @@ describe('backend storage provider', () => {
 
   describe('getItem', () => {
     it('should get item from storage', (done: DoneFn) => {
-      const data = `[{
-        id: 1,
-        title: "Task 1",
-        description: "Description 1",
-        completed: false,
-        createdAt: "2024-01-23T10:54:55.504Z"
-      }]`;
       localStorageProvider.getItem('todo-list')
-        .subscribe((value: string | null | undefined) => {
+        .subscribe(() => {
           expect(true).toBe(true);
           done();
         });
@@ -92,14 +85,14 @@ describe('backend storage provider', () => {
   describe('setItem', () => {
     const data = [{
       id: 1,
-      title: "Task 1",
-      description: "Description 1",
+      title: 'Task 1',
+      description: 'Description 1',
       completed: false,
       createdAt: new Date(2022, 1, 4)
     } as Todo] as Todo[];
     it('should set item to storage', (done: DoneFn) => {
       localStorageProvider.setItem('todo-list', data)
-        .subscribe((response: any) => {
+        .subscribe(() => {
           expect(true).toBe(true);
           done();
         });

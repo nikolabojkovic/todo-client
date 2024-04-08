@@ -3,13 +3,13 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Subject } from 'rxjs';
 import { ConfirmModalComponent } from './confirm-modal.component';
 
-import { ConfirmModalService } from "./confirm-modal.service";
+import { ConfirmModalService } from './confirm-modal.service';
 
-describe("ConfirmModalService", () => {
+describe('ConfirmModalService', () => {
   let service: ConfirmModalService;
   let bsModalService: BsModalService;
   let modalRef: BsModalRef<ConfirmModalComponent>;
-  let subject = new Subject<boolean>();
+  const subject = new Subject<boolean>();
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -35,7 +35,8 @@ describe("ConfirmModalService", () => {
 
     it('confirm should display large modal', () => {
       const dialogSize = 'modal-sm';
-      const response = service.confirm('Are you sure?');
+
+      service.confirm('Are you sure?');
 
       expect(bsModalService.show).toHaveBeenCalledOnceWith(ConfirmModalComponent, {class: `${dialogSize} modal-dialog-centered`, backdrop: 'static'});
     });

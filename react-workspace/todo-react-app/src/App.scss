@@ -66,7 +66,7 @@
 
   &__tabs {
     &__header {
-      height: 40px;
+      min-height: 40px;
       display: flex;
       flex-direction: row;
       align-items: flex-end;
@@ -154,15 +154,64 @@
     }
   }
 
+  &__settings {
+    padding: 40px 20px 20px 20px;
+    text-align: left;
+
+    &__group {
+      position: relative;
+      padding: 10px 0px 0px 0px;
+      margin-bottom: 20px;
+      border: 1px solid $text-secondary-color;
+      border-radius: 20px;
+
+      &--disabled {
+        border-color: $text-ternary-color;
+      }
+
+      &-label {
+        color: $text-secondary-color;
+        background: $background-secondary-color;
+        padding: 0px 10px;
+        position: absolute;
+        left: 35px;
+        top: -14px;
+
+        &--disabled {
+          color: $text-ternary-color;
+        }
+      }
+
+      &__item {
+        margin: 10px 20px;
+        color: $text-ternary-color-2;
+
+        &--disabled {
+          color: $text-ternary-color;
+        }
+
+        input {
+          width: 90px;
+          text-align: right;
+        }
+
+        .form-switch {
+          padding: 0px;
+          text-align: right;
+        }
+      }
+    }
+  }
+
   .clear-icon {
     position: absolute;
-    right: 129px;
-    top: 20px;
+    right: 8px;
+    top: 8px;
     color: $text-ternary-color;
     cursor: pointer;
   }
 
-  .footer {
+  .paging {
     color: $text-ternary-color-2;
     background-color: $background-secondary-color;
     padding: 10px 10px;
@@ -183,7 +232,7 @@
   min-width: 90px;
   border-radius: 20px;
   border-color: $text-secondary-color;
-  padding: 4px;
+  padding: 4px 8px;
 
   &:hover {
     background-color: $text-secondary-color;

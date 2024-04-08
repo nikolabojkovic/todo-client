@@ -1,26 +1,34 @@
-import { TestBed } from '@angular/core/testing';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { AppComponent } from './app.component';
-import { SortingComponent } from './components/sorting/sorting.component';
-import { TabsComponent } from './components/tabs/tabs.component';
-import { TodoListComponent } from './components/todo-list/todo-list.component';
-import { provideMockStore, MockStore } from '@ngrx/store/testing';
-import { stateTestData, todos } from './tests/test-data';
-import { IState } from './shared/state/state';
-import { PagingComponent } from './components/paging/paging.component';
-import { PaginationModule } from 'ngx-bootstrap/pagination';
-import { AddTodoComponent } from './components/add-todo/add-todo.component';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { SortButtonComponent } from './components/sort-button/sort-button.component';
-import { SortIconComponent } from './components/sort-icon/sort-icon.component';
-import { StorageProviderKey } from './shared/services/storage.provider';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { provideMockStore } from '@ngrx/store/testing';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { of } from 'rxjs';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { Store, StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { of, throwError } from 'rxjs';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
+
+import { AppComponent } from './app.component';
+import { SortButtonComponent } from './components/sorting/sort-button/sort-button.component';
+import {
+  SortingComponent,
+  TabsComponent,
+  TodoListComponent,
+  PagingComponent,
+  AddTodoComponent,
+  SortIconComponent
+} from './components';
+import { stateTestData, todos } from './tests/test-data';
+import { TodoService, StorageProviderKey, SettingsProviderKey } from './shared/services';
+import { IState, TodoListActions, TodoEffects, todosReducer } from './shared/state';
 
 describe('AppComponent', () => {
-  let store: MockStore<IState>;
+  let component: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
+  let store: Store<IState>;
+  let todoService: TodoService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -39,38 +47,61 @@ describe('AppComponent', () => {
         FontAwesomeModule,
         PaginationModule.forRoot(),
         FormsModule,
-        BsDropdownModule
+        BsDropdownModule,
+        StoreModule.forRoot({ todos: todosReducer }),
+        EffectsModule.forRoot([TodoEffects])
       ],
       providers: [
-        provideMockStore({ stateTestData } as any),
+        provideMockStore({ stateTestData } as never),
         {
           provide: StorageProviderKey,
           useValue: {
-            getItem: (key: string) => of(JSON.stringify(todos)),
-            setItem: (key: string, value: any) => of({})
+            getItem: () => of(JSON.stringify(todos)),
+            setItem: () => of({})
           }
         },
+        {
+          provide: SettingsProviderKey,
+          useValue: {
+            loadSettings: () => of({}),
+            saveSettings: () => of({})
+          }
+        }
       ]
     });
-    store = TestBed.inject(MockStore);
+    fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance;
+    store = TestBed.inject(Store);
+    todoService = TestBed.inject(TodoService);
+    fixture.detectChanges();
+    spyOn(store, 'dispatch').and.callThrough();
   });
 
   it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
+    expect(component).toBeTruthy();
   });
 
-  it(`should have as title 'todo-client-angular'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('todo-client-angular');
+  it('should have as title \'todo-client-angular\'', () => {
+    expect(component.title).toEqual('todo-client-angular');
   });
 
   it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('header')?.textContent).toContain('Todo List');
+  });
+
+  it('should call dispatch with fetch', () => {
+    component.ngOnInit();
+    const action = TodoListActions.fetch();
+
+    expect(store.dispatch).toHaveBeenCalledWith(action);
+  });
+
+  it('should fetch with error', () => {
+    spyOn(todoService, 'getList').and.returnValue(throwError(() => new Error('Invalid data')));
+    component.ngOnInit();
+    const action = TodoListActions.fetch();
+
+    expect(store.dispatch).toHaveBeenCalledWith(action);
   });
 });

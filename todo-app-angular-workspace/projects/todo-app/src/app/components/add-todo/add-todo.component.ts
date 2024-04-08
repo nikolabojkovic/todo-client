@@ -1,16 +1,15 @@
 import { Store } from '@ngrx/store';
 import { Component, OnInit } from '@angular/core';
-import { TodoListActions } from '../../shared/state/todo.actions';
-import { IState } from '../../shared/state/state';
 
+import { TodoListActions, IState } from '../../shared/state';
 @Component({
   selector: 'app-add-todo',
   templateUrl: './add-todo.component.html',
   styleUrls: ['./add-todo.component.scss']
 })
 export class AddTodoComponent implements OnInit {
-  title = ''
-  description = ''
+  title = '';
+  description = '';
 
   constructor(private store: Store<IState>) { }
 
@@ -26,6 +25,6 @@ export class AddTodoComponent implements OnInit {
   }
 
   get ifDataIsMissing(): boolean {
-    return this.title.trim() === '' || this.description.trim() === ''
+    return this.title.trim() === '' || this.description.trim() === '';
   }
 }

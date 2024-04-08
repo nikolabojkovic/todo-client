@@ -1,8 +1,8 @@
 <section class="app__tabs mb-2">
   <section class="app__tabs__header">
     <div id="tabs" class="hstack gap-1 align-items-end">
-      <div 
-        *ngFor="let tab of tabs; trackBy:tabTrackBy" 
+      <div
+        *ngFor="let tab of tabs; trackBy:tabTrackBy"
         [id]="tab.name"
         class="app__tabs__item"
         [ngClass]="{'app__tabs__item--inactive': active !== tab.name}"
@@ -16,8 +16,9 @@
     <div class="todo-background">
       <app-add-todo *ngIf="active === 'add-todo'" class="fade-in"></app-add-todo>
       <app-search-todos *ngIf="active === 'search-todos'" class="fade-in"></app-search-todos>
-      <app-filter-todos *ngIf="active === 'filter-todos'" class="fade-in"></app-filter-todos>  
-      <app-import-export *ngIf="active === 'import-export'" class="fade-in"></app-import-export>  
+      <app-filter-todos *ngIf="active === 'filter-todos'" class=""></app-filter-todos>
+      <app-import-export *ngIf="active === 'import-export'" class="fade-in"></app-import-export>
+      <app-todo-settings *ngIf="active === 'todo-settings'" class="fade-in"></app-todo-settings>
     </div>
-  </section>     
+  </section>
 </section>

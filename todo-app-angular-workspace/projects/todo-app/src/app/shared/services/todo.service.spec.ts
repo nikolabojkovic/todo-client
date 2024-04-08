@@ -1,5 +1,5 @@
-import { Observable, exhaustMap, first, of } from 'rxjs';
-import { IFilter } from '../models/filter';
+import { Observable, first, of } from 'rxjs';
+import { IFilter, StateFilter } from '../models/filter';
 import { ISort, SortDirection } from '../models/sort';
 import { TodoService } from './todo.service';
 import { ITodo } from '../models/todo';
@@ -66,7 +66,7 @@ describe('todo service', () => {
     it('should filter completed todo list', (done: DoneFn) => {
       spyOn(localStorage, 'getItem').and.returnValue(of(JSON.stringify(todos)));
 
-      todoService.getList({completed: true, uncompleted: false} as IFilter)
+      todoService.getList({ state: StateFilter.completed } as IFilter)
         .pipe(first())
         .subscribe((todoList: ITodo[]) => {
           expect(todoList !== null).toBeTruthy();
@@ -79,7 +79,7 @@ describe('todo service', () => {
     it('should filter uncopmleted todo list', (done: DoneFn) => {
       spyOn(localStorage, 'getItem').and.returnValue(of(JSON.stringify(todos)));
 
-      todoService.getList({completed: false, uncompleted: true} as IFilter)
+      todoService.getList({ state: StateFilter.uncompleted } as IFilter)
         .pipe(first())
         .subscribe((todoList: ITodo[]) => {
           expect(todoList !== null).toBeTruthy();
@@ -88,10 +88,10 @@ describe('todo service', () => {
           done();
         });
     }, 100);
-    it('should filter todo list with both filter applied', (done: DoneFn) => {
+    it('should filter todo list', (done: DoneFn) => {
       spyOn(localStorage, 'getItem').and.returnValue(of(JSON.stringify(todos)));
 
-      todoService.getList({completed: true, uncompleted: true} as IFilter)
+      todoService.getList({ state: StateFilter.all } as IFilter)
         .pipe(first())
         .subscribe((todoList: ITodo[]) => {
           expect(todoList !== null).toBeTruthy();
@@ -138,7 +138,7 @@ describe('todo service', () => {
           expect(todoList !== null).toBeTruthy();
           expect(todoList.length).toBe(6);
           expect(todoList[0].title).toBe('Task 1');
-          expect(Date.parse(todoList[0].createdAt.toString())).toBeLessThan(Date.parse(todoList[1].createdAt.toString()))
+          expect(Date.parse(todoList[0].createdAt.toString())).toBeLessThan(Date.parse(todoList[1].createdAt.toString()));
           done();
         });
     }, 100);
@@ -152,7 +152,7 @@ describe('todo service', () => {
           expect(todoList !== null).toBeTruthy();
           expect(todoList.length).toBe(6);
           expect(todoList[5].title).toBe('Task 1');
-          expect(Date.parse(todoList[0].createdAt.toString())).toBeGreaterThan(Date.parse(todoList[1].createdAt.toString()))
+          expect(Date.parse(todoList[0].createdAt.toString())).toBeGreaterThan(Date.parse(todoList[1].createdAt.toString()));
           done();
         });
     }, 100);
@@ -160,7 +160,7 @@ describe('todo service', () => {
 
   describe('search list', () => {
     it('should search todo list', (done: DoneFn) => {
-      var searchTerm = 'Task 1';
+      const searchTerm = 'Task 1';
       spyOn(localStorage, 'getItem').and.returnValue(of(JSON.stringify(todos)));
 
       todoService.getList({} as IFilter, {} as ISort, searchTerm)
@@ -180,15 +180,15 @@ describe('todo service', () => {
         id: 1,
         completed: false,
         createdAt: new Date(2023, 10, 18),
-        description: "Test created description",
-        title: "Test created title"
+        description: 'Test created description',
+        title: 'Test created title'
       } as ITodo] as ITodo[];
-      spyOn(localStorage, 'setItem').and.callFake((key: string, value: any): Observable<any> => of({}));
+      spyOn(localStorage, 'setItem').and.callFake((): Observable<unknown> => of({}));
 
       todoService.saveList(expectedList)
         .pipe(first())
         .subscribe(() => {
-          expect(localStorage.setItem).toHaveBeenCalledWith('todo-list', expectedList)
+          expect(localStorage.setItem).toHaveBeenCalledWith('todo-list', expectedList);
           done();
         });
     }, 100);

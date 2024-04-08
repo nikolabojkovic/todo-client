@@ -1,9 +1,9 @@
 import renderer from 'react-test-renderer';
-import { TodoStateProvider, TodosContext, TodosDispatchContext } from '../../context/TodoListContext';
-import { stateTestData } from '../../context/testData';
-import { Search } from './Search';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { IAction, TodoActions } from '../../models/Action';
+
+import { TodoStateProvider, TodosContext, TodosDispatchContext, stateTestData } from '../../context';
+import { Search } from './Search';
+import { IAction, TodoActions } from '../../models';
 
 describe('Search', () => {
   it('component should match snapshot', () => {
@@ -41,8 +41,6 @@ describe('Search', () => {
     const action = {
       type: TodoActions.search,
       payload: {
-        filter: context.state.filter, 
-        sort: context.state.sort,
         searchTerm: 'Task 1'
       }
     } as IAction;
@@ -136,8 +134,6 @@ describe('Search', () => {
     const searchAction = {
       type: TodoActions.search,
       payload: {
-        filter: context.state.filter, 
-        sort: context.state.sort,
         searchTerm: ''
       }
     } as IAction;
@@ -170,8 +166,6 @@ describe('Search', () => {
     const action = {
       type: TodoActions.search,
       payload: {
-        filter: context.state.filter, 
-        sort: context.state.sort,
         searchTerm: ''
       }
     } as IAction;

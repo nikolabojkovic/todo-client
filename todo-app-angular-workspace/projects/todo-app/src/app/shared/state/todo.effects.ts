@@ -1,27 +1,42 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType, concatLatestFrom } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { of } from 'rxjs';
-import { catchError, exhaustMap, first, map, tap } from 'rxjs/operators';
-import { ITodo } from '../models/todo';
-import { IState } from './state';
-import { TodoService } from '../services/todo.service';
-import { TodoListActions } from './todo.actions';
-import { selectTodos } from './todo.selectors';
-import { IFilter } from '../models/filter';
-import { ISort } from '../models/sort';
+import { EMPTY, of } from 'rxjs';
+import { catchError, exhaustMap, filter, first, map, tap } from 'rxjs/operators';
+
+import {
+  ITodo,
+  ISettings,
+  IFilter,
+  ISort
+} from '../models';
+import {
+  IState,
+  State as TodoState,
+  TodoListActions,
+  selectPaging,
+  selectTodos
+} from './';
+import {
+  TodoService,
+  ISettingsService,
+  SettingsProviderKey,
+  IStorageProvider,
+  StorageProviderKey
+} from '../services';
 
 @Injectable()
 export class TodoEffects {
 
-  updateTodoList$ = createEffect(() => this.actions$.pipe(
-    ofType(
-      TodoListActions.added,
-      TodoListActions.completed,
-      TodoListActions.removed,
-      TodoListActions.imported),
-    concatLatestFrom(action => this.store.select(selectTodos)),
-      tap(([action, todoList]) => this.todoService.saveList(todoList.originalList))
+  saveTodoList$ = createEffect(() => this.actions$
+    .pipe(
+      ofType(
+        TodoListActions.added,
+        TodoListActions.completed,
+        TodoListActions.removed,
+        TodoListActions.imported),
+      concatLatestFrom(() => this.store.select(selectTodos).pipe(first())),
+      tap(([, todoList]) => this.todoService.saveList(todoList.originalList).pipe(first()))
     ),
     { dispatch: false }
   );
@@ -38,8 +53,7 @@ export class TodoEffects {
         .pipe(
           first(),
           map((list: ITodo[]) => TodoListActions.fetched({ list })),
-          catchError((err) => {
-            // console.error("error catched in effect: " + err);
+          catchError(() => {
             return of(TodoListActions.fetched({ list: [] as ITodo[] }));
           })
         )
@@ -50,21 +64,20 @@ export class TodoEffects {
   searchTodoList$ = createEffect(() =>
     this.actions$.pipe(
       ofType(TodoListActions.search),
-      exhaustMap((action: any) =>
-        this.todoService.getList(
-          action.filter,
-          action.sort,
-          action.search)
-          .pipe(
-            first(),
-            map((list: ITodo[]) =>
-              TodoListActions.searched({
-                searchTerm: action.search,
-                activePage: 1,
-                list: list
-              })
-            )
+      concatLatestFrom(() => this.store.select(selectTodos).pipe(first())),
+      exhaustMap(([action, state]) => this.todoService.getList(
+        state.filter,
+        state.sort,
+        action.search)
+        .pipe(
+          first(),
+          map((list: ITodo[]) =>
+            TodoListActions.searched({
+              activePage: 1,
+              list: list
+            })
           )
+        )
       )
     )
   );
@@ -72,11 +85,11 @@ export class TodoEffects {
   filterTodoList$ = createEffect(() =>
     this.actions$.pipe(
       ofType(TodoListActions.filter),
-      exhaustMap((action: any) =>
-        this.todoService.getList(
+      concatLatestFrom(() => this.store.select(selectTodos).pipe(first())),
+      exhaustMap(([action, state]) => this.todoService.getList(
           action.filter,
-          action.sort,
-          action.search)
+          state.sort,
+          state.search.searchTerm)
           .pipe(
             first(),
             map((list: ITodo[]) =>
@@ -94,11 +107,11 @@ export class TodoEffects {
   sortTodoList$ = createEffect(() =>
   this.actions$.pipe(
     ofType(TodoListActions.sort),
-    exhaustMap((action: any) =>
-      this.todoService.getList(
-        action.filter,
+    concatLatestFrom(() => this.store.select(selectTodos).pipe(first())),
+    exhaustMap(([action, state]) => this.todoService.getList(
+        state.filter,
         action.sort,
-        action.search)
+        state.search.searchTerm)
         .pipe(
           first(),
           map((list: ITodo[]) =>
@@ -126,9 +139,67 @@ export class TodoEffects {
     )
   );
 
+  saveSettings$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TodoListActions.settingsUpdated),
+      exhaustMap((action) => this.settingsService.saveSettings(action.payload).pipe(first()))
+    ),
+    { dispatch: false }
+  );
+
+  loadSettings$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TodoListActions.settingsFetch),
+      exhaustMap(() =>
+        this.settingsService.loadSettings()
+          .pipe(
+            first(),
+            map((settings: ISettings) => TodoListActions.settingsFetched({ payload: settings })),
+            catchError(() => {
+              return of(TodoListActions.settingsFetched({ payload: new TodoState([]).settings }));
+            })
+          )
+      )
+    )
+  );
+
+  savePaging$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(
+        TodoListActions.pagingUpdated,
+        TodoListActions.added,
+        TodoListActions.removed
+      ),
+      concatLatestFrom(() => this.store.select(selectPaging).pipe(first())),
+        tap(([, paging]) => this.storageProvider.setItem('todo-paging', paging).pipe(first()))
+      ),
+      { dispatch: false }
+  );
+
+  loadPaging$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TodoListActions.pagingFetch),
+      exhaustMap(() =>
+        this.storageProvider.getItem('todo-paging')
+          .pipe(
+            first(),
+            filter(data => !!data),
+            map((pagingData: string | null | undefined) => TodoListActions.pagingFetched({ paging: JSON.parse(pagingData!)})),
+            catchError(() => {
+              return EMPTY;
+            })
+          )
+      )
+    )
+  );
+
   constructor(
     private actions$: Actions,
     private todoService: TodoService,
+    @Inject(SettingsProviderKey) private settingsService: ISettingsService,
+    @Inject(StorageProviderKey) private storageProvider: IStorageProvider,
     private store: Store<IState>
   ) {}
 }
+
+

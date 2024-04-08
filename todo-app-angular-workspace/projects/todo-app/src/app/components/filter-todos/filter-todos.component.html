@@ -1,14 +1,25 @@
 <div class="app__filter d-flex justify-content-start align-items-center">
   <div class="hstack gap-3">
-    <div>
-      <mat-slide-toggle [(ngModel)]="isCompleted" (click)="onFilter()">
-        Completed
-      </mat-slide-toggle>
-    </div>
-    <div>
-      <mat-slide-toggle [(ngModel)]="isUncompleted" (click)="onFilter()">
-        Uncompleted
-      </mat-slide-toggle>
+    <div
+      class="btn-group"
+      dropdown
+    >
+      <button
+        id="button-basic"
+        dropdownToggle
+        type="button"
+        class="action-button dropdown-toggle btn btn-outline-secondary"
+        aria-controls="dropdown-paging"
+        [disabled]="isLoading$ | async"
+      >
+        {{stateFilter}}
+      </button>
+      <ul id="dropdown-paging" *dropdownMenu class="dropdown-menu"
+          role="menu" aria-labelledby="button-paging">
+        <li role="menuitem" (click)="onFilter(StateFilter.all)"><a class="dropdown-item" href="#">{{StateFilter.all}}</a></li>
+        <li role="menuitem" (click)="onFilter(StateFilter.completed)"><a class="dropdown-item" href="#">{{StateFilter.completed}}</a></li>
+        <li role="menuitem" (click)="onFilter(StateFilter.uncompleted)"><a class="dropdown-item" href="#">{{StateFilter.uncompleted}}</a></li>
+      </ul>
     </div>
   </div>
 </div>

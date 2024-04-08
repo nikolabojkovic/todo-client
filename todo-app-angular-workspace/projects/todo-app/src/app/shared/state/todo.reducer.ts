@@ -1,33 +1,46 @@
 import { createReducer, on } from '@ngrx/store';
 
-import { TodoListActions } from './todo.actions';
-import { IState, State } from './state';
-import { IPaging } from '../models/paging';
-import { ITodo } from '../models/todo';
+import { IState, State, TodoListActions } from './';
+import { IPaging, ITodo, StateFilter, ISettings } from '../models';
 
 export const initialState: IState = new State([] as ITodo[]);
 
 export const todosReducer = createReducer(
   initialState,
 
-  on(TodoListActions.loadingStarted, (_state, { }) =>{
+  on(TodoListActions.loadingStarted, (state) => {
     return {
-      ..._state,
+      ...state,
       isLoading: true
-    } as IState
+    } as IState;
   }),
-
-  on(TodoListActions.fetched, (_state, { list }) =>{
+  on(TodoListActions.activeTabChanged, (state, { activeTab }) => {
     return {
-      ...new State(list)
-    } as IState
+      ...state,
+      activeTab
+    } as IState;
   }),
-  on(TodoListActions.searched, (todoList, { searchTerm, activePage, list }) => {
+  on(TodoListActions.fetched, (state, { list }) => {
+    return {
+      ...state,
+      isLoading: false,
+      originalList: list,
+      displayList: list,
+      paging: {
+        ...state.paging,
+        totalCount: list.length,
+        activePage: 1,
+        itemsPerPage: 5,
+        startIndex: 0,
+        endIndex: 5
+      } as IPaging,
+    };
+  }),
+  on(TodoListActions.searched, (todoList, { activePage, list }) => {
     return {
       ...todoList,
       isLoading: false,
       displayList: [...list],
-      search: { searchTerm: searchTerm },
       paging: {
         ...todoList.paging,
         activePage: activePage,
@@ -35,7 +48,7 @@ export const todosReducer = createReducer(
         startIndex: (activePage - 1) * todoList.paging.itemsPerPage,
         endIndex: activePage * todoList.paging.itemsPerPage
       } as IPaging
-    } as IState
+    } as IState;
   }),
   on(TodoListActions.filtered, (todoList, { activePage, filter, list }) => {
     return {
@@ -50,7 +63,7 @@ export const todosReducer = createReducer(
         startIndex: (activePage - 1) * todoList.paging.itemsPerPage,
         endIndex: activePage * todoList.paging.itemsPerPage
       } as IPaging
-    } as IState
+    } as IState;
   }),
   on(TodoListActions.sorted, (todoList, {sort, list} ) => {
     return {
@@ -59,7 +72,7 @@ export const todosReducer = createReducer(
       displayList: [...list],
       sort: {...sort},
       paging: {...todoList.paging} as IPaging
-    } as IState
+    } as IState;
   }),
   on(TodoListActions.imported, (todoList, { activePage, list }) => {
     return {
@@ -68,9 +81,8 @@ export const todosReducer = createReducer(
       displayList: [...list],
       search: { searchTerm: '' },
       filter: {
-        completed: false,
-        uncompleted: false
-       },
+        state: StateFilter.all
+      },
       paging: {
         ...todoList.paging,
         activePage: activePage,
@@ -78,9 +90,28 @@ export const todosReducer = createReducer(
         startIndex: (activePage - 1) * todoList.paging.itemsPerPage,
         endIndex: activePage * todoList.paging.itemsPerPage
       } as IPaging
-    } as IState
+    } as IState;
   }),
 
+  on(TodoListActions.searchTermUpdated, (todoList, { searchTerm }) => {
+    return {
+      ...todoList,
+      search: { searchTerm },
+    };
+  }),
+  on(TodoListActions.pagingFetched, (state, { paging }) => {
+    return {
+      ...state,
+      paging: {
+        ...state.paging,
+        totalCount: paging.totalCount,
+        activePage: paging.activePage,
+        itemsPerPage: paging.itemsPerPage,
+        startIndex: (paging.activePage - 1) * paging.itemsPerPage,
+        endIndex: paging.activePage * paging.itemsPerPage
+      } as IPaging
+    } as IState;
+  }),
   on(TodoListActions.pagingUpdated, (todoList, { activePage, itemsPerPage }) => {
     return {
       ...todoList,
@@ -91,13 +122,23 @@ export const todosReducer = createReducer(
         startIndex: (activePage - 1) * itemsPerPage,
         endIndex: activePage * itemsPerPage
       } as IPaging
-    } as IState
+    } as IState;
   }),
-  on(TodoListActions.searchTermUpdated, (todoList, { searchTerm }) => {
+  on(TodoListActions.settingsFetched,(state, { payload }) => {
+    return {
+      ...state,
+      settings: {
+        ...payload
+      } as ISettings
+    };
+  }),
+  on(TodoListActions.settingsUpdated, (todoList, { payload }) => {
     return {
       ...todoList,
-      search: { searchTerm },
-    }
+      settings: {
+        ...payload
+      } as ISettings
+    };
   }),
 
   on(TodoListActions.added, (todoList, { title, description } ) => {
@@ -111,7 +152,7 @@ export const todosReducer = createReducer(
       description,
       completed: false,
       createdAt: new Date()
-    }
+    };
     return {
       ...todoList,
       originalList: [...todoList.originalList, newTodo],

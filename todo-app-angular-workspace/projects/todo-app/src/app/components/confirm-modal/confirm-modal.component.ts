@@ -1,4 +1,4 @@
-import { Component, TemplateRef } from '@angular/core';
+import { Component } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Subject } from 'rxjs';
 
@@ -12,12 +12,12 @@ export class ConfirmModalComponent {
   modalRef!: BsModalRef;
   text: string = 'Are you sure?';
   constructor() {}
- 
+
   confirm(): void {
     this.result.next(true);
     this.modalRef?.hide();
   }
- 
+
   decline(): void {
     this.result.next(false);
     this.modalRef?.hide();

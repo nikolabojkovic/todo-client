@@ -1,7 +1,8 @@
 import renderer from 'react-test-renderer';
-import { SortButton } from './SortButton';
-import { SortDirection } from '../../models/ISort';
 import { fireEvent, render, screen } from '@testing-library/react';
+
+import { SortButton } from './SortButton';
+import { SortDirection } from '../../models';
 
 describe('ImportExport', () => {
   const handleSort = jest.fn();

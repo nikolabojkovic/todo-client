@@ -1,22 +1,22 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideMockStore, MockStore } from '@ngrx/store/testing';
-import { stateTestData, todos } from '../../tests/test-data';
-import { PagingComponent } from './paging.component';
-import { IState } from '../../shared/state/state';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { PageChangedEvent, PaginationModule } from 'ngx-bootstrap/pagination';
 import { FormsModule } from '@angular/forms';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { SortButtonModule } from 'sort-button';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+
 import { Store, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { todosReducer } from '../../shared/state/todo.reducer';
-import { TodoEffects } from '../../shared/state/todo.effects';
-import { StorageProviderKey } from '../../shared/services/storage.provider';
-import { TodoListActions } from '../../shared/state/todo.actions';
 import { of } from 'rxjs';
+
+import { SortButtonModule } from 'sort-button';
+
+import { todos } from '../../tests/test-data';
+import { PagingComponent } from './paging.component';
+import { IState, todosReducer, TodoEffects, TodoListActions } from '../../shared/state';
+import { StorageProviderKey, SettingsProviderKey } from '../../shared/services';
 
 describe('PagingComponent', () => {
   let component: PagingComponent;
@@ -37,13 +37,22 @@ describe('PagingComponent', () => {
         StoreModule.forRoot({ todos: todosReducer }),
         EffectsModule.forRoot([TodoEffects])
       ],
-      providers: [{
-        provide: StorageProviderKey,
-        useValue: {
-          getItem: (key: string) => of(JSON.stringify(todos)),
-          setItem: (key: string, value: any) => of({})
+      providers: [
+        {
+          provide: StorageProviderKey,
+          useValue: {
+            getItem: () => of(JSON.stringify(todos)),
+            setItem: () => of({})
+          }
+        },
+        {
+          provide: SettingsProviderKey,
+          useValue: {
+            loadSettings: () => of({}),
+            saveSettings: () => of({})
+          }
         }
-      }]
+      ]
     });
     fixture = TestBed.createComponent(PagingComponent);
     component = fixture.componentInstance;
@@ -53,9 +62,9 @@ describe('PagingComponent', () => {
   });
 
   it('should change page on pageChange', () => {
-    component.activePage = 1;
+    component.activePage = 3;
     component.itemsPerPage = 10;
-    component.onPageChange({page: 3} as PageChangedEvent);
+    component.onPageClick();
 
     const action = TodoListActions.pagingUpdated({
       activePage: 3,

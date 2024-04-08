@@ -1,23 +1,21 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { IState } from '../../shared/state/state';
-import { ITodo, Todo } from '../../shared/models/todo';
-import { selectTodos } from '../../shared/state/todo.selectors';
+import { Subscription, first } from 'rxjs';
 import { faFileExport, faFileImport } from '@fortawesome/free-solid-svg-icons';
-import { TodoListActions } from '../../shared/state/todo.actions';
-import { Event } from '../../shared/models/event';
-import { ConfirmModalService } from '../confirm-modal/confirm-modal.service';
-import { first } from 'rxjs';
-import { AlertService } from '../../shared/services/alert.service';
+
+import { IState, selectTodos, TodoListActions } from '../../shared/state';
+import { ITodo, Todo, Event } from '../../shared/models';
+import { ConfirmModalService } from '../';
+import { AlertService } from '../../shared/services';
 
 @Component({
   selector: 'app-import-export',
   templateUrl: './import-export.component.html',
   styleUrls: ['./import-export.component.scss']
 })
-export class ImportExportComponent implements OnInit {
+export class ImportExportComponent implements OnInit, OnDestroy {
 
-  @ViewChild("fileContainer") fileContainer!: ElementRef<HTMLInputElement>;
+  @ViewChild('fileContainer') fileContainer!: ElementRef<HTMLInputElement>;
 
   items: ITodo[] = [];
   file: File | null = null;
@@ -30,17 +28,22 @@ export class ImportExportComponent implements OnInit {
     private store: Store<IState>,
     private modalService: ConfirmModalService,
     private alertService: AlertService) { }
+    private subscription!: Subscription;
 
   ngOnInit(): void {
-    this.store.select(selectTodos)
+    this.subscription = this.store.select(selectTodos)
       .pipe()
       .subscribe((todoList: IState) => this.items = todoList.originalList);
 
     this.fileReader.onload = this.onLoad;
   }
 
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
   get ifExportDisabled() {
-    return !this.items || this.items.length === 0
+    return !this.items || this.items.length === 0;
   }
 
   onImport(): void {
@@ -55,7 +58,7 @@ export class ImportExportComponent implements OnInit {
       this.file = null;
       this.fileContainer.nativeElement.value = '';
     }
-  }
+  };
 
   onExport(): HTMLAnchorElement {
     const jsonContent = `data:text/json;chatset=utf-8,${encodeURIComponent(
@@ -78,7 +81,7 @@ export class ImportExportComponent implements OnInit {
     const list = JSON.parse(text as string) as Todo[];
 
     if (!(list instanceof Array)) {
-      this.alertService.alert("Invalid JSON file content. Todo list should be an array.");
+      this.alertService.alert('Invalid JSON file content. Todo list should be an array.');
 
       return;
     }
@@ -94,7 +97,7 @@ export class ImportExportComponent implements OnInit {
          || !(Todo.validateFields(importedTodoList[0]))
             )
         )) {
-      this.alertService.alert("Invalid JSON file content. Objects in array are not valid Todo objects.");
+      this.alertService.alert('Invalid JSON file content. Objects in array are not valid Todo objects.');
 
       return;
     }

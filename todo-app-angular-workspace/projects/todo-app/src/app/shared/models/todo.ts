@@ -6,7 +6,7 @@ export interface ITodo {
 	createdAt: Date;
 }
 
-export class Todo implements ITodo {	
+export class Todo implements ITodo {
 	id: number;
 	title: string;
 	description: string;
@@ -26,6 +26,6 @@ export class Todo implements ITodo {
 			&& todo.title !== undefined
 			&& todo.description !== undefined
 			&& todo.completed !== undefined
-			&& todo.createdAt !== undefined
+			&& todo.createdAt !== undefined;
 	}
 }

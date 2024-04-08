@@ -1,19 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { IState } from '../../shared/state/state';
-import { TodoItemComponent } from './todo-item.component';
-import { ITodo } from '../../shared/models/todo';
+import { Store, StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { of } from 'rxjs';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { ConfirmModalService } from '../confirm-modal/confirm-modal.service';
-import { of } from 'rxjs';
-import { Store, StoreModule } from '@ngrx/store';
-import { todosReducer } from '../../shared/state/todo.reducer';
-import { EffectsModule } from '@ngrx/effects';
-import { TodoEffects } from '../../shared/state/todo.effects';
-import { TodoListActions } from '../../shared/state/todo.actions';
-import { StorageProviderKey } from '../../shared/services/storage.provider';
+
+import { ITodo } from '../../shared/models/todo';
 import { todos } from '../../tests/test-data';
-import { TodoService } from '../../shared/services/todo.service';
+import { ConfirmModalService, TodoItemComponent } from '../';
+import { TodoService, SettingsProviderKey, StorageProviderKey } from '../../shared/services';
+import { IState, todosReducer, TodoEffects, TodoListActions } from '../../shared/state';
 
 describe('TodoItemComponent', () => {
   let component: TodoItemComponent;
@@ -37,12 +33,26 @@ describe('TodoItemComponent', () => {
             getList: () => of(todos),
             saveList: () => of({})
           }
+        },
+        {
+          provide: StorageProviderKey,
+          useValue: {
+            getItem: () => of(JSON.stringify(todos))
+          }
+        },
+        {
+          provide: SettingsProviderKey,
+          useValue: {
+            loadSettings: () => of({}),
+            saveSettings: () => of({})
+          }
         }
       ]
     });
     store = TestBed.inject(Store);
     fixture = TestBed.createComponent(TodoItemComponent);
     component = fixture.componentInstance;
+    fixture.detectChanges();
     spyOn(TestBed.inject(ConfirmModalService), 'confirm').and.returnValue(of(true));
     spyOn(store, 'dispatch').and.callFake(() => {});
   });
@@ -50,8 +60,8 @@ describe('TodoItemComponent', () => {
   describe('component render', () => {
     it('uncompleted todo should render 2 icons', () => {
       const expectedTodo = {
-        title: "test title",
-        description: "test description",
+        title: 'test title',
+        description: 'test description',
         completed: false,
         createdAt: new Date(2023, 19, 10),
         id: 1
@@ -67,8 +77,8 @@ describe('TodoItemComponent', () => {
 
     it('completed todo should render complete icon disabled', () => {
       const expectedTodo = {
-        title: "test title",
-        description: "test description",
+        title: 'test title',
+        description: 'test description',
         completed: true,
         createdAt: new Date(2023, 19, 10),
         id: 1
@@ -86,8 +96,8 @@ describe('TodoItemComponent', () => {
   describe('component behavours', () => {
     it('not completed todo onComplete should complete todo', () => {
       const expectedTodo = {
-        title: "test title",
-        description: "test description",
+        title: 'test title',
+        description: 'test description',
         completed: false,
         createdAt: new Date(2023, 19, 10),
         id: 1
@@ -102,8 +112,8 @@ describe('TodoItemComponent', () => {
 
     it('completed todo onComplete should not complete todo', () => {
       const expectedTodo = {
-        title: "test title",
-        description: "test description",
+        title: 'test title',
+        description: 'test description',
         completed: true,
         createdAt: new Date(2023, 19, 10),
         id: 1
@@ -117,8 +127,8 @@ describe('TodoItemComponent', () => {
     });
     it('onRemove should remove todo', () => {
       const expectedTodo = {
-        title: "test title",
-        description: "test description",
+        title: 'test title',
+        description: 'test description',
         completed: false,
         createdAt: new Date(2023, 19, 10),
         id: 1

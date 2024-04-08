@@ -1,36 +1,50 @@
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { SortButtonModule } from 'sort-button';
-import { todosReducer } from './shared/state/todo.reducer';
+
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
+import { TodoEffects, todosReducer } from './shared/state';
+
+import { SortButtonModule } from 'sort-button';
 
 import { AppComponent } from './app.component';
-import { TodoItemComponent } from './components/todo-item/todo-item.component';
-import { TodoListComponent } from './components/todo-list/todo-list.component';
-import { TabsComponent } from './components/tabs/tabs.component';
-import { AddTodoComponent } from './components/add-todo/add-todo.component';
-import { SearchTodosComponent } from './components/search-todos/search-todos.component';
-import { FormsModule } from '@angular/forms';
-import { FilterTodosComponent } from './components/filter-todos/filter-todos.component';
-import { ImportExportComponent } from './components/import-export/import-export.component';
-import { TodoService } from './shared/services/todo.service';
-import { PagingComponent } from './components/paging/paging.component';
-import { SortingComponent } from './components/sorting/sorting.component';
-import { SortButtonComponent } from './components/sort-button/sort-button.component';
-import { SortIconComponent } from './components/sort-icon/sort-icon.component';
-import { TodoEffects } from './shared/state/todo.effects';
-import { LocalStorageProvider, StorageProviderKey } from './shared/services/storage.provider';
-import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.component';
-import { BsModalService } from 'ngx-bootstrap/modal';
-import { ConfirmModalService } from './components/confirm-modal/confirm-modal.service';
-import { LoaderComponent } from './components/loader/loader.component';
-import { AlertService } from './shared/services/alert.service';
+import {
+  LoaderComponent,
+  ConfirmModalComponent,
+  AddTodoComponent,
+  ImportExportComponent,
+  SearchTodosComponent,
+  FilterTodosComponent,
+  PagingComponent,
+  TabsComponent,
+  TodoItemComponent,
+  TodoListComponent,
+  TodoSettingsComponent,
+  GeneralSettingsComponent,
+  SearchSettingsComponent,
+  PaginationSettingsComponent,
+  SortingComponent,
+  SortButtonComponent,
+  SortIconComponent,
+  ConfirmModalService
+} from './components';
+
+import {
+  AlertService,
+  LocalSettingsService,
+  TodoService,
+  LocalStorageProvider,
+  StorageProviderKey,
+  SettingsProviderKey
+} from './shared/services';
 
 
 @NgModule({
@@ -49,6 +63,10 @@ import { AlertService } from './shared/services/alert.service';
     SortIconComponent,
     ConfirmModalComponent,
     LoaderComponent,
+    TodoSettingsComponent,
+    GeneralSettingsComponent,
+    SearchSettingsComponent,
+    PaginationSettingsComponent
   ],
   imports: [
     BrowserModule,
@@ -67,6 +85,10 @@ import { AlertService } from './shared/services/alert.service';
     {
       provide: StorageProviderKey,
       useClass: LocalStorageProvider
+    },
+    {
+      provide: SettingsProviderKey,
+      useClass: LocalSettingsService
     },
     TodoService,
     ConfirmModalService,

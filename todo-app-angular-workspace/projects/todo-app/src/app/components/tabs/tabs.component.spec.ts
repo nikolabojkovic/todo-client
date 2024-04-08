@@ -1,22 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { AddTodoComponent } from '../add-todo/add-todo.component';
-import { provideMockStore, MockStore } from '@ngrx/store/testing';
-import { stateTestData, todos } from '../../tests/test-data';
-import { IState } from '../../shared/state/state';
-
-import { TabsComponent } from './tabs.component';
 import { FormsModule } from '@angular/forms';
-import { SearchTodosComponent } from '../search-todos/search-todos.component';
-import { ImportExportComponent } from '../import-export/import-export.component';
-import { StorageProviderKey } from '../../shared/services/storage.provider';
-import { TodoService } from '../../shared/services/todo.service';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 import { of } from 'rxjs';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
+import { todos } from '../../tests/test-data';
+import { SearchTodosComponent, TabsComponent, ImportExportComponent, AddTodoComponent } from '../';
+import { TodoService, SettingsProviderKey, StorageProviderKey } from '../../shared/services';
+import { todosReducer, TodoEffects } from '../../shared/state';
 
 describe('TabsComponent', () => {
   let component: TabsComponent;
   let fixture: ComponentFixture<TabsComponent>;
-  let store: MockStore<IState>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -27,22 +23,37 @@ describe('TabsComponent', () => {
         SearchTodosComponent,
         ImportExportComponent
       ],
-      imports: [FontAwesomeModule, FormsModule],
+      imports: [
+        FontAwesomeModule,
+        FormsModule,
+        StoreModule.forRoot({ todos: todosReducer }),
+        EffectsModule.forRoot([TodoEffects])
+      ],
       providers: [
-        provideMockStore({ stateTestData } as any),
-        TodoService,
+        {
+          provide: TodoService,
+          useValue: {
+            getList: () => of(todos),
+            saveList: () => of({})
+          }
+        },
         {
           provide: StorageProviderKey,
           useValue: {
-            getItem: (key: string) => of(JSON.stringify(todos)),
-            setItem: (key: string, value: any) => of({})
+            getItem: () => of(JSON.stringify(todos))
+          }
+        },
+        {
+          provide: SettingsProviderKey,
+          useValue: {
+            loadSettings: () => of({}),
+            saveSettings: () => of({})
           }
         }
       ]
     });
     fixture = TestBed.createComponent(TabsComponent);
     component = fixture.componentInstance;
-    store = TestBed.inject(MockStore);
     fixture.detectChanges();
   });
 
@@ -61,7 +72,6 @@ describe('TabsComponent', () => {
 
   it('should change active tab', () => {
     component.setTab(component.tabs[1].name);
-    fixture.detectChanges();
 
     expect(component.active).toBe(component.tabs[1].name);
   });

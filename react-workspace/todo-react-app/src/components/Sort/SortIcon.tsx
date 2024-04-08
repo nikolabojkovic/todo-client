@@ -1,6 +1,7 @@
 import { faSortDown, faSortUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { SortDirection } from '../../models/ISort';
+
+import { SortDirection } from '../../models';
 
 type Props = {
   sortDirection: SortDirection,

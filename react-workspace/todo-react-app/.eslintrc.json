@@ -19,7 +19,10 @@
         "react"
     ],
     "rules": {
-        "semi": [1, "always"],
+        "semi": [
+            "error",
+            "always"
+        ],
         "@typescript-eslint/no-non-null-assertion": "off"
     }
 }

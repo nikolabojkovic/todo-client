@@ -1,11 +1,10 @@
 import renderer, { act } from 'react-test-renderer';
-import { FilterTodos } from './FilterTodos';
-import { IFilter, StateFilter } from '../../models/IFilter';
-import { TodoStateProvider, TodosContext, TodosDispatchContext } from '../../context/TodoListContext';
-import { stateTestData } from '../../context/testData';
 import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { IAction, TodoActions } from '../../models/Action';
+
+import { FilterTodos } from './FilterTodos';
+import { TodoStateProvider, TodosContext, TodosDispatchContext, stateTestData } from '../../context';
+import { IAction, TodoActions, IFilter, StateFilter } from '../../models';
 
 describe('FilterTodos', () => {  
   it('component should render all option', () => {
@@ -65,8 +64,6 @@ describe('FilterTodos', () => {
         filter: { 
           state: StateFilter.all
         } as IFilter, 
-        sort: context.state.sort,
-        searchTerm: context.state.search.searchTerm
       }
     } as IAction;
     const filterDropdown = screen.getByTestId('filter-option-all');
@@ -101,8 +98,6 @@ describe('FilterTodos', () => {
         filter: { 
           state: StateFilter.completed
         } as IFilter, 
-        sort: context.state.sort,
-        searchTerm: context.state.search.searchTerm
       }
     } as IAction;
     let selectedFilterOption = screen.getByTestId('selected-filter-option');
@@ -142,9 +137,7 @@ describe('FilterTodos', () => {
       payload: {
         filter: { 
           state: StateFilter.uncompleted
-        } as IFilter, 
-        sort: context.state.sort,
-        searchTerm: context.state.search.searchTerm
+        } as IFilter,
       }
     } as IAction;
     

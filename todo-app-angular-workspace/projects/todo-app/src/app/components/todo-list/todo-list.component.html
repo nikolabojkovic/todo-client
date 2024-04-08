@@ -1,6 +1,14 @@
-<section class="app__todo-list">
-  <app-loader *ngIf="isLoading$ | async"></app-loader>
-  <section *ngIf="(isLoading$ | async) === false" class="fade-in">
+<section
+  class="app__todo-list"
+  [style]="(settings$ | async)?.general?.listSizeType == ListContainerType.Fixed
+  ? {
+      height: '' + (settings$ | async)?.general?.fixedListSize + 'px',
+      overflow: 'overlay'
+    }
+  : {}"
+>
+  <app-loader *ngIf="isLoading$ | async" class="fade-in"></app-loader>
+  <section *ngIf="(isLoading$ | async) === false">
     <app-todo-item *ngFor="let item of items$ | async" [todo]="item"></app-todo-item>
     <div *ngIf="(items$ | async)?.length === 0" class='text-light mt-5 mb-5'>No data</div>
   </section>
