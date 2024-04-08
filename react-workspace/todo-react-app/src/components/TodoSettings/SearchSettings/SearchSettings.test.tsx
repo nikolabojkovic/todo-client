@@ -1,10 +1,10 @@
 import renderer from 'react-test-renderer';
-import { TodosContext, TodosDispatchContext } from "../../../context/TodoListContext";
-import { stateTestData } from "../../../context/testData";
-import { SearchSettings } from "./SearchSettings";
 import { render } from '@testing-library/react';
 
-describe('', () => {
+import { TodosContext, TodosDispatchContext, stateTestData } from "../../../context";
+import { SearchSettings } from "./SearchSettings";
+
+describe('SearchSettings', () => {
   const globalContext = {
     state: {
       ...stateTestData,
@@ -12,7 +12,7 @@ describe('', () => {
     dispatch: jest.fn()
   };
   
-  it('match snapshot pagination settings', () => {
+  it('match snapshot search settings', () => {
     const context = {
       ...globalContext,
       state: { 

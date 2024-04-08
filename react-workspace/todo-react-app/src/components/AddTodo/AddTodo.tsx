@@ -1,7 +1,8 @@
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { useState } from 'react';
-import { useTodoListDispatch } from '../../context/TodoListContext';
-import { IAction, TodoActions } from '../../models/Action';
+
+import { useTodoListDispatch } from '../../context';
+import { IAction, TodoActions } from '../../models';
 
 export function AddTodo() {
   const [title, setTitle] = useState('');

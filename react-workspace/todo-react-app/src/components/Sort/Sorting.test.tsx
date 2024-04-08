@@ -1,8 +1,8 @@
 import renderer from 'react-test-renderer';
-import { Sorting } from './Sorting';
-import { stateTestData } from '../../context/testData';
-import { TodoStateProvider } from '../../context/TodoListContext';
 import { fireEvent, render, screen } from '@testing-library/react';
+
+import { Sorting } from './Sorting';
+import { TodoStateProvider, stateTestData } from '../../context';
 
 describe('ImportExport', () => {
   it('component should match snapshot', () => {

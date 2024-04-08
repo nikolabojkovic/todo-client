@@ -1,10 +1,10 @@
 import renderer from 'react-test-renderer';
 import { render } from "@testing-library/react";
-import { TodosContext, TodosDispatchContext } from "../../../context/TodoListContext";
-import { GeneralSettings } from "./GeneralSettings";
-import { stateTestData } from '../../../context/testData';
 
-describe('General settings', () => {
+import { TodosContext, TodosDispatchContext, stateTestData } from "../../../context";
+import { GeneralSettings } from "./GeneralSettings";
+
+describe('GeneralSettings', () => {
   const globalContext = {
     state: {
       ...stateTestData,

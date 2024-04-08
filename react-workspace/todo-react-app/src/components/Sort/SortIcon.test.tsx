@@ -1,6 +1,7 @@
 import renderer from 'react-test-renderer';
+
 import { SortIcon } from './SortIcon';
-import { SortDirection } from '../../models/ISort';
+import { SortDirection } from '../../models';
 
 describe('ImportExport', () => {
   it('component should match snapshot for asc direction', () => {

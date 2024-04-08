@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { Stack } from 'react-bootstrap';
 import { faTrash, faCheckDouble } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useTodoList, useTodoListDispatch } from '../../context/TodoListContext';
-import { IAction, TodoActions } from '../../models/Action';
-import { ITodo } from '../../models/Todo';
-import { ConfirmModal } from '../ConfirmModal/ConfirmModal';
+
+import { useTodoList, useTodoListDispatch } from '../../context';
+import { ITodo, IAction, TodoActions } from '../../models';
+import { ConfirmModal } from '../';
 
 type Props = {
   todo: ITodo;

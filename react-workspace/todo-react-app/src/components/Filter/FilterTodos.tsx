@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Form, Stack } from "react-bootstrap";
 import Dropdown from 'react-bootstrap/Dropdown';
-import { useTodoList, useTodoListDispatch } from "../../context/TodoListContext";
-import { IFilter, StateFilter } from "../../models/IFilter";
-import { IAction, TodoActions } from "../../models/Action";
+
+import { useTodoList, useTodoListDispatch } from "../../context";
+import { IFilter, StateFilter, IAction, TodoActions } from "../../models";
 
 type Props = { 
   filter: IFilter

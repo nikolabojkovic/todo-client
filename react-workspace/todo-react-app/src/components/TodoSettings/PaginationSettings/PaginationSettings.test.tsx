@@ -1,10 +1,10 @@
 import renderer from 'react-test-renderer';
-import { TodosContext, TodosDispatchContext } from "../../../context/TodoListContext";
-import { stateTestData } from "../../../context/testData";
-import { PaginationSettings } from "./PaginationSettings";
 import { render } from '@testing-library/react';
 
-describe('', () => {
+import { TodosContext, TodosDispatchContext, stateTestData } from "../../../context";
+import { PaginationSettings } from "./PaginationSettings";
+
+describe('PaginationSettings', () => {
   const globalContext = {
     state: {
       ...stateTestData,

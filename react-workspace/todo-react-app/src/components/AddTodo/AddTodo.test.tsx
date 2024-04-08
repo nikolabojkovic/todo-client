@@ -1,8 +1,8 @@
 import renderer from 'react-test-renderer';
-import { AddTodo } from './AddTodo';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { TodoStateProvider } from '../../context/TodoListContext';
-import { stateTestData } from '../../context/testData';
+
+import { TodoStateProvider, stateTestData } from '../../context';
+import { AddTodo } from './AddTodo';
 
 describe('AddTodo', () => {
   const jsxElement = <AddTodo />;

@@ -1,11 +1,5 @@
-import { IAction, TodoActions } from "../models/Action";
-import { IFilter, StateFilter } from "../models/IFilter";
-import { IPaging } from "../models/IPaging";
-import { ISort, SortDirection } from "../models/ISort";
-import { ITodo } from "../models/Todo";
-import { IState, State } from "./IState";
-import { todoStateReducer } from "./TodoListContext";
-import { stateTestData } from "./testData";
+import { IAction, TodoActions, IFilter, StateFilter, IPaging, ISort, SortDirection, ITodo } from "../models";
+import { IState, State, todoStateReducer, stateTestData } from "./";
 
 describe('TodoListContext', () => {
   describe('todoListReducer', () => {

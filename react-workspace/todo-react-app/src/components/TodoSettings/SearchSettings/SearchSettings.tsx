@@ -1,7 +1,7 @@
 import { Form, Stack } from "react-bootstrap";
-import { useTodoList, useTodoListDispatch } from "../../../context/TodoListContext";
-import { ISearchSettings } from "../../../models/ISettings";
-import { IAction, TodoActions } from "../../../models/Action";
+
+import { useTodoList, useTodoListDispatch } from "../../../context";
+import { ISearchSettings, IAction, TodoActions } from "../../../models";
 
 export function SearchSettings() {
   const todoList = useTodoList();

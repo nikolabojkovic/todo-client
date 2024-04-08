@@ -3,10 +3,10 @@
 exports[`todo list rendered match snapshot list 1`] = `
 <main
   className="App__todo-list"
+  style={Object {}}
 >
   <section
     className=""
-    style={Object {}}
   >
     <div
       className="App__todo-list__item"
@@ -360,6 +360,7 @@ exports[`todo list rendered match snapshot list 1`] = `
 exports[`todo list rendered match snapshot loader 1`] = `
 <main
   className="App__todo-list"
+  style={Object {}}
 >
   <div
     className="loader-container d-flex justify-content-center align-items-center fade-in"

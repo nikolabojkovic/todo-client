@@ -1,9 +1,9 @@
 import renderer from 'react-test-renderer';
 import { fireEvent, render, screen } from '@testing-library/react';
+
 import { TodoItem } from './TodoItem';
-import { TodosContext, TodosDispatchContext } from '../../context/TodoListContext';
-import { stateTestData } from '../../context/testData';
-import { IAction, TodoActions } from '../../models/Action';
+import { TodosContext, TodosDispatchContext, stateTestData } from '../../context';
+import { IAction, TodoActions } from '../../models';
 
 describe('todo item', () => {
   const todo = {

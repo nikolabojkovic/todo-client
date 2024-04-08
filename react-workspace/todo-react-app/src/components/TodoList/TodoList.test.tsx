@@ -1,13 +1,10 @@
 import renderer from 'react-test-renderer';
 import { render, screen } from '@testing-library/react';
-import { TodoList } from './TodoList';
-import { TodosContext, TodosDispatchContext } from '../../context/TodoListContext';
-import { stateTestData } from '../../context/testData';
-import { IAction, TodoActions } from '../../models/Action';
-import { ISort, SortDirection } from '../../models/ISort';
 import { of } from 'rxjs';
-import { IFilter, StateFilter } from '../../models/IFilter';
-import { Todo } from '../../models/Todo';
+
+import { TodoList } from './TodoList';
+import { TodosContext, TodosDispatchContext, stateTestData } from '../../context';
+import { IAction, TodoActions, ISort, SortDirection, IFilter, StateFilter, Todo } from '../../models';
 
 let todoListProvider = {
   getList: jest.fn().mockImplementation(() => of([] as Todo[])),

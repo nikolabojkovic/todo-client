@@ -1,12 +1,12 @@
+import './index.scss';
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.scss';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
 
-import { TodoStateProvider } from './context/TodoListContext';
-import { State } from './context/IState';
-import { ITodo } from './models/Todo';
+import reportWebVitals from './reportWebVitals';
+import App from './App';
+import { State, TodoStateProvider } from './context';
+import { ITodo } from './models';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

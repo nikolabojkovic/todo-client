@@ -1,7 +1,8 @@
 import BootstrapPagination from 'react-bootstrap/Pagination';
 import { Col } from 'react-bootstrap';
-import { useTodoList, useTodoListDispatch } from '../../context/TodoListContext';
-import { IAction, TodoActions } from '../../models/Action';
+
+import { useTodoList, useTodoListDispatch } from '../../context';
+import { IAction, TodoActions } from '../../models';
 
 type Props = {
   inputSelectRef: React.MutableRefObject<HTMLButtonElement | null>,

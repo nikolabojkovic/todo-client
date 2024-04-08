@@ -1,7 +1,8 @@
 import { Stack, Col } from 'react-bootstrap';
 import Dropdown from 'react-bootstrap/Dropdown';
-import { useTodoListDispatch } from '../../context/TodoListContext';
-import { IAction, TodoActions } from '../../models/Action';
+
+import { useTodoListDispatch } from '../../context';
+import { IAction, TodoActions } from '../../models';
 
 type Props = {
   inputSelectRef: ((instance: HTMLButtonElement | null) => void) | React.RefObject<HTMLButtonElement> | null | undefined,

@@ -1,17 +1,10 @@
 import { useEffect } from 'react';
 import { first } from 'rxjs';
 
-import { ISort } from '../../models/ISort';
-import { Loader } from '../Loader/Loader';
-import { ITodo } from '../../models/Todo';
-import { IAction, TodoActions } from '../../models/Action';
-
-import { useTodoList, useTodoListDispatch } from '../../context/TodoListContext';
-
-import { GetListProps, ITodoListProvider } from '../../providers/TodoProvider';
-
-import { TodoItem } from '../TodoItem/TodoItem';
-import { ListContainerType } from '../../models/ISettings';
+import { ISort, ITodo, IAction, TodoActions, ListContainerType } from '../../models';
+import { useTodoList, useTodoListDispatch } from '../../context';
+import { GetListProps, ITodoListProvider } from '../../providers';
+import { Loader, TodoItem } from '../';
 
 type Props = {
   todoListProvider: ITodoListProvider

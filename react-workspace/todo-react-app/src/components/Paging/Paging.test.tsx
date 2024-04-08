@@ -1,7 +1,7 @@
 import renderer from 'react-test-renderer';
 import { Paging } from './Paging';
-import { TodoStateProvider } from '../../context/TodoListContext';
-import { stateTestData } from '../../context/testData';
+
+import { TodoStateProvider, stateTestData } from '../../context';
 
 describe('Paging', () => {
   it('component should match snapshot', () => {

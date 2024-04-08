@@ -1,16 +1,13 @@
 import './App.scss';
-import LocalTodoListProvider from './providers/TodoProvider';
 
-import { Tabs } from './components/Tabs/Tabs';
-import { Sorting } from './components/Sort/Sorting';
-import { TodoList } from './components/TodoList/TodoList';
-
-import { Paging } from './components/Paging/Paging';
 import { useEffect } from 'react';
-import { LocalSettingsProvider } from './providers/LocalSettingsProvider';
 import { first } from 'rxjs';
-import { useTodoListDispatch } from './context/TodoListContext';
-import { IAction, TodoActions } from './models/Action';
+
+import LocalTodoListProvider from './providers/TodoProvider';
+import { Tabs, Sorting, TodoList, Paging } from './components';
+import { LocalSettingsProvider } from './providers';
+import { useTodoListDispatch } from './context';
+import { IAction, TodoActions } from './models';
 
 const todoListProvider = new LocalTodoListProvider();
 const settingsProvider = new LocalSettingsProvider();

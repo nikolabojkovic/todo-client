@@ -1,8 +1,8 @@
 import renderer from 'react-test-renderer';
-import { Pagination } from './Pagination';
-import { stateTestData } from '../../context/testData';
-import { TodoStateProvider } from '../../context/TodoListContext';
 import { fireEvent, render, screen } from '@testing-library/react';
+
+import { Pagination } from './Pagination';
+import { TodoStateProvider, stateTestData } from '../../context';
 import { MutableRefObject } from 'react';
 
 describe('Pagination', () => {

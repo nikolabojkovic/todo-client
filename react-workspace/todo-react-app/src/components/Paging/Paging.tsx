@@ -1,14 +1,13 @@
 import { useRef } from 'react';
 import { Container, Row } from 'react-bootstrap';
-import { useTodoList, useTodoListDispatch } from '../../context/TodoListContext';
-import { PageSize } from '../Pagination/PageSize';
-import { Pagination } from '../Pagination/Pagination';
-import { PaginationType } from '../../models/ISettings';
-import { LocalStorageProvider } from '../../providers/StorageProvider';
 import { useEffect } from 'react';
 import { filter, first, map } from 'rxjs';
-import { IPaging } from '../../models/IPaging';
-import { IAction, TodoActions } from '../../models/Action';
+
+import { useTodoList, useTodoListDispatch } from '../../context';
+import { PageSize, Pagination } from '../';
+import { PaginationType, IAction, TodoActions, IPaging } from '../../models';
+import { LocalStorageProvider } from '../../providers';
+
 
 const storageProvider = new LocalStorageProvider();
 const pagingLocalStorageKey = 'todo-paging';

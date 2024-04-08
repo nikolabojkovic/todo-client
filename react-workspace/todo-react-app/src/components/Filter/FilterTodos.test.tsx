@@ -1,11 +1,10 @@
 import renderer, { act } from 'react-test-renderer';
-import { FilterTodos } from './FilterTodos';
-import { IFilter, StateFilter } from '../../models/IFilter';
-import { TodoStateProvider, TodosContext, TodosDispatchContext } from '../../context/TodoListContext';
-import { stateTestData } from '../../context/testData';
 import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { IAction, TodoActions } from '../../models/Action';
+
+import { FilterTodos } from './FilterTodos';
+import { TodoStateProvider, TodosContext, TodosDispatchContext, stateTestData } from '../../context';
+import { IAction, TodoActions, IFilter, StateFilter } from '../../models';
 
 describe('FilterTodos', () => {  
   it('component should render all option', () => {

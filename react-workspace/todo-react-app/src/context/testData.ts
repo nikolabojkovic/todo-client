@@ -1,9 +1,18 @@
-import { ITodo } from "../models/Todo";
-import { IPaging } from "../models/IPaging";
-import { IState } from "./IState";
-import { ISort, SortDirection } from "../models/ISort";
-import { IFilter, StateFilter } from "../models/IFilter";
-import { IGeneralSettings, IPaginationSettings, ISearchSettings, ISettings, ListContainerType, PaginationType } from "../models/ISettings";
+import { 
+  ITodo,
+  IPaging, 
+  ISort, 
+  SortDirection, 
+  IFilter,
+  StateFilter, 
+  IGeneralSettings, 
+  IPaginationSettings, 
+  ISearchSettings, 
+  ISettings, 
+  ListContainerType, 
+  PaginationType 
+} from "../models";
+import { IState } from "./";
 
 export const todoListTestData: ITodo[] = [
   {

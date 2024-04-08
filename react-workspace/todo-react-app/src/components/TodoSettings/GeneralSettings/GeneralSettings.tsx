@@ -1,7 +1,7 @@
 import { Dropdown, Form, Stack } from "react-bootstrap";
-import { useTodoList, useTodoListDispatch } from "../../../context/TodoListContext";
-import { IAction, TodoActions } from "../../../models/Action";
-import { IGeneralSettings, ListContainerType } from "../../../models/ISettings";
+
+import { useTodoList, useTodoListDispatch } from "../../../context";
+import { IAction, TodoActions, IGeneralSettings, ListContainerType } from "../../../models";
 
 export type Props = {
   paginationSwitch: boolean;

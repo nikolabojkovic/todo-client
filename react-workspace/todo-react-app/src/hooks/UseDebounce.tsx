@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Subject, debounceTime } from 'rxjs';
 
-export default function useDebounce(time: number, initialValue: string, handleEvent: (((value: string) => void) | undefined) = undefined) {
+export function useDebounce(time: number, initialValue: string, handleEvent: (((value: string) => void) | undefined) = undefined) {
   const [value, setValue] = useState(initialValue);
   const [strim] = useState(() => new Subject<string>());
 

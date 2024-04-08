@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { IAction, TodoActions } from "../../models/Action";
-import { useTodoList, useTodoListDispatch } from "../../context/TodoListContext";
+
+import { IAction, TodoActions } from "../../models";
+import { useTodoList, useTodoListDispatch } from "../../context";
+import { ISort, SortDirection } from "../../models";
 import { SortButton } from './SortButton';
-import { ISort, SortDirection } from "../../models/ISort";
 
 type Sort = {
   name: string,

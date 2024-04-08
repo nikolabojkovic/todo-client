@@ -1,9 +1,9 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+
 import App from './App';
-import { TodosContext, TodosDispatchContext } from './context/TodoListContext';
-import { stateTestData } from './context/testData';
+import { TodosContext, TodosDispatchContext, stateTestData } from './context';
 
 test('renders todo list text', () => {
   const context = {

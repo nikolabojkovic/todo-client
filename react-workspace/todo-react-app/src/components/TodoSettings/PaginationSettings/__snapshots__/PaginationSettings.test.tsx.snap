@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` match snapshot pagination settings 1`] = `
+exports[`PaginationSettings match snapshot pagination settings 1`] = `
 <div
   className="App__settings__group"
 >

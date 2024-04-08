@@ -1,10 +1,10 @@
 import renderer, { act } from 'react-test-renderer';
-import { PageSize } from './PageSize';
-import { TodoStateProvider, TodosContext, TodosDispatchContext } from '../../context/TodoListContext';
-import { stateTestData } from '../../context/testData';
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { IAction, TodoActions } from '../../models/Action';
+
+import { PageSize } from './PageSize';
+import { TodoStateProvider, TodosContext, TodosDispatchContext, stateTestData } from '../../context';
+import { IAction, TodoActions } from '../../models';
 
 describe('PageSize', () => {
   const globalContext = {

@@ -1,10 +1,7 @@
 import { createContext, useContext, useReducer } from "react";
-import { IAction, TodoActions } from "../models/Action";
-import { IPaging } from "../models/IPaging";
-import { IState } from "./IState";
-import { ITodo } from "../models/Todo";
-import { StateFilter } from "../models/IFilter";
-import { ISettings } from "../models/ISettings";
+
+import { IAction, TodoActions, IPaging, ITodo, StateFilter, ISettings } from "../models";
+import { IState } from "./";
  
 export const TodosContext = createContext({} as IState);
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

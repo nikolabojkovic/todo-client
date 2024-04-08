@@ -1,11 +1,11 @@
 import { faFileExport, faFileImport } from "@fortawesome/free-solid-svg-icons";
+import { Button, Col, Container, Form, InputGroup, Row } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ChangeEvent, useRef, useState } from "react";
-import { Button, Col, Container, Form, InputGroup, Row } from "react-bootstrap";
-import { useTodoList, useTodoListDispatch } from "../../context/TodoListContext";
+
+import { useTodoList, useTodoListDispatch } from "../../context";
 import { ConfirmModal } from "../ConfirmModal/ConfirmModal";
-import { ITodo, Todo } from "../../models/Todo";
-import { IAction, TodoActions } from "../../models/Action";
+import { ITodo, Todo, IAction, TodoActions } from "../../models";
 
 type Props = {
   downloadLink: HTMLAnchorElement,

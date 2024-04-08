@@ -1,9 +1,8 @@
 import { map } from "rxjs";
 import { Observable } from "rxjs/internal/Observable";
-import { IFilter, StateFilter } from "../models/IFilter";
-import { ISort, SortDirection } from "../models/ISort";
-import { ITodo } from "../models/Todo";
-import { IStorageProvider, LocalStorageProvider } from "./StorageProvider";
+
+import { ITodo, IFilter, StateFilter, ISort, SortDirection } from "../models";
+import { IStorageProvider, LocalStorageProvider } from "./";
 
 export type GetListProps = {
   filter: IFilter | null,

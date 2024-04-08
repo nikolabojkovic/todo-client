@@ -1,9 +1,10 @@
 import { Button, Form, Stack } from 'react-bootstrap';
-import { useTodoList, useTodoListDispatch } from '../../context/TodoListContext';
 import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { IAction, TodoActions } from '../../models/Action';
-import useDebounce from '../../hooks/UseDebounce';
+
+import { useTodoList, useTodoListDispatch } from '../../context';
+import { IAction, TodoActions } from '../../models';
+import { useDebounce } from '../../hooks';
 
 type Props = {
   placeholder: string

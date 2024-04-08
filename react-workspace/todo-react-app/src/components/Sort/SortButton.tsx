@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { SortDirection } from "../../models/ISort";
+
+import { SortDirection } from "../../models";
 import { SortIcon } from "./SortIcon";
 
 type Props = {

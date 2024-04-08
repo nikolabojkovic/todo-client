@@ -2,13 +2,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faAdd, faFilter, faDownload, IconDefinition, faGear } from '@fortawesome/free-solid-svg-icons';
 import { Stack } from "react-bootstrap";
 import { useState } from "react";
-import { AddTodo } from '../AddTodo/AddTodo';
-import { Search } from '../Search/Search';
-import { FilterTodos } from '../Filter/FilterTodos';
-import { ImportExport } from '../ImportExport/ImportExport';
-import { useTodoList, useTodoListDispatch } from "../../context/TodoListContext";
-import { Settings } from "../TodoSettings/TodoSettings";
-import { IAction, TodoActions } from "../../models/Action";
+
+import { AddTodo, Search, FilterTodos, ImportExport, Settings } from '../';
+import { useTodoList, useTodoListDispatch } from "../../context";
+import { IAction, TodoActions } from "../../models";
 
 type Tab = {
   name: string,

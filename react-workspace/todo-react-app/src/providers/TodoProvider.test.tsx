@@ -1,9 +1,8 @@
-import { IFilter, StateFilter } from '../models/IFilter';
-import { ISort, SortDirection } from '../models/ISort';
-import { ITodo } from '../models/Todo';
-import { IStorageProvider } from './StorageProvider';
-import LocalTodoListProvider, { GetListProps } from './TodoProvider';
 import { first, of } from 'rxjs';
+
+import { ITodo, IFilter, StateFilter, ISort, SortDirection } from '../models';
+import { GetListProps, IStorageProvider } from './';
+import LocalTodoListProvider from './TodoProvider';
 
 const testData = [
   {"id":1,"title":"Task 1","description":"Description 1","completed":false,"createdAt":"2022-02-03T23:00:00.000Z"},  

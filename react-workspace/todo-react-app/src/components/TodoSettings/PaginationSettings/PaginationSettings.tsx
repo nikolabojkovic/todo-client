@@ -1,7 +1,7 @@
 import { Dropdown, Stack } from "react-bootstrap";
-import { useTodoList, useTodoListDispatch } from "../../../context/TodoListContext";
-import { PaginationType } from "../../../models/ISettings";
-import { IAction, TodoActions } from "../../../models/Action";
+
+import { useTodoList, useTodoListDispatch } from "../../../context";
+import { PaginationType, IAction, TodoActions } from "../../../models";
 
 export function PaginationSettings() {
   const todoList = useTodoList();
