@@ -62,6 +62,23 @@
         }
       }
     }
+
+    &__infinite-scroll-end {
+      height: 100px;
+      margin: 10px 0px;
+
+      &--bouncing {
+        display: inline-block;
+        position: relative;
+        color: $text-secondary-color;
+
+        -moz-animation: bounce 1s infinite linear;
+        -o-animation: bounce 1s infinite linear;
+        -webkit-animation: bounce 1s infinite linear;
+        animation: bounce 1s infinite linear;
+      }
+      
+    }
   }
 
   &__tabs {
@@ -276,6 +293,32 @@
   }
 }
 
+@-webkit-keyframes bounce {
+  0% { top :10px; }
+  50% { top :24px; }
+  100% { top :10px; }
+}
+@-moz-keyframes bounce {
+  0% { top :10px; }
+  50% { top :24px; }
+  100% { top :10px; }
+}
+@-o-keyframes bounce {
+  0% { top :10px; }
+  50% { top :24px; }
+  100% { top :10px; }
+}
+@-ms-keyframes bounce {
+  0% { top :10px; }
+  50% { top :24px; }
+  100% { top :10px; }
+}
+@keyframes bounce {
+  0% { top :10px; }
+  50% { top :24px; }
+  100% { top :10px; }
+}
+
 .loader {
   width: 50px;
   aspect-ratio: 1;
@@ -296,10 +339,6 @@
     animation: l15 2s infinite;
     margin: 8px;
     animation-duration: 3s;
-  }
-
-  &-container {
-    height: 280px;
   }
 }
 

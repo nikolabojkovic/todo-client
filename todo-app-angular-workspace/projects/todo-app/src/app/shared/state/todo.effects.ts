@@ -28,19 +28,6 @@ import {
 @Injectable()
 export class TodoEffects {
 
-  saveTodoList$ = createEffect(() => this.actions$
-    .pipe(
-      ofType(
-        TodoListActions.added,
-        TodoListActions.completed,
-        TodoListActions.removed,
-        TodoListActions.imported),
-      concatLatestFrom(() => this.store.select(selectTodos).pipe(first())),
-      tap(([, todoList]) => this.todoService.saveList(todoList.originalList).pipe(first()))
-    ),
-    { dispatch: false }
-  );
-
   loadTodoList$ = createEffect(() =>
     this.actions$.pipe(
       ofType(TodoListActions.fetch),
@@ -105,25 +92,39 @@ export class TodoEffects {
   );
 
   sortTodoList$ = createEffect(() =>
-  this.actions$.pipe(
-    ofType(TodoListActions.sort),
-    concatLatestFrom(() => this.store.select(selectTodos).pipe(first())),
-    exhaustMap(([action, state]) => this.todoService.getList(
-        state.filter,
-        action.sort,
-        state.search.searchTerm)
-        .pipe(
-          first(),
-          map((list: ITodo[]) =>
-            TodoListActions.sorted({
-              sort: action.sort,
-              list: list
-            })
+    this.actions$.pipe(
+      ofType(TodoListActions.sort),
+      concatLatestFrom(() => this.store.select(selectTodos).pipe(first())),
+      exhaustMap(([action, state]) => this.todoService.getList(
+          state.filter,
+          action.sort,
+          state.search.searchTerm)
+          .pipe(
+            first(),
+            map((list: ITodo[]) =>
+              TodoListActions.sorted({
+                sort: action.sort,
+                list: list
+              })
+            )
           )
-        )
+      )
     )
-  )
-);
+  );
+
+  saveTodoList$ = createEffect(() => this.actions$
+    .pipe(
+      ofType(
+        TodoListActions.added,
+        TodoListActions.completed,
+        TodoListActions.removed,
+        TodoListActions.imported),
+      concatLatestFrom(() => this.store.select(selectTodos).pipe(first())),
+      tap(([, todoList]) => this.todoService.saveList(todoList.originalList).pipe(first()))
+    ),
+    { dispatch: false }
+  );
+
 
   startLoader$ = createEffect(() =>
     this.actions$.pipe(
@@ -139,13 +140,6 @@ export class TodoEffects {
     )
   );
 
-  saveSettings$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(TodoListActions.settingsUpdated),
-      exhaustMap((action) => this.settingsService.saveSettings(action.payload).pipe(first()))
-    ),
-    { dispatch: false }
-  );
 
   loadSettings$ = createEffect(() =>
     this.actions$.pipe(
@@ -163,18 +157,14 @@ export class TodoEffects {
     )
   );
 
-  savePaging$ = createEffect(() =>
+  saveSettings$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(
-        TodoListActions.pagingUpdated,
-        TodoListActions.added,
-        TodoListActions.removed
-      ),
-      concatLatestFrom(() => this.store.select(selectPaging).pipe(first())),
-        tap(([, paging]) => this.storageProvider.setItem('todo-paging', paging).pipe(first()))
-      ),
-      { dispatch: false }
+      ofType(TodoListActions.settingsUpdated),
+      exhaustMap((action) => this.settingsService.saveSettings(action.payload).pipe(first()))
+    ),
+    { dispatch: false }
   );
+
 
   loadPaging$ = createEffect(() =>
     this.actions$.pipe(
@@ -191,6 +181,19 @@ export class TodoEffects {
           )
       )
     )
+  );
+
+  savePaging$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(
+        TodoListActions.pagingUpdated,
+        TodoListActions.added,
+        TodoListActions.removed
+      ),
+      concatLatestFrom(() => this.store.select(selectPaging).pipe(first())),
+        tap(([, paging]) => this.storageProvider.setItem('todo-paging', paging).pipe(first()))
+      ),
+      { dispatch: false }
   );
 
   constructor(

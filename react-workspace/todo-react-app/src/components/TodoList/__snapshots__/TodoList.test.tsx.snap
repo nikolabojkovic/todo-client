@@ -3,10 +3,12 @@
 exports[`todo list rendered match snapshot list 1`] = `
 <main
   className="App__todo-list"
+  onScroll={[Function]}
   style={Object {}}
 >
   <section
     className=""
+    onScroll={[Function]}
   >
     <div
       className="App__todo-list__item"
@@ -360,6 +362,7 @@ exports[`todo list rendered match snapshot list 1`] = `
 exports[`todo list rendered match snapshot loader 1`] = `
 <main
   className="App__todo-list"
+  onScroll={[Function]}
   style={Object {}}
 >
   <div
