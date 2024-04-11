@@ -327,6 +327,32 @@ code {
   }
 }
 
+@-webkit-keyframes bounce {
+  0% { top :10px; }
+  50% { top :24px; }
+  100% { top :10px; }
+}
+@-moz-keyframes bounce {
+  0% { top :10px; }
+  50% { top :24px; }
+  100% { top :10px; }
+}
+@-o-keyframes bounce {
+  0% { top :10px; }
+  50% { top :24px; }
+  100% { top :10px; }
+}
+@-ms-keyframes bounce {
+  0% { top :10px; }
+  50% { top :24px; }
+  100% { top :10px; }
+}
+@keyframes bounce {
+  0% { top :10px; }
+  50% { top :24px; }
+  100% { top :10px; }
+}
+
 .fade-in {
   opacity: 0;
   animation-name: fade-in;
@@ -355,10 +381,6 @@ code {
     animation: l15 2s infinite;
     margin: 8px;
     animation-duration: 3s;
-  }
-
-  &-container {
-    height: 280px;
   }
 }
 

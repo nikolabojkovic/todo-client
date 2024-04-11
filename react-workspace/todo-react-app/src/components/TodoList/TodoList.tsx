@@ -134,9 +134,9 @@ export function TodoList({ todoListProvider }: Props) {
               className=''
             >
               {
-                (todoList.paging.totalCount > 0 ?
-                  getDisplayList() 
-                : <div className='text-light mt-5 mb-5 fade-in'>No data</div>)
+                (todoList.paging.totalCount > 0 
+                  ? getDisplayList() 
+                  : <div className='text-light mt-5 mb-5 fade-in'>No data</div>)
               }
               {
                 todoList.settings.general.isInfiniteScrollEnabled &&
