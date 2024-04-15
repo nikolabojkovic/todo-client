@@ -11,27 +11,29 @@ describe('todo item', () => {
     title: "Task 1",
     description: "Description 1",
     completed: false,
-    createdAt: new Date(2023, 4, 5)
+    createdAt: new Date(2023, 4, 5),
+    sortId: 1
   };
   const todoCompleted = {
     id: 1,
     title: "Task 1",
     description: "Description 1",
     completed: true,
-    createdAt: new Date(2023, 4, 5)
+    createdAt: new Date(2023, 4, 5),
+    sortId: 1
   };
 
   describe('todo item uncompleted', () => {
     it('should match snapshot', () => {
       const tree = renderer.create(
-        <TodoItem todo={todo}/>
+        <TodoItem todo={todo} index={1} />
       ).toJSON();
-      render(<TodoItem todo={todo}/>);
+      render(<TodoItem todo={todo} index={1} />);
       expect(tree).toMatchSnapshot();
     });
   
     it('should render 2 icons', () => {
-      render(<TodoItem todo={todo}/>);
+      render(<TodoItem todo={todo} index={1} />);
       const icons = screen.getAllByRole('img', { hidden: true });
       expect(icons.length).toBe(2);
     });
@@ -40,14 +42,14 @@ describe('todo item', () => {
   describe('todo item completed', () => {  
     it('should match snapshot', () => {
       const tree = renderer.create(
-        <TodoItem todo={todoCompleted}/>
+        <TodoItem todo={todoCompleted} index={1} />
       ).toJSON();
-      render(<TodoItem todo={todoCompleted}/>);
+      render(<TodoItem todo={todoCompleted} index={1} />);
       expect(tree).toMatchSnapshot();
     });
   
     it('should render completed todo styled title', () => {    
-      render(<TodoItem todo={todoCompleted}/>);
+      render(<TodoItem todo={todoCompleted} index={1} />);
       const titleElement = screen.getByText(todoCompleted.title);
       expect(titleElement).toHaveClass('App__todo-list__item-title--completed');
     });
@@ -64,7 +66,7 @@ describe('todo item', () => {
       const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoItem todo={todo}/>
+          <TodoItem todo={todo} index={1} />
          </TodosDispatchContext.Provider>
        </TodosContext.Provider>);
       render(jsxElement);
@@ -95,7 +97,7 @@ describe('todo item', () => {
       const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoItem todo={todo}/>
+          <TodoItem todo={todo} index={1} />
          </TodosDispatchContext.Provider>
        </TodosContext.Provider>);
       render(jsxElement);
@@ -126,7 +128,7 @@ describe('todo item', () => {
       const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoItem todo={todoCompleted}/>
+          <TodoItem todo={todoCompleted} index={1} />
          </TodosDispatchContext.Provider>
        </TodosContext.Provider>);
       render(jsxElement);
@@ -155,7 +157,7 @@ describe('todo item', () => {
       const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoItem todo={todo}/>
+          <TodoItem todo={todo} index={1} />
          </TodosDispatchContext.Provider>
        </TodosContext.Provider>);
       render(jsxElement);

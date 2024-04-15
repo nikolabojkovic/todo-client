@@ -8,7 +8,6 @@ import { PageSize, Pagination } from '../';
 import { PaginationType, IAction, TodoActions, IPaging } from '../../models';
 import { LocalStorageProvider } from '../../providers';
 
-
 const storageProvider = new LocalStorageProvider();
 const pagingLocalStorageKey = 'todo-paging';
 

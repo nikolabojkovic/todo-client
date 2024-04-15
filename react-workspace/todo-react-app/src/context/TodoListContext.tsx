@@ -1,6 +1,6 @@
 import { createContext, useContext, useReducer } from "react";
 
-import { IAction, TodoActions, IPaging, ITodo, StateFilter, ISettings } from "../models";
+import { IAction, TodoActions, IPaging, ITodo, StateFilter, ISettings, ISort, SortDirection } from "../models";
 import { IState } from "./";
  
 export const TodosContext = createContext({} as IState);
@@ -55,7 +55,7 @@ export function todoStateReducer(state: IState, action: IAction) {
     case TodoActions.fetch: {
       return { 
         ...state,
-        effectTrigger: { type: TodoActions.fetch, payload: action.payload },
+        effectTrigger: { type: TodoActions.fetch, payload: action.payload }, 
       } as IState;
     }
     case TodoActions.filter: {
@@ -129,11 +129,23 @@ export function todoStateReducer(state: IState, action: IAction) {
       return {
         ...state,
         isLoading: false,
-        effectTrigger: null,
+        effectTrigger: { type: TodoActions.sorted, payload: action.payload },
         displayList: [...action.payload.list],
         sort: {...action.payload.sort},
         paging: {...state.paging} as IPaging
       };
+    }
+    case TodoActions.manuallySorted: {
+      return { 
+        ...state,
+        effectTrigger: { type: TodoActions.manuallySorted, payload: action.payload },
+        originalList: [...action.payload.list],
+        displayList: [...action.payload.list],
+        sort: {
+          column: 'sortId', 
+          direction: SortDirection.None
+        } as ISort
+      } as IState;
     }
     case TodoActions.imported: {
       return {
@@ -211,14 +223,15 @@ export function todoStateReducer(state: IState, action: IAction) {
     case TodoActions.added: {
       const id = state.originalList.length >= 1 
       ? state.originalList
-          .sort((a: ITodo, b: ITodo) => a.id > b.id ? 1 : -1)[state.originalList.length - 1].id 
-      : 0;
+          .sort((a: ITodo, b: ITodo) => a.id > b.id ? 1 : -1)[state.originalList.length - 1].id + 1
+      : 1;
       const newTodo = {
-        id: id + 1,
+        id: id ,
         title: action.payload.title,
         description: action.payload.description,
         completed: false, 
-        createdAt: action.payload.createdAt
+        createdAt: action.payload.createdAt,
+        sortId: id
       } as ITodo;
 
       return {

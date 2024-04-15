@@ -96,6 +96,10 @@ export default class LocalTodoListProvider {
   
       return sortResult;
     }
+
+    if (sort.column === 'sortId') {
+      return sortResult = [...list.sort((a: ITodo, b: ITodo) => a.sortId > b.sortId ? 1 : -1)];
+    }
   
     if (sort.direction === SortDirection.Asc) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

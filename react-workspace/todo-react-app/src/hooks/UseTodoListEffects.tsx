@@ -1,20 +1,51 @@
 import { useEffect } from "react";
-import { first } from "rxjs";
+import { EMPTY, first, switchMap } from "rxjs";
 
 import { IState } from "../context";
-import { GetListProps, ITodoListProvider } from "../providers";
-import { IAction, ITodo, TodoActions } from "../models";
+import { GetListProps, ITodoListProvider, LocalStorageProvider } from "../providers";
+import { IAction, ISort, ITodo, TodoActions } from "../models";
+
+const storageProvider = new LocalStorageProvider();
+const sortingLocalStorageKey = 'todo-sort';
 
 export function useTodoListEffect(todoList: IState, todoListProvider: ITodoListProvider, dispatch: any) {
 
+  useEffect(() => { 
+    dispatch({
+      type: TodoActions.fetch,
+      payload: {
+        sort: {
+          column: 'createdAt',
+          direction: 'asc'
+        } as ISort
+      }
+    } as IAction);
+  }, [dispatch]);
+
   useEffect(() => {  
     if (todoList.effectTrigger && todoList.effectTrigger.type === TodoActions.fetch) {
-      todoListProvider.getList({
-        filter: todoList.filter,
-        searchTerm: todoList.search.searchTerm,
-        sort: todoList.effectTrigger.payload.sort
-      } as GetListProps)
-      .pipe(first())
+      storageProvider.getItem(sortingLocalStorageKey).pipe(
+        first(),
+        switchMap((localStorageSort: string | null) => {
+          if (localStorageSort) {
+            const sort = JSON.parse(localStorageSort) as ISort;
+            dispatch({
+              type: TodoActions.sort,
+              payload: {
+                sort
+              }
+            } as IAction);
+
+            return EMPTY;
+          }
+
+          return todoListProvider.getList({
+            filter: todoList.filter,
+            searchTerm: todoList.search.searchTerm,
+            sort: todoList.effectTrigger?.payload.sort
+          } as GetListProps).pipe(first());
+        })
+      )
       .subscribe((list: ITodo[]) => {
         dispatch({
           type: TodoActions.fetched,
@@ -100,14 +131,22 @@ export function useTodoListEffect(todoList: IState, todoListProvider: ITodoListP
     }
   }, [todoList.effectTrigger, dispatch]);
 
-
   useEffect(() => {
     if (todoList.effectTrigger
       && (todoList.effectTrigger.type === TodoActions.added
        || todoList.effectTrigger.type === TodoActions.changed
        || todoList.effectTrigger.type === TodoActions.deleted
-       || todoList.effectTrigger.type === TodoActions.imported)) {
+       || todoList.effectTrigger.type === TodoActions.imported
+       || todoList.effectTrigger.type === TodoActions.manuallySorted)) {
       todoListProvider.saveList(todoList.originalList).pipe(first()).subscribe();
+     }
+  }, [todoList.effectTrigger, todoList.originalList, todoListProvider]);
+
+  useEffect(() => {
+    if (todoList.effectTrigger 
+      && (todoList.effectTrigger.type === TodoActions.manuallySorted
+       || todoList.effectTrigger.type === TodoActions.sorted)) {
+      storageProvider.setItem(sortingLocalStorageKey, todoList.sort).pipe(first()).subscribe();
      }
   }, [todoList.effectTrigger, todoList.originalList, todoListProvider]);
 }

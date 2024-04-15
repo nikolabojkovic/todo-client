@@ -6,12 +6,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useTodoList, useTodoListDispatch } from '../../context';
 import { ITodo, IAction, TodoActions } from '../../models';
 import { ConfirmModal } from '../';
+import { Draggable } from 'react-beautiful-dnd';
 
 type Props = {
   todo: ITodo;
+  index: number
 };
 
-export function TodoItem({ todo }: Props) {
+export function TodoItem({ todo, index }: Props) {
   const todoList = useTodoList();
   const dispatch = useTodoListDispatch();
 
@@ -37,78 +39,97 @@ export function TodoItem({ todo }: Props) {
     } as IAction);
   }
 
+  const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
+    userSelect: "none",
+    background: isDragging ? "#4f4f4f" : "",
+    ...draggableStyle
+  });
+
   return (
-      <div className="App__todo-list__item">
-        <Stack direction="horizontal" gap={3}>
-          <div>
-            <div className={ todo.completed 
-                ? "App__todo-list__item-title--completed" 
-                : "App__todo-list__item-title" 
-            }>
-              { todo.title }
-            </div>
-            <div className={
-              todo.completed 
-                ? "App__todo-list__item-description--compleated" 
-                : "App__todo-list__item-description"
+    <Draggable key={todo.id} draggableId={`item-${todo.id}`} index={index}>
+      {(provided, snapshot) => (
+        <div 
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+          className="App__todo-list__item"
+          style={getItemStyle(
+            snapshot.isDragging,
+            provided.draggableProps.style
+          )}
+          >
+          <Stack direction="horizontal" gap={3}>
+            <div>
+              <div className={ todo.completed 
+                  ? "App__todo-list__item-title--completed" 
+                  : "App__todo-list__item-title" 
               }>
-                <span>{todo.description}</span>
-                { todo.createdAt && 
-                  <span>
-                    {' (' + new Date(todo.createdAt).toDateString() + ')'}
-                  </span> 
-                }
+                { todo.title }
+              </div>
+              <div className={
+                todo.completed 
+                  ? "App__todo-list__item-description--compleated" 
+                  : "App__todo-list__item-description"
+                }>
+                  <span>{todo.description}</span>
+                  { todo.createdAt && 
+                    <span>
+                      {' (' + new Date(todo.createdAt).toDateString() + ')'}
+                    </span> 
+                  }
+              </div>
             </div>
-          </div>
-          <div className="ms-auto">
-            <FontAwesomeIcon 
-              data-testid='complete-button'
-              icon={faCheckDouble} 
-              className={todo.completed ? "action-icon--disabled" : "action-icon"}
-              onClick={() => {
-                if (todo.completed)
-                  return;
+            <div className="ms-auto">
+              <FontAwesomeIcon 
+                data-testid='complete-button'
+                icon={faCheckDouble} 
+                className={todo.completed ? "action-icon--disabled" : "action-icon"}
+                onClick={() => {
+                  if (todo.completed)
+                    return;
 
-                if (todoList.settings.general.isConfirmEnabled) {
-                  onConfirm(() => handleComplete);
-                  setConfirmDialogText('Are you sure you want to complete this item?');
-                  setShowModal(true);
+                  if (todoList.settings.general.isConfirmEnabled) {
+                    onConfirm(() => handleComplete);
+                    setConfirmDialogText('Are you sure you want to complete this item?');
+                    setShowModal(true);
 
-                  return;
-                }
+                    return;
+                  }
 
-                handleComplete();
-              }}
-            />
-          </div>
-          <div>
-            <FontAwesomeIcon 
-              data-testid="delete-button"
-              icon={faTrash} 
-              className="action-icon"
-              onClick={() => {
-                if (todoList.settings.general.isConfirmEnabled) {
-                  onConfirm(() => handleDelete);
-                  setConfirmDialogText('Are you sure you want to delete this item?');
-                  setShowModal(true);
+                  handleComplete();
+                }}
+              />
+            </div>
+            <div>
+              <FontAwesomeIcon 
+                data-testid="delete-button"
+                icon={faTrash} 
+                className="action-icon"
+                onClick={() => {
+                  if (todoList.settings.general.isConfirmEnabled) {
+                    onConfirm(() => handleDelete);
+                    setConfirmDialogText('Are you sure you want to delete this item?');
+                    setShowModal(true);
 
-                  return;
-                }
+                    return;
+                  }
 
-                handleDelete();
-              }}
-            />
-          </div>          
-        </Stack>
-        <ConfirmModal
-          content={confirmDialogText} 
-          show={showModal}
-          onConfirm={() => { 
-            ((confirm!)());
-            setShowModal(false);
-          }}
-          onCancel={() => setShowModal(false)}
-        />
-      </div>
+                  handleDelete();
+                }}
+              />
+            </div>          
+          </Stack>
+          <ConfirmModal
+            content={confirmDialogText} 
+            show={showModal}
+            onConfirm={() => { 
+              ((confirm!)());
+              setShowModal(false);
+            }}
+            onCancel={() => setShowModal(false)}
+          />
+        </div>
+      )}
+    </Draggable> 
   );
 }

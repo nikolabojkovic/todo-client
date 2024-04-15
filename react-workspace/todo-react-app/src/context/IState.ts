@@ -44,7 +44,7 @@ export class State implements IState {
 			state: StateFilter.all,
 		} as IFilter;
 		this.sort = {
-			column: 'createdAt',
+			column: 'id',
 			direction: SortDirection.Asc
 		} as ISort;
 		this.paging = {

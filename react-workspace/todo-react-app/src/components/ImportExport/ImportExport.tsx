@@ -51,7 +51,8 @@ export function ImportExport({ downloadLink, fileReader, alert }: Props) {
                                                                 item.title, 
                                                                 item.description, 
                                                                 item.completed, 
-                                                                item.createdAt));
+                                                                item.createdAt,
+                                                                item.sortId));
 
     if ((importedTodoList.length > 0 
         && (!(importedTodoList[0] instanceof Todo) 

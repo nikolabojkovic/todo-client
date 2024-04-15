@@ -120,7 +120,7 @@ describe('ImportExport', () => {
     describe('success', () => {  
       it('should read content when import confirmed', async () => {
         render(jsxElement);
-        const data = `[{"id":1,"title":"test","description":"des","completed":false,"createdAt":"2024-01-23T13:26:32.093Z"}]`;      
+        const data = `[{"id":1,"title":"test","description":"des","completed":false,"createdAt":"2024-01-23T13:26:32.093Z", sortId: 1}]`;      
         const progressEvent = { target: { result: data } } as unknown as ProgressEvent<FileReader>;
         const blobJson = new Blob([data], { type: 'application/json' });
         const mockFile = new File([blobJson], 'todo-list.json');        
@@ -129,7 +129,7 @@ describe('ImportExport', () => {
         const action = {
           type: TodoActions.imported,
           payload: {
-            list: [new Todo(todo.id, todo.title, todo.description, todo.completed, todo.createdAt)] as Todo[],
+            list: [new Todo(todo.id, todo.title, todo.description, todo.completed, todo.createdAt, todo.sortId)] as Todo[],
             activePage: 1
           }
         } as IAction;
@@ -152,14 +152,14 @@ describe('ImportExport', () => {
   
       it('should handle file content when onload invoked', async () => {
         render(jsxElement);
-        const data = `[{"id":1,"title":"test","description":"des","completed":false,"createdAt":"2024-01-23T13:26:32.093Z"}]`;      
+        const data = `[{"id":1,"title":"test","description":"des","completed":false,"createdAt":"2024-01-23T13:26:32.093Z", sortId:1}]`;      
         const progressEvent = { target: { result: data } } as unknown as ProgressEvent<FileReader>;        
         const todo = JSON.parse(data)[0] as Todo;
 
         const action = {
           type: TodoActions.imported,
           payload: {
-            list: [new Todo(todo.id, todo.title, todo.description, todo.completed, todo.createdAt)] as Todo[],
+            list: [new Todo(todo.id, todo.title, todo.description, todo.completed, todo.createdAt, todo.sortId)] as Todo[],
             activePage: 1
           }
         } as IAction;
