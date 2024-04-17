@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
-import { ISort, ITodo, IAction, TodoActions, ListContainerType } from '../../models';
+import { ITodo, IAction, TodoActions, ListContainerType } from '../../models';
 import { useTodoList, useTodoListDispatch } from '../../context';
 import { ITodoListProvider } from '../../providers';
 import { Loader, TodoItem } from '../';
@@ -84,6 +84,11 @@ export function TodoList({ todoListProvider }: Props) {
   }
 
   const reorder = (list: Array<ITodo>, startIndex: number, endIndex: number) => {
+    if (todoList.settings.general.isPaginationEnabled) {
+      startIndex = startIndex + ((todoList.paging.activePage - 1) * todoList.paging.itemsPerPage);
+      endIndex =  endIndex + ((todoList.paging.activePage - 1)  * todoList.paging.itemsPerPage);
+    }
+    
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
     result.splice(endIndex, 0, removed);
@@ -112,6 +117,7 @@ export function TodoList({ todoListProvider }: Props) {
     }    
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function onDragEnd(result: any) {
     // dropped outside the list
     if (!result.destination) {
@@ -155,7 +161,7 @@ export function TodoList({ todoListProvider }: Props) {
           ? <Loader height={280} />
           : 
             <DragDropContext onDragEnd={onDragEnd}>
-              <Droppable droppableId="droppable">
+              <Droppable droppableId="droppable-list">
                 {(provided: any, snapshot: any) => (
                 <section 
                   id="todo-list-section"

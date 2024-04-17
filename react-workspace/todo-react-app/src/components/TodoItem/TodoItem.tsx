@@ -40,9 +40,9 @@ export function TodoItem({ todo, index }: Props) {
   }
 
   const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
+    ...draggableStyle,
     userSelect: "none",
-    background: isDragging ? "#4f4f4f" : "",
-    ...draggableStyle
+    background: isDragging ? "rgb(79 79 79 / 70%)" : "",
   });
 
   return (

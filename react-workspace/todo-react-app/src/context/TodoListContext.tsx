@@ -84,6 +84,7 @@ export function todoStateReducer(state: IState, action: IAction) {
         originalList: action.payload.list,
         displayList: action.payload.list,
         effectTrigger: null,
+        sort: action.payload.sort,
         paging: {
           ...state.paging,
           totalCount: action.payload.list.length,

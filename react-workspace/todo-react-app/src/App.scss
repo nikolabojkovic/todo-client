@@ -274,7 +274,7 @@
 
   &--disabled, &--disabled:hover {
     color: $text-ternary-color; 
-    cursor: auto;
+    cursor: grab;
   }
 
   &:hover {

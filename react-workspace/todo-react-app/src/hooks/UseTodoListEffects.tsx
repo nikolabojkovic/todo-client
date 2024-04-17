@@ -22,27 +22,20 @@ export function useTodoListEffect(todoList: IState, todoListProvider: ITodoListP
     } as IAction);
   }, [dispatch]);
 
-  useEffect(() => {  
+  useEffect(() => {      
     if (todoList.effectTrigger && todoList.effectTrigger.type === TodoActions.fetch) {
+      let sort = todoList.effectTrigger?.payload.sort;
       storageProvider.getItem(sortingLocalStorageKey).pipe(
         first(),
         switchMap((localStorageSort: string | null) => {
           if (localStorageSort) {
-            const sort = JSON.parse(localStorageSort) as ISort;
-            dispatch({
-              type: TodoActions.sort,
-              payload: {
-                sort
-              }
-            } as IAction);
-
-            return EMPTY;
+            sort = JSON.parse(localStorageSort) as ISort;
           }
 
           return todoListProvider.getList({
             filter: todoList.filter,
             searchTerm: todoList.search.searchTerm,
-            sort: todoList.effectTrigger?.payload.sort
+            sort 
           } as GetListProps).pipe(first());
         })
       )
@@ -50,6 +43,7 @@ export function useTodoListEffect(todoList: IState, todoListProvider: ITodoListP
         dispatch({
           type: TodoActions.fetched,
           payload: {
+            sort,
             list: list
           }
         } as IAction);
