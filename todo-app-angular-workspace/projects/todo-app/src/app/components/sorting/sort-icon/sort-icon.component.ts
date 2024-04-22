@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { faSortDown, faSortUp } from '@fortawesome/free-solid-svg-icons';
+import { SortDirection } from '../../../shared/models';
 
 @Component({
   selector: 'app-sort-icon',
@@ -8,6 +9,8 @@ import { faSortDown, faSortUp } from '@fortawesome/free-solid-svg-icons';
 })
 export class SortIconComponent {
   @Input() sortDirection: string = '';
+
+  public readonly SortDirection : typeof SortDirection = SortDirection;
 
   faSortUp = faSortUp;
   faSortDown = faSortDown;

@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react';
 import { Subject, delay } from 'rxjs';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import { ITodo, IAction, TodoActions, ListContainerType } from '../../models';
-import { useTodoList, useTodoListDispatch } from '../../context';
+import { DisplayMode, useTodoList, useTodoListDispatch } from '../../context';
 import { ITodoListProvider } from '../../providers';
 import { Loader, TodoItem } from '../';
-import { useTodoListEffect } from '../../hooks/UseTodoListEffects';
+import { useTodoListEffect } from '../../hooks';
 
 type Props = {
   todoListProvider: ITodoListProvider
@@ -74,27 +74,38 @@ export function TodoList({ todoListProvider }: Props) {
       items = todoList.displayList;
     }    
 
-    return items.map((item: ITodo, index: number) => 
+    return items.map((item: ITodo, index: number) =>
+    <Draggable 
+      key={item.id} 
+      draggableId={`item-${item.id}`} 
+      index={index} 
+      isDragDisabled={todoList.displayMode === DisplayMode.Filtered}
+    >
+      {(provided, snapshot) => ( 
+        <div
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+          style={getItemStyle(
+            snapshot.isDragging,
+            provided.draggableProps.style
+          )}
+        >
           <TodoItem 
             key={item.id} 
             todo={item}
-            index={index}
-          />          
+          /> 
+        </div>
+      )}
+      </Draggable>        
     );
   }
 
-  const reorder = (list: Array<ITodo>, startIndex: number, endIndex: number) => {
-    if (todoList.settings.general.isPaginationEnabled) {
-      startIndex = startIndex + ((todoList.paging.activePage - 1) * todoList.paging.itemsPerPage);
-      endIndex =  endIndex + ((todoList.paging.activePage - 1)  * todoList.paging.itemsPerPage);
-    }
-    
-    const result = Array.from(list);
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);
-  
-    return result;
-  };
+  const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
+    ...draggableStyle,
+    userSelect: "none",
+    background: isDragging ? "rgb(79 79 79 / 70%)" : "",
+  });
 
   const handleScroll = () => {
     if (!todoList.settings.general.isInfiniteScrollEnabled || infiniteScroll.isLoading) {
@@ -117,6 +128,19 @@ export function TodoList({ todoListProvider }: Props) {
     }    
   };
 
+  const reorder = (list: Array<ITodo>, startIndex: number, endIndex: number) => {
+    if (todoList.settings.general.isPaginationEnabled) {
+      startIndex = startIndex + ((todoList.paging.activePage - 1) * todoList.paging.itemsPerPage);
+      endIndex =  endIndex + ((todoList.paging.activePage - 1)  * todoList.paging.itemsPerPage);
+    }
+    
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+  
+    return result;
+  };
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function onDragEnd(result: any) {
     // dropped outside the list
@@ -125,7 +149,7 @@ export function TodoList({ todoListProvider }: Props) {
     }
 
     const items = reorder(
-      todoList.displayList,
+      todoList.originalList,
       result.source.index,
       result.destination.index
     );
@@ -159,10 +183,9 @@ export function TodoList({ todoListProvider }: Props) {
         { 
           todoList.isLoading 
           ? <Loader height={280} />
-          : 
-            <DragDropContext onDragEnd={onDragEnd}>
+          : <DragDropContext onDragEnd={onDragEnd}>
               <Droppable droppableId="droppable-list">
-                {(provided: any, snapshot: any) => (
+                {(provided, snapshot) => (
                 <section 
                   id="todo-list-section"
                   className=''
@@ -186,15 +209,17 @@ export function TodoList({ todoListProvider }: Props) {
             </DragDropContext>
         }
         {
-          todoList.settings.general.isInfiniteScrollEnabled &&
-          !infiniteScroll.isLoading &&
-          infiniteScroll.endIndex < todoList.originalList.length &&
-          <div id="infinite-scroll-end" className="App__todo-list__infinite-scroll-end">
-            <div className="App__todo-list__infinite-scroll-end--bouncing">
-              <FontAwesomeIcon icon={faAngleDown} />
-              <div>Scroll down to load more</div>
-            </div>            
-          </div>
+          todoList.settings.general.isInfiniteScrollEnabled 
+          && !infiniteScroll.isLoading 
+          && !todoList.isLoading 
+          && infiniteScroll.endIndex < todoList.originalList.length 
+          && todoList.displayMode === DisplayMode.All 
+          && <div id="infinite-scroll-end" className="App__todo-list__infinite-scroll-end">
+                <div className="App__todo-list__infinite-scroll-end--bouncing">
+                  <FontAwesomeIcon icon={faAngleDown} />
+                  <div>Scroll down to load more</div>
+                </div>            
+              </div>
         }      
       </main>
     }    

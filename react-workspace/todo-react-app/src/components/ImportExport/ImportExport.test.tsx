@@ -120,7 +120,7 @@ describe('ImportExport', () => {
     describe('success', () => {  
       it('should read content when import confirmed', async () => {
         render(jsxElement);
-        const data = `[{"id":1,"title":"test","description":"des","completed":false,"createdAt":"2024-01-23T13:26:32.093Z", sortId: 1}]`;      
+        const data = `[{"id":1,"title":"test","description":"des","completed":false,"createdAt":"2024-01-23T13:26:32.093Z","sortId": 1}]`;      
         const progressEvent = { target: { result: data } } as unknown as ProgressEvent<FileReader>;
         const blobJson = new Blob([data], { type: 'application/json' });
         const mockFile = new File([blobJson], 'todo-list.json');        
@@ -152,7 +152,7 @@ describe('ImportExport', () => {
   
       it('should handle file content when onload invoked', async () => {
         render(jsxElement);
-        const data = `[{"id":1,"title":"test","description":"des","completed":false,"createdAt":"2024-01-23T13:26:32.093Z", sortId:1}]`;      
+        const data = `[{"id":1,"title":"test","description":"des","completed":false,"createdAt":"2024-01-23T13:26:32.093Z","sortId":1}]`;      
         const progressEvent = { target: { result: data } } as unknown as ProgressEvent<FileReader>;        
         const todo = JSON.parse(data)[0] as Todo;
 

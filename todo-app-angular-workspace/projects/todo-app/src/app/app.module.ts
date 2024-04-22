@@ -45,6 +45,7 @@ import {
   StorageProviderKey,
   SettingsProviderKey
 } from './shared/services';
+import { CdkDrag, CdkDragPlaceholder, CdkDropList } from '@angular/cdk/drag-drop';
 
 
 @NgModule({
@@ -78,7 +79,10 @@ import {
     BsDropdownModule,
     FormsModule,
     StoreModule.forRoot({ todos: todosReducer }),
-    EffectsModule.forRoot([TodoEffects])
+    EffectsModule.forRoot([TodoEffects]),
+    CdkDropList,
+    CdkDrag,
+    CdkDragPlaceholder
   ],
   providers: [
     BsModalService,

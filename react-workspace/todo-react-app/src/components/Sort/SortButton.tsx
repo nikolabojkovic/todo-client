@@ -39,9 +39,8 @@ export function SortButton({ column, text, disabled, active, sortType, sortDirec
           ? (direction !== SortDirection.Asc ? SortDirection.Asc : SortDirection.Desc) 
           : SortDirection.None;
         setDirection(newDirectionState);
-        if (sortType === SortType.noDirection) {
-          setIsActive(true);
-        }
+        setIsActive(sortType === SortType.noDirection);
+        
         handleSort(column, newDirectionState);
       }}
     >

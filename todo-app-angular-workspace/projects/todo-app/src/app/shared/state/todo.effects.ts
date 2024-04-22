@@ -2,20 +2,22 @@ import { Inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType, concatLatestFrom } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { EMPTY, of } from 'rxjs';
-import { catchError, exhaustMap, filter, first, map, tap } from 'rxjs/operators';
+import { catchError, exhaustMap, filter, first, map, switchMap, tap } from 'rxjs/operators';
 
 import {
   ITodo,
   ISettings,
   IFilter,
-  ISort
+  ISort,
+  SortDirection
 } from '../models';
 import {
   IState,
   State as TodoState,
   TodoListActions,
   selectPaging,
-  selectTodos
+  selectTodos,
+  selectSort
 } from './';
 import {
   TodoService,
@@ -28,25 +30,33 @@ import {
 @Injectable()
 export class TodoEffects {
 
-  loadTodoList$ = createEffect(() =>
-    this.actions$.pipe(
+  loadTodoList$ = createEffect(() => {
+    let sort = {
+      column: 'sortId',
+      direction: SortDirection.Asc
+    } as ISort;
+    return this.actions$.pipe(
       ofType(TodoListActions.fetch),
-      exhaustMap(() => this.todoService.getList(
-        {} as IFilter,
-        {
-          column: 'createdAt',
-          direction: 'asc'
-        } as ISort)
-        .pipe(
-          first(),
-          map((list: ITodo[]) => TodoListActions.fetched({ list })),
-          catchError(() => {
-            return of(TodoListActions.fetched({ list: [] as ITodo[] }));
-          })
-        )
-      )
-    )
-  );
+      switchMap(() => this.storageProvider.getItem('todo-sort')),
+      exhaustMap((localStorageSort: string | null | undefined) => {
+        if (localStorageSort) {
+          sort = JSON.parse(localStorageSort) as ISort;
+        }
+
+        return this.todoService.getList(
+          {} as IFilter,
+          sort
+          )
+          .pipe(
+            first(),
+            map((list: ITodo[]) => TodoListActions.fetched({ list, sort })),
+            catchError(() => {
+              return of(TodoListActions.fetched({ list: [] as ITodo[], sort }));
+            })
+          );
+      })
+    );
+  });
 
   searchTodoList$ = createEffect(() =>
     this.actions$.pipe(
@@ -118,7 +128,8 @@ export class TodoEffects {
         TodoListActions.added,
         TodoListActions.completed,
         TodoListActions.removed,
-        TodoListActions.imported),
+        TodoListActions.imported,
+        TodoListActions.manuallySorted),
       concatLatestFrom(() => this.store.select(selectTodos).pipe(first())),
       tap(([, todoList]) => this.todoService.saveList(todoList.originalList).pipe(first()))
     ),
@@ -192,6 +203,18 @@ export class TodoEffects {
       ),
       concatLatestFrom(() => this.store.select(selectPaging).pipe(first())),
         tap(([, paging]) => this.storageProvider.setItem('todo-paging', paging).pipe(first()))
+      ),
+      { dispatch: false }
+  );
+
+  saveSorting$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(
+        TodoListActions.sorted,
+        TodoListActions.manuallySorted
+      ),
+      concatLatestFrom(() => this.store.select(selectSort).pipe(first())),
+        tap(([, sort]) => this.storageProvider.setItem('todo-sort', sort).pipe(first()))
       ),
       { dispatch: false }
   );

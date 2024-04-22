@@ -1,10 +1,14 @@
-import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Subscription, first } from 'rxjs';
+import { Subscription } from 'rxjs';
 
-import { ISort, SortDirection } from '../../../shared/models';
-import { IState, TodoListActions, selectLoader, selectSort } from '../../../shared/state';
+import {  SortDirection, SortType } from '../../../shared/models';
+import { IState, selectLoader } from '../../../shared/state';
 
+export type SortAction = {
+  column: string,
+  direction: SortDirection
+}
 @Component({
   selector: 'app-sort-button',
   templateUrl: './sort-button.component.html',
@@ -13,44 +17,41 @@ import { IState, TodoListActions, selectLoader, selectSort } from '../../../shar
 export class SortButtonComponent implements OnInit, OnDestroy {
   @Input() column: string = '';
   @Input() text: string = '';
+  @Input() sortType: SortType = SortType.noDirection;
+  @Input() sortDirection!: string;
+  @Input() isActive = false;
+  @Output() onSort = new EventEmitter<SortAction>();
 
-  sortDirection!: string;
   isLoading: boolean = false;
-  private subscription!: Subscription;
+  private subscriptions: Subscription[] = [];
+
+  public readonly SortType : typeof SortType = SortType;
 
   constructor(private store: Store<IState>, private ref: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    this.store.select(selectSort)
-      .pipe(
-        first()
-      )
-      .subscribe((sort: ISort) => {
-        this.sortDirection = sort.column === this.column ? sort.direction : SortDirection.None;
-      });
-    this.subscription = this.store.select(selectLoader)
+    this.subscriptions.push(this.store.select(selectLoader)
       .pipe()
       .subscribe((isLoading: boolean) => {
         this.isLoading = isLoading;
         this.ref.detectChanges();
-      });
+      }));
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.subscriptions.forEach(item => item.unsubscribe());
   }
 
-  onSort(): void {
+  handleClick(): void {
     if (this.isLoading) {
       return;
     }
 
-    this.sortDirection = this.sortDirection !== SortDirection.Asc ? SortDirection.Asc : SortDirection.Desc;
-    this.store.dispatch(TodoListActions.sort({
-      sort: {
-        column: this.column,
-        direction: this.sortDirection
-      } as ISort
-    }));
+    this.sortDirection = this.sortType === SortType.direction
+      ? (this.sortDirection !== SortDirection.Asc ? SortDirection.Asc : SortDirection.Desc)
+      : SortDirection.None;
+
+    this.isActive = this.sortType === SortType.noDirection;
+    this.onSort.emit({ column: this.column, direction: this.sortDirection } as SortAction);
   }
 }

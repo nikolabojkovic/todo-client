@@ -7,10 +7,16 @@ import { StateFilter } from '../models/IFilter';
 import { IAction } from "../models/Action";
 import { ISettings, IGeneralSettings, IPaginationSettings, ISearchSettings, PaginationType, ListContainerType } from "../models/ISettings";
 
+export enum DisplayMode {
+	All,
+	Filtered
+}
+
 export interface IState {
 	isLoading: boolean;
 	originalList: ITodo[];
 	displayList: ITodo[];
+	displayMode: DisplayMode;
 	effectTrigger: IAction | null;
 	search: ISearch;
 	filter: IFilter;
@@ -24,6 +30,7 @@ export class State implements IState {
 	isLoading: boolean;
 	originalList: ITodo[];
 	displayList: ITodo[];
+	displayMode: DisplayMode;
 	effectTrigger: IAction | null;
 	search: ISearch;
 	filter: IFilter;
@@ -36,6 +43,7 @@ export class State implements IState {
 		this.isLoading = false;
 		this.originalList = todos; 
 		this.displayList = todos;
+		this.displayMode = DisplayMode.All;
 		this.effectTrigger = null;
 		this.search = {
 			searchTerm: '',

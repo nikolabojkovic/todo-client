@@ -5,7 +5,7 @@ export interface IStorageProvider {
   setItem(key: string, value: unknown): Observable<unknown>;
 }
 
-export class LocalStorageProvider implements IStorageProvider {
+export default class LocalStorageProvider implements IStorageProvider {
   get storage(): Storage {
     return window.localStorage;
   }
@@ -19,7 +19,7 @@ export class LocalStorageProvider implements IStorageProvider {
     this.storage.setItem(key, jsonAsText);
     return of({});
   }
-}
+} 
 
 // export class BackendStorageProvider implements IStorageProvider {
 //   getItem(key: string): Observable<string | null> {

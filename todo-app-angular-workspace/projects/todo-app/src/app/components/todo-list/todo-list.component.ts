@@ -3,29 +3,34 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subject, Subscription, combineLatestWith, delay } from 'rxjs';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 
-import { IState, selectLoader, selectTodoDisplayList, selectTodos } from '../../shared/state';
-import { ISettings,  ITodo,  ListContainerType } from '../../shared/models';
+import { DisplayMode, IState, TodoListActions, selectLoader, selectTodoDisplayList, selectTodos } from '../../shared/state';
+import { IPaging, ISettings,  ITodo,  ListContainerType } from '../../shared/models';
 
 @Component({
   selector: 'app-todo-list',
   templateUrl: './todo-list.component.html',
-  styleUrls: ['./todo-list.component.scss']
+  styleUrls: ['./todo-list.component.scss'],
 })
 export class TodoListComponent implements OnInit, OnDestroy {
 
   public readonly ListContainerType : typeof ListContainerType = ListContainerType;
+  public readonly DisplayMode : typeof DisplayMode = DisplayMode;
+
   readonly todoItemheight = 55;
   faAngleDown = faAngleDown;
 
   settings?: ISettings;
   items: Array<ITodo> = [];
+  originalItems: Array<ITodo> = [];
+  listSizeType?: ListContainerType;
+  displayMode: DisplayMode = DisplayMode.All;
+  paging?: IPaging = undefined;
   infiniteScroll = {
     startIndex: 0,
     endIndex: 5,
     isLoading: false,
     fetch: new Subject<number>()
   };
-  originalListLength = 0;
 
   isLoading$: Observable<boolean> = this.store.select(selectLoader);
   todoState$: Observable<IState> = this.store.select(selectTodos);
@@ -38,25 +43,33 @@ export class TodoListComponent implements OnInit, OnDestroy {
     window.addEventListener('scroll', this.handleScroll);
 
     this.subscriptions.push(this.todoState$.pipe().subscribe((state: IState) => {
-      this.originalListLength = state.originalList.length;
       this.settings = state.settings;
+      this.paging = state.paging;
+      this.originalItems = state.originalList;
+      this.displayMode = state.displayMode;
 
       if (state.settings.general.isPaginationEnabled) {
-        this.items = state.displayList.slice(state.paging.startIndex, state.paging.endIndex);
+        this.items = [...state.displayList.slice(state.paging.startIndex, state.paging.endIndex)];
         return;
       }
 
-      if (state.settings.general.isInfiniteScrollEnabled) {
+      if (state.settings.general.isInfiniteScrollEnabled && this.listSizeType != state.settings.general.listSizeType) {
         this.infiniteScroll = {
           ...this.infiniteScroll,
           endIndex: this.calculateinfiniteScrollEndIndex(state.settings),
           isLoading: false
         };
-        this.items = state.displayList.slice(0, this.infiniteScroll.endIndex);
+        this.listSizeType = state.settings.general.listSizeType;
+        this.items = [...state.displayList.slice(0, this.infiniteScroll.endIndex)];
         return;
       }
 
-      this.items = state.displayList;
+      if (state.settings.general.isInfiniteScrollEnabled) {
+        this.items = [...state.displayList.slice(0, this.infiniteScroll.endIndex)];
+        return;
+      }
+
+      this.items = [...state.displayList];
     }));
 
     this.subscriptions.push(this.store.select(selectTodoDisplayList)
@@ -91,15 +104,49 @@ export class TodoListComponent implements OnInit, OnDestroy {
 
     if ((scrollTop + clientHeight >= scrollHeight - 20)
      && !this.infiniteScroll.isLoading
-     && this.infiniteScroll.endIndex < this.originalListLength) {
+     && this.infiniteScroll.endIndex < this.originalItems.length) {
       this.infiniteScroll = {...this.infiniteScroll, isLoading: true };
       this.infiniteScroll.fetch.next(this.infiniteScroll.endIndex);
     }
   };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  drop(event: any) {
+    const previousindex = event.previousIndex;
+    const currentIndex = event.currentIndex;
+
+    const items = this.reorder(
+      this.originalItems,
+      previousindex,
+      currentIndex
+    );
+
+   const list = [];
+   let counter = 1;
+
+   for (const item of items) {
+    list.push({...item, sortId: counter++});
+   }
+
+    this.store.dispatch(TodoListActions.manuallySorted({ list }));
+  }
 
   private calculateinfiniteScrollEndIndex(settings: ISettings): number {
     return (settings.general.listSizeType === ListContainerType.Fixed
       ? ((settings.general.fixedListSize) / this.todoItemheight)
       : (document.documentElement.clientHeight - 200) / this.todoItemheight);
   }
+
+  private reorder = (list: Array<ITodo>, startIndex: number, endIndex: number) => {
+    if (this.settings?.general.isPaginationEnabled && this.paging) {
+      startIndex = startIndex + ((this.paging.activePage - 1) * this.paging.itemsPerPage);
+      endIndex =  endIndex + ((this.paging.activePage - 1)  * this.paging.itemsPerPage);
+    }
+
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+
+    return result;
+  };
 }

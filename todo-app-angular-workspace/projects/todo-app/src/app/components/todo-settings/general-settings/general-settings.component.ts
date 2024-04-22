@@ -14,7 +14,7 @@ export class GeneralSettingsComponent implements OnInit {
   isConfirmEnabled: boolean = true;
   isPaginationEnabled: boolean = true;
   isInfiniteScrollEnabled: boolean = false;
-  listSizeType: string = ListContainerType.Fixed;
+  listSizeType: ListContainerType = ListContainerType.Fixed;
   fixedListSize: number = 200;
   public readonly ListContainerType : typeof ListContainerType = ListContainerType;
   private settings: ISettings = {} as ISettings;

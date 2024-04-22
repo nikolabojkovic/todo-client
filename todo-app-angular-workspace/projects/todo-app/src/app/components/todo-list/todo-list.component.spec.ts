@@ -8,6 +8,7 @@ import { TodoService, SettingsProviderKey, StorageProviderKey } from '../../shar
 import { IState, TodoEffects, todosReducer, TodoListActions } from '../../shared/state';
 import { TodoListComponent } from './todo-list.component';
 import { todos } from '../../tests/test-data';
+import { ISort, SortDirection } from '../../shared/models';
 
 describe('TodoListComponent', () => {
   let component: TodoListComponent;
@@ -54,7 +55,13 @@ describe('TodoListComponent', () => {
   describe('ngOnInit', () => {
     it('should show paging list', (done: DoneFn) => {
       component.ngOnInit();
-      store.dispatch(TodoListActions.fetched({ list: todos }));
+      store.dispatch(TodoListActions.fetched({
+        list: todos,
+        sort: {
+          column: 'createdAt',
+          direction: SortDirection.Asc
+        } as ISort
+      }));
 
       component.todoState$.subscribe(() => {
         expect(component.items.length).toBe(5);

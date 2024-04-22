@@ -185,11 +185,15 @@ code {
       margin-top: 2px;
       background-color: $background-ternary-color-2;
       border-radius: 5px;
-      padding: 0px 20px 0px 5px;
+      padding: 0px 5px 0px 5px;
       text-transform: uppercase;
       font-weight: bold;
       font-size: smaller;
       position: relative;
+
+      &--active {
+        color: $text-secondary-color;
+      }
 
       &--disabled {
         background-color: $background-secondary-color-1;
@@ -199,14 +203,20 @@ code {
         }
       }
 
-      &__icon-up {
-        right: 5px;
-        position: absolute;
-      }
+      &__icon {
+        padding: 0px 6px;
 
-      &__icon-down {
-        right: 5px;
-        position: absolute;
+        &-up {
+          color: $text-secondary-color;
+          right: 5px;
+          position: absolute;
+        }
+
+        &-down {
+          color: $text-secondary-color;
+          right: 5px;
+          position: absolute;
+        }
       }
 
       .icon--inactive {

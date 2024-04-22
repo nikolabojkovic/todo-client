@@ -168,7 +168,7 @@ describe('ImportExportComponent', () => {
       });
 
       it('should import from file when onload invoked', () => {
-        const todo = new Todo(1, 'Task 1', 'Description 1', false, new Date(2022, 1, 4));
+        const todo = new Todo(1, 'Task 1', 'Description 1', false, new Date(2022, 1, 4), 1);
         const data = [todo] as Todo[];
         const event = { target: { result: JSON.stringify(data)}} as ProgressEvent<FileReader>;
         component.onLoad(event);
@@ -185,7 +185,7 @@ describe('ImportExportComponent', () => {
 
   describe('export', () => {
     it('should succeed', () => {
-      const todo = new Todo(1, 'Task 1', 'Description 1', false, new Date(2022, 1, 4));
+      const todo = new Todo(1, 'Task 1', 'Description 1', false, new Date(2022, 1, 4), 1);
       component.items = [todo] as Todo[];
       const expectedJsonContent = `data:text/json;chatset=utf-8,${encodeURIComponent(
         JSON.stringify(component.items)

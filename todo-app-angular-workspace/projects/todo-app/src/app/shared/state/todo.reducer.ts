@@ -1,12 +1,24 @@
 import { createReducer, on } from '@ngrx/store';
 
-import { IState, State, TodoListActions } from './';
-import { IPaging, ITodo, StateFilter, ISettings } from '../models';
+import { DisplayMode, IState, State, TodoListActions } from './';
+import { IPaging, ITodo, StateFilter, ISettings, SortDirection, ISort } from '../models';
 
 export const initialState: IState = new State([] as ITodo[]);
 
 export const todosReducer = createReducer(
   initialState,
+  on(TodoListActions.filter, (state) => {
+    return {
+      ...state,
+      displayMode: DisplayMode.Filtered
+    } as IState;
+  }),
+  on(TodoListActions.search, (state) => {
+    return {
+      ...state,
+      displayMode: DisplayMode.Filtered
+    } as IState;
+  }),
 
   on(TodoListActions.loadingStarted, (state) => {
     return {
@@ -20,12 +32,13 @@ export const todosReducer = createReducer(
       activeTab
     } as IState;
   }),
-  on(TodoListActions.fetched, (state, { list }) => {
+  on(TodoListActions.fetched, (state, { list, sort }) => {
     return {
       ...state,
       isLoading: false,
       originalList: list,
       displayList: list,
+      sort,
       paging: {
         ...state.paging,
         totalCount: list.length,
@@ -36,47 +49,67 @@ export const todosReducer = createReducer(
       } as IPaging,
     };
   }),
-  on(TodoListActions.searched, (todoList, { activePage, list }) => {
+  on(TodoListActions.searched, (state, { activePage, list }) => {
     return {
-      ...todoList,
+      ...state,
       isLoading: false,
       displayList: [...list],
+      displayMode:
+        state.filter.state === StateFilter.all && state.search.searchTerm === ''
+          ? DisplayMode.All
+          : DisplayMode.Filtered,
       paging: {
-        ...todoList.paging,
+        ...state.paging,
         activePage: activePage,
         totalCount: list.length,
-        startIndex: (activePage - 1) * todoList.paging.itemsPerPage,
-        endIndex: activePage * todoList.paging.itemsPerPage
+        startIndex: (activePage - 1) * state.paging.itemsPerPage,
+        endIndex: activePage * state.paging.itemsPerPage
       } as IPaging
     } as IState;
   }),
-  on(TodoListActions.filtered, (todoList, { activePage, filter, list }) => {
+  on(TodoListActions.filtered, (state, { activePage, filter, list }) => {
     return {
-      ...todoList,
+      ...state,
       isLoading: false,
       displayList: [...list],
+      displayMode:
+        filter.state === StateFilter.all && state.search.searchTerm === ''
+          ? DisplayMode.All
+          : DisplayMode.Filtered,
       filter: {...filter},
       paging: {
-        ...todoList.paging,
+        ...state.paging,
         activePage: activePage,
         totalCount: list.length,
-        startIndex: (activePage - 1) * todoList.paging.itemsPerPage,
-        endIndex: activePage * todoList.paging.itemsPerPage
+        startIndex: (activePage - 1) * state.paging.itemsPerPage,
+        endIndex: activePage * state.paging.itemsPerPage
       } as IPaging
     } as IState;
   }),
-  on(TodoListActions.sorted, (todoList, {sort, list} ) => {
+  on(TodoListActions.sorted, (state, {sort, list} ) => {
     return {
-      ...todoList,
+      ...state,
       isLoading: false,
       displayList: [...list],
+      originalList: [...list],
       sort: {...sort},
-      paging: {...todoList.paging} as IPaging
+      paging: {...state.paging} as IPaging
     } as IState;
   }),
-  on(TodoListActions.imported, (todoList, { activePage, list }) => {
+  on(TodoListActions.manuallySorted, (state, {list} ) => {
     return {
-      ...todoList,
+      ...state,
+      originalList: [...list],
+      displayList: [...list],
+      sort: {
+        column: 'sortId',
+        direction: SortDirection.None
+      } as ISort
+    } as IState;
+  }),
+  on(TodoListActions.imported, (state, { activePage, list }) => {
+    return {
+      ...state,
       originalList: [...list],
       displayList: [...list],
       search: { searchTerm: '' },
@@ -84,18 +117,18 @@ export const todosReducer = createReducer(
         state: StateFilter.all
       },
       paging: {
-        ...todoList.paging,
+        ...state.paging,
         activePage: activePage,
         totalCount: list.length,
-        startIndex: (activePage - 1) * todoList.paging.itemsPerPage,
-        endIndex: activePage * todoList.paging.itemsPerPage
+        startIndex: (activePage - 1) * state.paging.itemsPerPage,
+        endIndex: activePage * state.paging.itemsPerPage
       } as IPaging
     } as IState;
   }),
 
-  on(TodoListActions.searchTermUpdated, (todoList, { searchTerm }) => {
+  on(TodoListActions.searchTermUpdated, (state, { searchTerm }) => {
     return {
-      ...todoList,
+      ...state,
       search: { searchTerm },
     };
   }),
@@ -112,11 +145,11 @@ export const todosReducer = createReducer(
       } as IPaging
     } as IState;
   }),
-  on(TodoListActions.pagingUpdated, (todoList, { activePage, itemsPerPage }) => {
+  on(TodoListActions.pagingUpdated, (state, { activePage, itemsPerPage }) => {
     return {
-      ...todoList,
+      ...state,
       paging: {
-        ...todoList.paging,
+        ...state.paging,
         activePage: activePage,
         itemsPerPage: itemsPerPage,
         startIndex: (activePage - 1) * itemsPerPage,
@@ -132,19 +165,19 @@ export const todosReducer = createReducer(
       } as ISettings
     };
   }),
-  on(TodoListActions.settingsUpdated, (todoList, { payload }) => {
+  on(TodoListActions.settingsUpdated, (state, { payload }) => {
     return {
-      ...todoList,
+      ...state,
       settings: {
         ...payload
       } as ISettings
     };
   }),
 
-  on(TodoListActions.added, (todoList, { title, description } ) => {
-    const id = todoList.originalList.length >= 1
-    ? [...todoList.originalList]
-        .sort((a: ITodo, b: ITodo) => a.id > b.id ? 1 : -1)[todoList.originalList.length - 1].id
+  on(TodoListActions.added, (state, { title, description } ) => {
+    const id = state.originalList.length >= 1
+    ? [...state.originalList]
+        .sort((a: ITodo, b: ITodo) => a.id > b.id ? 1 : -1)[state.originalList.length - 1].id
     : 0;
     const newTodo = {
       id: id + 1,
@@ -154,49 +187,49 @@ export const todosReducer = createReducer(
       createdAt: new Date()
     };
     return {
-      ...todoList,
-      originalList: [...todoList.originalList, newTodo],
-      displayList: [...todoList.displayList, newTodo],
+      ...state,
+      originalList: [...state.originalList, newTodo],
+      displayList: [...state.displayList, newTodo],
       paging: {
-        ...todoList.paging,
-        totalCount: todoList.paging.totalCount + 1,
-        activePage: calculateActivePageOnAdd(todoList.paging),
-        startIndex: (calculateActivePageOnAdd(todoList.paging) - 1) * todoList.paging.itemsPerPage,
-        endIndex: calculateActivePageOnAdd(todoList.paging) * todoList.paging.itemsPerPage
+        ...state.paging,
+        totalCount: state.paging.totalCount + 1,
+        activePage: calculateActivePageOnAdd(state.paging),
+        startIndex: (calculateActivePageOnAdd(state.paging) - 1) * state.paging.itemsPerPage,
+        endIndex: calculateActivePageOnAdd(state.paging) * state.paging.itemsPerPage
       } as IPaging
     } as IState;
   }),
-  on(TodoListActions.completed, (todoList, { todoId }) => {
+  on(TodoListActions.completed, (state, { todoId }) => {
     return {
-      ...todoList,
-      originalList: todoList.originalList.map(todo => {
+      ...state,
+      originalList: state.originalList.map(todo => {
         if (todo.id === todoId) {
           return {...todo, completed: true};
         } else {
           return todo;
         }
       }) as ITodo[],
-      displayList: todoList.displayList.map(todo => {
+      displayList: state.displayList.map(todo => {
         if (todo.id === todoId) {
           return {...todo, completed: true};
         } else {
           return todo;
         }
       }) as ITodo[],
-      paging: {...todoList.paging}
+      paging: {...state.paging}
     } as IState;
   }),
-  on(TodoListActions.removed, (todoList, { todoId }) => {
+  on(TodoListActions.removed, (state, { todoId }) => {
     return {
-      ...todoList,
-      originalList: todoList.originalList.filter(t => t.id !== todoId) as ITodo[],
-      displayList: todoList.displayList.filter(t => t.id !== todoId) as ITodo[],
+      ...state,
+      originalList: state.originalList.filter(t => t.id !== todoId) as ITodo[],
+      displayList: state.displayList.filter(t => t.id !== todoId) as ITodo[],
       paging: {
-        ...todoList.paging,
-        totalCount: todoList.paging.totalCount - 1,
-        activePage: calculateActivePageOnDelete(todoList.paging),
-        startIndex: (calculateActivePageOnDelete(todoList.paging) - 1) * todoList.paging.itemsPerPage,
-        endIndex: calculateActivePageOnDelete(todoList.paging) * todoList.paging.itemsPerPage,
+        ...state.paging,
+        totalCount: state.paging.totalCount - 1,
+        activePage: calculateActivePageOnDelete(state.paging),
+        startIndex: (calculateActivePageOnDelete(state.paging) - 1) * state.paging.itemsPerPage,
+        endIndex: calculateActivePageOnDelete(state.paging) * state.paging.itemsPerPage,
       } as IPaging
     } as IState;
   }

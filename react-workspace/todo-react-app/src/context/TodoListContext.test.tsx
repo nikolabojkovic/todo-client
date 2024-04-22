@@ -1,5 +1,5 @@
 import { IAction, TodoActions, IFilter, StateFilter, IPaging, ISort, SortDirection, ITodo } from "../models";
-import { IState, State, todoStateReducer, stateTestData } from "./";
+import { IState, State, todoStateReducer, stateTestData, DisplayMode } from "./";
 
 describe('TodoListContext', () => {
   describe('todoListReducer', () => {
@@ -16,7 +16,8 @@ describe('TodoListContext', () => {
       } as IAction;
       const expectedState = {
         ...stateTestData,
-        effectTrigger: { type: TodoActions.filter, payload: action.payload }
+        effectTrigger: { type: TodoActions.filter, payload: action.payload },
+        displayMode: DisplayMode.Filtered
       };
 
       const actualState = todoStateReducer(stateTestData, action);
@@ -35,7 +36,8 @@ describe('TodoListContext', () => {
       } as IAction;
       const expectedState = {
         ...stateTestData,
-        effectTrigger: { type: TodoActions.search, payload: action.payload }
+        effectTrigger: { type: TodoActions.search, payload: action.payload },
+        displayMode: DisplayMode.Filtered
       };
 
       const actualState = todoStateReducer(stateTestData, action);
@@ -47,7 +49,11 @@ describe('TodoListContext', () => {
       const action = {
         type: TodoActions.fetched,
         payload: {
-          list: stateTestData.originalList
+          list: stateTestData.originalList,
+          sort: {
+            column: 'createdAt',
+            direction: SortDirection.Asc
+          } as ISort
         }
       } as IAction;
       const expectedState = {
@@ -75,7 +81,6 @@ describe('TodoListContext', () => {
       const action = {
         type: TodoActions.searched,
         payload: {
-          searchTerm: 'Task 1',
           list: stateTestData.displayList.filter(x => x.title === 'Task 1'),
           activePage: 1,
         }
@@ -85,7 +90,8 @@ describe('TodoListContext', () => {
         effectTrigger: null,
         isLoading: false,
         displayList: stateTestData.displayList.filter(x => x.title === 'Task 1'),
-        search: { searchTerm: ''},
+        displayMode: DisplayMode.All,
+        search: { searchTerm: '' },
         paging: {
           ...stateTestData.paging,
           activePage: 1,
@@ -114,6 +120,7 @@ describe('TodoListContext', () => {
         effectTrigger: null,
         isLoading: false,
         displayList: stateTestData.displayList.filter(x => x.completed),
+        displayMode: DisplayMode.Filtered,
         filter: { state: StateFilter.completed },
         paging: {
           ...stateTestData.paging,
@@ -143,7 +150,7 @@ describe('TodoListContext', () => {
       } as IAction;
       const expectedState = {
         ...stateTestData,
-        effectTrigger: null,
+        effectTrigger: { type: TodoActions.sorted, payload: action.payload },
         isLoading: false,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         displayList: [...stateTestData.originalList.sort((a: any, b: any) => a.title > b.title ? 1 : -1)],
@@ -315,7 +322,8 @@ describe('TodoListContext', () => {
         title: "Task 7",
         description: "Description 7",
         completed: false,
-        createdAt: new Date(2022, 1, 4)
+        createdAt: new Date(2022, 1, 4),
+        sortId: 7
       } as ITodo;
       const action = {
         type: TodoActions.added,
@@ -357,7 +365,8 @@ describe('TodoListContext', () => {
         title: "Task 1",
         description: "Description 1",
         completed: false,
-        createdAt: new Date(2022, 1, 4)
+        createdAt: new Date(2022, 1, 4),
+        sortId: 1
       } as ITodo;
       const action = {
         type: TodoActions.added,

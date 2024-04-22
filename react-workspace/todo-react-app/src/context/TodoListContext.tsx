@@ -1,7 +1,7 @@
 import { createContext, useContext, useReducer } from "react";
 
 import { IAction, TodoActions, IPaging, ITodo, StateFilter, ISettings, ISort, SortDirection } from "../models";
-import { IState } from "./";
+import { DisplayMode, IState } from "./";
  
 export const TodosContext = createContext({} as IState);
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -62,12 +62,14 @@ export function todoStateReducer(state: IState, action: IAction) {
       return { 
         ...state,
         effectTrigger: { type: TodoActions.filter, payload: action.payload },
+        displayMode: DisplayMode.Filtered
       } as IState;
     }
     case TodoActions.search: {
       return { 
         ...state,
         effectTrigger: { type: TodoActions.search, payload: action.payload },
+        displayMode: DisplayMode.Filtered
       } as IState;
     }
     case TodoActions.sort: {
@@ -101,6 +103,10 @@ export function todoStateReducer(state: IState, action: IAction) {
         isLoading: false,
         effectTrigger: null,
         displayList: [...action.payload.list],
+        displayMode: 
+          state.filter.state === StateFilter.all && state.search.searchTerm === '' 
+            ? DisplayMode.All 
+            : DisplayMode.Filtered,
         paging: {
           ...state.paging,
           activePage: action.payload.activePage,
@@ -116,6 +122,10 @@ export function todoStateReducer(state: IState, action: IAction) {
         isLoading: false,
         effectTrigger: null,
         displayList: [...action.payload.list],
+        displayMode: 
+          action.payload.filter.state === StateFilter.all && state.search.searchTerm === '' 
+            ? DisplayMode.All 
+            : DisplayMode.Filtered,
         filter: {...action.payload.filter},
         paging: {
           ...state.paging,
@@ -131,6 +141,7 @@ export function todoStateReducer(state: IState, action: IAction) {
         ...state,
         isLoading: false,
         effectTrigger: { type: TodoActions.sorted, payload: action.payload },
+        originalList: [...action.payload.list],
         displayList: [...action.payload.list],
         sort: {...action.payload.sort},
         paging: {...state.paging} as IPaging

@@ -84,6 +84,10 @@ export class TodoService {
       return sortResult;
     }
 
+    if (sort.column === 'sortId') {
+      return sortResult = [...list.sort((a: ITodo, b: ITodo) => a.sortId > b.sortId ? 1 : -1)];
+    }
+
     if (sort.direction === SortDirection.Asc) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       sortResult = [...list.sort((a: any, b: any) => a[sort.column] > b[sort.column] ? 1 : -1)];

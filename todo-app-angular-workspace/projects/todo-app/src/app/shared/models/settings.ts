@@ -8,7 +8,7 @@ export interface IGeneralSettings {
 	isConfirmEnabled: boolean;
 	isPaginationEnabled: boolean;
 	isInfiniteScrollEnabled: boolean;
-	listSizeType: string;
+	listSizeType: ListContainerType;
 	fixedListSize: number;
 }
 

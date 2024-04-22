@@ -4,7 +4,7 @@ import { Subscription, first } from 'rxjs';
 import { faCheckDouble, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 import { ITodo, ISettings } from '../../shared/models';
-import { IState, TodoListActions, selectSettings } from '../../shared/state';
+import { DisplayMode, IState, TodoListActions, selectSettings } from '../../shared/state';
 import { ConfirmModalService } from '../';
 
 @Component({
@@ -13,18 +13,24 @@ import { ConfirmModalService } from '../';
   styleUrls: ['./todo-item.component.scss']
 })
 export class TodoItemComponent implements OnInit, OnDestroy {
+
   @Input() todo: ITodo = {} as ITodo;
+
   faCheckDouble = faCheckDouble;
   faTrash = faTrash;
   settings!: ISettings;
   private subscription!: Subscription;
+
+  public readonly DisplayMode : typeof DisplayMode = DisplayMode;
 
   constructor(private store: Store<IState>, private modalService: ConfirmModalService) {}
 
   ngOnInit(): void {
     this.subscription = this.store.select(selectSettings)
         .pipe()
-        .subscribe((settings: ISettings) => this.settings = settings);
+        .subscribe((settings: ISettings) => {
+          this.settings = settings;
+        });
   }
 
   ngOnDestroy(): void {

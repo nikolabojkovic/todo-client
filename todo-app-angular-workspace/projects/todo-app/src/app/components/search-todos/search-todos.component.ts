@@ -33,7 +33,6 @@ export class SearchTodosComponent implements OnInit, OnDestroy {
 
     this.subscription = this.store.select(selectSettings)
       .pipe(
-        first(),
         tap((settings: ISettings) => this.settings = settings),
         filter((settings: ISettings) => settings.search.isSearchOnKeyPressEnabled),
         concatMap((settings: ISettings) => this.searchOnKeyup$
@@ -72,6 +71,9 @@ export class SearchTodosComponent implements OnInit, OnDestroy {
 
   onClearSearch(): void {
     this.searchValue = '';
+    this.store.dispatch(TodoListActions.searchTermUpdated({
+      searchTerm: this.searchValue
+    }));
     this.onSerach();
   }
 }

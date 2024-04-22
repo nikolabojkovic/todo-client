@@ -1,3 +1,11 @@
 <section class="app__sorting d-flex flex-wrap">
-  <app-sort-button *ngFor="let column of sortByColumns" [text]="column.text" [column]="column.name"></app-sort-button>
+  <app-sort-button
+    *ngFor="let column of sortByColumns"
+    [text]="column.text"
+    [column]="column.name"
+    [sortType]="column.sortType"
+    [isActive]="activeColumn == column.name"
+    [sortDirection]="activeColumn === column.name ? SortDirection.Asc : SortDirection.None"
+    (onSort)="handleSort($event)"
+  ></app-sort-button>
 </section>

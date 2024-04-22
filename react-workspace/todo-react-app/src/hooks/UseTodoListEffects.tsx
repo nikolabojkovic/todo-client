@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { EMPTY, first, switchMap } from "rxjs";
+import { first, switchMap } from "rxjs";
 
 import { IState } from "../context";
 import { GetListProps, ITodoListProvider, LocalStorageProvider } from "../providers";

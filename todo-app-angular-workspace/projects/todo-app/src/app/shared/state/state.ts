@@ -14,10 +14,16 @@ import {
   SortDirection
 } from '../models';
 
+export enum DisplayMode {
+	All,
+	Filtered
+}
+
 export interface IState {
 	isLoading: boolean;
 	originalList: ITodo[];
 	displayList: ITodo[];
+	displayMode: DisplayMode;
 	search: ISearch;
 	filter: IFilter;
 	sort: ISort;
@@ -30,6 +36,7 @@ export class State implements IState {
     isLoading: boolean;
 		originalList: ITodo[];
 		displayList: ITodo[];
+    displayMode: DisplayMode;
 		search: ISearch;
 		filter: IFilter;
 		sort: ISort;
@@ -41,6 +48,7 @@ export class State implements IState {
 			this.isLoading = false;
 			this.originalList = todos;
       this.displayList = todos;
+      this.displayMode = DisplayMode.All;
       this.search = {
         searchTerm: '',
       };
@@ -48,8 +56,8 @@ export class State implements IState {
         state: StateFilter.all,
       } as IFilter;
       this.sort = {
-				column: 'createdAt',
-				direction: SortDirection.Asc
+        column: 'id',
+        direction: SortDirection.Asc
 			} as ISort;
       this.paging = {
         totalCount: todos.length,
