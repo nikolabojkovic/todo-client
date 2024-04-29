@@ -8,4 +8,5 @@ ng test --no-watch --code-coverage
 link local npm package
 npm install "file://./dist//sort-button-lib"
 
+// npm run start:todo-app
 // npm run test:todo-app-coverage

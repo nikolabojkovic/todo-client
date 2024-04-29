@@ -90,6 +90,7 @@ export function TodoList({ todoListProvider }: Props) {
             snapshot.isDragging,
             provided.draggableProps.style
           )}
+          className={snapshot.isDragging ? 'item-dragging' : ''}
         >
           <TodoItem 
             key={item.id} 
@@ -104,7 +105,6 @@ export function TodoList({ todoListProvider }: Props) {
   const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
     ...draggableStyle,
     userSelect: "none",
-    background: isDragging ? "rgb(79 79 79 / 70%)" : "",
   });
 
   const handleScroll = () => {
@@ -188,7 +188,7 @@ export function TodoList({ todoListProvider }: Props) {
                 {(provided, snapshot) => (
                 <section 
                   id="todo-list-section"
-                  className=''
+                  className= {todoList.originalList.length > 0 && todoList.displayMode === DisplayMode.All ? 'drag-list' : ''}
                   {...provided.droppableProps}
                   ref={provided.innerRef}
                 >

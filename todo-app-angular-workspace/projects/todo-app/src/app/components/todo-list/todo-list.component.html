@@ -14,19 +14,20 @@
     *ngIf="(isLoading$ | async) === false"
     cdkDropList
     (cdkDropListDropped)="drop($event)"
-    class="drag-list"
+    [class]="{ 'drag-list' : displayMode === DisplayMode.All }"
   >
     <div
       *ngFor="let item of items"
       cdkDrag [cdkDragDisabled]="displayMode === DisplayMode.Filtered"
-      [class]="{'drag-box': displayMode === DisplayMode.All}"
+      cdkDragBoundary=".app__todo-list"
+      [class]="{'drag-box': items.length > 0 && displayMode === DisplayMode.All}"
     >
       <app-todo-item [todo]="item"></app-todo-item>
       <div class="drag-custom-placeholder" *cdkDragPlaceholder></div>
     </div>
-    <div *ngIf="items.length === 0" class='text-light mt-5 mb-5'>No data</div>
-    <app-loader [height]="150" *ngIf="infiniteScroll.isLoading && settings?.general?.isInfiniteScrollEnabled" class="fade-in"></app-loader>
   </section>
+  <div *ngIf="(isLoading$ | async) === false && items.length === 0" class='text-light mt-5 mb-5'>No data</div>
+  <app-loader [height]="150" *ngIf="infiniteScroll.isLoading && settings?.general?.isInfiniteScrollEnabled" class="fade-in"></app-loader>
   <div
     *ngIf="settings?.general?.isInfiniteScrollEnabled
         && !infiniteScroll.isLoading
