@@ -17,14 +17,28 @@ type Props = {
 export function TodoList({ todoListProvider }: Props) {
   const todoList = useTodoList();
   const dispatch = useTodoListDispatch();
-  const todoItemheight = 55;
 
+  const todoItemheight = 55;
+  const isDraggingEnabled = todoList.displayList.length > 0 && todoList.displayMode === DisplayMode.All;
+  
   const [infiniteScroll, setInfiniteScroll] = useState({ 
     startIndex: 0, 
     endIndex: calculateinfiniteScrollEndIndex(),
     isLoading: false,
     fetch: new Subject<number>()
   });
+  const hasMoreItemsToLoad = infiniteScroll.endIndex < todoList.displayList.length;
+
+  let items : ITodo[] = [];
+  if (todoList.settings.general.isPaginationEnabled) {
+    items = todoList.displayList
+      .slice(todoList.paging.startIndex, todoList.paging.endIndex);
+  } else if (todoList.settings.general.isInfiniteScrollEnabled) {
+    items = todoList.displayList
+      .slice(infiniteScroll.startIndex, infiniteScroll.endIndex);
+  } else {
+    items = todoList.displayList;
+  }  
 
   useTodoListEffect(todoList, todoListProvider, dispatch);
 
@@ -62,46 +76,6 @@ export function TodoList({ todoListProvider }: Props) {
       : (document.documentElement.clientHeight - 200) / todoItemheight);
   }
 
-  function getDisplayList() {
-    let items = [];
-    if (todoList.settings.general.isPaginationEnabled) {
-      items = todoList.displayList
-        .slice(todoList.paging.startIndex, todoList.paging.endIndex);
-    } else if (todoList.settings.general.isInfiniteScrollEnabled) {
-      items = todoList.displayList
-        .slice(infiniteScroll.startIndex, infiniteScroll.endIndex);
-    } else {
-      items = todoList.displayList;
-    }    
-
-    return items.map((item: ITodo, index: number) =>
-    <Draggable 
-      key={item.id} 
-      draggableId={`item-${item.id}`} 
-      index={index} 
-      isDragDisabled={todoList.displayMode === DisplayMode.Filtered}
-    >
-      {(provided, snapshot) => ( 
-        <div
-          ref={provided.innerRef}
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          style={getItemStyle(
-            snapshot.isDragging,
-            provided.draggableProps.style
-          )}
-          className={snapshot.isDragging ? 'item-dragging' : ''}
-        >
-          <TodoItem 
-            key={item.id} 
-            todo={item}
-          /> 
-        </div>
-      )}
-      </Draggable>        
-    );
-  }
-
   const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
     ...draggableStyle,
     userSelect: "none",
@@ -122,7 +96,7 @@ export function TodoList({ todoListProvider }: Props) {
 
     if ((scrollTop + clientHeight >= scrollHeight - 20) 
      && !infiniteScroll.isLoading 
-     && infiniteScroll.endIndex < todoList.originalList.length) {
+     && hasMoreItemsToLoad) {
       setInfiniteScroll({...infiniteScroll, isLoading: true });
       infiniteScroll.fetch.next(infiniteScroll.endIndex);
     }    
@@ -164,65 +138,89 @@ export function TodoList({ todoListProvider }: Props) {
     } as IAction);
   }
 
-  return (
-    <>
-    { todoList.activeTab !== 'settings' && 
-      <main 
-        id="todo-list-container" 
-        className="App__todo-list" 
-        onScroll={handleScroll}     
-        style={ 
-          todoList.settings.general.listSizeType === ListContainerType.Fixed 
-          ? { 
-              height: todoList.settings.general.fixedListSize,
-              overflow: 'overlay'
-            } 
-          : {}
-          }
+  function renderList(items: ITodo[]) {
+    return items.map((item: ITodo, index: number) =>
+    <Draggable 
+      key={item.id} 
+      draggableId={`item-${item.id}`} 
+      index={index} 
+      isDragDisabled={todoList.displayMode === DisplayMode.Filtered}
+    >
+      {(provided, snapshot) => ( 
+        <div
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+          style={getItemStyle(
+            snapshot.isDragging,
+            provided.draggableProps.style
+          )}
+          className={snapshot.isDragging ? 'item-dragging' : ''}
         >
-        { 
-          todoList.isLoading 
-          ? <Loader height={280} />
-          : <DragDropContext onDragEnd={onDragEnd}>
-              <Droppable droppableId="droppable-list">
-                {(provided, snapshot) => (
-                <section 
-                  id="todo-list-section"
-                  className= {todoList.originalList.length > 0 && todoList.displayMode === DisplayMode.All ? 'drag-list' : ''}
-                  {...provided.droppableProps}
-                  ref={provided.innerRef}
-                >
-                  {
-                    (todoList.paging.totalCount > 0 
-                      ? getDisplayList() 
-                      : <div className='text-light mt-5 mb-5 fade-in'>No data</div>)
-                  }
-                  {
-                    todoList.settings.general.isInfiniteScrollEnabled &&
-                    infiniteScroll.isLoading &&
-                    <Loader height={150} />
-                  }      
-                  {provided.placeholder}        
-                </section>
-                )}
-              </Droppable>
-            </DragDropContext>
+          <TodoItem 
+            key={item.id} 
+            todo={item}
+          /> 
+        </div>
+      )}
+      </Draggable>        
+    );
+  }
+
+  return (
+    <main 
+      id="todo-list-container" 
+      className="App__todo-list" 
+      onScroll={handleScroll}     
+      style={ 
+        todoList.settings.general.listSizeType === ListContainerType.Fixed 
+        ? { 
+            height: todoList.settings.general.fixedListSize,
+            overflow: 'overlay'
+          } 
+        : {}
         }
-        {
-          todoList.settings.general.isInfiniteScrollEnabled 
-          && !infiniteScroll.isLoading 
-          && !todoList.isLoading 
-          && infiniteScroll.endIndex < todoList.originalList.length 
-          && todoList.displayMode === DisplayMode.All 
-          && <div id="infinite-scroll-end" className="App__todo-list__infinite-scroll-end">
-                <div className="App__todo-list__infinite-scroll-end--bouncing">
-                  <FontAwesomeIcon icon={faAngleDown} />
-                  <div>Scroll down to load more</div>
-                </div>            
-              </div>
-        }      
-      </main>
-    }    
-    </>
+      >
+      { 
+        todoList.isLoading 
+        ? <Loader height={280} />
+        : <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable droppableId="droppable-list">
+              {(provided, snapshot) => (
+              <section 
+                id="todo-list-section"
+                className= {isDraggingEnabled ? 'drag-list' : ''}
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+              >
+                {
+                  (todoList.paging.totalCount > 0 
+                    ? renderList(items) 
+                    : <div className='text-light mt-5 mb-5 fade-in'>No data</div>)
+                }
+                {
+                  todoList.settings.general.isInfiniteScrollEnabled &&
+                  infiniteScroll.isLoading &&
+                  <Loader height={150} />
+                }      
+                {provided.placeholder}        
+              </section>
+              )}
+            </Droppable>
+          </DragDropContext>
+      }
+      {
+        todoList.settings.general.isInfiniteScrollEnabled 
+        && !infiniteScroll.isLoading 
+        && !todoList.isLoading 
+        && hasMoreItemsToLoad
+        && <div id="infinite-scroll-end" className="App__todo-list__infinite-scroll-end">
+              <div className="App__todo-list__infinite-scroll-end--bouncing">
+                <FontAwesomeIcon icon={faAngleDown} />
+                <div>Scroll down to load more</div>
+              </div>            
+            </div>
+      }      
+    </main>
   );
 }

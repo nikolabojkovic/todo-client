@@ -62,9 +62,7 @@ export function Sorting() {
   }
 
   return (
-    <>
-    {todoList.activeTab !== 'settings' &&
-      <section className="App__sorting d-flex flex-wrap">
+    <section className="App__sorting d-flex flex-wrap">
         {
           sortByColumns.map((item: Sort) => (
             <SortButton 
@@ -79,8 +77,6 @@ export function Sorting() {
             />
           ))
         }
-      </section>
-    }
-    </>    
+      </section>  
   );
 }

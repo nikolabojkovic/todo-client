@@ -43,27 +43,26 @@ export function Paging() {
 
   return (
     <>
-      { todoList.activeTab !== 'settings' 
-        && todoList.settings.general.isPaginationEnabled 
-        && <section className="paging p-0 mt-2">      
-            <Container fluid>
-              <Row xs={1} sm={3}>
-                <PageSize 
-                  pageCount={pageCount} 
-                  inputSelectRef={inputSelectRef}
-                  pageSize={todoList.paging.itemsPerPage}
-                  activePage={todoList.paging.activePage}
-                  totalCount={todoList.paging.totalCount}
-                />
-                <Pagination 
-                  pageCount={pageCount} 
-                  inputSelectRef={inputSelectRef} 
-                  maxVisiblePagesCount={todoList.settings.pagination.maxVisiblePages} 
-                  rotate={todoList.settings.pagination.paginationType === PaginationType.Rotate} 
-                />
-              </Row>
-            </Container>
-          </section>
+      { todoList.settings.general.isPaginationEnabled 
+     && <section className="paging p-0 mt-2">      
+         <Container fluid>
+           <Row xs={1} sm={3}>
+             <PageSize 
+               pageCount={pageCount} 
+               inputSelectRef={inputSelectRef}
+               pageSize={todoList.paging.itemsPerPage}
+               activePage={todoList.paging.activePage}
+               totalCount={todoList.paging.totalCount}
+             />
+             <Pagination 
+               pageCount={pageCount} 
+               inputSelectRef={inputSelectRef} 
+               maxVisiblePagesCount={todoList.settings.pagination.maxVisiblePages} 
+               rotate={todoList.settings.pagination.paginationType === PaginationType.Rotate} 
+             />
+           </Row>
+         </Container>
+       </section>
       }
     </>
   );

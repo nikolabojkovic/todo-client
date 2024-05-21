@@ -19,18 +19,24 @@ export class TodoListComponent implements OnInit, OnDestroy {
   readonly todoItemheight = 55;
   faAngleDown = faAngleDown;
 
+  // From global state
   settings?: ISettings;
   items: Array<ITodo> = [];
-  originalItems: Array<ITodo> = [];
-  listSizeType?: ListContainerType;
+  displayList: Array<ITodo> = [];
+  originalList: Array<ITodo> = [];
+  currentListSizeTypeState?: ListContainerType;
   displayMode: DisplayMode = DisplayMode.All;
+
   paging?: IPaging = undefined;
+
+  // Infinite scroll local state
   infiniteScroll = {
     startIndex: 0,
     endIndex: 5,
     isLoading: false,
     fetch: new Subject<number>()
   };
+  hasMoreItemsToLoad = false;
 
   isLoading$: Observable<boolean> = this.store.select(selectLoader);
   todoState$: Observable<IState> = this.store.select(selectTodos);
@@ -45,7 +51,8 @@ export class TodoListComponent implements OnInit, OnDestroy {
     this.subscriptions.push(this.todoState$.pipe().subscribe((state: IState) => {
       this.settings = state.settings;
       this.paging = state.paging;
-      this.originalItems = state.originalList;
+      this.originalList = state.originalList;
+      this.displayList = state.displayList;
       this.displayMode = state.displayMode;
 
       if (state.settings.general.isPaginationEnabled) {
@@ -53,19 +60,20 @@ export class TodoListComponent implements OnInit, OnDestroy {
         return;
       }
 
-      if (state.settings.general.isInfiniteScrollEnabled && this.listSizeType != state.settings.general.listSizeType) {
-        this.infiniteScroll = {
-          ...this.infiniteScroll,
-          endIndex: this.calculateinfiniteScrollEndIndex(state.settings),
-          isLoading: false
-        };
-        this.listSizeType = state.settings.general.listSizeType;
-        this.items = [...state.displayList.slice(0, this.infiniteScroll.endIndex)];
-        return;
-      }
-
       if (state.settings.general.isInfiniteScrollEnabled) {
+
+        if (this.currentListSizeTypeState != state.settings.general.listSizeType) {
+          this.infiniteScroll = {
+            ...this.infiniteScroll,
+            endIndex: this.calculateinfiniteScrollEndIndex(state.settings),
+            isLoading: false
+          };
+          this.currentListSizeTypeState = state.settings.general.listSizeType;
+        }
+
         this.items = [...state.displayList.slice(0, this.infiniteScroll.endIndex)];
+        this.hasMoreItemsToLoad = this.infiniteScroll.endIndex < this.displayList.length;
+
         return;
       }
 
@@ -80,6 +88,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
       .subscribe(([items, endIndex]: [Array<ITodo>, number]) => {
         this.infiniteScroll = {...this.infiniteScroll, endIndex: endIndex + 5, isLoading: false};
         this.items = items.slice(0, this.infiniteScroll.endIndex );
+        this.hasMoreItemsToLoad = this.infiniteScroll.endIndex < this.displayList.length;
       })
     );
   }
@@ -87,6 +96,10 @@ export class TodoListComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     window.removeEventListener('scroll', this.handleScroll);
     this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
+  get isDraggingEnabled(): boolean {
+    return this.items.length > 0 && this.displayMode === DisplayMode.All;
   }
 
   handleScroll = () => {
@@ -104,7 +117,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
 
     if ((scrollTop + clientHeight >= scrollHeight - 20)
      && !this.infiniteScroll.isLoading
-     && this.infiniteScroll.endIndex < this.originalItems.length) {
+     && this.hasMoreItemsToLoad) {
       this.infiniteScroll = {...this.infiniteScroll, isLoading: true };
       this.infiniteScroll.fetch.next(this.infiniteScroll.endIndex);
     }
@@ -116,7 +129,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
     const currentIndex = event.currentIndex;
 
     const items = this.reorder(
-      this.originalItems,
+      this.originalList,
       previousindex,
       currentIndex
     );

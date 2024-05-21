@@ -14,13 +14,13 @@
     *ngIf="(isLoading$ | async) === false"
     cdkDropList
     (cdkDropListDropped)="drop($event)"
-    [class]="{ 'drag-list' : displayMode === DisplayMode.All }"
+    [class]="{ 'drag-list' : isDraggingEnabled }"
   >
     <div
       *ngFor="let item of items"
       cdkDrag [cdkDragDisabled]="displayMode === DisplayMode.Filtered"
       cdkDragBoundary=".app__todo-list"
-      [class]="{'drag-box': items.length > 0 && displayMode === DisplayMode.All}"
+      [class]="{'drag-box': isDraggingEnabled}"
     >
       <app-todo-item [todo]="item"></app-todo-item>
       <div class="drag-custom-placeholder" *cdkDragPlaceholder></div>
@@ -32,8 +32,7 @@
     *ngIf="settings?.general?.isInfiniteScrollEnabled
         && !infiniteScroll.isLoading
         && (isLoading$ | async) === false
-        && (infiniteScroll.endIndex < originalItems.length)
-        && displayMode === DisplayMode.All"
+        && hasMoreItemsToLoad"
     id="infinite-scroll-end"
     class="app__todo-list__infinite-scroll-end"
   >

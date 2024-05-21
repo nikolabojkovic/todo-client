@@ -6,13 +6,14 @@ import { first } from 'rxjs';
 import LocalTodoListProvider from './providers/TodoProvider';
 import { Tabs, Sorting, TodoList, Paging } from './components';
 import { LocalSettingsProvider } from './providers';
-import { useTodoListDispatch } from './context';
+import { useTodoList, useTodoListDispatch } from './context';
 import { IAction, TodoActions } from './models';
 
 const todoListProvider = new LocalTodoListProvider();
 const settingsProvider = new LocalSettingsProvider();
 
 function App() {   
+  const todoList = useTodoList();
   const dispatch = useTodoListDispatch();
 
   useEffect(() => {
@@ -30,9 +31,9 @@ function App() {
         Todo List
       </header>      
       <Tabs/>
-      <Sorting/>
-      <TodoList {...{todoListProvider}}/>        
-      <Paging />      
+      { todoList.activeTab !== 'settings' && <Sorting/> }
+      { todoList.activeTab !== 'settings' && <TodoList {...{todoListProvider}}/> }       
+      { todoList.activeTab !== 'settings' && <Paging /> }
     </div>
   );
 }
