@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Stack } from 'react-bootstrap';
-import { faTrash, faCheckDouble } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faCheckDouble, faRotateLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { useTodoList, useTodoListDispatch } from '../../context';
@@ -24,6 +24,15 @@ export function TodoItem({ todo }: Props) {
       type: TodoActions.changed,
       payload: {
         todo: {...todo, completed: true}
+      }
+    } as IAction);
+  }
+
+  function handleRestore() {
+    dispatch({
+      type: TodoActions.changed,
+      payload: {
+        todo: {...todo, completed: false}
       }
     } as IAction);
   }
@@ -61,25 +70,42 @@ export function TodoItem({ todo }: Props) {
           </div>
         </div>
         <div className="ms-auto">
-          <FontAwesomeIcon 
-            data-testid='complete-button'
-            icon={faCheckDouble} 
-            className={todo.completed ? "action-icon--disabled" : "action-icon"}
-            onClick={() => {
-              if (todo.completed)
-                return;
+          { 
+            todo.completed ? 
+              <FontAwesomeIcon 
+                data-testid='restore-button' 
+                icon={faRotateLeft}
+                className="action-icon"
+                onClick={() => {
+                  if (todoList.settings.general.isConfirmEnabled) {
+                    onConfirm(() => handleRestore);
+                    setConfirmDialogText('Are you sure you want to restore this item?');
+                    setShowModal(true);
 
-              if (todoList.settings.general.isConfirmEnabled) {
-                onConfirm(() => handleComplete);
-                setConfirmDialogText('Are you sure you want to complete this item?');
-                setShowModal(true);
+                    return;
+                  }
 
-                return;
-              }
+                  handleComplete();
+                }}
+              />
+              : 
+              <FontAwesomeIcon 
+                data-testid='complete-button'
+                icon={faCheckDouble} 
+                className="action-icon"
+                onClick={() => {
+                  if (todoList.settings.general.isConfirmEnabled) {
+                    onConfirm(() => handleComplete);
+                    setConfirmDialogText('Are you sure you want to complete this item?');
+                    setShowModal(true);
 
-              handleComplete();
-            }}
-          />
+                    return;
+                  }
+
+                  handleComplete();
+                }}
+              />
+        }
         </div>
         <div>
           <FontAwesomeIcon 

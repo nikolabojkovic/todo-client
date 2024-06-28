@@ -1,26 +1,18 @@
 import { useEffect } from "react";
 import { first, switchMap } from "rxjs";
 
-import { IState } from "../context";
+import { useTodoList, useTodoListDispatch } from "../context";
 import { GetListProps, ITodoListProvider, LocalStorageProvider } from "../providers";
 import { IAction, ISort, ITodo, TodoActions } from "../models";
+import LocalTodoListProvider from "../providers/TodoProvider";
 
+const todoListProvider = new LocalTodoListProvider();
 const storageProvider = new LocalStorageProvider();
 const sortingLocalStorageKey = 'todo-sort';
 
-export function useTodoListEffect(todoList: IState, todoListProvider: ITodoListProvider, dispatch: any) {
-
-  useEffect(() => { 
-    dispatch({
-      type: TodoActions.fetch,
-      payload: {
-        sort: {
-          column: 'createdAt',
-          direction: 'asc'
-        } as ISort
-      }
-    } as IAction);
-  }, [dispatch]);
+export function useTodoListEffect() {
+  const todoList = useTodoList();
+  const dispatch = useTodoListDispatch();
 
   useEffect(() => {      
     if (todoList.effectTrigger && todoList.effectTrigger.type === TodoActions.fetch) {
@@ -76,7 +68,7 @@ export function useTodoListEffect(todoList: IState, todoListProvider: ITodoListP
     if (todoList.effectTrigger && todoList.effectTrigger.type === TodoActions.search) {
       todoListProvider.getList({
         filter: todoList.filter,
-        searchTerm: todoList.effectTrigger.payload.searchTerm ,
+        searchTerm: todoList.effectTrigger.payload.searchTerm,
         sort: todoList.sort
       } as GetListProps)
       .pipe(first())
@@ -131,7 +123,10 @@ export function useTodoListEffect(todoList: IState, todoListProvider: ITodoListP
        || todoList.effectTrigger.type === TodoActions.changed
        || todoList.effectTrigger.type === TodoActions.deleted
        || todoList.effectTrigger.type === TodoActions.imported
-       || todoList.effectTrigger.type === TodoActions.manuallySorted)) {
+       || todoList.effectTrigger.type === TodoActions.manuallySorted
+       || todoList.effectTrigger.type === TodoActions.restoredAll
+       || todoList.effectTrigger.type === TodoActions.deletedAll
+      )) {
       todoListProvider.saveList(todoList.originalList).pipe(first()).subscribe();
      }
   }, [todoList.effectTrigger, todoList.originalList, todoListProvider]);

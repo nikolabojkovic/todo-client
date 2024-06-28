@@ -4,43 +4,43 @@
 
 /* bootsrap override */
 .page-link.active, .active > .page-link {
-  background-color: $text-secondary-color;
-  border-color: $background-primary-color;
+  background-color: var(--text-secondary-color);
+  border-color: var(--background-primary-color);
   cursor: default;
   
   &:hover {
-    color: $text-primary-color;
+    color: var(--text-primary-color);
   }
 }
 
 .page-link.disabled, .disabled > .page-link {
-  color: $text-ternary-color-2;
+  color: var(--text-ternary-color-2);
   pointer-events: none;
-  background-color: $background-ternary-color;
-  border-color: $background-primary-color;
+  background-color: var(--background-ternary-color);
+  border-color: var(--background-primary-color);
 }
 
 .page-link {
-  color: $text-primary-color;
-  background-color: $background-ternary-color-2;
-  border-color: $background-primary-color;
+  color: var(--text-primary-color);
+  background-color: var(--background-ternary-color-2);
+  border-color: var(--background-primary-color);
 
   &:hover {
-    color: $text-primary-color;
-    background-color: lighten($text-secondary-color, 10%);
-    border-color: lighten($text-secondary-color, 10%);
+    color: var(--text-primary-color);
+    background-color: var(--text-secondary-color-light);
+    border-color: var(--text-secondary-color-light);
   }
 
   &:focus {
-    border-color: $background-primary-color;
+    border-color: var(--background-primary-color);
     box-shadow: none;
   }
 }
 
 .form-select {
-  background-color: $background-ternary-color-2;
-  border-color: $background-primary-color;
-  color: $text-primary-color;
+  background-color: var(--background-ternary-color-2);
+  border-color: var(--background-primary-color);
+  color: var(--text-primary-color);
   cursor: pointer;
   border: none;
   box-shadow: none;
@@ -53,27 +53,27 @@
 
 .form-control {
   &:focus {
-    border-color: $text-secondary-color;
+    border-color: var(--text-secondary-color);
     outline: 0;
-    box-shadow: 0 0 0 0.1rem $text-secondary-color;
+    box-shadow: 0 0 0 0.1rem var(--text-secondary-color);
   }
 }
 
 .form-check-input {
   box-shadow: none;
-  border-color: $background-primary-color;
-  background-color: $background-ternary-color-1;
+  border-color: var(--background-ternary-color);
+  background-color: var(--background-ternary-color-1);
   background-image: escape-svg($form-switch-checked-bg-image);
 
   &:focus {
-    border-color: $background-primary-color;
+    border-color: var(--background-ternary-color);
     background-image: escape-svg($form-switch-checked-bg-image);
     box-shadow: none;
   }
 
   &:checked {
-    background-color: $text-secondary-color;
-    border-color: $background-primary-color;
+    background-color: var(--text-secondary-color);
+    border-color: var(--background-ternary-color);
     box-shadow: none;
     background-image: escape-svg($form-switch-checked-bg-image) !important;
   }
@@ -84,22 +84,22 @@
 }
 
 .dropdown-item.active, .dropdown-item:active {
-  background-color: lighten($text-secondary-color, 10%);
+  background-color: var(--text-secondary-color-light);
 }
 
 .dropdown-item:hover, .dropdown-item:focus {  
-  background-color: $text-secondary-color;
+  background-color: var(--text-secondary-color);
 }
 
 .dropdown-toggle {
   &:active {
-    background-color: $text-secondary-color;
+    background-color: var(--text-secondary-color);
   }  
 }
 
 .btn-check:checked + .btn, :not(.btn-check) + .btn:active, .btn:first-child:active, .btn.active, .btn.show {
-  background-color: $text-secondary-color;
-  border-color: $text-secondary-color;
+  background-color: var(--text-secondary-color);
+  border-color: var(--text-secondary-color);
 }
 
 .btn {

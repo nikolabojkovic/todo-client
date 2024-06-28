@@ -5,7 +5,7 @@ import { ISort, SortDirection } from "../models/ISort";
 import { ISearch } from "../models/ISearch";
 import { StateFilter } from '../models/IFilter';
 import { IAction } from "../models/Action";
-import { ISettings, IGeneralSettings, IPaginationSettings, ISearchSettings, PaginationType, ListContainerType } from "../models/ISettings";
+import { ISettings, IGeneralSettings, IPaginationSettings, ISearchSettings, PaginationType, ListContainerType, IThemeSettings, BackgroundColor, BsThemes } from "../models/ISettings";
 
 export enum DisplayMode {
 	All,
@@ -77,7 +77,15 @@ export class State implements IState {
 			pagination: {
 				paginationType: PaginationType.Classic,
 				maxVisiblePages: 3
-			} as IPaginationSettings
+			} as IPaginationSettings,
+			theme: {
+				backgroundColor: BackgroundColor.DarkGray,
+				primaryColor: '#ff9900',
+				bsTheme: BsThemes.Dark,
+				primaryColorTopCord: -35,
+				primaryColorLefCord: 81
+
+			} as IThemeSettings
 		} as ISettings;
 		this.activeTab = 'add-todo';
 	}

@@ -60,6 +60,13 @@ code {
     color: $text-primary-color;
   }
 
+  &-actions {
+    max-width: 650px;
+    margin: auto;
+    padding-right: 20px;
+    background-color: $background-secondary-color;
+  }
+
   &__todo-list {
     background-color: $background-primary-color;
     max-width: 650px;
@@ -171,10 +178,9 @@ code {
   }
 
   &__sorting {
-    background-color: $background-primary-color;
     max-width: 650px;
     padding: 5px 15px;
-    margin: 10px auto 5px auto;
+    margin: 8px auto 8px auto;
     background-color: $background-secondary-color;
 
     &__item {

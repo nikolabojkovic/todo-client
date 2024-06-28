@@ -3,7 +3,7 @@
 @import "./style/variables.scss";
 
 .item-dragging .App__todo-list__item{
-  background-color: $background-secondary-color-1;
+  background-color: var(--background-secondary-color-1);
   box-sizing: border-box;
   border-radius: 4px;
   box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
@@ -11,10 +11,18 @@
               0 3px 14px 2px rgba(0, 0, 0, 0.12);
 }
 
+#app-container {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--background-primary-color);
+}
+
 .App {
   text-align: center;
   padding-bottom: 50px;
-  background-color: $background-primary-color;
+  background-color: var(--background-primary-color);
   max-width: 650px;
   margin: auto;
 
@@ -27,29 +35,36 @@
     font-size: 24px;
     font-size: bold;
     font-style: italic;
-    color: $text-primary-color;
+    color: var(--text-primary-color);
+  }
+
+  &-actions {
+    max-width: 650px;
+    margin: auto;
+    padding-right: 20px;
+    background-color: var(--background-secondary-color);
   }
 
   &__todo-list {
     
     &__item {
-      background-color: $background-secondary-color;
+      background-color: var(--background-secondary-color);
       margin: 2px 0px;
       padding: 0px 12px;
 
       &:hover {
-        background-color: $background-secondary-color-1;
+        background-color: var(--background-secondary-color-1);
       }
 
       &-title {
-        color: $text-secondary-color;
+        color: var(--text-secondary-color);
         font-weight: bold;
         font-size: $font-size-primary;
         text-align: left;
         text-decoration: none;
   
         &--completed {
-          color: $text-ternary-color;
+          color: var(--text-ternary-color);
           font-weight: bold;
           font-size: $font-size-primary;
           text-align: left;      
@@ -58,13 +73,13 @@
       }
   
       &-description {
-        color: $text-ternary-color-2;
+        color: var(--text-ternary-color-2);
         font-size: $font-size-secondary;
         text-decoration: none;
         text-align: left;
   
         &--compleated {
-          color: $text-ternary-color;
+          color: var(--text-ternary-color);
           font-size: $font-size-secondary;
           text-decoration: line-through;
           text-align: left;
@@ -79,7 +94,7 @@
       &--bouncing {
         display: inline-block;
         position: relative;
-        color: $text-secondary-color;
+        color: var(--text-secondary-color);
 
         -moz-animation: bounce 1s infinite linear;
         -o-animation: bounce 1s infinite linear;
@@ -100,28 +115,28 @@
 
     &__content {
       position: relative;
-      background-color: $background-secondary-color;
+      background-color: var(--background-secondary-color);
     }
 
     &__item {
       padding: 5px 10px;
       cursor: default;
-      background-color: $background-secondary-color;
+      background-color: var(--background-secondary-color);
 
       .svg-inline--fa {
-        color: $text-secondary-color;
+        color: var(--text-secondary-color);
       }
 
       &--inactive {
         cursor: pointer;
-        background-color: $background-ternary-color;
+        background-color: var(--background-ternary-color);
 
         .svg-inline--fa {
-          color: $text-primary-color
+          color: var(--text-primary-color)
         }
 
         &:hover {
-          background-color: lighten($text-secondary-color, 10%);
+          background-color: var(--text-secondary-color-light);
           padding-bottom: 10px;
         }
       }
@@ -134,11 +149,11 @@
   }
 
   &__sorting {
-    background-color: $background-primary-color;
+    background-color: var(--background-primary-color);
     max-width: 650px;
     padding: 5px 15px;
     margin: 10px auto 5px auto;
-    background-color: $background-secondary-color;
+    background-color: var(--background-secondary-color);
 
     &__item {
       user-select: none;
@@ -146,7 +161,7 @@
       margin-right: 15px;
       margin-bottom: 2px;
       margin-top: 2px;
-      background-color: $background-ternary-color-2;
+      background-color: var(--background-ternary-color-2);
       border-radius: 5px;
       padding: 0px 5px 0px 5px;
       text-transform: uppercase;
@@ -155,14 +170,14 @@
       position: relative;
 
       &--active {
-        color: $text-secondary-color;
+        color: var(--text-secondary-color);
       }
 
       &--disabled {
-        background-color: $background-secondary-color-1;
+        background-color: var(--background-secondary-color-1);
 
         span {
-          color: $text-ternary-color-2;
+          color: var(--text-ternary-color-2);
         }        
       }
 
@@ -170,14 +185,14 @@
         padding: 0px 6px;
 
         &-up {
-          color: $text-secondary-color;
+          color: var(--text-secondary-color);
           top: 3px;
           right: 5px;
           position: absolute;
         }
   
         &-down {
-          color: $text-secondary-color;
+          color: var(--text-secondary-color);
           top: 3px;
           right: 5px;
           position: absolute;
@@ -185,7 +200,7 @@
       }   
 
       .icon--inactive {
-        color: $background-ternary-color;
+        color: var(--background-ternary-color);
       }
     }
   }
@@ -198,32 +213,32 @@
       position: relative;
       padding: 10px 0px 0px 0px;
       margin-bottom: 20px;
-      border: 1px solid $text-secondary-color;
+      border: 1px solid var(--text-secondary-color);
       border-radius: 20px;
 
       &--disabled {
-        border-color: $text-ternary-color;
+        border-color: var(--text-ternary-color);
       }
 
       &-label {
-        color: $text-secondary-color;
-        background: $background-secondary-color;
+        color: var(--text-secondary-color);
+        background: var(--background-secondary-color);
         padding: 0px 10px;
         position: absolute;
         left: 35px;
         top: -14px;
 
         &--disabled {
-          color: $text-ternary-color;
+          color: var(--text-ternary-color);
         }
       }
 
       &__item {
         margin: 10px 20px;
-        color: $text-ternary-color-2;
+        color: var(--text-ternary-color-2);
 
         &--disabled {
-          color: $text-ternary-color;
+          color: var(--text-ternary-color);
         }
 
         input {
@@ -237,58 +252,97 @@
         }
       }
     }
+
+    &__theme {
+      &__background-color-item {
+        border: 1px solid #B5B2B2;        
+        width: 60px;
+        height: 60px;
+        cursor: pointer;
+      }
+    }
   }
 
   .clear-icon {
     position: absolute;
     right: 8px;
     top: 8px;
-    color: $text-ternary-color;
+    color: var(--text-ternary-color);
     cursor: pointer;
   }
 
   .paging {
-    color: $text-ternary-color-2;
-    background-color: $background-secondary-color;
+    color: var(--text-ternary-color-2);
+    background-color: var(--background-secondary-color);
     padding: 10px 10px;
   }
 }
 
+#dark-theme-gray {
+  background: linear-gradient(to bottom left, #2f2f2f 40%, #494949 80%);
+}
+#dark-theme-blue {
+  background: linear-gradient(to bottom left, #2f2f2f 40%, #0C1673 80%);
+}
+#dark-theme-red {
+  background: linear-gradient(to bottom left, #2f2f2f 40%, #730C0C 80%);
+}
+
+#light-theme-gray {
+  background: linear-gradient(to bottom left, #FFFFFF 40%, #C2B7B7 80%);
+}
+#light-theme-blue {
+  background: linear-gradient(to bottom left, #FFFFFF 40%, #8E97E5 80%);
+}
+#light-theme-red {
+  background: linear-gradient(to bottom left, #FFFFFF 40%, #E58E9E 80%);
+}
+
 .content-text {
-  color: $text-secondary-color;
+  color: var(--text-secondary-color);
 }
 
 .todo-background {
-  background-color: $background-secondary-color;
+  background-color: var(--background-secondary-color);
 }
 
 .action-button {
-  background-color: $background-secondary-color;
-  color: $text-secondary-color; 
+  background-color: var(--background-secondary-color);
+  color: var(--text-secondary-color); 
   min-width: 90px;
   border-radius: 20px;
-  border-color: $text-secondary-color;
+  border-color: var(--text-secondary-color);
   padding: 4px 8px;
 
   &:hover {
-    background-color: $text-secondary-color;
-    border-color: $text-secondary-color;
-    color: $text-primary-color; 
+    background-color: var(--text-secondary-color);
+    border-color: var(--text-secondary-color);
+    color: var(--text-primary-color); 
   }
 }
 
 .action-icon {
   cursor: pointer;
-  color: $text-primary-color;
+  color: var(--text-primary-color);
 
   &--disabled, &--disabled:hover {
-    color: $text-ternary-color; 
+    color: var(--text-ternary-color); 
     cursor: grab;
   }
 
   &:hover {
-    color: $text-secondary-color;
+    color: var(--text-secondary-color);
   }
+}
+
+.action-icon-front {
+  position: absolute;
+  left: 7px;
+  top: 8px;
+}
+
+.action-icon-back {
+  color: gray;
 }
 
 .page-ellipsis > a {
@@ -342,9 +396,9 @@
   width: 50px;
   aspect-ratio: 1;
   display: grid;
-  border: 4px solid $background-primary-color;
+  border: 4px solid var(--background-primary-color);
   border-radius: 50%;
-  border-right-color: $text-secondary-color;
+  border-right-color: var(--text-secondary-color);
   animation: l15 1s infinite linear;
   height: 50px;
 

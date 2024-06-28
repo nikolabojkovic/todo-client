@@ -13,9 +13,16 @@
     </div>
     <div class="ms-auto">
       <fa-icon
+        *ngIf="!todo.completed"
         [icon]="faCheckDouble"
-        [ngClass]="todo.completed ? 'action-icon--disabled' : 'action-icon'"
+        class="action-icon"
         (click)="onComplete()"
+      ></fa-icon>
+      <fa-icon
+        *ngIf="todo.completed"
+        [icon]="faRotateLeft"
+        class="action-icon"
+        (click)="onRestore()"
       ></fa-icon>
     </div>
     <div>

@@ -219,6 +219,26 @@ export const todosReducer = createReducer(
       paging: {...state.paging}
     } as IState;
   }),
+  on(TodoListActions.restored, (state, { todoId }) => {
+    return {
+      ...state,
+      originalList: state.originalList.map(todo => {
+        if (todo.id === todoId) {
+          return {...todo, completed: false};
+        } else {
+          return todo;
+        }
+      }) as ITodo[],
+      displayList: state.displayList.map(todo => {
+        if (todo.id === todoId) {
+          return {...todo, completed: false};
+        } else {
+          return todo;
+        }
+      }) as ITodo[],
+      paging: {...state.paging}
+    } as IState;
+  }),
   on(TodoListActions.removed, (state, { todoId }) => {
     return {
       ...state,
@@ -234,7 +254,32 @@ export const todosReducer = createReducer(
     } as IState;
   }
   ),
+  on(TodoListActions.restoredAll, (state) => {
+    return {
+      ...state,
+      originalList: state.originalList.map(todo => ({...todo, completed: false})) as ITodo[],
+      displayList: state.displayList.map(todo => ({...todo, completed: false})) as ITodo[],
+      paging: {...state.paging}
+    } as IState;
+  }),
+  on(TodoListActions.removedAll, (state) => {
+    return {
+      ...state,
+      originalList: [] as ITodo[],
+      displayList: [] as ITodo[],
+      paging: {
+        ...state.paging,
+        totalCount: 0,
+        activePage: calculateActivePageOnDelete(state.paging),
+        startIndex: (calculateActivePageOnDelete(state.paging) - 1) * state.paging.itemsPerPage,
+        endIndex: calculateActivePageOnDelete(state.paging) * state.paging.itemsPerPage,
+      } as IPaging
+    } as IState;
+  }
+  ),
 );
+
+
 
 function calculateActivePageOnDelete(paging: IPaging) {
   return Math.ceil((paging.totalCount - 1) / paging.itemsPerPage) < paging.activePage

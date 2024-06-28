@@ -1,0 +1,22 @@
+<div class="hstack gap-3 mt-2 mb-2">
+  <div class="action-icon position-relative" (click)="onRestoreAll()">
+    <fa-icon
+      [icon]="faRotateLeft"
+      class="action-icon-front"
+    ></fa-icon>
+    <fa-icon
+      [icon]="faRotateLeft"
+      class="action-icon-back"
+    ></fa-icon>
+  </div>
+  <div class="action-icon position-relative" (click)="onRemoveAll()">
+    <fa-icon
+      [icon]="faTrash"
+      class="action-icon-front"
+    ></fa-icon>
+    <fa-icon
+      [icon]="faTrash"
+      class="action-icon-back"
+    ></fa-icon>
+  </div>
+</div>

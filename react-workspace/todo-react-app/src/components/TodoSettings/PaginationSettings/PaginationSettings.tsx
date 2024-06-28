@@ -7,7 +7,7 @@ export function PaginationSettings() {
   const todoList = useTodoList();
   const dispatch = useTodoListDispatch();
 
-  const ifDisabled = !todoList.settings.general.isPaginationEnabled;
+  const ifPaginationDisabled = !todoList.settings.general.isPaginationEnabled;
   
   function handlePaginationTypeSelect(option: PaginationType) {
     dispatch({
@@ -36,11 +36,11 @@ export function PaginationSettings() {
   }
 
   return (
-    <div className={ "App__settings__group" + (ifDisabled ? " App__settings__group--disabled" : "") }>
-      <label className={"App__settings__group-label" + (ifDisabled ? " App__settings__group-label--disabled" : "") }>
+    <div className={ "App__settings__group" + (ifPaginationDisabled ? " App__settings__group--disabled" : "") }>
+      <label className={"App__settings__group-label" + (ifPaginationDisabled ? " App__settings__group-label--disabled" : "") }>
         Pagination
       </label>
-      <div className={ "App__settings__group__item" + (ifDisabled ? " App__settings__group__item--disabled" : "") }>
+      <div className={ "App__settings__group__item" + (ifPaginationDisabled ? " App__settings__group__item--disabled" : "") }>
         <Stack direction="horizontal" gap={2}>
           <label>Pagination type</label>
           <Dropdown className="ms-auto">
@@ -49,7 +49,7 @@ export function PaginationSettings() {
               variant="outline-secondary"
               className="action-button ps-2 pe-2"
               id="dropdown-pagination-type"
-              disabled={ifDisabled}
+              disabled={ifPaginationDisabled}
             >
               {' '}{todoList.settings.pagination.paginationType}{' '}
             </Dropdown.Toggle>
@@ -70,7 +70,7 @@ export function PaginationSettings() {
           </Dropdown>
         </Stack>
       </div>
-      <div className={ "App__settings__group__item" + (ifDisabled ? " App__settings__group__item--disabled" : "") }>
+      <div className={ "App__settings__group__item" + (ifPaginationDisabled ? " App__settings__group__item--disabled" : "") }>
         <Stack direction="horizontal" gap={2}>
           <label>Visible pages in navigation group</label>
           <Dropdown className="ms-auto">
@@ -79,7 +79,7 @@ export function PaginationSettings() {
               variant="outline-secondary"
               className="action-button ps-2 pe-2"
               id="dropdown-visible-pages-number"
-              disabled={ifDisabled}
+              disabled={ifPaginationDisabled}
             >
               {' '}{todoList.settings.pagination.maxVisiblePages}{' '}
             </Dropdown.Toggle>

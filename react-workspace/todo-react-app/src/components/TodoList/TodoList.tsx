@@ -6,15 +6,9 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import { ITodo, IAction, TodoActions, ListContainerType } from '../../models';
 import { DisplayMode, useTodoList, useTodoListDispatch } from '../../context';
-import { ITodoListProvider } from '../../providers';
 import { Loader, TodoItem } from '../';
-import { useTodoListEffect } from '../../hooks';
 
-type Props = {
-  todoListProvider: ITodoListProvider
-};
-
-export function TodoList({ todoListProvider }: Props) {
+export function TodoList() {
   const todoList = useTodoList();
   const dispatch = useTodoListDispatch();
 
@@ -39,8 +33,6 @@ export function TodoList({ todoListProvider }: Props) {
   } else {
     items = todoList.displayList;
   }  
-
-  useTodoListEffect(todoList, todoListProvider, dispatch);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -168,7 +160,7 @@ export function TodoList({ todoListProvider }: Props) {
   }
 
   return (
-    <main 
+    <section 
       id="todo-list-container" 
       className="App__todo-list" 
       onScroll={handleScroll}     
@@ -187,8 +179,8 @@ export function TodoList({ todoListProvider }: Props) {
         : <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId="droppable-list">
               {(provided, snapshot) => (
-              <section 
-                id="todo-list-section"
+              <div 
+                id="todo-list-content"
                 className= {isDraggingEnabled ? 'drag-list' : ''}
                 {...provided.droppableProps}
                 ref={provided.innerRef}
@@ -204,7 +196,7 @@ export function TodoList({ todoListProvider }: Props) {
                   <Loader height={150} />
                 }      
                 {provided.placeholder}        
-              </section>
+              </div>
               )}
             </Droppable>
           </DragDropContext>
@@ -221,6 +213,6 @@ export function TodoList({ todoListProvider }: Props) {
               </div>            
             </div>
       }      
-    </main>
+    </section>
   );
 }

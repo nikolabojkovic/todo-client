@@ -35,6 +35,9 @@ export const TodoListActions = createActionGroup({
 
     added: props<{ title: string, description: string }>(),
     completed: props<{ todoId: number }>(),
+    restored: props<{ todoId: number }>(),
     removed: props<{ todoId: number }>(),
+    restoredAll: emptyProps(),
+    removedAll: emptyProps(),
   }
 });

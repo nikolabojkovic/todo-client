@@ -10,7 +10,10 @@ import {
   ISearchSettings, 
   ISettings, 
   ListContainerType, 
-  PaginationType 
+  PaginationType, 
+  BackgroundColor,
+  IThemeSettings,
+  BsThemes
 } from "../models";
 import { IState } from "./";
 
@@ -88,6 +91,13 @@ export const stateTestData: IState =
     pagination: {
       paginationType: PaginationType.Classic,
       maxVisiblePages: 3
-    } as IPaginationSettings
+    } as IPaginationSettings,
+    theme: {
+      backgroundColor: BackgroundColor.DarkGray,
+      primaryColor: '#ff9900',
+      bsTheme: BsThemes.Light,
+      primaryColorTopCord: -35,
+      primaryColorLefCord: 81
+    } as IThemeSettings
   } as ISettings
 } as IState;

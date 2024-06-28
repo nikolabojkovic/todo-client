@@ -129,7 +129,9 @@ export class TodoEffects {
         TodoListActions.completed,
         TodoListActions.removed,
         TodoListActions.imported,
-        TodoListActions.manuallySorted),
+        TodoListActions.manuallySorted,
+        TodoListActions.restoredAll,
+        TodoListActions.removedAll),
       concatLatestFrom(() => this.store.select(selectTodos).pipe(first())),
       tap(([, todoList]) => this.todoService.saveList(todoList.originalList).pipe(first()))
     ),

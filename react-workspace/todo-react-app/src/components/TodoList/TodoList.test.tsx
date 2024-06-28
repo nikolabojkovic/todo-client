@@ -86,7 +86,7 @@ describe('todo list rendered', () => {
     const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoList {...{todoListProvider}} />
+          <TodoList />
          </TodosDispatchContext.Provider>
        </TodosContext.Provider>);
     const tree = renderer.create(
@@ -107,7 +107,7 @@ describe('todo list rendered', () => {
     const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoList {...{ todoListProvider }} />
+          <TodoList />
          </TodosDispatchContext.Provider>
        </TodosContext.Provider>);
     const tree = renderer.create(
@@ -147,7 +147,7 @@ describe('todo list rendered', () => {
       const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoList {... { todoListProvider }} />
+          <TodoList />
          </TodosDispatchContext.Provider>
        </TodosContext.Provider>);
       render(jsxElement);
@@ -203,7 +203,7 @@ describe('todo list rendered', () => {
       const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoList {...{ todoListProvider }} />
+          <TodoList />
          </TodosDispatchContext.Provider>
        </TodosContext.Provider>);
       render(jsxElement);
@@ -247,7 +247,7 @@ describe('todo list rendered', () => {
       const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoList {...{ todoListProvider }} />
+          <TodoList />
          </TodosDispatchContext.Provider>
        </TodosContext.Provider>);
       render(jsxElement);
@@ -293,7 +293,7 @@ describe('todo list rendered', () => {
       const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoList {...{ todoListProvider }} />
+          <TodoList />
          </TodosDispatchContext.Provider>
        </TodosContext.Provider>);
       render(jsxElement);
@@ -326,7 +326,7 @@ describe('todo list rendered', () => {
       const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoList {...{ todoListProvider }} />
+          <TodoList />
          </TodosDispatchContext.Provider>
        </TodosContext.Provider>);
       render(jsxElement);
@@ -346,7 +346,7 @@ describe('todo list rendered', () => {
       const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoList {...{ todoListProvider }} />
+          <TodoList />
          </TodosDispatchContext.Provider>
        </TodosContext.Provider>);
       render(jsxElement);
@@ -366,7 +366,7 @@ describe('todo list rendered', () => {
       const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoList {...{ todoListProvider }} />
+          <TodoList />
          </TodosDispatchContext.Provider>
        </TodosContext.Provider>);
       render(jsxElement);
@@ -386,7 +386,7 @@ describe('todo list rendered', () => {
       const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoList {...{ todoListProvider }} />
+          <TodoList />
          </TodosDispatchContext.Provider>
        </TodosContext.Provider>);
       render(jsxElement);

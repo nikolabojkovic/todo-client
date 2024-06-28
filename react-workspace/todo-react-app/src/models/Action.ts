@@ -28,4 +28,6 @@ export enum TodoActions {
   added = 'added',
   changed = 'changed',
   deleted = 'deleted',
+  restoredAll = 'restored-all',
+  deletedAll = 'deleted-all',
 }

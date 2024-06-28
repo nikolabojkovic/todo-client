@@ -296,6 +296,30 @@ export function todoStateReducer(state: IState, action: IAction) {
         } as IPaging
       } as IState;
     }
+    case TodoActions.restoredAll: {
+      return {
+        ...state,
+        effectTrigger: { type: TodoActions.restoredAll },
+        originalList: state.originalList.map(todo => ({...todo, completed: false})) as ITodo[],
+        displayList: state.displayList.map(todo => ({...todo, completed: false})) as ITodo[],
+        paging: {...state.paging}
+      } as IState; 
+    }
+    case TodoActions.deletedAll: {
+      return {
+        ...state,
+        effectTrigger: { type: TodoActions.deletedAll },
+        originalList: [] as ITodo[],
+        displayList: [] as ITodo[],
+        paging: {
+          ...state.paging,
+          totalCount: 0,
+          activePage: calculateActivePageOnDelete(state.paging),
+          startIndex: (calculateActivePageOnDelete(state.paging) - 1) * state.paging.itemsPerPage,
+          endIndex: calculateActivePageOnDelete(state.paging) * state.paging.itemsPerPage,
+        } as IPaging
+      } as IState;
+    }
     default: {
       throw Error('Unknown action: ' + action.type);
     }

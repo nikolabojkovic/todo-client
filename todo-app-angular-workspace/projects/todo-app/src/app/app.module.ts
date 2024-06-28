@@ -34,7 +34,8 @@ import {
   SortingComponent,
   SortButtonComponent,
   SortIconComponent,
-  ConfirmModalService
+  ConfirmModalService,
+  TodoActionsComponent
 } from './components';
 
 import {
@@ -67,7 +68,8 @@ import { CdkDrag, CdkDragPlaceholder, CdkDropList } from '@angular/cdk/drag-drop
     TodoSettingsComponent,
     GeneralSettingsComponent,
     SearchSettingsComponent,
-    PaginationSettingsComponent
+    PaginationSettingsComponent,
+    TodoActionsComponent
   ],
   imports: [
     BrowserModule,

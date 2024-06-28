@@ -1,13 +1,5 @@
 @import "./style/variables.scss";
 
-#root {
-  background-color: $background-primary-color;
-}
-
-html {
-  background-color: $background-primary-color;
-}
-
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -18,7 +10,7 @@ body {
 }
 
 section { 
-  color: $text-primary-color;
+  color: var(--text-primary-color);
 }
 
 ul {
@@ -35,11 +27,11 @@ code {
 }
 
 ::-webkit-scrollbar-track {
-  background: $background-primary-color;
+  background: var(--background-primary-color);
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: $background-ternary-color-1;
+  background-color: var(--background-ternary-color-1);
   border-radius: 10px;
-  border: 2px solid $background-primary-color;
+  border: 2px solid var(--background-primary-color);
 }
