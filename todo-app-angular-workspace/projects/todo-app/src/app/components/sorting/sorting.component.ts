@@ -1,8 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ISort, SortDirection, SortType } from '../../shared/models';
+import { Subscription } from 'rxjs';
+import { IState, TodoListActions, selectSort } from '../../shared/state';
+import { Store } from '@ngrx/store';
+import { SortAction } from './sort-button/sort-button.component';
 
 type Sort = {
   name: string,
-  text: string
+  text: string,
+  sortType: SortType
 }
 
 @Component({
@@ -10,27 +16,61 @@ type Sort = {
   templateUrl: './sorting.component.html',
   styleUrls: ['./sorting.component.scss']
 })
-export class SortingComponent implements OnInit {
+export class SortingComponent implements OnInit, OnDestroy {
   sortByColumns: Sort[] = [
     {
       name: 'title',
-      text: 'Title'
+      text: 'Title',
+      sortType: SortType.direction
     } as Sort,
     {
       name: 'description',
-      text: 'Description'
+      text: 'Description',
+      sortType: SortType.direction
     } as Sort,
     {
       name: 'createdAt',
-      text: 'Date'
+      text: 'Date',
+      sortType: SortType.direction
     } as Sort,
     {
       name: 'completed',
-      text: 'Completed'
+      text: 'Completed',
+      sortType: SortType.direction
+    } as Sort,
+    {
+      name: 'sortId',
+      text: 'Manual order',
+      sortType: SortType.noDirection
     } as Sort
   ];
 
-  constructor() { }
+  activeColumn?: string;
+  private subscriptions: Subscription[] = [];
 
-  ngOnInit(): void { }
+  public readonly SortDirection : typeof SortDirection = SortDirection;
+
+  constructor(private store: Store<IState>) { }
+
+  ngOnInit(): void {
+    this.subscriptions.push(this.store.select(selectSort)
+      .pipe()
+      .subscribe((sort: ISort) => {
+        this.activeColumn = sort.column;
+      }));
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
+  handleSort(event: SortAction): void {
+    this.activeColumn = event.column;
+    this.store.dispatch(TodoListActions.sort({
+      sort: {
+        column: event.column,
+        direction: event.direction
+      } as ISort
+    }));
+  }
 }

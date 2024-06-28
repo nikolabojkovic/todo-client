@@ -3,7 +3,13 @@
     Todo List
   </header>
   <app-tabs></app-tabs>
-  <app-sorting *ngIf="(activeTab$ | async) !== 'todo-settings'"></app-sorting>
+  <section
+    *ngIf="(activeTab$ | async) !== 'todo-settings'"
+    class="app-actions hstack gap-3"
+  >
+    <app-sorting></app-sorting>
+    <app-todo-actions class="ms-auto"></app-todo-actions>
+  </section>
   <app-todo-list *ngIf="(activeTab$ | async) !== 'todo-settings'"></app-todo-list>
   <!-- <lib-sort-button></lib-sort-button> -->
   <app-paging *ngIf="(activeTab$ | async) !== 'todo-settings' && (settings$ | async)?.general?.isPaginationEnabled"></app-paging>

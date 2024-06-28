@@ -11,6 +11,8 @@ import {
 export const TodoListActions = createActionGroup({
   source: 'todos',
   events: {
+    loadingStarted: emptyProps(),
+    activeTabChanged: props<{ activeTab: string }>(),
     fetch: emptyProps(),
     settingsFetch: emptyProps(),
     pagingFetch: emptyProps(),
@@ -18,13 +20,12 @@ export const TodoListActions = createActionGroup({
     search: props<{ search: string }>(),
     sort: props<{ sort: ISort }>(),
 
-    fetched: props<{ list: ITodo[] }>(),
+    fetched: props<{ list: ITodo[], sort: ISort }>(),
     searched: props<{ activePage: number, list: ITodo[] }>(),
     filtered: props<{ activePage: number, filter: IFilter, list: ITodo[] }>(),
     sorted: props< { sort: ISort, list: ITodo[] }>(),
+    manuallySorted: props<{ list: ITodo[] }>(),
     imported: props<{ activePage: number, list: ITodo[] }>(),
-    loadingStarted: emptyProps(),
-    activeTabChanged: props<{ activeTab: string }>(),
 
     searchTermUpdated: props< { searchTerm: string }>(),
     pagingFetched: props<{ paging: IPaging }>(),
@@ -34,6 +35,9 @@ export const TodoListActions = createActionGroup({
 
     added: props<{ title: string, description: string }>(),
     completed: props<{ todoId: number }>(),
+    restored: props<{ todoId: number }>(),
     removed: props<{ todoId: number }>(),
+    restoredAll: emptyProps(),
+    removedAll: emptyProps(),
   }
 });

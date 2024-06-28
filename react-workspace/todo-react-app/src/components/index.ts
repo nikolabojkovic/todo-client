@@ -12,3 +12,4 @@ export * from './Pagination/Pagination';
 export * from './Search/Search';
 export * from './TodoItem/TodoItem';
 export * from './Loader/Loader';
+export * from './TodoActions/TodoActions';

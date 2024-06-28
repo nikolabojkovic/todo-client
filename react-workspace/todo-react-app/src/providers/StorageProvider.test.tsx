@@ -1,7 +1,7 @@
 import { first } from "rxjs";
 
 import { stateTestData } from "../context";
-import { LocalStorageProvider } from "./StorageProvider";
+import { LocalStorageProvider } from ".";
 
 let storageProviderSpy: jest.SpyInstance<Storage, []>;
 let localStorageMock: Storage;

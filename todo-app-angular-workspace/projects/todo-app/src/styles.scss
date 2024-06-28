@@ -60,6 +60,13 @@ code {
     color: $text-primary-color;
   }
 
+  &-actions {
+    max-width: 650px;
+    margin: auto;
+    padding-right: 20px;
+    background-color: $background-secondary-color;
+  }
+
   &__todo-list {
     background-color: $background-primary-color;
     max-width: 650px;
@@ -103,6 +110,23 @@ code {
           text-align: left;
         }
       }
+    }
+
+    &__infinite-scroll-end {
+      height: 100px;
+      margin: 10px 0px;
+
+      &--bouncing {
+        display: inline-block;
+        position: relative;
+        color: $text-secondary-color;
+
+        -moz-animation: bounce 1s infinite linear;
+        -o-animation: bounce 1s infinite linear;
+        -webkit-animation: bounce 1s infinite linear;
+        animation: bounce 1s infinite linear;
+      }
+
     }
   }
 
@@ -154,10 +178,9 @@ code {
   }
 
   &__sorting {
-    background-color: $background-primary-color;
     max-width: 650px;
     padding: 5px 15px;
-    margin: 10px auto 5px auto;
+    margin: 8px auto 8px auto;
     background-color: $background-secondary-color;
 
     &__item {
@@ -168,11 +191,15 @@ code {
       margin-top: 2px;
       background-color: $background-ternary-color-2;
       border-radius: 5px;
-      padding: 0px 20px 0px 5px;
+      padding: 0px 5px 0px 5px;
       text-transform: uppercase;
       font-weight: bold;
       font-size: smaller;
       position: relative;
+
+      &--active {
+        color: $text-secondary-color;
+      }
 
       &--disabled {
         background-color: $background-secondary-color-1;
@@ -182,14 +209,20 @@ code {
         }
       }
 
-      &__icon-up {
-        right: 5px;
-        position: absolute;
-      }
+      &__icon {
+        padding: 0px 6px;
 
-      &__icon-down {
-        right: 5px;
-        position: absolute;
+        &-up {
+          color: $text-secondary-color;
+          right: 5px;
+          position: absolute;
+        }
+
+        &-down {
+          color: $text-secondary-color;
+          right: 5px;
+          position: absolute;
+        }
       }
 
       .icon--inactive {
@@ -310,6 +343,32 @@ code {
   }
 }
 
+@-webkit-keyframes bounce {
+  0% { top :10px; }
+  50% { top :24px; }
+  100% { top :10px; }
+}
+@-moz-keyframes bounce {
+  0% { top :10px; }
+  50% { top :24px; }
+  100% { top :10px; }
+}
+@-o-keyframes bounce {
+  0% { top :10px; }
+  50% { top :24px; }
+  100% { top :10px; }
+}
+@-ms-keyframes bounce {
+  0% { top :10px; }
+  50% { top :24px; }
+  100% { top :10px; }
+}
+@keyframes bounce {
+  0% { top :10px; }
+  50% { top :24px; }
+  100% { top :10px; }
+}
+
 .fade-in {
   opacity: 0;
   animation-name: fade-in;
@@ -338,10 +397,6 @@ code {
     animation: l15 2s infinite;
     margin: 8px;
     animation-duration: 3s;
-  }
-
-  &-container {
-    height: 280px;
   }
 }
 

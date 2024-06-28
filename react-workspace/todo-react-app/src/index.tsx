@@ -1,5 +1,6 @@
 import './index.scss';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
@@ -14,11 +15,15 @@ const root = ReactDOM.createRoot(
 const initialState = new State([] as ITodo[]);
 
 root.render(
-  <React.StrictMode>
-    <TodoStateProvider {...{initialState}}>
-      <App />
-    </TodoStateProvider>
-  </React.StrictMode>
+  // beautifu dnd does not work when react is in strict mode
+  // <React.StrictMode>
+  //   <TodoStateProvider {...{initialState}}>
+  //     <App />
+  //   </TodoStateProvider>
+  // </React.StrictMode>
+  <TodoStateProvider {...{initialState}}>
+    <App />
+  </TodoStateProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

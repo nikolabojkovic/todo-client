@@ -52,8 +52,8 @@ describe('SearchSettingsComponent', () => {
     fixture.detectChanges();
   });
 
-  describe('method1', () => {
-    it('should ...', () => {
+  describe('component ', () => {
+    it('should exist', () => {
       expect(component).toBeTruthy();
     });
   });

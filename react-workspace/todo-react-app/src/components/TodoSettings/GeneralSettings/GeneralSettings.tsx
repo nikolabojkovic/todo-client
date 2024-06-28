@@ -22,7 +22,7 @@ export function GeneralSettings() {
     } as IAction);
   }
   
-  function handleListSizeSelect(otpion: string) {
+  function handleListSizeSelect(otpion: ListContainerType) {
     handleSettingsUpdate({
       ...todoList.settings.general,
       listSizeType: otpion

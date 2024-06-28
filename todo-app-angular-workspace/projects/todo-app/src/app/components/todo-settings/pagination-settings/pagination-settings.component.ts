@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 
@@ -15,10 +15,10 @@ export class PaginationSettingsComponent implements OnInit {
   readonly PaginationType: typeof PaginationType = PaginationType;
   paginationType!: PaginationType;
   maxVisiblePages!: number;
-  isPaginationDisabled: boolean = false;
+  isPaginationDisabled: boolean | undefined = false;
   private subscription!: Subscription;
 
-  constructor(private store: Store<IState>) { }
+  constructor(private store: Store<IState>, private ref: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.subscription = this.store.select(selectSettings)
@@ -26,7 +26,10 @@ export class PaginationSettingsComponent implements OnInit {
         .subscribe((settings: ISettings) => {
           this.paginationType = settings.pagination.paginationType;
           this.maxVisiblePages = settings.pagination.maxVisiblePages;
+          this.isPaginationDisabled = undefined;
+          this.ref.detectChanges();
           this.isPaginationDisabled = !settings.general.isPaginationEnabled;
+          this.ref.detectChanges();
           this.settings = settings;
         });
   }

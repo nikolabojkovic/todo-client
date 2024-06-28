@@ -13,6 +13,7 @@ export enum TodoActions {
   fetched = 'fetched',
   filtered = 'filtered',
   sorted = 'sorted',
+  manuallySorted = 'manaually-sorted',
   searched = 'searched',
   imported = 'imported',
   loadingStarted = 'loading-started',
@@ -27,4 +28,6 @@ export enum TodoActions {
   added = 'added',
   changed = 'changed',
   deleted = 'deleted',
+  restoredAll = 'restored-all',
+  deletedAll = 'deleted-all',
 }

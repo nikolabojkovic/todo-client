@@ -1,8 +1,10 @@
 <div
   class="app__sorting__item"
-  (click)="onSort()"
-  [ngClass]="{'app__sorting__item--disabled': isLoading}"
+  (click)="handleClick()"
+  [ngClass]="{'app__sorting__item--disabled': isLoading, 'app__sorting__item--active': isActive}"
 >
   <span>{{text}}</span>
-  <app-sort-icon [sortDirection]="sortDirection"></app-sort-icon>
+  <span *ngIf="sortType === SortType.direction" class="app__sorting__item__icon">
+    <app-sort-icon [sortDirection]="sortDirection"></app-sort-icon>
+  </span>
 </div>

@@ -4,6 +4,12 @@ exports[`ImportExport component should match snapshot 1`] = `
 <div
   className="loader-container d-flex justify-content-center align-items-center fade-in"
   data-testid="loader"
+  id="loader"
+  style={
+    Object {
+      "height": "280px",
+    }
+  }
 >
   <div
     className="loader"

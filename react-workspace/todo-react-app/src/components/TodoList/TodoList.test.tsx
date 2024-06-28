@@ -6,16 +6,65 @@ import { TodoList } from './TodoList';
 import { TodosContext, TodosDispatchContext, stateTestData } from '../../context';
 import { IAction, TodoActions, ISort, SortDirection, IFilter, StateFilter, Todo } from '../../models';
 
+jest.mock('react-beautiful-dnd', () => ({
+  Droppable: ({ children }: any) => children({
+    draggableProps: {
+      style: {},
+    },
+    innerRef: jest.fn(),
+  }, {}),
+  Draggable: ({ children }: any) => children({
+    draggableProps: {
+      style: {},
+    },
+    innerRef: jest.fn(),
+  }, {}),
+  DragDropContext: ({ children }: any) => children,
+}));
+
+import LocalStorageProvider from '../../providers/StorageProvider';
+jest.mock('../../providers/StorageProvider');
+// const mockGetItem = jest.fn().mockImplementation(() => of('{"column":"title", "direction":"Asc"}'));
+// const mockSetItem = jest.fn().mockImplementation(() => of({}));
+// const mockGetItem = jest.fn();
+// const mockSetItem = jest.fn();
+let getItemMock = jest
+.spyOn(LocalStorageProvider.prototype, 'getItem')
+.mockImplementation(() => {
+  return of('{"column":"title", "direction":"Asc"}');
+}); // comment this line if just want to "spy"
+
 let todoListProvider = {
   getList: jest.fn().mockImplementation(() => of([] as Todo[])),
   saveList: jest.fn().mockImplementation(() => of({})),
 };
+
+beforeAll(() => {
+
+  // const mockGetItem = jest.fn().mockImplementation(() => of('{"column":"title", "direction":"Asc"}'));
+  // const mockSetItem = jest.fn().mockImplementation(() => of({}));
+  // jest.mock('../../providers/StorageProvider', () => {
+  //   return jest.fn().mockImplementation(() => { 
+  //     return { 
+  //       getItem: mockGetItem, 
+  //       setItem: mockSetItem
+  //     };
+  //   });
+  // });
+});
 
 beforeEach(() => {
   todoListProvider = {
     getList: jest.fn().mockImplementation(() => of([] as Todo[])),
     saveList: jest.fn().mockImplementation(() => of({})),
   };
+  
+  getItemMock.mockClear();
+  getItemMock = jest
+    .spyOn(LocalStorageProvider.prototype, 'getItem')
+    .mockImplementation(() => {
+      return of('{"column":"createdAt", "direction":"asc"}');
+    });
 });
 
 describe('todo list rendered', () => {  
@@ -37,7 +86,7 @@ describe('todo list rendered', () => {
     const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoList {...{todoListProvider}} />
+          <TodoList />
          </TodosDispatchContext.Provider>
        </TodosContext.Provider>);
     const tree = renderer.create(
@@ -58,7 +107,7 @@ describe('todo list rendered', () => {
     const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoList {...{ todoListProvider }} />
+          <TodoList />
          </TodosDispatchContext.Provider>
        </TodosContext.Provider>);
     const tree = renderer.create(
@@ -77,12 +126,12 @@ describe('todo list rendered', () => {
       payload: {
         sort: {
           column: 'createdAt',
-          direction: 'asc'
+          direction: SortDirection.Asc
         } as ISort
       }
     } as IAction;
 
-    it('should fetch list', async () => {
+    it('should fetch list', (done) => {
       const context = {
         ...globalContext,
         state: { 
@@ -98,7 +147,7 @@ describe('todo list rendered', () => {
       const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoList {... { todoListProvider }} />
+          <TodoList />
          </TodosDispatchContext.Provider>
        </TodosContext.Provider>);
       render(jsxElement);
@@ -106,19 +155,28 @@ describe('todo list rendered', () => {
       const actionFetched = {
         type: TodoActions.fetched,
         payload: {
-          list: context.state.originalList
+          list: context.state.originalList,
+          sort: {
+            column: 'createdAt',
+            direction: SortDirection.Asc
+          } as ISort
         }
       } as IAction;
 
-      expect(screen.getByTestId('loader')).toBeInTheDocument();
-      expect(todoListProvider.getList).toBeCalledWith({
-        filter: globalContext.state.filter,
-        searchTerm: globalContext.state.search.searchTerm,
-        sort: actionFetch.payload.sort
+      expect(screen.getByTestId('loader')).toBeInTheDocument();     
+      expect(context.dispatch).toBeCalledWith(actionFetch); 
+      expect(getItemMock).toHaveBeenCalledWith('todo-sort');
+      (getItemMock.getMockImplementation()!)('').subscribe(() => {
+        expect(context.dispatch).toBeCalledWith(actionFetch);
+        expect(todoListProvider.getList).toBeCalledWith({
+          filter: globalContext.state.filter,
+          searchTerm: globalContext.state.search.searchTerm,
+          sort: actionFetch.payload.sort
+        });
+        expect(context.dispatch).toBeCalledWith(actionLoadingStarted);
+        expect(context.dispatch).toBeCalledWith(actionFetched);
+        done();
       });
-      expect(context.dispatch).toBeCalledWith(actionFetch);
-      expect(context.dispatch).toBeCalledWith(actionLoadingStarted);
-      expect(context.dispatch).toBeCalledWith(actionFetched);
     });
 
     it('should filter list', async () => {
@@ -145,7 +203,7 @@ describe('todo list rendered', () => {
       const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoList {...{ todoListProvider }} />
+          <TodoList />
          </TodosDispatchContext.Provider>
        </TodosContext.Provider>);
       render(jsxElement);
@@ -189,7 +247,7 @@ describe('todo list rendered', () => {
       const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoList {...{ todoListProvider }} />
+          <TodoList />
          </TodosDispatchContext.Provider>
        </TodosContext.Provider>);
       render(jsxElement);
@@ -235,7 +293,7 @@ describe('todo list rendered', () => {
       const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoList {...{ todoListProvider }} />
+          <TodoList />
          </TodosDispatchContext.Provider>
        </TodosContext.Provider>);
       render(jsxElement);
@@ -268,7 +326,7 @@ describe('todo list rendered', () => {
       const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoList {...{ todoListProvider }} />
+          <TodoList />
          </TodosDispatchContext.Provider>
        </TodosContext.Provider>);
       render(jsxElement);
@@ -288,7 +346,7 @@ describe('todo list rendered', () => {
       const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoList {...{ todoListProvider }} />
+          <TodoList />
          </TodosDispatchContext.Provider>
        </TodosContext.Provider>);
       render(jsxElement);
@@ -308,7 +366,7 @@ describe('todo list rendered', () => {
       const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoList {...{ todoListProvider }} />
+          <TodoList />
          </TodosDispatchContext.Provider>
        </TodosContext.Provider>);
       render(jsxElement);
@@ -328,7 +386,7 @@ describe('todo list rendered', () => {
       const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoList {...{ todoListProvider }} />
+          <TodoList />
          </TodosDispatchContext.Provider>
        </TodosContext.Provider>);
       render(jsxElement);

@@ -4,11 +4,11 @@ import { of } from 'rxjs';
 import { EffectsModule } from '@ngrx/effects';
 import { Store, StoreModule } from '@ngrx/store';
 
-import { ITodo } from '../../shared/models';
 import { TodoService, SettingsProviderKey, StorageProviderKey } from '../../shared/services';
 import { IState, TodoEffects, todosReducer, TodoListActions } from '../../shared/state';
 import { TodoListComponent } from './todo-list.component';
 import { todos } from '../../tests/test-data';
+import { ISort, SortDirection } from '../../shared/models';
 
 describe('TodoListComponent', () => {
   let component: TodoListComponent;
@@ -53,12 +53,18 @@ describe('TodoListComponent', () => {
   });
 
   describe('ngOnInit', () => {
-    it('should select dipslay list', (done: DoneFn) => {
+    it('should show paging list', (done: DoneFn) => {
       component.ngOnInit();
-      store.dispatch(TodoListActions.fetched({ list: todos }));
+      store.dispatch(TodoListActions.fetched({
+        list: todos,
+        sort: {
+          column: 'createdAt',
+          direction: SortDirection.Asc
+        } as ISort
+      }));
 
-      component.items$.subscribe((value: ITodo[]) => {
-        expect(value.length).toBe(5);
+      component.todoState$.subscribe(() => {
+        expect(component.items.length).toBe(5);
         done();
       });
     }, 100);

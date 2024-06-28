@@ -5,12 +5,18 @@ import { ISort, SortDirection } from "../models/ISort";
 import { ISearch } from "../models/ISearch";
 import { StateFilter } from '../models/IFilter';
 import { IAction } from "../models/Action";
-import { ISettings, IGeneralSettings, IPaginationSettings, ISearchSettings, PaginationType, ListContainerType } from "../models/ISettings";
+import { ISettings, IGeneralSettings, IPaginationSettings, ISearchSettings, PaginationType, ListContainerType, IThemeSettings, BackgroundColor, BsThemes } from "../models/ISettings";
+
+export enum DisplayMode {
+	All,
+	Filtered
+}
 
 export interface IState {
 	isLoading: boolean;
 	originalList: ITodo[];
 	displayList: ITodo[];
+	displayMode: DisplayMode;
 	effectTrigger: IAction | null;
 	search: ISearch;
 	filter: IFilter;
@@ -24,6 +30,7 @@ export class State implements IState {
 	isLoading: boolean;
 	originalList: ITodo[];
 	displayList: ITodo[];
+	displayMode: DisplayMode;
 	effectTrigger: IAction | null;
 	search: ISearch;
 	filter: IFilter;
@@ -36,6 +43,7 @@ export class State implements IState {
 		this.isLoading = false;
 		this.originalList = todos; 
 		this.displayList = todos;
+		this.displayMode = DisplayMode.All;
 		this.effectTrigger = null;
 		this.search = {
 			searchTerm: '',
@@ -44,7 +52,7 @@ export class State implements IState {
 			state: StateFilter.all,
 		} as IFilter;
 		this.sort = {
-			column: 'createdAt',
+			column: 'id',
 			direction: SortDirection.Asc
 		} as ISort;
 		this.paging = {
@@ -69,7 +77,15 @@ export class State implements IState {
 			pagination: {
 				paginationType: PaginationType.Classic,
 				maxVisiblePages: 3
-			} as IPaginationSettings
+			} as IPaginationSettings,
+			theme: {
+				backgroundColor: BackgroundColor.DarkGray,
+				primaryColor: '#ff9900',
+				bsTheme: BsThemes.Dark,
+				primaryColorTopCord: -35,
+				primaryColorLefCord: 81
+
+			} as IThemeSettings
 		} as ISettings;
 		this.activeTab = 'add-todo';
 	}

@@ -1,7 +1,7 @@
 import { createContext, useContext, useReducer } from "react";
 
-import { IAction, TodoActions, IPaging, ITodo, StateFilter, ISettings } from "../models";
-import { IState } from "./";
+import { IAction, TodoActions, IPaging, ITodo, StateFilter, ISettings, ISort, SortDirection } from "../models";
+import { DisplayMode, IState } from "./";
  
 export const TodosContext = createContext({} as IState);
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -55,19 +55,21 @@ export function todoStateReducer(state: IState, action: IAction) {
     case TodoActions.fetch: {
       return { 
         ...state,
-        effectTrigger: { type: TodoActions.fetch, payload: action.payload },
+        effectTrigger: { type: TodoActions.fetch, payload: action.payload }, 
       } as IState;
     }
     case TodoActions.filter: {
       return { 
         ...state,
         effectTrigger: { type: TodoActions.filter, payload: action.payload },
+        displayMode: DisplayMode.Filtered
       } as IState;
     }
     case TodoActions.search: {
       return { 
         ...state,
         effectTrigger: { type: TodoActions.search, payload: action.payload },
+        displayMode: DisplayMode.Filtered
       } as IState;
     }
     case TodoActions.sort: {
@@ -84,6 +86,7 @@ export function todoStateReducer(state: IState, action: IAction) {
         originalList: action.payload.list,
         displayList: action.payload.list,
         effectTrigger: null,
+        sort: action.payload.sort,
         paging: {
           ...state.paging,
           totalCount: action.payload.list.length,
@@ -100,6 +103,10 @@ export function todoStateReducer(state: IState, action: IAction) {
         isLoading: false,
         effectTrigger: null,
         displayList: [...action.payload.list],
+        displayMode: 
+          state.filter.state === StateFilter.all && state.search.searchTerm === '' 
+            ? DisplayMode.All 
+            : DisplayMode.Filtered,
         paging: {
           ...state.paging,
           activePage: action.payload.activePage,
@@ -115,6 +122,10 @@ export function todoStateReducer(state: IState, action: IAction) {
         isLoading: false,
         effectTrigger: null,
         displayList: [...action.payload.list],
+        displayMode: 
+          action.payload.filter.state === StateFilter.all && state.search.searchTerm === '' 
+            ? DisplayMode.All 
+            : DisplayMode.Filtered,
         filter: {...action.payload.filter},
         paging: {
           ...state.paging,
@@ -129,11 +140,24 @@ export function todoStateReducer(state: IState, action: IAction) {
       return {
         ...state,
         isLoading: false,
-        effectTrigger: null,
+        effectTrigger: { type: TodoActions.sorted, payload: action.payload },
+        originalList: [...action.payload.list],
         displayList: [...action.payload.list],
         sort: {...action.payload.sort},
         paging: {...state.paging} as IPaging
       };
+    }
+    case TodoActions.manuallySorted: {
+      return { 
+        ...state,
+        effectTrigger: { type: TodoActions.manuallySorted, payload: action.payload },
+        originalList: [...action.payload.list],
+        displayList: [...action.payload.list],
+        sort: {
+          column: 'sortId', 
+          direction: SortDirection.None
+        } as ISort
+      } as IState;
     }
     case TodoActions.imported: {
       return {
@@ -211,14 +235,15 @@ export function todoStateReducer(state: IState, action: IAction) {
     case TodoActions.added: {
       const id = state.originalList.length >= 1 
       ? state.originalList
-          .sort((a: ITodo, b: ITodo) => a.id > b.id ? 1 : -1)[state.originalList.length - 1].id 
-      : 0;
+          .sort((a: ITodo, b: ITodo) => a.id > b.id ? 1 : -1)[state.originalList.length - 1].id + 1
+      : 1;
       const newTodo = {
-        id: id + 1,
+        id: id ,
         title: action.payload.title,
         description: action.payload.description,
         completed: false, 
-        createdAt: action.payload.createdAt
+        createdAt: action.payload.createdAt,
+        sortId: id
       } as ITodo;
 
       return {
@@ -268,6 +293,30 @@ export function todoStateReducer(state: IState, action: IAction) {
           activePage: calculateActivePageOnDelete(state.paging),
           startIndex: (calculateActivePageOnDelete(state.paging) - 1) * state.paging.itemsPerPage,
           endIndex: calculateActivePageOnDelete(state.paging) * state.paging.itemsPerPage,  
+        } as IPaging
+      } as IState;
+    }
+    case TodoActions.restoredAll: {
+      return {
+        ...state,
+        effectTrigger: { type: TodoActions.restoredAll },
+        originalList: state.originalList.map(todo => ({...todo, completed: false})) as ITodo[],
+        displayList: state.displayList.map(todo => ({...todo, completed: false})) as ITodo[],
+        paging: {...state.paging}
+      } as IState; 
+    }
+    case TodoActions.deletedAll: {
+      return {
+        ...state,
+        effectTrigger: { type: TodoActions.deletedAll },
+        originalList: [] as ITodo[],
+        displayList: [] as ITodo[],
+        paging: {
+          ...state.paging,
+          totalCount: 0,
+          activePage: calculateActivePageOnDelete(state.paging),
+          startIndex: (calculateActivePageOnDelete(state.paging) - 1) * state.paging.itemsPerPage,
+          endIndex: calculateActivePageOnDelete(state.paging) * state.paging.itemsPerPage,
         } as IPaging
       } as IState;
     }

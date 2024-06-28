@@ -8,3 +8,8 @@ export enum SortDirection {
 	Asc = 'asc',
 	Desc = 'desc'
 }
+
+export enum SortType {
+  direction = 'direction',
+  noDirection = 'no-direction'
+}

@@ -1,6 +1,6 @@
 import { IPaging } from '../shared/models/paging';
 import { SortDirection } from '../shared/models/sort';
-import { IState } from '../shared/state/state';
+import { DisplayMode, IState } from '../shared/state/state';
 import { ITodo } from '../shared/models/todo';
 import { StateFilter } from '../shared/models/filter';
 import { IGeneralSettings, IPaginationSettings, ISearchSettings, ISettings, ListContainerType, PaginationType } from '../shared/models/settings';
@@ -55,6 +55,7 @@ export const stateTestData: IState =
   isLoading: false,
   originalList: todos,
   displayList: todos,
+  displayMode: DisplayMode.All,
   search: { searchTerm: '' },
   filter: { state: StateFilter.all },
   sort: { column: 'createdAt', direction: SortDirection.Asc},

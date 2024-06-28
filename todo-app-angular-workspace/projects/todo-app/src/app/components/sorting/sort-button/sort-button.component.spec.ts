@@ -4,10 +4,10 @@ import { Store, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { of } from 'rxjs';
 
-import { IState, todosReducer, TodoEffects, TodoListActions } from '../../../shared/state';
+import { IState, todosReducer, TodoEffects } from '../../../shared/state';
 import { SortButtonComponent, SortIconComponent } from '../';
 import { StorageProviderKey, SettingsProviderKey } from '../../../shared/services';
-import { ISort, SortDirection } from '../../../shared/models';
+import { ISort, SortDirection, SortType } from '../../../shared/models';
 import { todos } from '../../../tests/test-data';
 
 describe('SortButtonComponent', () => {
@@ -45,6 +45,7 @@ describe('SortButtonComponent', () => {
     store = TestBed.inject(Store);
     fixture.detectChanges();
     spyOn(store, 'dispatch').and.callThrough();
+    spyOn(component.onSort, 'emit');
   });
 
   it('should create', () => {
@@ -56,26 +57,31 @@ describe('SortButtonComponent', () => {
       const sort = { column: 'title', direction: SortDirection.Asc } as ISort;
       component.sortDirection = sort.direction;
       component.column = sort.column;
-      component.onSort();
+      component.sortType = SortType.direction;
+      component.handleClick();
 
-      const action = TodoListActions.sort({
-        sort: { column: 'title', direction: SortDirection.Desc } as ISort
-      });
-
-      expect(store.dispatch).toHaveBeenCalledWith(action);
+      expect(component.onSort.emit).toHaveBeenCalledWith({ column: 'title', direction: SortDirection.Desc } as ISort);
     });
 
     it('should sort Asc', () => {
       const sort = { column: 'title', direction: SortDirection.Desc } as ISort;
       component.sortDirection = sort.direction;
       component.column = sort.column;
-      component.onSort();
+      component.sortType = SortType.direction;
+      component.handleClick();
 
-      const action = TodoListActions.sort({
-        sort: { column: 'title', direction: SortDirection.Asc } as ISort
-      });
+      expect(component.onSort.emit).toHaveBeenCalledWith({ column: 'title', direction: SortDirection.Asc } as ISort);
+    });
 
-      expect(store.dispatch).toHaveBeenCalledWith(action);
+    it('should manuall sort', () => {
+      const sort = { column: 'sortId', direction: SortDirection.None } as ISort;
+      component.sortDirection = sort.direction;
+      component.column = sort.column;
+      component.sortType = SortType.noDirection;
+      component.handleClick();
+
+      expect(component.isActive).toBeTrue();
+      expect(component.onSort.emit).toHaveBeenCalledWith({ column: 'sortId', direction: SortDirection.None } as ISort);
     });
   });
 });

@@ -34,7 +34,8 @@ import {
   SortingComponent,
   SortButtonComponent,
   SortIconComponent,
-  ConfirmModalService
+  ConfirmModalService,
+  TodoActionsComponent
 } from './components';
 
 import {
@@ -45,6 +46,7 @@ import {
   StorageProviderKey,
   SettingsProviderKey
 } from './shared/services';
+import { CdkDrag, CdkDragPlaceholder, CdkDropList } from '@angular/cdk/drag-drop';
 
 
 @NgModule({
@@ -66,7 +68,8 @@ import {
     TodoSettingsComponent,
     GeneralSettingsComponent,
     SearchSettingsComponent,
-    PaginationSettingsComponent
+    PaginationSettingsComponent,
+    TodoActionsComponent
   ],
   imports: [
     BrowserModule,
@@ -78,7 +81,10 @@ import {
     BsDropdownModule,
     FormsModule,
     StoreModule.forRoot({ todos: todosReducer }),
-    EffectsModule.forRoot([TodoEffects])
+    EffectsModule.forRoot([TodoEffects]),
+    CdkDropList,
+    CdkDrag,
+    CdkDragPlaceholder
   ],
   providers: [
     BsModalService,

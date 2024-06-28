@@ -4,6 +4,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { TodoItem } from './TodoItem';
 import { TodosContext, TodosDispatchContext, stateTestData } from '../../context';
 import { IAction, TodoActions } from '../../models';
+import { DragDropContext } from 'react-beautiful-dnd';
 
 describe('todo item', () => {
   const todo = {
@@ -11,27 +12,29 @@ describe('todo item', () => {
     title: "Task 1",
     description: "Description 1",
     completed: false,
-    createdAt: new Date(2023, 4, 5)
+    createdAt: new Date(2023, 4, 5),
+    sortId: 1
   };
   const todoCompleted = {
     id: 1,
     title: "Task 1",
     description: "Description 1",
     completed: true,
-    createdAt: new Date(2023, 4, 5)
+    createdAt: new Date(2023, 4, 5),
+    sortId: 1
   };
 
   describe('todo item uncompleted', () => {
     it('should match snapshot', () => {
       const tree = renderer.create(
-        <TodoItem todo={todo}/>
+        <TodoItem todo={todo} />
       ).toJSON();
-      render(<TodoItem todo={todo}/>);
+      render(<TodoItem todo={todo} />);
       expect(tree).toMatchSnapshot();
     });
   
     it('should render 2 icons', () => {
-      render(<TodoItem todo={todo}/>);
+      render(<TodoItem todo={todo} />);
       const icons = screen.getAllByRole('img', { hidden: true });
       expect(icons.length).toBe(2);
     });
@@ -40,14 +43,14 @@ describe('todo item', () => {
   describe('todo item completed', () => {  
     it('should match snapshot', () => {
       const tree = renderer.create(
-        <TodoItem todo={todoCompleted}/>
+        <TodoItem todo={todoCompleted} />
       ).toJSON();
-      render(<TodoItem todo={todoCompleted}/>);
+      render(<TodoItem todo={todoCompleted} />);
       expect(tree).toMatchSnapshot();
     });
   
     it('should render completed todo styled title', () => {    
-      render(<TodoItem todo={todoCompleted}/>);
+      render(<TodoItem todo={todoCompleted} />);
       const titleElement = screen.getByText(todoCompleted.title);
       expect(titleElement).toHaveClass('App__todo-list__item-title--completed');
     });
@@ -64,7 +67,7 @@ describe('todo item', () => {
       const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoItem todo={todo}/>
+          <TodoItem todo={todo} />
          </TodosDispatchContext.Provider>
        </TodosContext.Provider>);
       render(jsxElement);
@@ -95,7 +98,7 @@ describe('todo item', () => {
       const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoItem todo={todo}/>
+          <TodoItem todo={todo} />
          </TodosDispatchContext.Provider>
        </TodosContext.Provider>);
       render(jsxElement);
@@ -126,7 +129,7 @@ describe('todo item', () => {
       const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoItem todo={todoCompleted}/>
+          <TodoItem todo={todoCompleted} />
          </TodosDispatchContext.Provider>
        </TodosContext.Provider>);
       render(jsxElement);
@@ -155,7 +158,7 @@ describe('todo item', () => {
       const jsxElement = 
       (<TodosContext.Provider value={context.state}>
          <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoItem todo={todo}/>
+          <TodoItem todo={todo} />
          </TodosDispatchContext.Provider>
        </TodosContext.Provider>);
       render(jsxElement);

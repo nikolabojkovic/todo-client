@@ -2,20 +2,22 @@ import { Inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType, concatLatestFrom } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { EMPTY, of } from 'rxjs';
-import { catchError, exhaustMap, filter, first, map, tap } from 'rxjs/operators';
+import { catchError, exhaustMap, filter, first, map, switchMap, tap } from 'rxjs/operators';
 
 import {
   ITodo,
   ISettings,
   IFilter,
-  ISort
+  ISort,
+  SortDirection
 } from '../models';
 import {
   IState,
   State as TodoState,
   TodoListActions,
   selectPaging,
-  selectTodos
+  selectTodos,
+  selectSort
 } from './';
 import {
   TodoService,
@@ -28,38 +30,33 @@ import {
 @Injectable()
 export class TodoEffects {
 
-  saveTodoList$ = createEffect(() => this.actions$
-    .pipe(
-      ofType(
-        TodoListActions.added,
-        TodoListActions.completed,
-        TodoListActions.removed,
-        TodoListActions.imported),
-      concatLatestFrom(() => this.store.select(selectTodos).pipe(first())),
-      tap(([, todoList]) => this.todoService.saveList(todoList.originalList).pipe(first()))
-    ),
-    { dispatch: false }
-  );
-
-  loadTodoList$ = createEffect(() =>
-    this.actions$.pipe(
+  loadTodoList$ = createEffect(() => {
+    let sort = {
+      column: 'sortId',
+      direction: SortDirection.Asc
+    } as ISort;
+    return this.actions$.pipe(
       ofType(TodoListActions.fetch),
-      exhaustMap(() => this.todoService.getList(
-        {} as IFilter,
-        {
-          column: 'createdAt',
-          direction: 'asc'
-        } as ISort)
-        .pipe(
-          first(),
-          map((list: ITodo[]) => TodoListActions.fetched({ list })),
-          catchError(() => {
-            return of(TodoListActions.fetched({ list: [] as ITodo[] }));
-          })
-        )
-      )
-    )
-  );
+      switchMap(() => this.storageProvider.getItem('todo-sort')),
+      exhaustMap((localStorageSort: string | null | undefined) => {
+        if (localStorageSort) {
+          sort = JSON.parse(localStorageSort) as ISort;
+        }
+
+        return this.todoService.getList(
+          {} as IFilter,
+          sort
+          )
+          .pipe(
+            first(),
+            map((list: ITodo[]) => TodoListActions.fetched({ list, sort })),
+            catchError(() => {
+              return of(TodoListActions.fetched({ list: [] as ITodo[], sort }));
+            })
+          );
+      })
+    );
+  });
 
   searchTodoList$ = createEffect(() =>
     this.actions$.pipe(
@@ -105,25 +102,42 @@ export class TodoEffects {
   );
 
   sortTodoList$ = createEffect(() =>
-  this.actions$.pipe(
-    ofType(TodoListActions.sort),
-    concatLatestFrom(() => this.store.select(selectTodos).pipe(first())),
-    exhaustMap(([action, state]) => this.todoService.getList(
-        state.filter,
-        action.sort,
-        state.search.searchTerm)
-        .pipe(
-          first(),
-          map((list: ITodo[]) =>
-            TodoListActions.sorted({
-              sort: action.sort,
-              list: list
-            })
+    this.actions$.pipe(
+      ofType(TodoListActions.sort),
+      concatLatestFrom(() => this.store.select(selectTodos).pipe(first())),
+      exhaustMap(([action, state]) => this.todoService.getList(
+          state.filter,
+          action.sort,
+          state.search.searchTerm)
+          .pipe(
+            first(),
+            map((list: ITodo[]) =>
+              TodoListActions.sorted({
+                sort: action.sort,
+                list: list
+              })
+            )
           )
-        )
+      )
     )
-  )
-);
+  );
+
+  saveTodoList$ = createEffect(() => this.actions$
+    .pipe(
+      ofType(
+        TodoListActions.added,
+        TodoListActions.completed,
+        TodoListActions.removed,
+        TodoListActions.imported,
+        TodoListActions.manuallySorted,
+        TodoListActions.restoredAll,
+        TodoListActions.removedAll),
+      concatLatestFrom(() => this.store.select(selectTodos).pipe(first())),
+      tap(([, todoList]) => this.todoService.saveList(todoList.originalList).pipe(first()))
+    ),
+    { dispatch: false }
+  );
+
 
   startLoader$ = createEffect(() =>
     this.actions$.pipe(
@@ -139,13 +153,6 @@ export class TodoEffects {
     )
   );
 
-  saveSettings$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(TodoListActions.settingsUpdated),
-      exhaustMap((action) => this.settingsService.saveSettings(action.payload).pipe(first()))
-    ),
-    { dispatch: false }
-  );
 
   loadSettings$ = createEffect(() =>
     this.actions$.pipe(
@@ -157,6 +164,32 @@ export class TodoEffects {
             map((settings: ISettings) => TodoListActions.settingsFetched({ payload: settings })),
             catchError(() => {
               return of(TodoListActions.settingsFetched({ payload: new TodoState([]).settings }));
+            })
+          )
+      )
+    )
+  );
+
+  saveSettings$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TodoListActions.settingsUpdated),
+      exhaustMap((action) => this.settingsService.saveSettings(action.payload).pipe(first()))
+    ),
+    { dispatch: false }
+  );
+
+
+  loadPaging$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TodoListActions.pagingFetch),
+      exhaustMap(() =>
+        this.storageProvider.getItem('todo-paging')
+          .pipe(
+            first(),
+            filter(data => !!data),
+            map((pagingData: string | null | undefined) => TodoListActions.pagingFetched({ paging: JSON.parse(pagingData!)})),
+            catchError(() => {
+              return EMPTY;
             })
           )
       )
@@ -176,21 +209,16 @@ export class TodoEffects {
       { dispatch: false }
   );
 
-  loadPaging$ = createEffect(() =>
+  saveSorting$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(TodoListActions.pagingFetch),
-      exhaustMap(() =>
-        this.storageProvider.getItem('todo-paging')
-          .pipe(
-            first(),
-            filter(data => !!data),
-            map((pagingData: string | null | undefined) => TodoListActions.pagingFetched({ paging: JSON.parse(pagingData!)})),
-            catchError(() => {
-              return EMPTY;
-            })
-          )
-      )
-    )
+      ofType(
+        TodoListActions.sorted,
+        TodoListActions.manuallySorted
+      ),
+      concatLatestFrom(() => this.store.select(selectSort).pipe(first())),
+        tap(([, sort]) => this.storageProvider.setItem('todo-sort', sort).pipe(first()))
+      ),
+      { dispatch: false }
   );
 
   constructor(
