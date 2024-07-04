@@ -70,42 +70,22 @@ export function TodoItem({ todo }: Props) {
           </div>
         </div>
         <div className="ms-auto">
-          { 
-            todo.completed ? 
-              <FontAwesomeIcon 
-                data-testid='restore-button' 
-                icon={faRotateLeft}
-                className="action-icon"
-                onClick={() => {
-                  if (todoList.settings.general.isConfirmEnabled) {
-                    onConfirm(() => handleRestore);
-                    setConfirmDialogText('Are you sure you want to restore this item?');
-                    setShowModal(true);
+          <FontAwesomeIcon 
+            data-testid= { todo.completed ? 'restore-button' : 'complete-button' }
+            icon={todo.completed ? faRotateLeft : faCheckDouble}
+            className="action-icon"
+            onClick={() => {
+              if (todoList.settings.general.isConfirmEnabled) {
+                onConfirm(() => todo.completed ? handleRestore : handleComplete);
+                setConfirmDialogText(todo.completed ? 'Are you sure you want to restore this item?' : 'Are you sure you want to complete this item?');
+                setShowModal(true);
 
-                    return;
-                  }
+                return;
+              }
 
-                  handleComplete();
-                }}
-              />
-              : 
-              <FontAwesomeIcon 
-                data-testid='complete-button'
-                icon={faCheckDouble} 
-                className="action-icon"
-                onClick={() => {
-                  if (todoList.settings.general.isConfirmEnabled) {
-                    onConfirm(() => handleComplete);
-                    setConfirmDialogText('Are you sure you want to complete this item?');
-                    setShowModal(true);
-
-                    return;
-                  }
-
-                  handleComplete();
-                }}
-              />
-        }
+              handleComplete();
+            }}
+          />
         </div>
         <div>
           <FontAwesomeIcon 

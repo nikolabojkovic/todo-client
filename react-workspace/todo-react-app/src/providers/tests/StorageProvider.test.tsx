@@ -1,7 +1,7 @@
 import { first } from "rxjs";
 
-import { stateTestData } from "../context";
-import { LocalStorageProvider } from ".";
+import { stateTestData } from "../../context";
+import { LocalStorageProvider } from "..";
 
 let storageProviderSpy: jest.SpyInstance<Storage, []>;
 let localStorageMock: Storage;
@@ -25,7 +25,7 @@ describe('StorageProvider', () => {
       .pipe(
         first()
       )
-      .subscribe((data) => {
+      .subscribe((data : any) => {
         expect(data).toBe(JSON.stringify(stateTestData.originalList));
         done(); 
       });

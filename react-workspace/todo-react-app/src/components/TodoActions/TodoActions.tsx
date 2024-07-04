@@ -33,8 +33,12 @@ export function TodoActions() {
       <Stack direction="horizontal" gap={3} className="mt-2 mb-2">
         <div
           data-testid="restore-all-button"
-          className="action-icon position-relative"
+          className={"action-icon position-relative " + (todoList.isLoading ? "action-icon--disabled" : "")}
           onClick={() => {
+            if (todoList.isLoading) {
+              return;
+            }
+
             if (todoList.settings.general.isConfirmEnabled) {
               onConfirm(() => handleRestoreAll);
               setConfirmDialogText('Are you sure you want to restore all items?');
@@ -48,18 +52,22 @@ export function TodoActions() {
         >
           <FontAwesomeIcon 
             icon={faRotateLeft}
-            className="action-icon-front"
+            className={"action-icon-front " + (todoList.isLoading ? "action-icon--disabled" : "")}
           />
           <FontAwesomeIcon
             icon={faRotateLeft}
-            className="action-icon-back"
+            className={"action-icon-back " + (todoList.isLoading ? "action-icon--disabled" : "")}
           />
         </div>
         <div         
           data-testid="delete-all-button"
-          className="action-icon position-relative"
+          className={"action-icon position-relative " + (todoList.isLoading ? "action-icon--disabled" : "")}
           onClick={() => {
             if (todoList.settings.general.isConfirmEnabled) {
+              if (todoList.isLoading) {
+                return;
+              }
+
               onConfirm(() => handleDeleteAll);
               setConfirmDialogText('Are you sure you want to delete all items?');
               setShowModal(true);
@@ -72,11 +80,11 @@ export function TodoActions() {
         >
           <FontAwesomeIcon
             icon={faTrash} 
-            className="action-icon-front"
+            className={"action-icon-front " + (todoList.isLoading ? "action-icon--disabled" : "")}
           />
           <FontAwesomeIcon 
             icon={faTrash} 
-            className="action-icon-back"
+            className={"action-icon-back " + (todoList.isLoading ? "action-icon--disabled" : "")}
           />
         </div>
       </Stack>

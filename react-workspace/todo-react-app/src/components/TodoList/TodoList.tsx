@@ -44,7 +44,7 @@ export function TodoList() {
   useEffect(() => {
     const subscription = infiniteScroll.fetch
       .pipe(
-        delay(1000), // TODO: switchMap to http request which whill load data from BE
+        delay(1000),
       )
       .subscribe((endIndex: number) => {
         setInfiniteScroll({...infiniteScroll, endIndex: endIndex + 5, isLoading: false});
@@ -173,34 +173,30 @@ export function TodoList() {
         : {}
         }
       >
-      { 
-        todoList.isLoading 
-        ? <Loader height={280} />
-        : <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId="droppable-list">
-              {(provided, snapshot) => (
-              <div 
-                id="todo-list-content"
-                className= {isDraggingEnabled ? 'drag-list' : ''}
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-              >
-                {
-                  (todoList.paging.totalCount > 0 
-                    ? renderList(items) 
-                    : <div className='text-light mt-5 mb-5 fade-in'>No data</div>)
-                }
-                {
-                  todoList.settings.general.isInfiniteScrollEnabled &&
-                  infiniteScroll.isLoading &&
-                  <Loader height={150} />
-                }      
-                {provided.placeholder}        
-              </div>
-              )}
-            </Droppable>
-          </DragDropContext>
-      }
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="droppable-list">
+            {(provided, snapshot) => (
+            <div 
+              id="todo-list-content"
+              className= {isDraggingEnabled ? 'drag-list' : ''}
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+            >
+              {
+                (todoList.paging.totalCount > 0 
+                  ? renderList(items) 
+                  : <div className='text-light mt-5 mb-5 fade-in'>No data</div>)
+              }
+              {
+                todoList.settings.general.isInfiniteScrollEnabled &&
+                infiniteScroll.isLoading &&
+                <Loader height={150} />
+              }      
+              {provided.placeholder}        
+            </div>
+            )}
+          </Droppable>
+        </DragDropContext>
       {
         todoList.settings.general.isInfiniteScrollEnabled 
         && !infiniteScroll.isLoading 

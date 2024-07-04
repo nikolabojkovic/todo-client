@@ -2,13 +2,8 @@ import { useEffect } from "react";
 import { first, switchMap } from "rxjs";
 
 import { useTodoList, useTodoListDispatch } from "../context";
-import { GetListProps, ITodoListProvider, LocalStorageProvider } from "../providers";
 import { IAction, ISort, ITodo, TodoActions } from "../models";
-import LocalTodoListProvider from "../providers/TodoProvider";
-
-const todoListProvider = new LocalTodoListProvider();
-const storageProvider = new LocalStorageProvider();
-const sortingLocalStorageKey = 'todo-sort';
+import providers, { GetListProps, sortingLocalStorageKey } from "../providers";
 
 export function useTodoListEffect() {
   const todoList = useTodoList();
@@ -17,14 +12,14 @@ export function useTodoListEffect() {
   useEffect(() => {      
     if (todoList.effectTrigger && todoList.effectTrigger.type === TodoActions.fetch) {
       let sort = todoList.effectTrigger?.payload.sort;
-      storageProvider.getItem(sortingLocalStorageKey).pipe(
+      providers.storageProvider.getItem(sortingLocalStorageKey).pipe(
         first(),
         switchMap((localStorageSort: string | null) => {
           if (localStorageSort) {
             sort = JSON.parse(localStorageSort) as ISort;
           }
 
-          return todoListProvider.getList({
+          return providers.todoListProvider.getList({
             filter: todoList.filter,
             searchTerm: todoList.search.searchTerm,
             sort 
@@ -41,11 +36,11 @@ export function useTodoListEffect() {
         } as IAction);
       });
     }
-  }, [todoList.effectTrigger, dispatch, todoListProvider]);
+  }, [todoList.effectTrigger, dispatch, providers.todoListProvider]);
 
   useEffect(() => {  
     if (todoList.effectTrigger && todoList.effectTrigger.type === TodoActions.filter) {
-      todoListProvider.getList({
+      providers.todoListProvider.getList({
         filter: todoList.effectTrigger.payload.filter,
         searchTerm: todoList.search.searchTerm,
         sort: todoList.sort
@@ -62,11 +57,11 @@ export function useTodoListEffect() {
         } as IAction);
       });
     }
-  }, [todoList.effectTrigger, dispatch, todoListProvider]);
+  }, [todoList.effectTrigger, dispatch, providers.todoListProvider]);
 
   useEffect(() => {  
     if (todoList.effectTrigger && todoList.effectTrigger.type === TodoActions.search) {
-      todoListProvider.getList({
+      providers.todoListProvider.getList({
         filter: todoList.filter,
         searchTerm: todoList.effectTrigger.payload.searchTerm,
         sort: todoList.sort
@@ -82,11 +77,11 @@ export function useTodoListEffect() {
         } as IAction);
       });
     }
-  }, [todoList.effectTrigger, dispatch, todoListProvider]);
+  }, [todoList.effectTrigger, dispatch, providers.todoListProvider]);
 
   useEffect(() => {  
     if (todoList.effectTrigger && todoList.effectTrigger.type === TodoActions.sort) {
-      todoListProvider.getList({
+      providers.todoListProvider.getList({
         filter: todoList.filter,
         searchTerm: todoList.search.searchTerm,
         sort: todoList.effectTrigger.payload.sort 
@@ -102,7 +97,7 @@ export function useTodoListEffect() {
           } as IAction);
       });
     }
-  }, [todoList.effectTrigger, dispatch, todoListProvider]);
+  }, [todoList.effectTrigger, dispatch, providers.todoListProvider]);
   
 
   useEffect(() => {  
@@ -127,15 +122,15 @@ export function useTodoListEffect() {
        || todoList.effectTrigger.type === TodoActions.restoredAll
        || todoList.effectTrigger.type === TodoActions.deletedAll
       )) {
-      todoListProvider.saveList(todoList.originalList).pipe(first()).subscribe();
+        providers.todoListProvider.saveList(todoList.originalList).pipe(first()).subscribe();
      }
-  }, [todoList.effectTrigger, todoList.originalList, todoListProvider]);
+  }, [todoList.effectTrigger, todoList.originalList, providers.todoListProvider]);
 
   useEffect(() => {
     if (todoList.effectTrigger 
       && (todoList.effectTrigger.type === TodoActions.manuallySorted
        || todoList.effectTrigger.type === TodoActions.sorted)) {
-      storageProvider.setItem(sortingLocalStorageKey, todoList.sort).pipe(first()).subscribe();
+        providers.storageProvider.setItem(sortingLocalStorageKey, todoList.sort).pipe(first()).subscribe();
      }
-  }, [todoList.effectTrigger, todoList.originalList, todoListProvider]);
+  }, [todoList.effectTrigger, todoList.originalList, providers.todoListProvider]);
 }

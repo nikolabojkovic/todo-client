@@ -22,7 +22,7 @@ jest.mock('react-beautiful-dnd', () => ({
   DragDropContext: ({ children }: any) => children,
 }));
 
-import LocalStorageProvider from '../../providers/StorageProvider';
+import { LocalStorageProvider } from '../../providers/StorageProvider';
 jest.mock('../../providers/StorageProvider');
 // const mockGetItem = jest.fn().mockImplementation(() => of('{"column":"title", "direction":"Asc"}'));
 // const mockSetItem = jest.fn().mockImplementation(() => of({}));
