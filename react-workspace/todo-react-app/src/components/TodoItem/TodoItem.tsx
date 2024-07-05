@@ -69,40 +69,42 @@ export function TodoItem({ todo }: Props) {
               }
           </div>
         </div>
-        <div className="ms-auto">
+        <div 
+          className="ms-auto App__todo-list__item--action action-icon"     
+          onClick={() => {
+            if (todoList.settings.general.isConfirmEnabled) {
+              onConfirm(() => todo.completed ? handleRestore : handleComplete);
+              setConfirmDialogText(todo.completed ? 'Are you sure you want to restore this item?' : 'Are you sure you want to complete this item?');
+              setShowModal(true);
+
+              return;
+            }
+
+            handleComplete();
+          }}
+        >
           <FontAwesomeIcon 
             data-testid= { todo.completed ? 'restore-button' : 'complete-button' }
             icon={todo.completed ? faRotateLeft : faCheckDouble}
-            className="action-icon"
-            onClick={() => {
-              if (todoList.settings.general.isConfirmEnabled) {
-                onConfirm(() => todo.completed ? handleRestore : handleComplete);
-                setConfirmDialogText(todo.completed ? 'Are you sure you want to restore this item?' : 'Are you sure you want to complete this item?');
-                setShowModal(true);
-
-                return;
-              }
-
-              handleComplete();
-            }}
           />
         </div>
-        <div>
+        <div 
+          className="App__todo-list__item--action action-icon"
+          onClick={() => {
+            if (todoList.settings.general.isConfirmEnabled) {
+              onConfirm(() => handleDelete);
+              setConfirmDialogText('Are you sure you want to delete this item?');
+              setShowModal(true);
+
+              return;
+            }
+
+            handleDelete();
+          }}
+        >
           <FontAwesomeIcon 
             data-testid="delete-button"
-            icon={faTrash} 
-            className="action-icon"
-            onClick={() => {
-              if (todoList.settings.general.isConfirmEnabled) {
-                onConfirm(() => handleDelete);
-                setConfirmDialogText('Are you sure you want to delete this item?');
-                setShowModal(true);
-
-                return;
-              }
-
-              handleDelete();
-            }}
+            icon={faTrash}
           />
         </div>          
       </Stack>

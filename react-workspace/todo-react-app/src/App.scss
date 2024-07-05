@@ -54,6 +54,15 @@
         background-color: var(--background-secondary-color-1);
       }
 
+      &--action {
+        padding: 5px 0px;
+        cursor: pointer;
+
+        &:hover {
+          color: var(--text-secondary-color);
+        }        
+      }
+
       &-title {
         color: var(--text-secondary-color);
         font-weight: bold;

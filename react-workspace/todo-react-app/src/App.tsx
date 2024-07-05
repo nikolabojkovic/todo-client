@@ -51,21 +51,22 @@ function App() {
         </header>      
         <Tabs />
         { todoList.activeTab !== "settings" && 
-          <section className="App-actions">
-             <Stack direction="horizontal" gap={3}>
-              <Sorting />
-              <TodoActions />
-             </Stack>
-          </section> }
-        { todoList.activeTab !== "settings" && 
-          (
-            todoList.isLoading 
-            ? <Loader height={280} />
-            : <>
-                <TodoList />
-                <Paging />
-              </>
-          )
+          <>
+            <section className="App-actions">
+              <Stack direction="horizontal" gap={3}>
+                <Sorting />
+                <TodoActions />
+              </Stack>
+            </section> 
+            {(
+              todoList.isLoading 
+              ? <Loader height={280} />
+              : <>
+                  <TodoList />
+                  <Paging />
+                </>
+            )}
+          </>
         }
       </section>         
     </main>    
