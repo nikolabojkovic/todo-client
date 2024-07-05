@@ -14,7 +14,6 @@ import { applyTheme } from './utils';
 function App() {   
   const todoList = useTodoList();
   const dispatch = useTodoListDispatch();
-
   useTodoListEffect();
 
   const load = async () => {

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { first } from "rxjs";
+import { firstValueFrom } from "rxjs";
 
 import providers from "../../providers";
 import { useTodoList } from "../../context/TodoListContext";
@@ -15,7 +15,7 @@ export function Settings() {
 
   useEffect(() => {
     if(todoList.effectTrigger && todoList.effectTrigger.type === TodoActions.settingsUpdated) {
-      providers.settingsProvider.saveSettings(todoList.settings).pipe(first()).subscribe();
+      firstValueFrom(providers.settingsProvider.saveSettings(todoList.settings));
     }
   }, [todoList.effectTrigger, todoList.settings]);
 

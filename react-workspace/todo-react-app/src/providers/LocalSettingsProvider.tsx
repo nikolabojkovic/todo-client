@@ -1,7 +1,7 @@
 import { Observable, map } from "rxjs";
 
 import { ISettings } from "../models";
-import { storageProvider } from "./";
+import storageProvider from "./StorageProvider";
 import { State } from "../context";
 
 export interface ISettingsProvider {
