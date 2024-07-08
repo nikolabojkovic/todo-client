@@ -6,7 +6,7 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import { ITodo, IAction, TodoActions, ListContainerType } from '../../models';
 import { DisplayMode, useTodoList, useTodoListDispatch } from '../../context';
-import { Loader, TodoItem } from '../';
+import { LoadMore, Loader, TodoItem } from '../';
 
 export function TodoList() {
   const todoList = useTodoList();
@@ -21,7 +21,11 @@ export function TodoList() {
     isLoading: false,
     fetch: new Subject<number>()
   });
-  const hasMoreItemsToLoad = infiniteScroll.endIndex < todoList.displayList.length;
+  const hasMoreItemsToLoad = todoList.settings.general.isInfiniteScrollEnabled 
+    && !infiniteScroll.isLoading 
+    && !todoList.isLoading 
+    && infiniteScroll.endIndex < todoList.displayList.length;
+  const loadingMore = todoList.settings.general.isInfiniteScrollEnabled && infiniteScroll.isLoading;
 
   let items : ITodo[] = [];
   if (todoList.settings.general.isPaginationEnabled) {
@@ -44,7 +48,7 @@ export function TodoList() {
   useEffect(() => {
     const subscription = infiniteScroll.fetch
       .pipe(
-        delay(1000), // TODO: switchMap to http request which whill load data from BE
+        delay(1000),
       )
       .subscribe((endIndex: number) => {
         setInfiniteScroll({...infiniteScroll, endIndex: endIndex + 5, isLoading: false});
@@ -159,6 +163,8 @@ export function TodoList() {
     );
   }
 
+  if (todoList.paging.totalCount === 0) return (<div className='text-light mt-5 mb-5 fade-in'>No data</div>);
+
   return (
     <section 
       id="todo-list-container" 
@@ -169,49 +175,29 @@ export function TodoList() {
         ? { 
             height: todoList.settings.general.fixedListSize,
             overflow: 'overlay'
-          } 
-        : {}
+          } : {}
         }
       >
-      { 
-        todoList.isLoading 
-        ? <Loader height={280} />
-        : <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId="droppable-list">
-              {(provided, snapshot) => (
-              <div 
-                id="todo-list-content"
-                className= {isDraggingEnabled ? 'drag-list' : ''}
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-              >
-                {
-                  (todoList.paging.totalCount > 0 
-                    ? renderList(items) 
-                    : <div className='text-light mt-5 mb-5 fade-in'>No data</div>)
-                }
-                {
-                  todoList.settings.general.isInfiniteScrollEnabled &&
-                  infiniteScroll.isLoading &&
-                  <Loader height={150} />
-                }      
-                {provided.placeholder}        
-              </div>
-              )}
-            </Droppable>
-          </DragDropContext>
-      }
-      {
-        todoList.settings.general.isInfiniteScrollEnabled 
-        && !infiniteScroll.isLoading 
-        && !todoList.isLoading 
-        && hasMoreItemsToLoad
-        && <div id="infinite-scroll-end" className="App__todo-list__infinite-scroll-end">
-              <div className="App__todo-list__infinite-scroll-end--bouncing">
-                <FontAwesomeIcon icon={faAngleDown} />
-                <div>Scroll down to load more</div>
-              </div>            
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="droppable-list">
+            {(provided, snapshot) => (
+            <div 
+              id="todo-list-content"
+              className= {isDraggingEnabled ? 'drag-list' : ''}
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+            >
+              { renderList(items) }
+              { loadingMore &&
+                <Loader height={150} />
+              }      
+              {provided.placeholder}        
             </div>
+            )}
+          </Droppable>
+        </DragDropContext>
+      { hasMoreItemsToLoad && 
+        <LoadMore />
       }      
     </section>
   );

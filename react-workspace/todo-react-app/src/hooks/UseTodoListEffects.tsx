@@ -1,121 +1,49 @@
 import { useEffect } from "react";
-import { first, switchMap } from "rxjs";
+import { first, firstValueFrom } from "rxjs";
 
 import { useTodoList, useTodoListDispatch } from "../context";
-import { GetListProps, ITodoListProvider, LocalStorageProvider } from "../providers";
-import { IAction, ISort, ITodo, TodoActions } from "../models";
-import LocalTodoListProvider from "../providers/TodoProvider";
-
-const todoListProvider = new LocalTodoListProvider();
-const storageProvider = new LocalStorageProvider();
-const sortingLocalStorageKey = 'todo-sort';
+import { IAction, ISort, TodoActions } from "../models";
+import providers, { GetListProps, sortingLocalStorageKey } from "../providers";
 
 export function useTodoListEffect() {
   const todoList = useTodoList();
   const dispatch = useTodoListDispatch();
 
-  useEffect(() => {      
-    if (todoList.effectTrigger && todoList.effectTrigger.type === TodoActions.fetch) {
-      let sort = todoList.effectTrigger?.payload.sort;
-      storageProvider.getItem(sortingLocalStorageKey).pipe(
-        first(),
-        switchMap((localStorageSort: string | null) => {
-          if (localStorageSort) {
-            sort = JSON.parse(localStorageSort) as ISort;
-          }
+  useEffect(() => {   
+    if (!todoList.effectTrigger) {
+      return;
+    }   
 
-          return todoListProvider.getList({
-            filter: todoList.filter,
-            searchTerm: todoList.search.searchTerm,
-            sort 
-          } as GetListProps).pipe(first());
-        })
-      )
-      .subscribe((list: ITodo[]) => {
-        dispatch({
-          type: TodoActions.fetched,
-          payload: {
-            sort,
-            list: list
-          }
-        } as IAction);
-      });
-    }
-  }, [todoList.effectTrigger, dispatch, todoListProvider]);
-
-  useEffect(() => {  
-    if (todoList.effectTrigger && todoList.effectTrigger.type === TodoActions.filter) {
-      todoListProvider.getList({
-        filter: todoList.effectTrigger.payload.filter,
-        searchTerm: todoList.search.searchTerm,
-        sort: todoList.sort
-      } as GetListProps)
-      .pipe(first())
-      .subscribe((list: ITodo[]) => {
-        dispatch({
-          type: TodoActions.filtered,
-          payload: {
-            activePage: 1,
-            list: list,
-            filter: todoList.effectTrigger!.payload.filter
-          }
-        } as IAction);
-      });
-    }
-  }, [todoList.effectTrigger, dispatch, todoListProvider]);
-
-  useEffect(() => {  
-    if (todoList.effectTrigger && todoList.effectTrigger.type === TodoActions.search) {
-      todoListProvider.getList({
-        filter: todoList.filter,
-        searchTerm: todoList.effectTrigger.payload.searchTerm,
-        sort: todoList.sort
-      } as GetListProps)
-      .pipe(first())
-      .subscribe((list: ITodo[]) => {
-        dispatch({
-          type: TodoActions.searched,
-          payload: {
-            list: list,
-            activePage: 1,
-          }
-        } as IAction);
-      });
-    }
-  }, [todoList.effectTrigger, dispatch, todoListProvider]);
-
-  useEffect(() => {  
-    if (todoList.effectTrigger && todoList.effectTrigger.type === TodoActions.sort) {
-      todoListProvider.getList({
-        filter: todoList.filter,
-        searchTerm: todoList.search.searchTerm,
-        sort: todoList.effectTrigger.payload.sort 
-      } as GetListProps)
-      .pipe(first())
-      .subscribe((list: ITodo[]) => {
-          dispatch({
-            type: TodoActions.sorted,
-            payload: {
-              sort: todoList.effectTrigger!.payload.sort,
-              list: list
-            }
-          } as IAction);
-      });
-    }
-  }, [todoList.effectTrigger, dispatch, todoListProvider]);
-  
-
-  useEffect(() => {  
-    if (todoList.effectTrigger
-     && (todoList.effectTrigger.type === TodoActions.fetch
+    if (todoList.effectTrigger.type === TodoActions.fetch
       || todoList.effectTrigger.type === TodoActions.filter
       || todoList.effectTrigger.type === TodoActions.search
-      || todoList.effectTrigger.type === TodoActions.sort)) {
+      || todoList.effectTrigger.type === TodoActions.sort) {
       dispatch({
         type: TodoActions.loadingStarted
       } as IAction);
     }
-  }, [todoList.effectTrigger, dispatch]);
+
+    if (todoList.effectTrigger.type === TodoActions.fetch) {
+      fetchData();
+    }
+
+    if (todoList.effectTrigger.type === TodoActions.filter) {
+      filterData();
+    }
+
+    if (todoList.effectTrigger.type === TodoActions.search) {
+      searchData();
+    }
+
+    if (todoList.effectTrigger.type === TodoActions.sort) {
+      sortData();
+    }
+
+     if (todoList.effectTrigger.type === TodoActions.manuallySorted
+       || todoList.effectTrigger.type === TodoActions.sorted) {
+        providers.storageProvider.setItem(sortingLocalStorageKey, todoList.sort).pipe(first()).subscribe();
+     }
+  }, [todoList.effectTrigger]); 
 
   useEffect(() => {
     if (todoList.effectTrigger
@@ -127,15 +55,78 @@ export function useTodoListEffect() {
        || todoList.effectTrigger.type === TodoActions.restoredAll
        || todoList.effectTrigger.type === TodoActions.deletedAll
       )) {
-      todoListProvider.saveList(todoList.originalList).pipe(first()).subscribe();
+        providers.todoListProvider.saveList(todoList.originalList).pipe(first()).subscribe();
      }
-  }, [todoList.effectTrigger, todoList.originalList, todoListProvider]);
+  }, [todoList.effectTrigger, todoList.originalList]);
 
-  useEffect(() => {
-    if (todoList.effectTrigger 
-      && (todoList.effectTrigger.type === TodoActions.manuallySorted
-       || todoList.effectTrigger.type === TodoActions.sorted)) {
-      storageProvider.setItem(sortingLocalStorageKey, todoList.sort).pipe(first()).subscribe();
-     }
-  }, [todoList.effectTrigger, todoList.originalList, todoListProvider]);
+  async function fetchData() {
+    let sort = todoList.effectTrigger?.payload.sort;
+    const localStorageSort = await firstValueFrom(providers.storageProvider.getItem(sortingLocalStorageKey));
+
+    if (localStorageSort) {
+      sort = JSON.parse(localStorageSort) as ISort;
+    }
+
+    const todoListData = await firstValueFrom(providers.todoListProvider.getList({
+      filter: todoList.filter,
+      searchTerm: todoList.search.searchTerm,
+      sort 
+    } as GetListProps));
+
+    dispatch({
+      type: TodoActions.fetched,
+      payload: {
+        sort,
+        list: todoListData
+      }
+    } as IAction);
+  }
+
+  async function filterData() {
+    const todoListData = await firstValueFrom(providers.todoListProvider.getList({
+      filter: todoList.effectTrigger?.payload.filter,
+      searchTerm: todoList.search.searchTerm,
+      sort: todoList.sort
+    } as GetListProps));
+
+    dispatch({
+      type: TodoActions.filtered,
+      payload: {
+        activePage: 1,
+        list: todoListData,
+        filter: todoList.effectTrigger!.payload.filter
+      }
+    } as IAction);
+  }
+
+  async function searchData() {
+    const todoListData = await firstValueFrom(providers.todoListProvider.getList({
+      filter: todoList.filter,
+      searchTerm: todoList.effectTrigger?.payload.searchTerm,
+      sort: todoList.sort
+    } as GetListProps));
+    
+    dispatch({
+      type: TodoActions.searched,
+      payload: {
+        list: todoListData,
+        activePage: 1,
+      }
+    } as IAction);
+  }
+
+  async function sortData() {
+    const todoListData = await firstValueFrom(providers.todoListProvider.getList({
+      filter: todoList.filter,
+      searchTerm: todoList.search.searchTerm,
+      sort: todoList.effectTrigger?.payload.sort 
+    } as GetListProps));
+    dispatch({
+      type: TodoActions.sorted,
+      payload: {
+        sort: todoList.effectTrigger!.payload.sort,
+        list: todoListData
+      }
+    } as IAction);
+  }
 }

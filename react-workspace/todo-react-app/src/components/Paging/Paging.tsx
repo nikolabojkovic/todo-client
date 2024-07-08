@@ -6,10 +6,7 @@ import { filter, first, map } from 'rxjs';
 import { useTodoList, useTodoListDispatch } from '../../context';
 import { PageSize, Pagination } from '../';
 import { PaginationType, IAction, TodoActions, IPaging } from '../../models';
-import { LocalStorageProvider } from '../../providers';
-
-const storageProvider = new LocalStorageProvider();
-const pagingLocalStorageKey = 'todo-paging';
+import providers, { pagingLocalStorageKey } from '../../providers';
 
 export function Paging() {
   const todoList = useTodoList();
@@ -19,7 +16,7 @@ export function Paging() {
   const pageCount = Math.ceil(todoList.paging.totalCount / todoList.paging.itemsPerPage);
 
   useEffect(() => {
-    storageProvider.getItem(pagingLocalStorageKey)
+    providers.storageProvider.getItem(pagingLocalStorageKey)
       .pipe(
         first(),
         filter((data) => !!data),
@@ -37,7 +34,7 @@ export function Paging() {
       && (todoList.effectTrigger.type === TodoActions.pagingUpdated
        || todoList.effectTrigger.type === TodoActions.added  
        || todoList.effectTrigger.type === TodoActions.deleted)) {
-      storageProvider.setItem(pagingLocalStorageKey, todoList.paging).pipe(first()).subscribe();
+      providers.storageProvider.setItem(pagingLocalStorageKey, todoList.paging).pipe(first()).subscribe();
     }
   }, [todoList.paging, todoList.effectTrigger]);
 

@@ -1,8 +1,8 @@
 import { first, of } from 'rxjs';
 
-import { ITodo, IFilter, StateFilter, ISort, SortDirection } from '../models';
-import { GetListProps, IStorageProvider } from './';
-import LocalTodoListProvider from './TodoProvider';
+import { ITodo, IFilter, StateFilter, ISort, SortDirection } from '../../models';
+import { GetListProps, IStorageProvider } from '..';
+import localTodoListProvider from '../TodoProvider';
 
 const testData = [
   {"id":1,"title":"Task 1","description":"Description 1","completed":false,"createdAt":"2022-02-03T23:00:00.000Z"},  
@@ -10,7 +10,6 @@ const testData = [
   {"id":4,"title":"Task 4","description":"Description 4","completed":true,"createdAt":"2022-02-06T23:00:00.000Z"}
 ];
 let localStorageProvider: IStorageProvider;
-const localTodoListProvider = new LocalTodoListProvider();
 
 beforeEach(() => {
   localStorageProvider = {

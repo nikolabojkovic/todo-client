@@ -19,7 +19,7 @@ export interface ITodoListProvider {
 
 // additionaly implement one more provider, RemoteTodoListProvider which will load list from web api by invoking HTTP request
 
-export default class LocalTodoListProvider {
+export class LocalTodoListProvider {
   storageProvider: IStorageProvider;
 
   constructor() {
@@ -112,3 +112,5 @@ export default class LocalTodoListProvider {
     return sortResult;
   }
 }
+
+export default new LocalTodoListProvider();

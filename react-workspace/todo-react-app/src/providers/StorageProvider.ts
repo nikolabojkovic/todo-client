@@ -5,7 +5,7 @@ export interface IStorageProvider {
   setItem(key: string, value: unknown): Observable<unknown>;
 }
 
-export default class LocalStorageProvider implements IStorageProvider {
+export class LocalStorageProvider implements IStorageProvider {
   get storage(): Storage {
     return window.localStorage;
   }
@@ -20,6 +20,11 @@ export default class LocalStorageProvider implements IStorageProvider {
     return of({});
   }
 } 
+
+export const pagingLocalStorageKey = 'todo-paging';
+export const sortingLocalStorageKey = 'todo-sort';
+
+export default new LocalStorageProvider();
 
 // export class BackendStorageProvider implements IStorageProvider {
 //   getItem(key: string): Observable<string | null> {

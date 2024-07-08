@@ -1,7 +1,7 @@
 import { Observable, map } from "rxjs";
 
 import { ISettings } from "../models";
-import { IStorageProvider, LocalStorageProvider } from "./";
+import storageProvider from "./StorageProvider";
 import { State } from "../context";
 
 export interface ISettingsProvider {
@@ -12,14 +12,8 @@ export interface ISettingsProvider {
 export class LocalSettingsProvider implements ISettingsProvider {
   settingsKey = 'todo-settings';
 
-  storageProvider: IStorageProvider;
-
-  constructor() {
-    this.storageProvider = new LocalStorageProvider();
-  }  
-
   loadSettings(): Observable<ISettings> {
-    return this.storageProvider.getItem(this.settingsKey)
+    return storageProvider.getItem(this.settingsKey)
     .pipe(
       map((settings) => {
         if (!settings) {
@@ -32,6 +26,8 @@ export class LocalSettingsProvider implements ISettingsProvider {
   }
 
   saveSettings(settings: ISettings): Observable<unknown> {
-    return this.storageProvider.setItem(this.settingsKey, settings);
+    return storageProvider.setItem(this.settingsKey, settings);
   }
 }
+
+export default new LocalSettingsProvider();
