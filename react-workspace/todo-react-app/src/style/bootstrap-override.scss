@@ -61,6 +61,7 @@
 
 .form-check-input {
   box-shadow: none;
+  cursor: pointer;
   border-color: var(--background-ternary-color);
   background-color: var(--background-ternary-color-1);
   background-image: escape-svg($form-switch-checked-bg-image);
