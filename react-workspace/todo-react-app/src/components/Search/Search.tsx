@@ -51,20 +51,22 @@ export function Search({ placeholder}: Props) {
               }
             }}
           />
-          {todoList.search.searchTerm !== '' && <FontAwesomeIcon 
-            data-testid="clear-search"
-            className="clear-icon"
-            icon={faCircleXmark}
-            onClick={() => {
-              dispatch({
-                type: TodoActions.searchTermUpdated,
-                payload: {
-                  searchTerm: ''
-                }
-              } as IAction);
-              handleSearch('');
-            }}
-          />}
+          {  todoList.search.searchTerm !== '' && 
+            <FontAwesomeIcon 
+              data-testid="clear-search"
+              className="clear-icon"
+              icon={faCircleXmark}
+              onClick={() => {
+                dispatch({
+                  type: TodoActions.searchTermUpdated,
+                  payload: {
+                    searchTerm: ''
+                  }
+                } as IAction);
+                handleSearch('');
+              }}
+            />
+          }
         </Form.Group>
         { !todoList.settings.search.isSearchOnKeyPressEnabled &&
           <Button 
