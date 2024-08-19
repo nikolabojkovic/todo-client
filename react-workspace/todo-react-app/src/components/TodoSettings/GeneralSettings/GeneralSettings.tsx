@@ -39,6 +39,7 @@ export function GeneralSettings() {
             className='ms-auto'
             type="switch"
             id="comfirm-enabled"
+            data-testid="comfirm-enabled"
             checked={todoList.settings.general.isConfirmEnabled}
             onChange={(e) => {
               handleSettingsUpdate({
@@ -56,6 +57,7 @@ export function GeneralSettings() {
             className='ms-auto'
             type="switch"
             id="pagination-enabled"
+            data-testid="pagination-enabled"
             checked={todoList.settings.general.isPaginationEnabled}
             onChange={(e) => {
               handleSettingsUpdate({
@@ -74,6 +76,7 @@ export function GeneralSettings() {
             className='ms-auto'
             type="switch"
             id="infinite-scroll-enabled"
+            data-testid="infinite-scroll-enabled"
             checked={todoList.settings.general.isInfiniteScrollEnabled}
             onChange={(e) => {
               handleSettingsUpdate({
@@ -90,7 +93,7 @@ export function GeneralSettings() {
           <label>List container size</label>
           <Dropdown className="ms-auto">
             <Dropdown.Toggle
-              data-testid="selected-list-size-option"
+              data-testid="list-size-dropdown"
               variant="outline-secondary"
               className="action-button ps-2 pe-2"
               id="dropdown-list-size-type"
@@ -121,7 +124,7 @@ export function GeneralSettings() {
             <label>Size (px)</label>
             <Form.Control
               className="ms-auto"
-              data-testid="search-input"
+              data-testid="list-size-input"
               type="number" 
               placeholder={'0'} 
               id="fixed-size"

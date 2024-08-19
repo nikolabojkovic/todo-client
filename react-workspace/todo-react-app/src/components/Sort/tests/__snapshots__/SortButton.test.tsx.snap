@@ -49,3 +49,15 @@ exports[`ImportExport component should match snapshot 1`] = `
   </span>
 </div>
 `;
+
+exports[`ImportExport component should match snapshot sort direction none 1`] = `
+<div
+  className="App__sorting__item"
+  data-testid="sortId-sort-button-direction-none"
+  onClick={[Function]}
+>
+  <span>
+    Manual order
+  </span>
+</div>
+`;

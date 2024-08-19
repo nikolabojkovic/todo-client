@@ -38,13 +38,18 @@ function App() {
   }, []);
 
   useEffect(() => {
-    applyTheme(todoList.settings.theme);
+    const root = document.querySelector(':root') as HTMLElement;
+    applyTheme(todoList.settings.theme, root);
   }, [
     todoList.settings.theme
   ]);
 
   return (    
-    <main data-bs-theme={todoList.settings.theme.bsTheme} id="app-container" style={{minHeight: window.innerHeight + 'px'}}>
+    <main 
+      data-bs-theme={todoList.settings.theme.bsTheme} 
+      id="app-container" 
+      style={{minHeight: window.innerHeight + 'px'}}
+    >
       <section className="App">
         <header className="App-header">
           Todo List

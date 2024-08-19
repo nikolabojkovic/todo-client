@@ -134,7 +134,7 @@ describe('Pagination', () => {
   describe('rotate flag is disabled', () => {
     const rotate = false;
 
-    it('should render only next group button if fist page is active', () => {
+    it('should render only next group button if the fist page is active', () => {
       const state = { 
         ...stateTestData, 
         paging: { ...stateTestData.paging, activePage: 1}
@@ -149,7 +149,7 @@ describe('Pagination', () => {
       expect(screen.queryByTestId(/prev-group/i)).toBeFalsy();
     });
   
-    it('should render only previous group button if last page is active', () => {
+    it('should render only previous group button if the last page is active', () => {
       const state = { 
         ...stateTestData, 
         paging: { ...stateTestData.paging, activePage: 5}
@@ -162,6 +162,21 @@ describe('Pagination', () => {
   
       expect(screen.queryByTestId(/prev-group/i)).toBeTruthy();
       expect(screen.queryByTestId(/next-group/i)).toBeFalsy();
+    });
+
+    it('no data should render active page 0', () => {
+      const state = { 
+        ...stateTestData, 
+        paging: { ...stateTestData.paging, activePage: 0}
+      };
+      render(
+        (<TodoStateProvider initialState={state}>
+          <Pagination inputSelectRef={inputSelectRef} rotate={rotate} pageCount={5} maxVisiblePagesCount={3} />
+        </TodoStateProvider>)
+      ); 
+  
+      expect(screen.queryByTestId(/prev-group/i)).toBeFalsy();
+      expect(screen.queryByTestId(/next-group/i)).toBeTruthy();
     });
 
     describe('should change active page', () => {  
@@ -177,12 +192,14 @@ describe('Pagination', () => {
         const activePage = screen.getByTestId('page-2');
     
         expect(activePage.textContent).toBe('2(current)');
+        expect(inputSelectRef!.current!.focus).toBeCalled();
       });
 
       it('click on the next page button should select page no 2 and should not focus inputElement', () => {
+        const nullAsInputSelectRef = null as unknown as  MutableRefObject<HTMLButtonElement | null>;
         render(
           (<TodoStateProvider initialState={stateTestData}>
-            <Pagination inputSelectRef={null as unknown as  MutableRefObject<HTMLButtonElement | null>} rotate={rotate} pageCount={5} maxVisiblePagesCount={3} />
+            <Pagination inputSelectRef={nullAsInputSelectRef} rotate={rotate} pageCount={5} maxVisiblePagesCount={3} />
           </TodoStateProvider>)
         ); 
         const nextPageButton = screen.getByTestId('next-page');

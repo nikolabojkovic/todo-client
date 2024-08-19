@@ -25,37 +25,39 @@ exports[`todo item todo item completed should match snapshot 1`] = `
       </div>
     </div>
     <div
-      className="ms-auto"
+      className="ms-auto App__todo-list__item--action action-icon"
+      onClick={[Function]}
     >
       <svg
         aria-hidden="true"
-        className="svg-inline--fa fa-check-double action-icon--disabled"
-        data-icon="check-double"
+        className="svg-inline--fa fa-rotate-left "
+        data-icon="rotate-left"
         data-prefix="fas"
-        data-testid="complete-button"
+        data-testid="restore-button"
         focusable="false"
-        onClick={[Function]}
         role="img"
         style={Object {}}
         viewBox="0 0 512 512"
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
-          d="M374.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 178.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l80 80c12.5 12.5 32.8 12.5 45.3 0l160-160zm96 128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 402.7 86.6 297.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l256-256z"
+          d="M32.5 224H24c-13.3 0-24-10.7-24-24V72c0-9.7 5.8-18.5 14.8-22.2s19.3-1.7 26.2 5.2L82.6 96.6c87.6-86.5 228.7-86.2 315.8 1c87.5 87.5 87.5 229.3 0 316.8s-229.3 87.5-316.8 0c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0c62.5 62.5 163.8 62.5 226.3 0s62.5-163.8 0-226.3c-62.2-62.2-162.7-62.5-225.3-1L169 183c6.9 6.9 8.9 17.2 5.2 26.2s-12.5 14.8-22.2 14.8H32.5z"
           fill="currentColor"
           style={Object {}}
         />
       </svg>
     </div>
-    <div>
+    <div
+      className="App__todo-list__item--action action-icon"
+      onClick={[Function]}
+    >
       <svg
         aria-hidden="true"
-        className="svg-inline--fa fa-trash action-icon"
+        className="svg-inline--fa fa-trash "
         data-icon="trash"
         data-prefix="fas"
         data-testid="delete-button"
         focusable="false"
-        onClick={[Function]}
         role="img"
         style={Object {}}
         viewBox="0 0 448 512"
@@ -97,16 +99,16 @@ exports[`todo item todo item uncompleted should match snapshot 1`] = `
       </div>
     </div>
     <div
-      className="ms-auto"
+      className="ms-auto App__todo-list__item--action action-icon"
+      onClick={[Function]}
     >
       <svg
         aria-hidden="true"
-        className="svg-inline--fa fa-check-double action-icon"
+        className="svg-inline--fa fa-check-double "
         data-icon="check-double"
         data-prefix="fas"
         data-testid="complete-button"
         focusable="false"
-        onClick={[Function]}
         role="img"
         style={Object {}}
         viewBox="0 0 512 512"
@@ -119,15 +121,17 @@ exports[`todo item todo item uncompleted should match snapshot 1`] = `
         />
       </svg>
     </div>
-    <div>
+    <div
+      className="App__todo-list__item--action action-icon"
+      onClick={[Function]}
+    >
       <svg
         aria-hidden="true"
-        className="svg-inline--fa fa-trash action-icon"
+        className="svg-inline--fa fa-trash "
         data-icon="trash"
         data-prefix="fas"
         data-testid="delete-button"
         focusable="false"
-        onClick={[Function]}
         role="img"
         style={Object {}}
         viewBox="0 0 448 512"

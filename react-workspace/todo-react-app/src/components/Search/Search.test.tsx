@@ -1,9 +1,10 @@
-import renderer from 'react-test-renderer';
-import { fireEvent, render, screen } from '@testing-library/react';
+import renderer, { act } from 'react-test-renderer';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import { TodoStateProvider, TodosContext, TodosDispatchContext, stateTestData } from '../../context';
 import { Search } from './Search';
 import { IAction, TodoActions } from '../../models';
+import { Settings } from '../TodoSettings';
 
 describe('Search', () => {
   it('component should match snapshot', () => {
@@ -49,6 +50,46 @@ describe('Search', () => {
     fireEvent.click(searchButton);  
 
     expect(context.dispatch).toBeCalledWith(action);
+  });
+
+  it('should trigger search on key press', async () => {
+    const context = {
+      state: {
+        ...stateTestData,
+        search: { searchTerm: '' },
+        settings: { 
+          ...stateTestData.settings,
+          search: {
+            ...stateTestData.settings.search,
+            isSearchOnKeyPressEnabled: true
+          }
+        }
+      },
+      dispatch: jest.fn()
+    };
+    const jsxElement = 
+    (<TodosContext.Provider value={context.state}>
+       <TodosDispatchContext.Provider value={context.dispatch} >
+         <Search placeholder={"Please enter task name..."} />
+       </TodosDispatchContext.Provider>
+     </TodosContext.Provider>);
+    await act( async () => {
+      render(jsxElement);
+    });
+
+    const action = {
+      type: TodoActions.search,
+      payload: {
+        searchTerm: 'Task 1'
+      }
+    } as IAction;
+
+    const searchInput = screen.getByTestId('search-input');      
+    fireEvent.change(searchInput, {target: {value: 'Task 1'}});
+ 
+    await waitFor(() => {
+      expect(context.dispatch).toBeCalledWith(action);
+    }); 
   });
 
   it('should disabled search button', () => {

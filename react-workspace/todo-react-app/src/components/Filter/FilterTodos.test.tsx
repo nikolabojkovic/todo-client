@@ -106,9 +106,9 @@ describe('FilterTodos', () => {
       return await userEvent.click(selectedFilterOption);    
     });
 
-    const filterDropdown = screen.getByTestId('filter-option-completed');
+    const dropdownOption = screen.getByTestId('filter-option-completed');
       
-    fireEvent.click(filterDropdown);  
+    fireEvent.click(dropdownOption);  
     selectedFilterOption = screen.getByTestId('selected-filter-option');
 
     expect(selectedFilterOption.textContent).toBe(' Completed ');

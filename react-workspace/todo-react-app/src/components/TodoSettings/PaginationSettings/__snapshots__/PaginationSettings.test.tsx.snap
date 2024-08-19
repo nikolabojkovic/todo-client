@@ -24,7 +24,7 @@ exports[`PaginationSettings match snapshot pagination settings 1`] = `
         <button
           aria-expanded={false}
           className="action-button ps-2 pe-2 dropdown-toggle btn btn-outline-secondary"
-          data-testid="selected-pagination-type-option"
+          data-testid="dropdown-pagination-type"
           disabled={false}
           id="dropdown-pagination-type"
           onClick={[Function]}
@@ -52,8 +52,76 @@ exports[`PaginationSettings match snapshot pagination settings 1`] = `
         <button
           aria-expanded={false}
           className="action-button ps-2 pe-2 dropdown-toggle btn btn-outline-secondary"
-          data-testid="selected-visible-pages-option"
+          data-testid="dropdown-visible-pages-number"
           disabled={false}
+          id="dropdown-visible-pages-number"
+          onClick={[Function]}
+          type="button"
+        >
+           
+          3
+           
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`PaginationSettings match snapshot pagination settings disabled 1`] = `
+<div
+  className="App__settings__group App__settings__group--disabled"
+>
+  <label
+    className="App__settings__group-label App__settings__group-label--disabled"
+  >
+    Pagination
+  </label>
+  <div
+    className="App__settings__group__item App__settings__group__item--disabled"
+  >
+    <div
+      className="hstack gap-2"
+    >
+      <label>
+        Pagination type
+      </label>
+      <div
+        className="ms-auto dropdown"
+      >
+        <button
+          aria-expanded={false}
+          className="action-button ps-2 pe-2 dropdown-toggle btn btn-outline-secondary"
+          data-testid="dropdown-pagination-type"
+          disabled={true}
+          id="dropdown-pagination-type"
+          onClick={[Function]}
+          type="button"
+        >
+           
+          Classic
+           
+        </button>
+      </div>
+    </div>
+  </div>
+  <div
+    className="App__settings__group__item App__settings__group__item--disabled"
+  >
+    <div
+      className="hstack gap-2"
+    >
+      <label>
+        Visible pages in navigation group
+      </label>
+      <div
+        className="ms-auto dropdown"
+      >
+        <button
+          aria-expanded={false}
+          className="action-button ps-2 pe-2 dropdown-toggle btn btn-outline-secondary"
+          data-testid="dropdown-visible-pages-number"
+          disabled={true}
           id="dropdown-visible-pages-number"
           onClick={[Function]}
           type="button"

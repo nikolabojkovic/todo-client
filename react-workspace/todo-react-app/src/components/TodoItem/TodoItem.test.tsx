@@ -4,7 +4,6 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { TodoItem } from './TodoItem';
 import { TodosContext, TodosDispatchContext, stateTestData } from '../../context';
 import { IAction, TodoActions } from '../../models';
-import { DragDropContext } from 'react-beautiful-dnd';
 
 describe('todo item', () => {
   const todo = {
@@ -57,126 +56,234 @@ describe('todo item', () => {
   });
   
   describe('todo item behavours', () => {
-    it('complete action should complete todo', () =>{
-      const context = {
-        state: {
-          ...stateTestData,
-        },
-        dispatch: jest.fn()
-      };
-      const jsxElement = 
-      (<TodosContext.Provider value={context.state}>
-         <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoItem todo={todo} />
-         </TodosDispatchContext.Provider>
-       </TodosContext.Provider>);
-      render(jsxElement);
+    describe('actions with confirmation', () => {
+      it('complete action should complete todo', () =>{
+        const context = {
+          state: {
+            ...stateTestData,
+          },
+          dispatch: jest.fn()
+        };
+        const jsxElement = 
+        (<TodosContext.Provider value={context.state}>
+           <TodosDispatchContext.Provider value={context.dispatch} >
+            <TodoItem todo={todo} />
+           </TodosDispatchContext.Provider>
+         </TodosContext.Provider>);
+        render(jsxElement);
+    
+        const action = {
+          type: TodoActions.changed,
+          payload: {
+            todo: {...todo, completed: true}
+          }
+        } as IAction;
+    
+        const completeButton = screen.getByTestId('complete-button');      
+        fireEvent.click(completeButton);
   
-      const action = {
-        type: TodoActions.changed,
-        payload: {
-          todo: {...todo, completed: true}
-        }
-      } as IAction;
+        const confirmButton = screen.getByTestId('confirm-button');
+        fireEvent.click(confirmButton);
+    
+        expect(context.dispatch).toBeCalledWith(action);
+      });
+      it('complete action cancelled should not complete todo', () =>{
+        const context = {
+          state: {
+            ...stateTestData,
+          },
+          dispatch: jest.fn()
+        };
+        const jsxElement = 
+        (<TodosContext.Provider value={context.state}>
+           <TodosDispatchContext.Provider value={context.dispatch} >
+            <TodoItem todo={todo} />
+           </TodosDispatchContext.Provider>
+         </TodosContext.Provider>);
+        render(jsxElement);
+    
+        const action = {
+          type: TodoActions.changed,
+          payload: {
+            todo: {...todo, completed: true}
+          }
+        } as IAction;
+    
+        const completeButton = screen.getByTestId('complete-button');      
+        fireEvent.click(completeButton);
   
-      const clearSearchButton = screen.getByTestId('complete-button');      
-      fireEvent.click(clearSearchButton);
-
-      const confirmButton = screen.getByTestId('confirm-button');
-      fireEvent.click(confirmButton);
+        const cancelButton = screen.getByTestId('cancel-button');
+        fireEvent.click(cancelButton);
+    
+        expect(context.dispatch).not.toBeCalledWith(action);
+      });
+      it('on restore action should restore todo', () =>{
+        const context = {
+          state: {
+            ...stateTestData,
+          },
+          dispatch: jest.fn()
+        };
+        const jsxElement = 
+        (<TodosContext.Provider value={context.state}>
+           <TodosDispatchContext.Provider value={context.dispatch} >
+            <TodoItem todo={todoCompleted} />
+           </TodosDispatchContext.Provider>
+         </TodosContext.Provider>);
+        render(jsxElement);
+    
+        const action = {
+          type: TodoActions.changed,
+          payload: {
+            todo: {...todo, completed: false}
+          }
+        } as IAction;
+    
+        const restoreButton = screen.getByTestId('restore-button');      
+        fireEvent.click(restoreButton);
+    
+        expect(screen.queryByTestId('confirm-button')).toBeInTheDocument();
   
-      expect(context.dispatch).toBeCalledWith(action);
+        const confirmButton = screen.getByTestId('confirm-button');
+        fireEvent.click(confirmButton);
+  
+        expect(context.dispatch).toBeCalledWith(action);
+      });
+      it('delete action should delete todo', () =>{
+        const context = {
+          state: {
+            ...stateTestData,
+          },
+          dispatch: jest.fn()
+        };
+        const jsxElement = 
+        (<TodosContext.Provider value={context.state}>
+           <TodosDispatchContext.Provider value={context.dispatch} >
+            <TodoItem todo={todo} />
+           </TodosDispatchContext.Provider>
+         </TodosContext.Provider>);
+        render(jsxElement);
+    
+        const action = {
+          type: TodoActions.deleted,
+          payload: {
+            id: todo.id
+          }                
+        } as IAction;
+    
+        const deleteButton = screen.getByTestId('delete-button');      
+        fireEvent.click(deleteButton);
+  
+        const confirmButton = screen.getByTestId('confirm-button');
+        fireEvent.click(confirmButton);
+    
+        expect(context.dispatch).toBeCalledWith(action);
+      });
     });
 
-    it('on complete action canceled should not complete todo', () =>{
-      const context = {
-        state: {
-          ...stateTestData,
-        },
-        dispatch: jest.fn()
-      };
-      const jsxElement = 
-      (<TodosContext.Provider value={context.state}>
-         <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoItem todo={todo} />
-         </TodosDispatchContext.Provider>
-       </TodosContext.Provider>);
-      render(jsxElement);
+    describe('actions without confirmation', () => {
+      it('complete action should complete todo', () =>{
+        const context = {
+          state: {
+            ...stateTestData,
+            settings: {
+              ...stateTestData.settings,
+              general: {
+                ...stateTestData.settings.general,
+                isConfirmEnabled: false
+              } 
+            }
+          },
+          dispatch: jest.fn()
+        };
+        const jsxElement = 
+        (<TodosContext.Provider value={context.state}>
+           <TodosDispatchContext.Provider value={context.dispatch} >
+            <TodoItem todo={todo} />
+           </TodosDispatchContext.Provider>
+         </TodosContext.Provider>);
+        render(jsxElement);
+    
+        const action = {
+          type: TodoActions.changed,
+          payload: {
+            todo: {...todo, completed: true}
+          }
+        } as IAction;
+    
+        const completeButton = screen.getByTestId('complete-button');      
+        fireEvent.click(completeButton);
+    
+        expect(context.dispatch).toBeCalledWith(action);
+      });
+      it('on restore action should restore todo', () =>{
+        const context = {
+          state: {
+            ...stateTestData,
+            settings: {
+              ...stateTestData.settings,
+              general: {
+                ...stateTestData.settings.general,
+                isConfirmEnabled: false
+              } 
+            }
+          },
+          dispatch: jest.fn()
+        };
+        const jsxElement = 
+        (<TodosContext.Provider value={context.state}>
+           <TodosDispatchContext.Provider value={context.dispatch} >
+            <TodoItem todo={todoCompleted} />
+           </TodosDispatchContext.Provider>
+         </TodosContext.Provider>);
+        render(jsxElement);
+    
+        const action = {
+          type: TodoActions.changed,
+          payload: {
+            todo: {...todo, completed: false}
+          }
+        } as IAction;
+    
+        const restoreButton = screen.getByTestId('restore-button');      
+        fireEvent.click(restoreButton);
   
-      const action = {
-        type: TodoActions.changed,
-        payload: {
-          todo: {...todo, completed: true}
-        }
-      } as IAction;
-  
-      const clearSearchButton = screen.getByTestId('complete-button');      
-      fireEvent.click(clearSearchButton);
-
-      const confirmButton = screen.getByTestId('cancel-button');
-      fireEvent.click(confirmButton);
-  
-      expect(context.dispatch).not.toBeCalledWith(action);
-    });
-
-    it('on complete action should not complete already completed todo', () =>{
-      const context = {
-        state: {
-          ...stateTestData,
-        },
-        dispatch: jest.fn()
-      };
-      const jsxElement = 
-      (<TodosContext.Provider value={context.state}>
-         <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoItem todo={todoCompleted} />
-         </TodosDispatchContext.Provider>
-       </TodosContext.Provider>);
-      render(jsxElement);
-  
-      const action = {
-        type: TodoActions.changed,
-        payload: {
-          todo: {...todo, completed: true}
-        }
-      } as IAction;
-  
-      const clearSearchButton = screen.getByTestId('complete-button');      
-      fireEvent.click(clearSearchButton);
-  
-      expect(screen.queryByTestId('confirm-button')).not.toBeInTheDocument();
-      expect(context.dispatch).not.toBeCalledWith(action);
-    });
-
-    it('delete action should delete todo', () =>{
-      const context = {
-        state: {
-          ...stateTestData,
-        },
-        dispatch: jest.fn()
-      };
-      const jsxElement = 
-      (<TodosContext.Provider value={context.state}>
-         <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoItem todo={todo} />
-         </TodosDispatchContext.Provider>
-       </TodosContext.Provider>);
-      render(jsxElement);
-  
-      const action = {
-        type: TodoActions.deleted,
-        payload: {
-          id: todo.id
-        }                
-      } as IAction;
-  
-      const clearSearchButton = screen.getByTestId('delete-button');      
-      fireEvent.click(clearSearchButton);
-
-      const confirmButton = screen.getByTestId('confirm-button');
-      fireEvent.click(confirmButton);
-  
-      expect(context.dispatch).toBeCalledWith(action);
+        expect(context.dispatch).toBeCalledWith(action);
+      });
+      it('delete action should delete todo', () =>{
+        const context = {
+          state: {
+            ...stateTestData,
+            settings: {
+              ...stateTestData.settings,
+              general: {
+                ...stateTestData.settings.general,
+                isConfirmEnabled: false
+              } 
+            }
+          },
+          dispatch: jest.fn()
+        };
+        const jsxElement = 
+        (<TodosContext.Provider value={context.state}>
+           <TodosDispatchContext.Provider value={context.dispatch} >
+            <TodoItem todo={todo} />
+           </TodosDispatchContext.Provider>
+         </TodosContext.Provider>);
+        render(jsxElement);
+    
+        const action = {
+          type: TodoActions.deleted,
+          payload: {
+            id: todo.id
+          }                
+        } as IAction;
+    
+        const deleteButton = screen.getByTestId('delete-button');      
+        fireEvent.click(deleteButton);
+    
+        expect(context.dispatch).toBeCalledWith(action);
+      });
     });
   });
 });

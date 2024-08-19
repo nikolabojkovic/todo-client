@@ -1,20 +1,25 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`todo list rendered match snapshot list 1`] = `
-<main
+exports[`todo list rendered dragging disabled match snapshot list with dragging disabled 1`] = `
+<section
   className="App__todo-list"
-  id="todo-list-container"
-  onScroll={[Function]}
-  style={Object {}}
 >
-  <section
+  <div
     className=""
-    id="todo-list-section"
+    data-rbd-droppable-context-id="5"
+    data-rbd-droppable-id="droppable-list"
+    id="todo-list-content"
   >
     <div
+      className=""
+      data-rbd-draggable-context-id="5"
+      data-rbd-draggable-id="item-1"
+      data-testid="non-draggable-item-0"
+      onTransitionEnd={null}
       style={
         Object {
-          "background": "",
+          "transform": null,
+          "transition": null,
           "userSelect": "none",
         }
       }
@@ -43,16 +48,16 @@ exports[`todo list rendered match snapshot list 1`] = `
             </div>
           </div>
           <div
-            className="ms-auto"
+            className="ms-auto App__todo-list__item--action action-icon"
+            onClick={[Function]}
           >
             <svg
               aria-hidden="true"
-              className="svg-inline--fa fa-check-double action-icon"
+              className="svg-inline--fa fa-check-double "
               data-icon="check-double"
               data-prefix="fas"
               data-testid="complete-button"
               focusable="false"
-              onClick={[Function]}
               role="img"
               style={Object {}}
               viewBox="0 0 512 512"
@@ -65,15 +70,17 @@ exports[`todo list rendered match snapshot list 1`] = `
               />
             </svg>
           </div>
-          <div>
+          <div
+            className="App__todo-list__item--action action-icon"
+            onClick={[Function]}
+          >
             <svg
               aria-hidden="true"
-              className="svg-inline--fa fa-trash action-icon"
+              className="svg-inline--fa fa-trash "
               data-icon="trash"
               data-prefix="fas"
               data-testid="delete-button"
               focusable="false"
-              onClick={[Function]}
               role="img"
               style={Object {}}
               viewBox="0 0 448 512"
@@ -90,9 +97,15 @@ exports[`todo list rendered match snapshot list 1`] = `
       </div>
     </div>
     <div
+      className=""
+      data-rbd-draggable-context-id="5"
+      data-rbd-draggable-id="item-2"
+      data-testid="non-draggable-item-1"
+      onTransitionEnd={null}
       style={
         Object {
-          "background": "",
+          "transform": null,
+          "transition": null,
           "userSelect": "none",
         }
       }
@@ -121,37 +134,39 @@ exports[`todo list rendered match snapshot list 1`] = `
             </div>
           </div>
           <div
-            className="ms-auto"
+            className="ms-auto App__todo-list__item--action action-icon"
+            onClick={[Function]}
           >
             <svg
               aria-hidden="true"
-              className="svg-inline--fa fa-check-double action-icon--disabled"
-              data-icon="check-double"
+              className="svg-inline--fa fa-rotate-left "
+              data-icon="rotate-left"
               data-prefix="fas"
-              data-testid="complete-button"
+              data-testid="restore-button"
               focusable="false"
-              onClick={[Function]}
               role="img"
               style={Object {}}
               viewBox="0 0 512 512"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M374.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 178.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l80 80c12.5 12.5 32.8 12.5 45.3 0l160-160zm96 128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 402.7 86.6 297.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l256-256z"
+                d="M32.5 224H24c-13.3 0-24-10.7-24-24V72c0-9.7 5.8-18.5 14.8-22.2s19.3-1.7 26.2 5.2L82.6 96.6c87.6-86.5 228.7-86.2 315.8 1c87.5 87.5 87.5 229.3 0 316.8s-229.3 87.5-316.8 0c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0c62.5 62.5 163.8 62.5 226.3 0s62.5-163.8 0-226.3c-62.2-62.2-162.7-62.5-225.3-1L169 183c6.9 6.9 8.9 17.2 5.2 26.2s-12.5 14.8-22.2 14.8H32.5z"
                 fill="currentColor"
                 style={Object {}}
               />
             </svg>
           </div>
-          <div>
+          <div
+            className="App__todo-list__item--action action-icon"
+            onClick={[Function]}
+          >
             <svg
               aria-hidden="true"
-              className="svg-inline--fa fa-trash action-icon"
+              className="svg-inline--fa fa-trash "
               data-icon="trash"
               data-prefix="fas"
               data-testid="delete-button"
               focusable="false"
-              onClick={[Function]}
               role="img"
               style={Object {}}
               viewBox="0 0 448 512"
@@ -168,9 +183,15 @@ exports[`todo list rendered match snapshot list 1`] = `
       </div>
     </div>
     <div
+      className=""
+      data-rbd-draggable-context-id="5"
+      data-rbd-draggable-id="item-3"
+      data-testid="non-draggable-item-2"
+      onTransitionEnd={null}
       style={
         Object {
-          "background": "",
+          "transform": null,
+          "transition": null,
           "userSelect": "none",
         }
       }
@@ -199,16 +220,16 @@ exports[`todo list rendered match snapshot list 1`] = `
             </div>
           </div>
           <div
-            className="ms-auto"
+            className="ms-auto App__todo-list__item--action action-icon"
+            onClick={[Function]}
           >
             <svg
               aria-hidden="true"
-              className="svg-inline--fa fa-check-double action-icon"
+              className="svg-inline--fa fa-check-double "
               data-icon="check-double"
               data-prefix="fas"
               data-testid="complete-button"
               focusable="false"
-              onClick={[Function]}
               role="img"
               style={Object {}}
               viewBox="0 0 512 512"
@@ -221,15 +242,17 @@ exports[`todo list rendered match snapshot list 1`] = `
               />
             </svg>
           </div>
-          <div>
+          <div
+            className="App__todo-list__item--action action-icon"
+            onClick={[Function]}
+          >
             <svg
               aria-hidden="true"
-              className="svg-inline--fa fa-trash action-icon"
+              className="svg-inline--fa fa-trash "
               data-icon="trash"
               data-prefix="fas"
               data-testid="delete-button"
               focusable="false"
-              onClick={[Function]}
               role="img"
               style={Object {}}
               viewBox="0 0 448 512"
@@ -246,9 +269,15 @@ exports[`todo list rendered match snapshot list 1`] = `
       </div>
     </div>
     <div
+      className=""
+      data-rbd-draggable-context-id="5"
+      data-rbd-draggable-id="item-4"
+      data-testid="non-draggable-item-3"
+      onTransitionEnd={null}
       style={
         Object {
-          "background": "",
+          "transform": null,
+          "transition": null,
           "userSelect": "none",
         }
       }
@@ -277,16 +306,16 @@ exports[`todo list rendered match snapshot list 1`] = `
             </div>
           </div>
           <div
-            className="ms-auto"
+            className="ms-auto App__todo-list__item--action action-icon"
+            onClick={[Function]}
           >
             <svg
               aria-hidden="true"
-              className="svg-inline--fa fa-check-double action-icon"
+              className="svg-inline--fa fa-check-double "
               data-icon="check-double"
               data-prefix="fas"
               data-testid="complete-button"
               focusable="false"
-              onClick={[Function]}
               role="img"
               style={Object {}}
               viewBox="0 0 512 512"
@@ -299,15 +328,17 @@ exports[`todo list rendered match snapshot list 1`] = `
               />
             </svg>
           </div>
-          <div>
+          <div
+            className="App__todo-list__item--action action-icon"
+            onClick={[Function]}
+          >
             <svg
               aria-hidden="true"
-              className="svg-inline--fa fa-trash action-icon"
+              className="svg-inline--fa fa-trash "
               data-icon="trash"
               data-prefix="fas"
               data-testid="delete-button"
               focusable="false"
-              onClick={[Function]}
               role="img"
               style={Object {}}
               viewBox="0 0 448 512"
@@ -324,9 +355,15 @@ exports[`todo list rendered match snapshot list 1`] = `
       </div>
     </div>
     <div
+      className=""
+      data-rbd-draggable-context-id="5"
+      data-rbd-draggable-id="item-6"
+      data-testid="non-draggable-item-4"
+      onTransitionEnd={null}
       style={
         Object {
-          "background": "",
+          "transform": null,
+          "transition": null,
           "userSelect": "none",
         }
       }
@@ -355,16 +392,16 @@ exports[`todo list rendered match snapshot list 1`] = `
             </div>
           </div>
           <div
-            className="ms-auto"
+            className="ms-auto App__todo-list__item--action action-icon"
+            onClick={[Function]}
           >
             <svg
               aria-hidden="true"
-              className="svg-inline--fa fa-check-double action-icon"
+              className="svg-inline--fa fa-check-double "
               data-icon="check-double"
               data-prefix="fas"
               data-testid="complete-button"
               focusable="false"
-              onClick={[Function]}
               role="img"
               style={Object {}}
               viewBox="0 0 512 512"
@@ -377,15 +414,17 @@ exports[`todo list rendered match snapshot list 1`] = `
               />
             </svg>
           </div>
-          <div>
+          <div
+            className="App__todo-list__item--action action-icon"
+            onClick={[Function]}
+          >
             <svg
               aria-hidden="true"
-              className="svg-inline--fa fa-trash action-icon"
+              className="svg-inline--fa fa-trash "
               data-icon="trash"
               data-prefix="fas"
               data-testid="delete-button"
               focusable="false"
-              onClick={[Function]}
               role="img"
               style={Object {}}
               viewBox="0 0 448 512"
@@ -401,30 +440,1873 @@ exports[`todo list rendered match snapshot list 1`] = `
         </div>
       </div>
     </div>
-  </section>
-</main>
+  </div>
+</section>
 `;
 
-exports[`todo list rendered match snapshot loader 1`] = `
-<main
+exports[`todo list rendered dragging disabled match snapshot list with infinite scroll enabled 1`] = `
+<section
   className="App__todo-list"
-  id="todo-list-container"
-  onScroll={[Function]}
-  style={Object {}}
 >
   <div
-    className="loader-container d-flex justify-content-center align-items-center fade-in"
-    data-testid="loader"
-    id="loader"
-    style={
-      Object {
-        "height": "280px",
-      }
-    }
+    data-testid="scrollable-container"
+    id="scrollable-container"
+    onScroll={[Function]}
+    style={Object {}}
   >
     <div
-      className="loader"
-    />
+      className="drag-list"
+      data-rbd-droppable-context-id="9"
+      data-rbd-droppable-id="droppable-list"
+      id="todo-list-content"
+    >
+      <div
+        aria-describedby="rbd-hidden-text-9-hidden-text-64"
+        className=""
+        data-rbd-drag-handle-context-id="9"
+        data-rbd-drag-handle-draggable-id="item-1"
+        data-rbd-draggable-context-id="9"
+        data-rbd-draggable-id="item-1"
+        data-testid="draggable-item-0"
+        draggable={false}
+        onDragStart={[Function]}
+        onTransitionEnd={null}
+        role="button"
+        style={
+          Object {
+            "transform": null,
+            "transition": null,
+            "userSelect": "none",
+          }
+        }
+        tabIndex={0}
+      >
+        <div
+          className="App__todo-list__item"
+        >
+          <div
+            className="hstack gap-3"
+          >
+            <div>
+              <div
+                className="App__todo-list__item-title"
+              >
+                Task 1
+              </div>
+              <div
+                className="App__todo-list__item-description"
+              >
+                <span>
+                  Description 1
+                </span>
+                <span>
+                   (Fri Feb 04 2022)
+                </span>
+              </div>
+            </div>
+            <div
+              className="ms-auto App__todo-list__item--action action-icon"
+              onClick={[Function]}
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-check-double "
+                data-icon="check-double"
+                data-prefix="fas"
+                data-testid="complete-button"
+                focusable="false"
+                role="img"
+                style={Object {}}
+                viewBox="0 0 512 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M374.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 178.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l80 80c12.5 12.5 32.8 12.5 45.3 0l160-160zm96 128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 402.7 86.6 297.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l256-256z"
+                  fill="currentColor"
+                  style={Object {}}
+                />
+              </svg>
+            </div>
+            <div
+              className="App__todo-list__item--action action-icon"
+              onClick={[Function]}
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-trash "
+                data-icon="trash"
+                data-prefix="fas"
+                data-testid="delete-button"
+                focusable="false"
+                role="img"
+                style={Object {}}
+                viewBox="0 0 448 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"
+                  fill="currentColor"
+                  style={Object {}}
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        aria-describedby="rbd-hidden-text-9-hidden-text-64"
+        className=""
+        data-rbd-drag-handle-context-id="9"
+        data-rbd-drag-handle-draggable-id="item-2"
+        data-rbd-draggable-context-id="9"
+        data-rbd-draggable-id="item-2"
+        data-testid="draggable-item-1"
+        draggable={false}
+        onDragStart={[Function]}
+        onTransitionEnd={null}
+        role="button"
+        style={
+          Object {
+            "transform": null,
+            "transition": null,
+            "userSelect": "none",
+          }
+        }
+        tabIndex={0}
+      >
+        <div
+          className="App__todo-list__item"
+        >
+          <div
+            className="hstack gap-3"
+          >
+            <div>
+              <div
+                className="App__todo-list__item-title--completed"
+              >
+                Task 2
+              </div>
+              <div
+                className="App__todo-list__item-description--compleated"
+              >
+                <span>
+                  Description 2
+                </span>
+                <span>
+                   (Sat Feb 05 2022)
+                </span>
+              </div>
+            </div>
+            <div
+              className="ms-auto App__todo-list__item--action action-icon"
+              onClick={[Function]}
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-rotate-left "
+                data-icon="rotate-left"
+                data-prefix="fas"
+                data-testid="restore-button"
+                focusable="false"
+                role="img"
+                style={Object {}}
+                viewBox="0 0 512 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M32.5 224H24c-13.3 0-24-10.7-24-24V72c0-9.7 5.8-18.5 14.8-22.2s19.3-1.7 26.2 5.2L82.6 96.6c87.6-86.5 228.7-86.2 315.8 1c87.5 87.5 87.5 229.3 0 316.8s-229.3 87.5-316.8 0c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0c62.5 62.5 163.8 62.5 226.3 0s62.5-163.8 0-226.3c-62.2-62.2-162.7-62.5-225.3-1L169 183c6.9 6.9 8.9 17.2 5.2 26.2s-12.5 14.8-22.2 14.8H32.5z"
+                  fill="currentColor"
+                  style={Object {}}
+                />
+              </svg>
+            </div>
+            <div
+              className="App__todo-list__item--action action-icon"
+              onClick={[Function]}
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-trash "
+                data-icon="trash"
+                data-prefix="fas"
+                data-testid="delete-button"
+                focusable="false"
+                role="img"
+                style={Object {}}
+                viewBox="0 0 448 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"
+                  fill="currentColor"
+                  style={Object {}}
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        aria-describedby="rbd-hidden-text-9-hidden-text-64"
+        className=""
+        data-rbd-drag-handle-context-id="9"
+        data-rbd-drag-handle-draggable-id="item-3"
+        data-rbd-draggable-context-id="9"
+        data-rbd-draggable-id="item-3"
+        data-testid="draggable-item-2"
+        draggable={false}
+        onDragStart={[Function]}
+        onTransitionEnd={null}
+        role="button"
+        style={
+          Object {
+            "transform": null,
+            "transition": null,
+            "userSelect": "none",
+          }
+        }
+        tabIndex={0}
+      >
+        <div
+          className="App__todo-list__item"
+        >
+          <div
+            className="hstack gap-3"
+          >
+            <div>
+              <div
+                className="App__todo-list__item-title"
+              >
+                Task 3
+              </div>
+              <div
+                className="App__todo-list__item-description"
+              >
+                <span>
+                  Description 3
+                </span>
+                <span>
+                   (Sun Feb 06 2022)
+                </span>
+              </div>
+            </div>
+            <div
+              className="ms-auto App__todo-list__item--action action-icon"
+              onClick={[Function]}
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-check-double "
+                data-icon="check-double"
+                data-prefix="fas"
+                data-testid="complete-button"
+                focusable="false"
+                role="img"
+                style={Object {}}
+                viewBox="0 0 512 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M374.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 178.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l80 80c12.5 12.5 32.8 12.5 45.3 0l160-160zm96 128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 402.7 86.6 297.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l256-256z"
+                  fill="currentColor"
+                  style={Object {}}
+                />
+              </svg>
+            </div>
+            <div
+              className="App__todo-list__item--action action-icon"
+              onClick={[Function]}
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-trash "
+                data-icon="trash"
+                data-prefix="fas"
+                data-testid="delete-button"
+                focusable="false"
+                role="img"
+                style={Object {}}
+                viewBox="0 0 448 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"
+                  fill="currentColor"
+                  style={Object {}}
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="App__todo-list__infinite-scroll-end"
+      id="infinite-scroll-end"
+    >
+      <div
+        className="App__todo-list__infinite-scroll-end--bouncing"
+      >
+        <svg
+          aria-hidden="true"
+          className="svg-inline--fa fa-angle-down "
+          data-icon="angle-down"
+          data-prefix="fas"
+          focusable="false"
+          role="img"
+          style={Object {}}
+          viewBox="0 0 384 512"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M169.4 342.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 274.7 54.6 137.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"
+            fill="currentColor"
+            style={Object {}}
+          />
+        </svg>
+        <div>
+          Scroll down to load more
+        </div>
+      </div>
+    </div>
   </div>
-</main>
+</section>
+`;
+
+exports[`todo list rendered dragging disabled match snapshot list with no data 1`] = `
+<div
+  className="text-light mt-5 mb-5 fade-in"
+>
+  No data
+</div>
+`;
+
+exports[`todo list rendered dragging disabled match snapshot list with pagination disabled 1`] = `
+<section
+  className="App__todo-list"
+>
+  <div
+    className="drag-list"
+    data-rbd-droppable-context-id="7"
+    data-rbd-droppable-id="droppable-list"
+    id="todo-list-content"
+  >
+    <div
+      aria-describedby="rbd-hidden-text-7-hidden-text-48"
+      className=""
+      data-rbd-drag-handle-context-id="7"
+      data-rbd-drag-handle-draggable-id="item-1"
+      data-rbd-draggable-context-id="7"
+      data-rbd-draggable-id="item-1"
+      data-testid="draggable-item-0"
+      draggable={false}
+      onDragStart={[Function]}
+      onTransitionEnd={null}
+      role="button"
+      style={
+        Object {
+          "transform": null,
+          "transition": null,
+          "userSelect": "none",
+        }
+      }
+      tabIndex={0}
+    >
+      <div
+        className="App__todo-list__item"
+      >
+        <div
+          className="hstack gap-3"
+        >
+          <div>
+            <div
+              className="App__todo-list__item-title"
+            >
+              Task 1
+            </div>
+            <div
+              className="App__todo-list__item-description"
+            >
+              <span>
+                Description 1
+              </span>
+              <span>
+                 (Fri Feb 04 2022)
+              </span>
+            </div>
+          </div>
+          <div
+            className="ms-auto App__todo-list__item--action action-icon"
+            onClick={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-check-double "
+              data-icon="check-double"
+              data-prefix="fas"
+              data-testid="complete-button"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 512 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M374.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 178.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l80 80c12.5 12.5 32.8 12.5 45.3 0l160-160zm96 128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 402.7 86.6 297.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l256-256z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </div>
+          <div
+            className="App__todo-list__item--action action-icon"
+            onClick={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-trash "
+              data-icon="trash"
+              data-prefix="fas"
+              data-testid="delete-button"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 448 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      aria-describedby="rbd-hidden-text-7-hidden-text-48"
+      className=""
+      data-rbd-drag-handle-context-id="7"
+      data-rbd-drag-handle-draggable-id="item-2"
+      data-rbd-draggable-context-id="7"
+      data-rbd-draggable-id="item-2"
+      data-testid="draggable-item-1"
+      draggable={false}
+      onDragStart={[Function]}
+      onTransitionEnd={null}
+      role="button"
+      style={
+        Object {
+          "transform": null,
+          "transition": null,
+          "userSelect": "none",
+        }
+      }
+      tabIndex={0}
+    >
+      <div
+        className="App__todo-list__item"
+      >
+        <div
+          className="hstack gap-3"
+        >
+          <div>
+            <div
+              className="App__todo-list__item-title--completed"
+            >
+              Task 2
+            </div>
+            <div
+              className="App__todo-list__item-description--compleated"
+            >
+              <span>
+                Description 2
+              </span>
+              <span>
+                 (Sat Feb 05 2022)
+              </span>
+            </div>
+          </div>
+          <div
+            className="ms-auto App__todo-list__item--action action-icon"
+            onClick={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-rotate-left "
+              data-icon="rotate-left"
+              data-prefix="fas"
+              data-testid="restore-button"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 512 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M32.5 224H24c-13.3 0-24-10.7-24-24V72c0-9.7 5.8-18.5 14.8-22.2s19.3-1.7 26.2 5.2L82.6 96.6c87.6-86.5 228.7-86.2 315.8 1c87.5 87.5 87.5 229.3 0 316.8s-229.3 87.5-316.8 0c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0c62.5 62.5 163.8 62.5 226.3 0s62.5-163.8 0-226.3c-62.2-62.2-162.7-62.5-225.3-1L169 183c6.9 6.9 8.9 17.2 5.2 26.2s-12.5 14.8-22.2 14.8H32.5z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </div>
+          <div
+            className="App__todo-list__item--action action-icon"
+            onClick={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-trash "
+              data-icon="trash"
+              data-prefix="fas"
+              data-testid="delete-button"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 448 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      aria-describedby="rbd-hidden-text-7-hidden-text-48"
+      className=""
+      data-rbd-drag-handle-context-id="7"
+      data-rbd-drag-handle-draggable-id="item-3"
+      data-rbd-draggable-context-id="7"
+      data-rbd-draggable-id="item-3"
+      data-testid="draggable-item-2"
+      draggable={false}
+      onDragStart={[Function]}
+      onTransitionEnd={null}
+      role="button"
+      style={
+        Object {
+          "transform": null,
+          "transition": null,
+          "userSelect": "none",
+        }
+      }
+      tabIndex={0}
+    >
+      <div
+        className="App__todo-list__item"
+      >
+        <div
+          className="hstack gap-3"
+        >
+          <div>
+            <div
+              className="App__todo-list__item-title"
+            >
+              Task 3
+            </div>
+            <div
+              className="App__todo-list__item-description"
+            >
+              <span>
+                Description 3
+              </span>
+              <span>
+                 (Sun Feb 06 2022)
+              </span>
+            </div>
+          </div>
+          <div
+            className="ms-auto App__todo-list__item--action action-icon"
+            onClick={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-check-double "
+              data-icon="check-double"
+              data-prefix="fas"
+              data-testid="complete-button"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 512 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M374.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 178.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l80 80c12.5 12.5 32.8 12.5 45.3 0l160-160zm96 128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 402.7 86.6 297.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l256-256z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </div>
+          <div
+            className="App__todo-list__item--action action-icon"
+            onClick={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-trash "
+              data-icon="trash"
+              data-prefix="fas"
+              data-testid="delete-button"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 448 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      aria-describedby="rbd-hidden-text-7-hidden-text-48"
+      className=""
+      data-rbd-drag-handle-context-id="7"
+      data-rbd-drag-handle-draggable-id="item-4"
+      data-rbd-draggable-context-id="7"
+      data-rbd-draggable-id="item-4"
+      data-testid="draggable-item-3"
+      draggable={false}
+      onDragStart={[Function]}
+      onTransitionEnd={null}
+      role="button"
+      style={
+        Object {
+          "transform": null,
+          "transition": null,
+          "userSelect": "none",
+        }
+      }
+      tabIndex={0}
+    >
+      <div
+        className="App__todo-list__item"
+      >
+        <div
+          className="hstack gap-3"
+        >
+          <div>
+            <div
+              className="App__todo-list__item-title"
+            >
+              Task 4
+            </div>
+            <div
+              className="App__todo-list__item-description"
+            >
+              <span>
+                Description 4
+              </span>
+              <span>
+                 (Mon Feb 07 2022)
+              </span>
+            </div>
+          </div>
+          <div
+            className="ms-auto App__todo-list__item--action action-icon"
+            onClick={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-check-double "
+              data-icon="check-double"
+              data-prefix="fas"
+              data-testid="complete-button"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 512 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M374.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 178.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l80 80c12.5 12.5 32.8 12.5 45.3 0l160-160zm96 128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 402.7 86.6 297.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l256-256z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </div>
+          <div
+            className="App__todo-list__item--action action-icon"
+            onClick={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-trash "
+              data-icon="trash"
+              data-prefix="fas"
+              data-testid="delete-button"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 448 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      aria-describedby="rbd-hidden-text-7-hidden-text-48"
+      className=""
+      data-rbd-drag-handle-context-id="7"
+      data-rbd-drag-handle-draggable-id="item-6"
+      data-rbd-draggable-context-id="7"
+      data-rbd-draggable-id="item-6"
+      data-testid="draggable-item-4"
+      draggable={false}
+      onDragStart={[Function]}
+      onTransitionEnd={null}
+      role="button"
+      style={
+        Object {
+          "transform": null,
+          "transition": null,
+          "userSelect": "none",
+        }
+      }
+      tabIndex={0}
+    >
+      <div
+        className="App__todo-list__item"
+      >
+        <div
+          className="hstack gap-3"
+        >
+          <div>
+            <div
+              className="App__todo-list__item-title"
+            >
+              Task 6
+            </div>
+            <div
+              className="App__todo-list__item-description"
+            >
+              <span>
+                Description 6
+              </span>
+              <span>
+                 (Fri Mar 04 2022)
+              </span>
+            </div>
+          </div>
+          <div
+            className="ms-auto App__todo-list__item--action action-icon"
+            onClick={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-check-double "
+              data-icon="check-double"
+              data-prefix="fas"
+              data-testid="complete-button"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 512 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M374.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 178.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l80 80c12.5 12.5 32.8 12.5 45.3 0l160-160zm96 128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 402.7 86.6 297.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l256-256z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </div>
+          <div
+            className="App__todo-list__item--action action-icon"
+            onClick={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-trash "
+              data-icon="trash"
+              data-prefix="fas"
+              data-testid="delete-button"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 448 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      aria-describedby="rbd-hidden-text-7-hidden-text-48"
+      className=""
+      data-rbd-drag-handle-context-id="7"
+      data-rbd-drag-handle-draggable-id="item-5"
+      data-rbd-draggable-context-id="7"
+      data-rbd-draggable-id="item-5"
+      data-testid="draggable-item-5"
+      draggable={false}
+      onDragStart={[Function]}
+      onTransitionEnd={null}
+      role="button"
+      style={
+        Object {
+          "transform": null,
+          "transition": null,
+          "userSelect": "none",
+        }
+      }
+      tabIndex={0}
+    >
+      <div
+        className="App__todo-list__item"
+      >
+        <div
+          className="hstack gap-3"
+        >
+          <div>
+            <div
+              className="App__todo-list__item-title"
+            >
+              Task 5
+            </div>
+            <div
+              className="App__todo-list__item-description"
+            >
+              <span>
+                Description 5
+              </span>
+              <span>
+                 (Fri Apr 08 2022)
+              </span>
+            </div>
+          </div>
+          <div
+            className="ms-auto App__todo-list__item--action action-icon"
+            onClick={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-check-double "
+              data-icon="check-double"
+              data-prefix="fas"
+              data-testid="complete-button"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 512 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M374.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 178.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l80 80c12.5 12.5 32.8 12.5 45.3 0l160-160zm96 128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 402.7 86.6 297.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l256-256z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </div>
+          <div
+            className="App__todo-list__item--action action-icon"
+            onClick={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-trash "
+              data-icon="trash"
+              data-prefix="fas"
+              data-testid="delete-button"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 448 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+`;
+
+exports[`todo list rendered dragging disabled match snapshot loader 1`] = `
+<section
+  className="App__todo-list"
+>
+  <div
+    className="drag-list"
+    data-rbd-droppable-context-id="11"
+    data-rbd-droppable-id="droppable-list"
+    id="todo-list-content"
+  >
+    <div
+      aria-describedby="rbd-hidden-text-11-hidden-text-80"
+      className=""
+      data-rbd-drag-handle-context-id="11"
+      data-rbd-drag-handle-draggable-id="item-1"
+      data-rbd-draggable-context-id="11"
+      data-rbd-draggable-id="item-1"
+      data-testid="draggable-item-0"
+      draggable={false}
+      onDragStart={[Function]}
+      onTransitionEnd={null}
+      role="button"
+      style={
+        Object {
+          "transform": null,
+          "transition": null,
+          "userSelect": "none",
+        }
+      }
+      tabIndex={0}
+    >
+      <div
+        className="App__todo-list__item"
+      >
+        <div
+          className="hstack gap-3"
+        >
+          <div>
+            <div
+              className="App__todo-list__item-title"
+            >
+              Task 1
+            </div>
+            <div
+              className="App__todo-list__item-description"
+            >
+              <span>
+                Description 1
+              </span>
+              <span>
+                 (Fri Feb 04 2022)
+              </span>
+            </div>
+          </div>
+          <div
+            className="ms-auto App__todo-list__item--action action-icon"
+            onClick={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-check-double "
+              data-icon="check-double"
+              data-prefix="fas"
+              data-testid="complete-button"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 512 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M374.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 178.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l80 80c12.5 12.5 32.8 12.5 45.3 0l160-160zm96 128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 402.7 86.6 297.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l256-256z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </div>
+          <div
+            className="App__todo-list__item--action action-icon"
+            onClick={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-trash "
+              data-icon="trash"
+              data-prefix="fas"
+              data-testid="delete-button"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 448 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      aria-describedby="rbd-hidden-text-11-hidden-text-80"
+      className=""
+      data-rbd-drag-handle-context-id="11"
+      data-rbd-drag-handle-draggable-id="item-2"
+      data-rbd-draggable-context-id="11"
+      data-rbd-draggable-id="item-2"
+      data-testid="draggable-item-1"
+      draggable={false}
+      onDragStart={[Function]}
+      onTransitionEnd={null}
+      role="button"
+      style={
+        Object {
+          "transform": null,
+          "transition": null,
+          "userSelect": "none",
+        }
+      }
+      tabIndex={0}
+    >
+      <div
+        className="App__todo-list__item"
+      >
+        <div
+          className="hstack gap-3"
+        >
+          <div>
+            <div
+              className="App__todo-list__item-title--completed"
+            >
+              Task 2
+            </div>
+            <div
+              className="App__todo-list__item-description--compleated"
+            >
+              <span>
+                Description 2
+              </span>
+              <span>
+                 (Sat Feb 05 2022)
+              </span>
+            </div>
+          </div>
+          <div
+            className="ms-auto App__todo-list__item--action action-icon"
+            onClick={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-rotate-left "
+              data-icon="rotate-left"
+              data-prefix="fas"
+              data-testid="restore-button"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 512 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M32.5 224H24c-13.3 0-24-10.7-24-24V72c0-9.7 5.8-18.5 14.8-22.2s19.3-1.7 26.2 5.2L82.6 96.6c87.6-86.5 228.7-86.2 315.8 1c87.5 87.5 87.5 229.3 0 316.8s-229.3 87.5-316.8 0c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0c62.5 62.5 163.8 62.5 226.3 0s62.5-163.8 0-226.3c-62.2-62.2-162.7-62.5-225.3-1L169 183c6.9 6.9 8.9 17.2 5.2 26.2s-12.5 14.8-22.2 14.8H32.5z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </div>
+          <div
+            className="App__todo-list__item--action action-icon"
+            onClick={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-trash "
+              data-icon="trash"
+              data-prefix="fas"
+              data-testid="delete-button"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 448 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      aria-describedby="rbd-hidden-text-11-hidden-text-80"
+      className=""
+      data-rbd-drag-handle-context-id="11"
+      data-rbd-drag-handle-draggable-id="item-3"
+      data-rbd-draggable-context-id="11"
+      data-rbd-draggable-id="item-3"
+      data-testid="draggable-item-2"
+      draggable={false}
+      onDragStart={[Function]}
+      onTransitionEnd={null}
+      role="button"
+      style={
+        Object {
+          "transform": null,
+          "transition": null,
+          "userSelect": "none",
+        }
+      }
+      tabIndex={0}
+    >
+      <div
+        className="App__todo-list__item"
+      >
+        <div
+          className="hstack gap-3"
+        >
+          <div>
+            <div
+              className="App__todo-list__item-title"
+            >
+              Task 3
+            </div>
+            <div
+              className="App__todo-list__item-description"
+            >
+              <span>
+                Description 3
+              </span>
+              <span>
+                 (Sun Feb 06 2022)
+              </span>
+            </div>
+          </div>
+          <div
+            className="ms-auto App__todo-list__item--action action-icon"
+            onClick={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-check-double "
+              data-icon="check-double"
+              data-prefix="fas"
+              data-testid="complete-button"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 512 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M374.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 178.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l80 80c12.5 12.5 32.8 12.5 45.3 0l160-160zm96 128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 402.7 86.6 297.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l256-256z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </div>
+          <div
+            className="App__todo-list__item--action action-icon"
+            onClick={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-trash "
+              data-icon="trash"
+              data-prefix="fas"
+              data-testid="delete-button"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 448 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      aria-describedby="rbd-hidden-text-11-hidden-text-80"
+      className=""
+      data-rbd-drag-handle-context-id="11"
+      data-rbd-drag-handle-draggable-id="item-4"
+      data-rbd-draggable-context-id="11"
+      data-rbd-draggable-id="item-4"
+      data-testid="draggable-item-3"
+      draggable={false}
+      onDragStart={[Function]}
+      onTransitionEnd={null}
+      role="button"
+      style={
+        Object {
+          "transform": null,
+          "transition": null,
+          "userSelect": "none",
+        }
+      }
+      tabIndex={0}
+    >
+      <div
+        className="App__todo-list__item"
+      >
+        <div
+          className="hstack gap-3"
+        >
+          <div>
+            <div
+              className="App__todo-list__item-title"
+            >
+              Task 4
+            </div>
+            <div
+              className="App__todo-list__item-description"
+            >
+              <span>
+                Description 4
+              </span>
+              <span>
+                 (Mon Feb 07 2022)
+              </span>
+            </div>
+          </div>
+          <div
+            className="ms-auto App__todo-list__item--action action-icon"
+            onClick={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-check-double "
+              data-icon="check-double"
+              data-prefix="fas"
+              data-testid="complete-button"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 512 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M374.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 178.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l80 80c12.5 12.5 32.8 12.5 45.3 0l160-160zm96 128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 402.7 86.6 297.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l256-256z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </div>
+          <div
+            className="App__todo-list__item--action action-icon"
+            onClick={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-trash "
+              data-icon="trash"
+              data-prefix="fas"
+              data-testid="delete-button"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 448 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      aria-describedby="rbd-hidden-text-11-hidden-text-80"
+      className=""
+      data-rbd-drag-handle-context-id="11"
+      data-rbd-drag-handle-draggable-id="item-6"
+      data-rbd-draggable-context-id="11"
+      data-rbd-draggable-id="item-6"
+      data-testid="draggable-item-4"
+      draggable={false}
+      onDragStart={[Function]}
+      onTransitionEnd={null}
+      role="button"
+      style={
+        Object {
+          "transform": null,
+          "transition": null,
+          "userSelect": "none",
+        }
+      }
+      tabIndex={0}
+    >
+      <div
+        className="App__todo-list__item"
+      >
+        <div
+          className="hstack gap-3"
+        >
+          <div>
+            <div
+              className="App__todo-list__item-title"
+            >
+              Task 6
+            </div>
+            <div
+              className="App__todo-list__item-description"
+            >
+              <span>
+                Description 6
+              </span>
+              <span>
+                 (Fri Mar 04 2022)
+              </span>
+            </div>
+          </div>
+          <div
+            className="ms-auto App__todo-list__item--action action-icon"
+            onClick={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-check-double "
+              data-icon="check-double"
+              data-prefix="fas"
+              data-testid="complete-button"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 512 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M374.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 178.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l80 80c12.5 12.5 32.8 12.5 45.3 0l160-160zm96 128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 402.7 86.6 297.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l256-256z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </div>
+          <div
+            className="App__todo-list__item--action action-icon"
+            onClick={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-trash "
+              data-icon="trash"
+              data-prefix="fas"
+              data-testid="delete-button"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 448 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+`;
+
+exports[`todo list rendered dragging enabled match snapshot list with dragging enabled and active 1`] = `
+<section
+  className="App__todo-list"
+>
+  <div
+    className="drag-list"
+    data-rbd-droppable-context-id="0"
+    data-rbd-droppable-id="droppable-list"
+    id="todo-list-content"
+  >
+    <div
+      aria-describedby="rbd-hidden-text-0-hidden-text-0"
+      className=""
+      data-rbd-drag-handle-context-id="0"
+      data-rbd-drag-handle-draggable-id="item-1"
+      data-rbd-draggable-context-id="0"
+      data-rbd-draggable-id="item-1"
+      data-testid="draggable-item-0"
+      draggable={false}
+      onDragStart={[Function]}
+      onTransitionEnd={null}
+      role="button"
+      style={
+        Object {
+          "transform": null,
+          "transition": null,
+          "userSelect": "none",
+        }
+      }
+      tabIndex={0}
+    >
+      <div
+        className="App__todo-list__item"
+      >
+        <div
+          className="hstack gap-3"
+        >
+          <div>
+            <div
+              className="App__todo-list__item-title"
+            >
+              Task 1
+            </div>
+            <div
+              className="App__todo-list__item-description"
+            >
+              <span>
+                Description 1
+              </span>
+              <span>
+                 (Fri Feb 04 2022)
+              </span>
+            </div>
+          </div>
+          <div
+            className="ms-auto App__todo-list__item--action action-icon"
+            onClick={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-check-double "
+              data-icon="check-double"
+              data-prefix="fas"
+              data-testid="complete-button"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 512 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M374.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 178.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l80 80c12.5 12.5 32.8 12.5 45.3 0l160-160zm96 128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 402.7 86.6 297.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l256-256z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </div>
+          <div
+            className="App__todo-list__item--action action-icon"
+            onClick={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-trash "
+              data-icon="trash"
+              data-prefix="fas"
+              data-testid="delete-button"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 448 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      aria-describedby="rbd-hidden-text-0-hidden-text-0"
+      className=""
+      data-rbd-drag-handle-context-id="0"
+      data-rbd-drag-handle-draggable-id="item-2"
+      data-rbd-draggable-context-id="0"
+      data-rbd-draggable-id="item-2"
+      data-testid="draggable-item-1"
+      draggable={false}
+      onDragStart={[Function]}
+      onTransitionEnd={null}
+      role="button"
+      style={
+        Object {
+          "transform": null,
+          "transition": null,
+          "userSelect": "none",
+        }
+      }
+      tabIndex={0}
+    >
+      <div
+        className="App__todo-list__item"
+      >
+        <div
+          className="hstack gap-3"
+        >
+          <div>
+            <div
+              className="App__todo-list__item-title--completed"
+            >
+              Task 2
+            </div>
+            <div
+              className="App__todo-list__item-description--compleated"
+            >
+              <span>
+                Description 2
+              </span>
+              <span>
+                 (Sat Feb 05 2022)
+              </span>
+            </div>
+          </div>
+          <div
+            className="ms-auto App__todo-list__item--action action-icon"
+            onClick={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-rotate-left "
+              data-icon="rotate-left"
+              data-prefix="fas"
+              data-testid="restore-button"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 512 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M32.5 224H24c-13.3 0-24-10.7-24-24V72c0-9.7 5.8-18.5 14.8-22.2s19.3-1.7 26.2 5.2L82.6 96.6c87.6-86.5 228.7-86.2 315.8 1c87.5 87.5 87.5 229.3 0 316.8s-229.3 87.5-316.8 0c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0c62.5 62.5 163.8 62.5 226.3 0s62.5-163.8 0-226.3c-62.2-62.2-162.7-62.5-225.3-1L169 183c6.9 6.9 8.9 17.2 5.2 26.2s-12.5 14.8-22.2 14.8H32.5z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </div>
+          <div
+            className="App__todo-list__item--action action-icon"
+            onClick={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-trash "
+              data-icon="trash"
+              data-prefix="fas"
+              data-testid="delete-button"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 448 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      aria-describedby="rbd-hidden-text-0-hidden-text-0"
+      className=""
+      data-rbd-drag-handle-context-id="0"
+      data-rbd-drag-handle-draggable-id="item-3"
+      data-rbd-draggable-context-id="0"
+      data-rbd-draggable-id="item-3"
+      data-testid="draggable-item-2"
+      draggable={false}
+      onDragStart={[Function]}
+      onTransitionEnd={null}
+      role="button"
+      style={
+        Object {
+          "transform": null,
+          "transition": null,
+          "userSelect": "none",
+        }
+      }
+      tabIndex={0}
+    >
+      <div
+        className="App__todo-list__item"
+      >
+        <div
+          className="hstack gap-3"
+        >
+          <div>
+            <div
+              className="App__todo-list__item-title"
+            >
+              Task 3
+            </div>
+            <div
+              className="App__todo-list__item-description"
+            >
+              <span>
+                Description 3
+              </span>
+              <span>
+                 (Sun Feb 06 2022)
+              </span>
+            </div>
+          </div>
+          <div
+            className="ms-auto App__todo-list__item--action action-icon"
+            onClick={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-check-double "
+              data-icon="check-double"
+              data-prefix="fas"
+              data-testid="complete-button"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 512 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M374.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 178.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l80 80c12.5 12.5 32.8 12.5 45.3 0l160-160zm96 128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 402.7 86.6 297.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l256-256z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </div>
+          <div
+            className="App__todo-list__item--action action-icon"
+            onClick={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-trash "
+              data-icon="trash"
+              data-prefix="fas"
+              data-testid="delete-button"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 448 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      aria-describedby="rbd-hidden-text-0-hidden-text-0"
+      className=""
+      data-rbd-drag-handle-context-id="0"
+      data-rbd-drag-handle-draggable-id="item-4"
+      data-rbd-draggable-context-id="0"
+      data-rbd-draggable-id="item-4"
+      data-testid="draggable-item-3"
+      draggable={false}
+      onDragStart={[Function]}
+      onTransitionEnd={null}
+      role="button"
+      style={
+        Object {
+          "transform": null,
+          "transition": null,
+          "userSelect": "none",
+        }
+      }
+      tabIndex={0}
+    >
+      <div
+        className="App__todo-list__item"
+      >
+        <div
+          className="hstack gap-3"
+        >
+          <div>
+            <div
+              className="App__todo-list__item-title"
+            >
+              Task 4
+            </div>
+            <div
+              className="App__todo-list__item-description"
+            >
+              <span>
+                Description 4
+              </span>
+              <span>
+                 (Mon Feb 07 2022)
+              </span>
+            </div>
+          </div>
+          <div
+            className="ms-auto App__todo-list__item--action action-icon"
+            onClick={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-check-double "
+              data-icon="check-double"
+              data-prefix="fas"
+              data-testid="complete-button"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 512 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M374.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 178.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l80 80c12.5 12.5 32.8 12.5 45.3 0l160-160zm96 128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 402.7 86.6 297.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l256-256z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </div>
+          <div
+            className="App__todo-list__item--action action-icon"
+            onClick={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-trash "
+              data-icon="trash"
+              data-prefix="fas"
+              data-testid="delete-button"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 448 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      aria-describedby="rbd-hidden-text-0-hidden-text-0"
+      className=""
+      data-rbd-drag-handle-context-id="0"
+      data-rbd-drag-handle-draggable-id="item-6"
+      data-rbd-draggable-context-id="0"
+      data-rbd-draggable-id="item-6"
+      data-testid="draggable-item-4"
+      draggable={false}
+      onDragStart={[Function]}
+      onTransitionEnd={null}
+      role="button"
+      style={
+        Object {
+          "transform": null,
+          "transition": null,
+          "userSelect": "none",
+        }
+      }
+      tabIndex={0}
+    >
+      <div
+        className="App__todo-list__item"
+      >
+        <div
+          className="hstack gap-3"
+        >
+          <div>
+            <div
+              className="App__todo-list__item-title"
+            >
+              Task 6
+            </div>
+            <div
+              className="App__todo-list__item-description"
+            >
+              <span>
+                Description 6
+              </span>
+              <span>
+                 (Fri Mar 04 2022)
+              </span>
+            </div>
+          </div>
+          <div
+            className="ms-auto App__todo-list__item--action action-icon"
+            onClick={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-check-double "
+              data-icon="check-double"
+              data-prefix="fas"
+              data-testid="complete-button"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 512 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M374.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 178.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l80 80c12.5 12.5 32.8 12.5 45.3 0l160-160zm96 128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 402.7 86.6 297.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l256-256z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </div>
+          <div
+            className="App__todo-list__item--action action-icon"
+            onClick={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-trash "
+              data-icon="trash"
+              data-prefix="fas"
+              data-testid="delete-button"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 448 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 `;

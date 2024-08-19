@@ -1,71 +1,33 @@
 import renderer from 'react-test-renderer';
-import { render, screen } from '@testing-library/react';
-import { of } from 'rxjs';
-
+import { fireEvent, render, screen } from '@testing-library/react';
 import { TodoList } from './TodoList';
-import { TodosContext, TodosDispatchContext, stateTestData } from '../../context';
-import { IAction, TodoActions, ISort, SortDirection, IFilter, StateFilter, Todo } from '../../models';
+import { DisplayMode, IState, TodosContext, TodosDispatchContext, stateTestData } from '../../context';
+import { IAction, IGeneralSettings, IPaginationSettings, IPaging, ISettings, TodoActions } from '../../models';
+import { DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
 
-jest.mock('react-beautiful-dnd', () => ({
+const dnd = jest.mock('react-beautiful-dnd', () => ({
   Droppable: ({ children }: any) => children({
     draggableProps: {
+      key:{},
+      draggableId:{},
+      index:{},
       style: {},
     },
     innerRef: jest.fn(),
-  }, {}),
-  Draggable: ({ children }: any) => children({
-    draggableProps: {
-      style: {},
-    },
-    innerRef: jest.fn(),
-  }, {}),
+  } as unknown as DraggableProvided, 
+  {} as DraggableStateSnapshot),
+  Draggable:
+    ({ children }: any) => children({
+      draggableProps: {
+        style: {},
+      },
+      innerRef: jest.fn(),
+    }, 
+    {
+      isDragging: true,  
+    } as DraggableStateSnapshot),
   DragDropContext: ({ children }: any) => children,
 }));
-
-import { LocalStorageProvider } from '../../providers/StorageProvider';
-jest.mock('../../providers/StorageProvider');
-// const mockGetItem = jest.fn().mockImplementation(() => of('{"column":"title", "direction":"Asc"}'));
-// const mockSetItem = jest.fn().mockImplementation(() => of({}));
-// const mockGetItem = jest.fn();
-// const mockSetItem = jest.fn();
-let getItemMock = jest
-.spyOn(LocalStorageProvider.prototype, 'getItem')
-.mockImplementation(() => {
-  return of('{"column":"title", "direction":"Asc"}');
-}); // comment this line if just want to "spy"
-
-let todoListProvider = {
-  getList: jest.fn().mockImplementation(() => of([] as Todo[])),
-  saveList: jest.fn().mockImplementation(() => of({})),
-};
-
-beforeAll(() => {
-
-  // const mockGetItem = jest.fn().mockImplementation(() => of('{"column":"title", "direction":"Asc"}'));
-  // const mockSetItem = jest.fn().mockImplementation(() => of({}));
-  // jest.mock('../../providers/StorageProvider', () => {
-  //   return jest.fn().mockImplementation(() => { 
-  //     return { 
-  //       getItem: mockGetItem, 
-  //       setItem: mockSetItem
-  //     };
-  //   });
-  // });
-});
-
-beforeEach(() => {
-  todoListProvider = {
-    getList: jest.fn().mockImplementation(() => of([] as Todo[])),
-    saveList: jest.fn().mockImplementation(() => of({})),
-  };
-  
-  getItemMock.mockClear();
-  getItemMock = jest
-    .spyOn(LocalStorageProvider.prototype, 'getItem')
-    .mockImplementation(() => {
-      return of('{"column":"createdAt", "direction":"asc"}');
-    });
-});
 
 describe('todo list rendered', () => {  
   const globalContext = {
@@ -75,323 +37,310 @@ describe('todo list rendered', () => {
     dispatch: jest.fn()
   };
 
-  it('match snapshot list', () => {
-    const context = {
-      ...globalContext,
-      state: { 
-        ...globalContext.state,
-        isLoading: false 
-      }
-    };
-    const jsxElement = 
-      (<TodosContext.Provider value={context.state}>
-         <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoList />
-         </TodosDispatchContext.Provider>
-       </TodosContext.Provider>);
-    const tree = renderer.create(
-      jsxElement
-    ).toJSON();
-    render(jsxElement);
-    expect(tree).toMatchSnapshot();
-  });
-
-  it('match snapshot loader', () => {
-    const context = {
-      ...globalContext,
-      state: { 
-        ...globalContext.state,
-        isLoading: true 
-      }
-    };
-    const jsxElement = 
-      (<TodosContext.Provider value={context.state}>
-         <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoList />
-         </TodosDispatchContext.Provider>
-       </TodosContext.Provider>);
-    const tree = renderer.create(
-      jsxElement
-    ).toJSON();
-    render(jsxElement);
-    expect(tree).toMatchSnapshot();
-  });
-
-  describe('load list', () => {
-    const actionLoadingStarted = {
-      type: TodoActions.loadingStarted
-    } as IAction;
-    const actionFetch = {
-      type: TodoActions.fetch,
-      payload: {
-        sort: {
-          column: 'createdAt',
-          direction: SortDirection.Asc
-        } as ISort
-      }
-    } as IAction;
-
-    it('should fetch list', (done) => {
+  describe('dragging enabled', () => {
+    it('match snapshot list with dragging enabled and active', () => {
       const context = {
         ...globalContext,
         state: { 
           ...globalContext.state,
-          effectTrigger: { type: TodoActions.fetch, payload: actionFetch.payload },
-          isLoading: true
+          isLoading: false 
         }
-      };
-      todoListProvider = {
-        ...todoListProvider,
-        getList: jest.fn().mockImplementation(() => of(context.state.originalList))
       };
       const jsxElement = 
-      (<TodosContext.Provider value={context.state}>
-         <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoList />
-         </TodosDispatchContext.Provider>
-       </TodosContext.Provider>);
+        (<TodosContext.Provider value={context.state}>
+           <TodosDispatchContext.Provider value={context.dispatch} >
+            <TodoList />
+           </TodosDispatchContext.Provider>
+         </TodosContext.Provider>);
+      const tree = renderer.create(
+        jsxElement
+      ).toJSON();
       render(jsxElement);
-  
-      const actionFetched = {
-        type: TodoActions.fetched,
-        payload: {
-          list: context.state.originalList,
-          sort: {
-            column: 'createdAt',
-            direction: SortDirection.Asc
-          } as ISort
-        }
-      } as IAction;
-
-      expect(screen.getByTestId('loader')).toBeInTheDocument();     
-      expect(context.dispatch).toBeCalledWith(actionFetch); 
-      expect(getItemMock).toHaveBeenCalledWith('todo-sort');
-      (getItemMock.getMockImplementation()!)('').subscribe(() => {
-        expect(context.dispatch).toBeCalledWith(actionFetch);
-        expect(todoListProvider.getList).toBeCalledWith({
-          filter: globalContext.state.filter,
-          searchTerm: globalContext.state.search.searchTerm,
-          sort: actionFetch.payload.sort
-        });
-        expect(context.dispatch).toBeCalledWith(actionLoadingStarted);
-        expect(context.dispatch).toBeCalledWith(actionFetched);
-        done();
-      });
+      expect(tree).toMatchSnapshot();
     });
 
-    it('should filter list', async () => {
-      const expectedList = stateTestData.displayList.filter(x => x.completed);
-      const expectedActionPayload = {
-        filter: { 
-          state: StateFilter.completed
-        } as IFilter, 
-        sort: stateTestData.sort,
-        searchTerm: stateTestData.search.searchTerm
-      };
+    it('on drag and drop outside of drop area action should be canceled', () => {
       const context = {
         ...globalContext,
         state: { 
           ...globalContext.state,
-          effectTrigger: { type: TodoActions.filter, payload: expectedActionPayload },
-          isLoading: true
-        }
-      };
-      todoListProvider = {
-        ...todoListProvider,
-        getList: jest.fn().mockImplementation(() => of(expectedList))
+          isLoading: false,
+          settings: {
+            ...globalContext.state.settings,
+            general: {
+              ...globalContext.state.settings.general,
+              isPaginationEnabled: false
+            } as IGeneralSettings
+          } as ISettings
+        } as IState
       };
       const jsxElement = 
-      (<TodosContext.Provider value={context.state}>
-         <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoList />
-         </TodosDispatchContext.Provider>
-       </TodosContext.Provider>);
-      render(jsxElement);
+        (<TodosContext.Provider value={context.state}>
+           <TodosDispatchContext.Provider value={context.dispatch} >
+            <TodoList />
+            <div data-testid='wrong-drop-zone'></div>
+           </TodosDispatchContext.Provider>
+         </TodosContext.Provider>);
   
-      const actionFiltered = {
-        type: TodoActions.filtered,
-        payload: {
-          activePage: 1,
-          list: expectedList,
-          filter: expectedActionPayload.filter
-        }
-      } as IAction;
+      render(jsxElement);
 
-      expect(screen.getByTestId('loader')).toBeInTheDocument();
-      expect(todoListProvider.getList).toBeCalledWith({...expectedActionPayload });
-      expect(context.dispatch).toBeCalledWith(actionFetch);
-      expect(context.dispatch).toBeCalledWith(actionLoadingStarted);
-      expect(context.dispatch).toBeCalledWith(actionFiltered);
+      const dragElement = screen.getByTestId("draggable-item-0");
+      const dropZone = screen.getByTestId("wrong-drop-zone");
+  
+      fireEvent.dragStart(dragElement);
+      fireEvent.dragEnter(dropZone);
+      fireEvent.drop(dropZone);
+      fireEvent.dragLeave(dropZone);
+      fireEvent.dragEnd(dragElement);
+      
+      const elementId = 1;
+      const elementArrayIndex = 1;
+      const elements = globalContext.state.displayList.filter(x => x.id !== elementId);
+      const draggedAndDroppedElement = globalContext.state.displayList.find(x => x.id === elementId)!;
+      const action = {
+        type: TodoActions.manuallySorted,
+        payload: {
+          list: [...elements.slice(0, elementArrayIndex), draggedAndDroppedElement, ...elements.slice(elementArrayIndex)]
+        }   
+      } as IAction;
+  
+      // Activates drag and drop
+      dnd.mock.call('DropableContext', 'react-beautiful-dnd');
+      expect(context.dispatch).not.toBeCalledWith(action);
     });
 
-    it('should search list', async () => {
-      const expectedList = stateTestData.displayList.filter(x => x.title === 'Task 1');
-      const expectedFilterActionPayload = {
-        filter: stateTestData.filter, 
-        sort: stateTestData.sort,
-        searchTerm: "Task 1"
-      };
-
+    it('on drag and drop of the selected item from the list should drag and drop selected item in a different position when pagination disabled', () => {
       const context = {
         ...globalContext,
         state: { 
           ...globalContext.state,
-          effectTrigger: { type: TodoActions.search, payload: expectedFilterActionPayload },
-          isLoading: true
-        }
-      };
-      todoListProvider = {
-        ...todoListProvider,
-        getList: jest.fn().mockImplementation(() => of(expectedList).pipe())
+          isLoading: false,
+          settings: {
+            ...globalContext.state.settings,
+            general: {
+              ...globalContext.state.settings.general,
+              isPaginationEnabled: false
+            } as IGeneralSettings
+          } as ISettings
+        } as IState
       };
       const jsxElement = 
-      (<TodosContext.Provider value={context.state}>
-         <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoList />
-         </TodosDispatchContext.Provider>
-       </TodosContext.Provider>);
+        (<TodosContext.Provider value={context.state}>
+           <TodosDispatchContext.Provider value={context.dispatch} >
+            <TodoList />
+           </TodosDispatchContext.Provider>
+         </TodosContext.Provider>);
+  
       render(jsxElement);
   
-      const actionSearched = {
-        type: TodoActions.searched,
+      const SPACE = { keyCode: 32 };
+      const ARROW_DOWN = { keyCode: 40 };
+      const element = screen.getByTestId('draggable-item-0');
+      element.focus();
+  
+      fireEvent.keyDown(element, SPACE); // Begins the dnd
+      fireEvent.keyDown(element, ARROW_DOWN); // Moves the element
+      fireEvent.keyDown(element, SPACE); // Ends the dnd
+      
+      const elementId = 1;
+      const elementArrayIndex = 1;
+      const elements = globalContext.state.displayList.filter(x => x.id !== elementId);
+      const draggedAndDroppedElement = globalContext.state.displayList.find(x => x.id === elementId)!;
+      const action = {
+        type: TodoActions.manuallySorted,
         payload: {
-          list: expectedList,
-          activePage: 1,
-        }
+          list: [...elements.slice(0, elementArrayIndex), draggedAndDroppedElement, ...elements.slice(elementArrayIndex)]
+        }   
       } as IAction;
-
-      expect(screen.getByTestId('loader')).toBeInTheDocument();
-      expect(todoListProvider.getList).toBeCalledWith({...expectedFilterActionPayload });            
-      expect(context.dispatch).toBeCalledWith(actionFetch);
-      expect(context.dispatch).toBeCalledWith(actionLoadingStarted);
-      expect(context.dispatch).toBeCalledWith(actionSearched);
+  
+      // Activates drag and drop
+      dnd.mock.call('DropableContext', 'react-beautiful-dnd');
+      expect(context.dispatch).toBeCalledWith(action);
     });
 
-    it('should sort list', async () => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const expectedList = [...stateTestData.originalList.sort((a: any, b: any) => a.title > b.title ? 1 : -1)];
-      const expectedFetchActionPayload = {
-        filter: globalContext.state.filter,
-        searchTerm: globalContext.state.search.searchTerm,
-        sort: {
-          column: 'title', 
-          direction: SortDirection.Asc
-        } as ISort
-      };
+    it('on drag and drop of the selected item from the list should drag and drop selected item in a different position on the second page when pagination enabled', () => {
       const context = {
         ...globalContext,
         state: { 
           ...globalContext.state,
-          effectTrigger: { type: TodoActions.sort, payload: expectedFetchActionPayload },
-          isLoading: true
-        }
-      };
-      todoListProvider = {
-        ...todoListProvider,
-        getList: jest.fn().mockImplementation(() => of(expectedList))
+          isLoading: false,
+          paging: {
+            ...globalContext.state.paging,
+            activePage: 2,
+            itemsPerPage: 3,
+            startIndex: 3,
+            endIndex: 5
+          } as IPaging,
+          settings: {
+            ...globalContext.state.settings,
+            general: {
+              ...globalContext.state.settings.general,
+              isPaginationEnabled: true
+            } as IGeneralSettings
+          } as ISettings
+        } as IState
       };
       const jsxElement = 
-      (<TodosContext.Provider value={context.state}>
-         <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoList />
-         </TodosDispatchContext.Provider>
-       </TodosContext.Provider>);
+        (<TodosContext.Provider value={context.state}>
+           <TodosDispatchContext.Provider value={context.dispatch} >
+            <TodoList />
+           </TodosDispatchContext.Provider>
+         </TodosContext.Provider>);
+  
       render(jsxElement);
   
-      const actionSorted = {
-        type: TodoActions.sorted,
-        payload: {
-          sort: expectedFetchActionPayload.sort,
-          list: expectedList
-        }
-      } as IAction;
+      const SPACE = { keyCode: 32 };
+      const ARROW_DOWN = { keyCode: 40 };
+      const element = screen.getByTestId('draggable-item-0');
+      element.focus();
+  
+      fireEvent.keyDown(element, SPACE); // Begins the dnd
+      fireEvent.keyDown(element, ARROW_DOWN); // Moves the element
+      fireEvent.keyDown(element, SPACE); // Ends the dnd
 
-      expect(screen.getByTestId('loader')).toBeInTheDocument();
-      expect(todoListProvider.getList).toBeCalledWith({...expectedFetchActionPayload });
-      expect(context.dispatch).toBeCalledWith(actionLoadingStarted);
-      expect(context.dispatch).toBeCalledWith(actionSorted);
+      const elementId = 4;
+      const elementArrayIndex = 4;
+      const elements = globalContext.state.displayList.filter(x => x.id !== elementId);
+      const draggedAndDroppedElement = globalContext.state.displayList.find(x => x.id === elementId)!;
+      const action = {
+        type: TodoActions.manuallySorted,
+        payload: {
+          list: [...elements.slice(0, elementArrayIndex), draggedAndDroppedElement, ...elements.slice(elementArrayIndex)]
+        }   
+      } as IAction;
+  
+      // Activates drag and drop
+      dnd.mock.call('DropableContext', 'react-beautiful-dnd');
+      expect(context.dispatch).toBeCalledWith(action);
     });
   });
 
-  describe("save list", () => {
-    it('should save list when todo item added', async () => {
+  describe('dragging disabled', () => {
+    it('match snapshot list with dragging disabled', () => {
       const context = {
         ...globalContext,
         state: { 
           ...globalContext.state,
-          effectTrigger: { type: TodoActions.added },
-          isLoading: false
+          isLoading: false,
+          displayMode: DisplayMode.Filtered
         }
       };
       const jsxElement = 
-      (<TodosContext.Provider value={context.state}>
-         <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoList />
-         </TodosDispatchContext.Provider>
-       </TodosContext.Provider>);
+        (<TodosContext.Provider value={context.state}>
+           <TodosDispatchContext.Provider value={context.dispatch} >
+            <TodoList />
+           </TodosDispatchContext.Provider>
+         </TodosContext.Provider>);
+      const tree = renderer.create(
+        jsxElement
+      ).toJSON();
       render(jsxElement);
-  
-      expect(todoListProvider.saveList).toBeCalledWith(stateTestData.originalList);
+      expect(tree).toMatchSnapshot();
     });
-
-    it('should save list when todo item changed', async () => {
+  
+    it('match snapshot list with pagination disabled', () => {
       const context = {
         ...globalContext,
         state: { 
           ...globalContext.state,
-          effectTrigger: { type: TodoActions.changed },
-          isLoading: false
-        }
+          isLoading: false,
+          settings: {
+            ...globalContext.state.settings,
+            general: {
+              ...globalContext.state.settings.general,
+              isPaginationEnabled: false
+            }
+          }
+        } as IState
       };
       const jsxElement = 
-      (<TodosContext.Provider value={context.state}>
-         <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoList />
-         </TodosDispatchContext.Provider>
-       </TodosContext.Provider>);
+        (<TodosContext.Provider value={context.state}>
+           <TodosDispatchContext.Provider value={context.dispatch} >
+            <TodoList />
+           </TodosDispatchContext.Provider>
+         </TodosContext.Provider>);
+      const tree = renderer.create(
+        jsxElement
+      ).toJSON();
       render(jsxElement);
-  
-      expect(todoListProvider.saveList).toBeCalledWith(stateTestData.originalList);
+      expect(tree).toMatchSnapshot();
     });
-
-    it('should save list when todo item deleted', async () => {
+  
+    it('match snapshot list with infinite scroll enabled', () => {
       const context = {
         ...globalContext,
         state: { 
           ...globalContext.state,
-          effectTrigger: { type: TodoActions.deleted },
-          isLoading: false
-        }
+          isLoading: false,
+          settings: {
+            ...globalContext.state.settings,
+            general: {
+              ...globalContext.state.settings.general,
+              isPaginationEnabled: false,
+              isInfiniteScrollEnabled: true
+            }
+          }
+        } as IState
       };
       const jsxElement = 
-      (<TodosContext.Provider value={context.state}>
-         <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoList />
-         </TodosDispatchContext.Provider>
-       </TodosContext.Provider>);
+        (<TodosContext.Provider value={context.state}>
+           <TodosDispatchContext.Provider value={context.dispatch} >
+            <TodoList />
+           </TodosDispatchContext.Provider>
+         </TodosContext.Provider>);
+      const tree = renderer.create(
+        jsxElement
+      ).toJSON();
       render(jsxElement);
-  
-      expect(todoListProvider.saveList).toBeCalledWith(stateTestData.originalList);
+      expect(tree).toMatchSnapshot();
     });
-
-    it('should save list when todo item imported', async () => {
+  
+    it('match snapshot list with no data', () => {
       const context = {
         ...globalContext,
         state: { 
           ...globalContext.state,
-          effectTrigger: { type: TodoActions.imported },
-          isLoading: false
+          originalList: [],
+          displayList: [],
+          paging: {
+            ...globalContext.state.paging,
+            totalCount: 0,
+          },
+          isLoading: false,
+        } as IState
+      };
+      const jsxElement = 
+        (<TodosContext.Provider value={context.state}>
+           <TodosDispatchContext.Provider value={context.dispatch} >
+            <TodoList />
+           </TodosDispatchContext.Provider>
+         </TodosContext.Provider>);
+      const tree = renderer.create(
+        jsxElement
+      ).toJSON();
+      render(jsxElement);
+      expect(tree).toMatchSnapshot();
+    });
+  
+    it('match snapshot loader', () => {
+      const context = {
+        ...globalContext,
+        state: { 
+          ...globalContext.state,
+          isLoading: true 
         }
       };
       const jsxElement = 
-      (<TodosContext.Provider value={context.state}>
-         <TodosDispatchContext.Provider value={context.dispatch} >
-          <TodoList />
-         </TodosDispatchContext.Provider>
-       </TodosContext.Provider>);
+        (<TodosContext.Provider value={context.state}>
+           <TodosDispatchContext.Provider value={context.dispatch} >
+            <TodoList />
+           </TodosDispatchContext.Provider>
+         </TodosContext.Provider>);
+      const tree = renderer.create(
+        jsxElement
+      ).toJSON();
       render(jsxElement);
-  
-      expect(todoListProvider.saveList).toBeCalledWith(stateTestData.originalList);
+      expect(tree).toMatchSnapshot();
     });
   });
 });

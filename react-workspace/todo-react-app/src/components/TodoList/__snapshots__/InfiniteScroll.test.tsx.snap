@@ -1,0 +1,152 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InfiniteScroll match snapshot infinite scroll dynamic list size 1`] = `
+<div
+  data-testid="scrollable-container"
+  id="scrollable-container"
+  onScroll={[Function]}
+  style={Object {}}
+>
+  <div
+    id="todo-list-content"
+  >
+    <div>
+      Item 1
+    </div>
+    <div>
+      Item 2
+    </div>
+    <div>
+      Item 3
+    </div>
+    <div>
+      Item 4
+    </div>
+    <div>
+      Item 5
+    </div>
+    <div>
+      Item 6
+    </div>
+    <div>
+      Item 7
+    </div>
+    <div>
+      Item 8
+    </div>
+    <div>
+      Item 9
+    </div>
+    <div>
+      Item 10
+    </div>
+  </div>
+  <div
+    className="App__todo-list__infinite-scroll-end"
+    id="infinite-scroll-end"
+  >
+    <div
+      className="App__todo-list__infinite-scroll-end--bouncing"
+    >
+      <svg
+        aria-hidden="true"
+        className="svg-inline--fa fa-angle-down "
+        data-icon="angle-down"
+        data-prefix="fas"
+        focusable="false"
+        role="img"
+        style={Object {}}
+        viewBox="0 0 384 512"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M169.4 342.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 274.7 54.6 137.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"
+          fill="currentColor"
+          style={Object {}}
+        />
+      </svg>
+      <div>
+        Scroll down to load more
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`InfiniteScroll match snapshot infinite scroll fixed list size 1`] = `
+<div
+  data-testid="scrollable-container"
+  id="scrollable-container"
+  onScroll={[Function]}
+  style={
+    Object {
+      "height": 200,
+      "overflow": "overlay",
+    }
+  }
+>
+  <div
+    id="todo-list-content"
+  >
+    <div>
+      Item 1
+    </div>
+    <div>
+      Item 2
+    </div>
+    <div>
+      Item 3
+    </div>
+    <div>
+      Item 4
+    </div>
+    <div>
+      Item 5
+    </div>
+    <div>
+      Item 6
+    </div>
+    <div>
+      Item 7
+    </div>
+    <div>
+      Item 8
+    </div>
+    <div>
+      Item 9
+    </div>
+    <div>
+      Item 10
+    </div>
+  </div>
+  <div
+    className="App__todo-list__infinite-scroll-end"
+    id="infinite-scroll-end"
+  >
+    <div
+      className="App__todo-list__infinite-scroll-end--bouncing"
+    >
+      <svg
+        aria-hidden="true"
+        className="svg-inline--fa fa-angle-down "
+        data-icon="angle-down"
+        data-prefix="fas"
+        focusable="false"
+        role="img"
+        style={Object {}}
+        viewBox="0 0 384 512"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M169.4 342.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 274.7 54.6 137.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"
+          fill="currentColor"
+          style={Object {}}
+        />
+      </svg>
+      <div>
+        Scroll down to load more
+      </div>
+    </div>
+  </div>
+</div>
+`;

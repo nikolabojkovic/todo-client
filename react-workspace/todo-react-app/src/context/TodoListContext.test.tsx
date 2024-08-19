@@ -3,6 +3,41 @@ import { IState, State, todoStateReducer, stateTestData, DisplayMode } from "./"
 
 describe('TodoListContext', () => {
   describe('todoListReducer', () => {
+    it('should execute case loading started', () => {
+      const action = {
+        type: TodoActions.loadingStarted,
+      } as IAction;
+      const expectedState = {
+        ...stateTestData,
+        isLoading: true,
+        effectTrigger: null,
+      } as IState;
+
+      const actualState = todoStateReducer(stateTestData, action);
+
+      expect(actualState).toEqual(expectedState);
+    });
+
+    it('should execute case fetch', () => {
+      const action = {
+        type: TodoActions.fetch,
+        payload: {
+          sort: {
+            column: 'createdAt',
+            direction: SortDirection.Asc
+          } as ISort
+        }
+      } as IAction;
+      const expectedState = {
+        ...stateTestData,
+        effectTrigger: { type: TodoActions.fetch, payload: action.payload }
+      } as IState;
+
+      const actualState = todoStateReducer(stateTestData, action);
+
+      expect(actualState).toEqual(expectedState);
+    });
+
     it('should execute case filter', () => {
       const action = {
         type: TodoActions.filter,
@@ -77,6 +112,49 @@ describe('TodoListContext', () => {
       expect(actualState).toEqual(expectedState);
     });
 
+    it('should execute case fetched with active page 0', () => {
+      const action = {
+        type: TodoActions.fetched,
+        payload: {
+          list: stateTestData.originalList,
+          sort: {
+            column: 'createdAt',
+            direction: SortDirection.Asc
+          } as ISort
+        }
+      } as IAction;
+      const state = {
+        ...stateTestData,
+        paging: {
+          ...stateTestData.paging,
+          totalCount: stateTestData.originalList.length,
+          activePage: 0,
+          itemsPerPage: stateTestData.paging.itemsPerPage,
+          startIndex: 0,
+          endIndex: 0
+        } as IPaging
+      } as IState;
+      const expectedState = {
+        ...stateTestData,
+        isLoading: false,
+        originalList: stateTestData.originalList,
+        displayList: stateTestData.originalList,
+        effectTrigger: null,
+        paging: {
+          ...stateTestData.paging,
+          totalCount: stateTestData.originalList.length,
+          activePage: 1,
+          itemsPerPage: stateTestData.paging.itemsPerPage,
+          startIndex: 0,
+          endIndex: 5
+        } as IPaging
+      } as IState;
+
+      const actualState = todoStateReducer(state, action);
+
+      expect(actualState).toEqual(expectedState);
+    });
+
     it('should execute case searched', () => {
       const action = {
         type: TodoActions.searched,
@@ -102,6 +180,44 @@ describe('TodoListContext', () => {
       };
 
       const actualState = todoStateReducer(stateTestData, action);
+
+      expect(actualState).toEqual(expectedState);
+    });
+
+    it('should execute case searched with filter state completed ', () => {
+      const action = {
+        type: TodoActions.searched,
+        payload: {
+          list: stateTestData.displayList.filter(x => x.title === 'Task 1'),
+          activePage: 1,
+        }
+      } as IAction;
+      const state = {
+        ...stateTestData,
+        filter: {
+          state: StateFilter.completed
+        } as IFilter
+      };
+      const expectedState = {
+        ...stateTestData,
+        effectTrigger: null,
+        isLoading: false,
+        displayList: stateTestData.displayList.filter(x => x.title === 'Task 1'),
+        displayMode: DisplayMode.Filtered,
+        filter: {
+          state: StateFilter.completed
+        } as IFilter,
+        search: { searchTerm: '' },
+        paging: {
+          ...stateTestData.paging,
+          activePage: 1,
+          totalCount: 1,
+          startIndex: 0,
+          endIndex: 5
+        }
+      };
+
+      const actualState = todoStateReducer(state, action);
 
       expect(actualState).toEqual(expectedState);
     });
@@ -136,6 +252,42 @@ describe('TodoListContext', () => {
       expect(actualState).toEqual(expectedState);
     });
 
+    it('should execute case filtered with filter state all ', () => {
+      const action = {
+        type: TodoActions.filtered,
+        payload: {
+          filter: { state: StateFilter.all },
+          list: stateTestData.displayList.filter(x => x.completed),
+          activePage: 1,
+        }
+      } as IAction;
+      const state = {
+        ...stateTestData,
+        filter: {
+          state: StateFilter.all
+        } as IFilter
+      };
+      const expectedState = {
+        ...stateTestData,
+        effectTrigger: null,
+        isLoading: false,
+        displayList: stateTestData.displayList.filter(x => x.completed),
+        displayMode: DisplayMode.All,
+        filter: { state: StateFilter.all },
+        paging: {
+          ...stateTestData.paging,
+          activePage: 1,
+          totalCount: 1,
+          startIndex: 0,
+          endIndex: 5
+        }
+      };
+
+      const actualState = todoStateReducer(state, action);
+
+      expect(actualState).toEqual(expectedState);
+    });
+
     it('should execute case sorted', () => {
       const action = {
         type: TodoActions.sorted,
@@ -158,6 +310,29 @@ describe('TodoListContext', () => {
           column: 'title', 
           direction: SortDirection.Asc
         } as ISort,
+      };
+
+      const actualState = todoStateReducer(stateTestData, action);
+
+      expect(actualState).toEqual(expectedState);
+    });
+
+    it('should execute case manually sorted', () => {
+      const action = {
+        type: TodoActions.manuallySorted,
+        payload: {
+          list: stateTestData.originalList,
+        }
+      } as IAction;
+      const expectedState = {
+        ...stateTestData,
+        effectTrigger: { type: TodoActions.manuallySorted, payload: action.payload },
+        originalList: stateTestData.originalList,
+        displayList: stateTestData.originalList,
+        sort: {
+          column: 'sortId', 
+          direction: SortDirection.None
+        } as ISort
       };
 
       const actualState = todoStateReducer(stateTestData, action);
@@ -189,6 +364,68 @@ describe('TodoListContext', () => {
           startIndex: 0,
           endIndex: 5
         } as IPaging
+      };
+
+      const actualState = todoStateReducer(stateTestData, action);
+
+      expect(actualState).toEqual(expectedState);
+    });
+
+    it('should execute case paging fetched', () => {
+      const action = {
+        type: TodoActions.pagingFatched,
+        payload: {
+          activePage: 2,
+          totalCount: 6,
+          itemsPerPage: 5
+        }
+      } as IAction;
+      const expectedState = {
+        ...stateTestData,
+        effectTrigger: null,
+        search: { searchTerm: '' },
+        paging: {
+          ...stateTestData.paging,
+          activePage: 2,
+          totalCount: 6,
+          startIndex: 5,
+          endIndex: 10,
+          itemsPerPage: 5
+        } as IPaging
+      };
+
+      const actualState = todoStateReducer(stateTestData, action);
+
+      expect(actualState).toEqual(expectedState);
+    });
+
+    it('should execute case settings fetched', () => {
+      const action = {
+        type: TodoActions.settingsFetched,
+        payload: {
+          ...stateTestData.settings
+        }
+      } as IAction;
+      const expectedState = {
+        ...stateTestData,
+        effectTrigger: null,
+      };
+
+      const actualState = todoStateReducer(stateTestData, action);
+
+      expect(actualState).toEqual(expectedState);
+    });
+
+    it('should execute case settings updated', () => {
+      const action = {
+        type: TodoActions.settingsUpdated,
+        payload: {
+          ...stateTestData.settings
+        }
+      } as IAction;
+      const expectedState = {
+        ...stateTestData,
+        effectTrigger: { type: TodoActions.settingsUpdated },
       };
 
       const actualState = todoStateReducer(stateTestData, action);
@@ -266,6 +503,52 @@ describe('TodoListContext', () => {
         paging: {
           ...stateTestData.paging,
           totalCount: 5
+        }
+      };
+
+      const actualState = todoStateReducer(stateTestData, action);
+
+      expect(actualState).toEqual(expectedState);
+    });
+
+    it('should execute case deleted all', () => {
+      const action = {
+        type: TodoActions.deletedAll,
+        payload: {
+          id: 1
+        }
+      } as IAction;
+      const expectedState = {
+        ...stateTestData,
+        effectTrigger: { type: TodoActions.deletedAll },
+        originalList: [],
+        displayList: [],
+        paging: {
+          ...stateTestData.paging,
+          totalCount: 0
+        }
+      };
+
+      const actualState = todoStateReducer(stateTestData, action);
+
+      expect(actualState).toEqual(expectedState);
+    });
+
+    it('should execute case restore all', () => {
+      const action = {
+        type: TodoActions.restoredAll,
+        payload: {
+          id: 1
+        }
+      } as IAction;
+      const expectedState = {
+        ...stateTestData,
+        effectTrigger: { type: TodoActions.restoredAll },
+        originalList: [...stateTestData.originalList.map(x => ({...x, completed: false}))],
+        displayList: [...stateTestData.originalList.map(x => ({...x, completed: false}))],
+        paging: {
+          ...stateTestData.paging,
+          totalCount: 6
         }
       };
 

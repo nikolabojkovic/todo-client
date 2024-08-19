@@ -33,7 +33,8 @@ export function Paging() {
     if (todoList.effectTrigger 
       && (todoList.effectTrigger.type === TodoActions.pagingUpdated
        || todoList.effectTrigger.type === TodoActions.added  
-       || todoList.effectTrigger.type === TodoActions.deleted)) {
+       || todoList.effectTrigger.type === TodoActions.deleted
+       || todoList.effectTrigger.type === TodoActions.deletedAll)) {
       providers.storageProvider.setItem(pagingLocalStorageKey, todoList.paging).pipe(first()).subscribe();
     }
   }, [todoList.paging, todoList.effectTrigger]);

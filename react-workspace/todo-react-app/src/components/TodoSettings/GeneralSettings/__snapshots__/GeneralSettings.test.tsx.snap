@@ -24,6 +24,7 @@ exports[`GeneralSettings match snapshot general settings 1`] = `
         <input
           checked={true}
           className="form-check-input"
+          data-testid="comfirm-enabled"
           disabled={false}
           id="comfirm-enabled"
           onChange={[Function]}
@@ -47,6 +48,7 @@ exports[`GeneralSettings match snapshot general settings 1`] = `
         <input
           checked={true}
           className="form-check-input"
+          data-testid="pagination-enabled"
           disabled={false}
           id="pagination-enabled"
           onChange={[Function]}
@@ -70,6 +72,7 @@ exports[`GeneralSettings match snapshot general settings 1`] = `
         <input
           checked={false}
           className="form-check-input"
+          data-testid="infinite-scroll-enabled"
           disabled={false}
           id="infinite-scroll-enabled"
           onChange={[Function]}
@@ -93,7 +96,7 @@ exports[`GeneralSettings match snapshot general settings 1`] = `
         <button
           aria-expanded={false}
           className="action-button ps-2 pe-2 dropdown-toggle btn btn-outline-secondary"
-          data-testid="selected-list-size-option"
+          data-testid="list-size-dropdown"
           disabled={false}
           id="dropdown-list-size-type"
           onClick={[Function]}
@@ -104,6 +107,138 @@ exports[`GeneralSettings match snapshot general settings 1`] = `
            
         </button>
       </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`GeneralSettings match snapshot general settings list size type fixed 1`] = `
+<div
+  className="App__settings__group"
+>
+  <label
+    className="App__settings__group-label"
+  >
+    General
+  </label>
+  <div
+    className="App__settings__group__item"
+  >
+    <div
+      className="hstack gap-2"
+    >
+      <label>
+        Comfirm on change/remove
+      </label>
+      <div
+        className="ms-auto form-switch"
+      >
+        <input
+          checked={true}
+          className="form-check-input"
+          data-testid="comfirm-enabled"
+          disabled={false}
+          id="comfirm-enabled"
+          onChange={[Function]}
+          type="checkbox"
+        />
+      </div>
+    </div>
+  </div>
+  <div
+    className="App__settings__group__item"
+  >
+    <div
+      className="hstack gap-2"
+    >
+      <label>
+        Pagination
+      </label>
+      <div
+        className="ms-auto form-switch"
+      >
+        <input
+          checked={true}
+          className="form-check-input"
+          data-testid="pagination-enabled"
+          disabled={false}
+          id="pagination-enabled"
+          onChange={[Function]}
+          type="checkbox"
+        />
+      </div>
+    </div>
+  </div>
+  <div
+    className="App__settings__group__item"
+  >
+    <div
+      className="hstack gap-2"
+    >
+      <label>
+        Infinite Scroll
+      </label>
+      <div
+        className="ms-auto form-switch"
+      >
+        <input
+          checked={false}
+          className="form-check-input"
+          data-testid="infinite-scroll-enabled"
+          disabled={false}
+          id="infinite-scroll-enabled"
+          onChange={[Function]}
+          type="checkbox"
+        />
+      </div>
+    </div>
+  </div>
+  <div
+    className="App__settings__group__item"
+  >
+    <div
+      className="hstack gap-2"
+    >
+      <label>
+        List container size
+      </label>
+      <div
+        className="ms-auto dropdown"
+      >
+        <button
+          aria-expanded={false}
+          className="action-button ps-2 pe-2 dropdown-toggle btn btn-outline-secondary"
+          data-testid="list-size-dropdown"
+          disabled={false}
+          id="dropdown-list-size-type"
+          onClick={[Function]}
+          type="button"
+        >
+           
+          Fixed
+           
+        </button>
+      </div>
+    </div>
+  </div>
+  <div
+    className="App__settings__group__item ms-5"
+  >
+    <div
+      className="hstack gap-2"
+    >
+      <label>
+        Size (px)
+      </label>
+      <input
+        className="ms-auto form-control form-control-sm"
+        data-testid="list-size-input"
+        id="fixed-size"
+        onChange={[Function]}
+        placeholder="0"
+        type="number"
+        value={200}
+      />
     </div>
   </div>
 </div>

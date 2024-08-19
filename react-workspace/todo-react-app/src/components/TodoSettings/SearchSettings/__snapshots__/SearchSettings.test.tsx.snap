@@ -1,5 +1,61 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`SearchSettings match snapshot search on key press settings 1`] = `
+<div
+  className="App__settings__group"
+>
+  <label
+    className="App__settings__group-label"
+  >
+    Search
+  </label>
+  <div
+    className="App__settings__group__item"
+  >
+    <div
+      className="hstack gap-2"
+    >
+      <label>
+        Search on key press
+      </label>
+      <div
+        className="ms-auto form-switch"
+      >
+        <input
+          checked={true}
+          className="form-check-input"
+          data-testid="search-on-keypress-switch"
+          disabled={false}
+          id="keyPress-switch"
+          onChange={[Function]}
+          type="checkbox"
+        />
+      </div>
+    </div>
+  </div>
+  <div
+    className="App__settings__group__item ms-5"
+  >
+    <div
+      className="hstack gap-2"
+    >
+      <label>
+        Debounce time (ms)
+      </label>
+      <input
+        className="ms-auto form-control form-control-sm"
+        data-testid="debounce-time-input"
+        id="debounce-time-input"
+        onChange={[Function]}
+        placeholder="0"
+        type="number"
+        value={500}
+      />
+    </div>
+  </div>
+</div>
+`;
+
 exports[`SearchSettings match snapshot search settings 1`] = `
 <div
   className="App__settings__group"

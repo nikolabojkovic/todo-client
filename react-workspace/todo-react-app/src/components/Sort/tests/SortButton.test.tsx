@@ -12,6 +12,21 @@ describe('ImportExport', () => {
     expect(tree).toMatchSnapshot();
   });
 
+  it('component should match snapshot sort direction none', () => {
+    const jsxElement = 
+      <SortButton 
+        column={'sortId'} 
+        text={'Manual order'} 
+        disabled={false} 
+        active={false} 
+        sortType={SortType.noDirection} 
+        sortDirection={SortDirection.None} 
+        onClick={handleSort} 
+      />;
+    const tree = renderer.create(jsxElement).toJSON();
+    expect(tree).toMatchSnapshot();
+  });
+
   describe('button disabled click', () => {
     it('should not switch sort direction on click', () => {
       render(<SortButton column={'title'} text={'Title'} disabled={true} active={false} sortType={SortType.direction} sortDirection={SortDirection.Desc} onClick={handleSort} />);
@@ -37,6 +52,24 @@ describe('ImportExport', () => {
       fireEvent.click(sortButton); 
   
       expect(handleSort).toBeCalledWith('title', SortDirection.Desc);
+    });
+
+    it('sort direction none should not swich sort direction', () => {
+      render(
+        <SortButton 
+          column={'sortId'} 
+          text={'Manual order'} 
+          disabled={false} 
+          active={false} 
+          sortType={SortType.noDirection} 
+          sortDirection={SortDirection.None} 
+          onClick={handleSort} 
+        />
+      );
+      const sortButton = screen.getByTestId('sortId-sort-button-direction-none');          
+      fireEvent.click(sortButton); 
+  
+      expect(handleSort).toBeCalledWith('sortId', SortDirection.None);
     });
   });
 });

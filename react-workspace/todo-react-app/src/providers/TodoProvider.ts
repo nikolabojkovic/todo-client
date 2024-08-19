@@ -2,7 +2,7 @@ import { map } from "rxjs";
 import { Observable } from "rxjs/internal/Observable";
 
 import { ITodo, IFilter, StateFilter, ISort, SortDirection } from "../models";
-import { IStorageProvider, LocalStorageProvider } from "./";
+import providers from "./";
 
 export type GetListProps = {
   filter: IFilter | null,
@@ -19,15 +19,10 @@ export interface ITodoListProvider {
 
 // additionaly implement one more provider, RemoteTodoListProvider which will load list from web api by invoking HTTP request
 
-export class LocalTodoListProvider {
-  storageProvider: IStorageProvider;
-
-  constructor() {
-    this.storageProvider = new LocalStorageProvider();
-  }  
+export class LocalTodoListProvider implements ITodoListProvider {
 
   getList({filter, sort, searchTerm}: GetListProps): Observable<ITodo[]> {
-    return this.storageProvider.getItem(todoListName).pipe(map((todoListData) => {
+    return providers.storageProvider.getItem(todoListName).pipe(map((todoListData) => {
       if (todoListData === ''
         ||todoListData === undefined 
         || todoListData === null) {
@@ -53,7 +48,7 @@ export class LocalTodoListProvider {
   }
   
   saveList(list: ITodo[]): Observable<unknown> {
-    return this.storageProvider.setItem(todoListName, list);
+    return providers.storageProvider.setItem(todoListName, list);
   }
 
   private searchList(list: ITodo[], searchTerm: string): ITodo[] {

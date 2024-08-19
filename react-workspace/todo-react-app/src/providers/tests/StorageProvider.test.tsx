@@ -4,7 +4,6 @@ import { stateTestData } from "../../context";
 import { LocalStorageProvider } from "..";
 
 let storageProviderSpy: jest.SpyInstance<Storage, []>;
-let localStorageMock: Storage;
 const storageProvider = new LocalStorageProvider();
 
 beforeEach(() => {
@@ -12,7 +11,6 @@ beforeEach(() => {
     getItem: jest.fn().mockReturnValue(JSON.stringify(stateTestData.originalList)),
     setItem: jest.fn()
   } as unknown as Storage));
-  localStorageMock = (storageProviderSpy.getMockImplementation()!)();
 });
 
 afterEach(() => {
@@ -25,12 +23,12 @@ describe('StorageProvider', () => {
       .pipe(
         first()
       )
-      .subscribe((data : any) => {
+      .subscribe((data : string | null) => {
         expect(data).toBe(JSON.stringify(stateTestData.originalList));
         done(); 
       });
 
-    expect(localStorageMock.getItem).toBeCalledWith('todo-list-test');  
+    expect(storageProvider.storage.getItem).toBeCalledWith('todo-list-test');  
   });
 
   it('should invoke setItem', (done) => {
@@ -42,7 +40,7 @@ describe('StorageProvider', () => {
         done(); 
       });
 
-    expect(localStorageMock.setItem).toBeCalledWith('todo-list-test', JSON.stringify(stateTestData.originalList));  
+    expect(storageProvider.storage.setItem).toBeCalledWith('todo-list-test', JSON.stringify(stateTestData.originalList));  
   });
 
   it('should return global localStorage object', () => {

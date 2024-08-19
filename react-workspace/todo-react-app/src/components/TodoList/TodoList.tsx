@@ -4,13 +4,18 @@ import { ITodo, IAction, TodoActions } from '../../models';
 import { DisplayMode, useTodoList, useTodoListDispatch } from '../../context';
 import { TodoItem, InfiniteScroll } from '../';
 import { useState } from 'react';
+import { reorder } from '../../utils/reorder';
+import { Subject } from 'rxjs';
 
 export function TodoList() {
   const todoList = useTodoList();
   const dispatch = useTodoListDispatch();
 
   const [endIndex, setEndIndex] = useState(todoList.displayList.length);
+  const [fetch, ] = useState(new Subject<number>());
   const isDraggingEnabled = todoList.displayList.length > 0 && todoList.displayMode === DisplayMode.All;
+  
+  if (todoList.paging.totalCount === 0) return (<div className='text-light mt-5 mb-5 fade-in'>No data</div>);
 
   let items : ITodo[] = [];
   if (todoList.settings.general.isPaginationEnabled) {
@@ -19,28 +24,6 @@ export function TodoList() {
     items =  items = todoList.displayList.slice(0, endIndex);
   } 
 
-  const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
-    ...draggableStyle,
-    userSelect: "none",
-  });
-
-  function setScrollEndIndex(index: number) {
-    setEndIndex(index);
-  }
-
-  const reorder = (list: Array<ITodo>, startIndex: number, endIndex: number) => {
-    if (todoList.settings.general.isPaginationEnabled) {
-      startIndex = startIndex + ((todoList.paging.activePage - 1) * todoList.paging.itemsPerPage);
-      endIndex =  endIndex + ((todoList.paging.activePage - 1)  * todoList.paging.itemsPerPage);
-    }
-    
-    const result = Array.from(list);
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);
-  
-    return result;
-  };
-
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function onDragEnd(result: any) {
     // dropped outside the list
@@ -48,13 +31,19 @@ export function TodoList() {
       return;
     }
 
+    let startIndex = result.source.index;
+    let endIndex = result.destination.index;
+
+    if (todoList.settings.general.isPaginationEnabled) {
+      startIndex = startIndex + ((todoList.paging.activePage - 1) * todoList.paging.itemsPerPage);
+      endIndex =  endIndex + ((todoList.paging.activePage - 1)  * todoList.paging.itemsPerPage);
+    }
+
     const items = reorder(
       todoList.originalList,
-      result.source.index,
-      result.destination.index
+      startIndex,
+      endIndex
     );
-
-    items.forEach((item: ITodo, index: number) => item.sortId = index);
 
     dispatch({
       type: TodoActions.manuallySorted,
@@ -68,7 +57,7 @@ export function TodoList() {
     (
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="droppable-list">
-          {(provided, snapshot) => (
+          {(provided) => (
             <div 
               id="todo-list-content"
               className= {isDraggingEnabled ? 'drag-list' : ''}
@@ -85,13 +74,14 @@ export function TodoList() {
                   >
                     {(provided, snapshot) => ( 
                       <div
+                        data-testid={todoList.displayMode === DisplayMode.All ? ('draggable-item-' + index) : ('non-draggable-item-' + index)}
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
-                        style={getItemStyle(
-                          snapshot.isDragging,
-                          provided.draggableProps.style
-                        )}
+                        style={{
+                          ...provided.draggableProps.style,
+                          userSelect: "none",
+                        }}
                         className={snapshot.isDragging ? 'item-dragging' : ''}
                       >
                         <TodoItem 
@@ -110,15 +100,12 @@ export function TodoList() {
       </DragDropContext>
     );
 
-  if (todoList.paging.totalCount === 0) return (<div className='text-light mt-5 mb-5 fade-in'>No data</div>);
-
   return (
     <section 
-      id="todo-list-container" 
       className="App__todo-list" 
       >
         { todoList.settings.general.isInfiniteScrollEnabled ?
-          (<InfiniteScroll setEndIndex={setScrollEndIndex}>          
+          (<InfiniteScroll updateEndIndex={(index: number) => setEndIndex(index)} fetch={fetch} itemHeight={55}>          
               { listContent }
           </InfiniteScroll>)
           : listContent 

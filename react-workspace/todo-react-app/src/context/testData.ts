@@ -15,7 +15,7 @@ import {
   IThemeSettings,
   BsThemes
 } from "../models";
-import { IState } from "./";
+import { DisplayMode, IState } from "./";
 
 export const todoListTestData: ITodo[] = [
   {
@@ -66,6 +66,7 @@ export const stateTestData: IState =
 {
   originalList: todoListTestData,
   displayList: todoListTestData,
+  displayMode: DisplayMode.All,
   search: { searchTerm: '' },
   filter: { state: StateFilter.all } as IFilter,
   sort: { column: 'createdAt', direction: SortDirection.Asc} as ISort,

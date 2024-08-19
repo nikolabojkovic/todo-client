@@ -3,19 +3,14 @@ import { render, screen, fireEvent, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { IAction, TodoActions, Todo } from '../../models';
-import { TodoStateProvider, TodosContext, TodosDispatchContext, stateTestData } from '../../context';
+import { IState, TodoStateProvider, TodosContext, TodosDispatchContext, stateTestData } from '../../context';
 import { ImportExport } from './ImportExport';
-
-// import * as TodoContextProvider from '../../context/TodoListContext';
 
 describe('ImportExport', () => {
   const context = {
     state: stateTestData,
     dispatch: jest.fn()
   };
-
-  //jest.spyOn(TodosContextAll, 'useTodoList').mockReturnValue(context);
-  //jest.spyOn(TodoContextProvider, 'useTodoListDispatch').mockImplementation(context);
 
   const alert=jest.fn();
   const downloadLink: HTMLAnchorElement = {
@@ -148,6 +143,57 @@ describe('ImportExport', () => {
         (fileReader.onload!)(progressEvent);
   
         expect(context.dispatch).toBeCalledWith(action);
+      });
+
+      it('should read content without confirmation', async () => {
+        const localContext = {
+          ...context,
+          state: {
+            ...context.state,
+            settings: {
+              ...context.state.settings,
+              general: {
+                ...context.state.settings.general,
+                isConfirmEnabled: false
+              }
+            }
+          } as IState
+        };
+        const jsxElement = 
+        (
+          <TodosContext.Provider value={localContext.state}>
+            <TodosDispatchContext.Provider value={localContext.dispatch} >
+              <ImportExport downloadLink={downloadLink} fileReader={fileReader} alert={alert}/>
+            </TodosDispatchContext.Provider>
+          </TodosContext.Provider>
+        );
+        render(jsxElement);
+        const data = `[{"id":1,"title":"test","description":"des","completed":false,"createdAt":"2024-01-23T13:26:32.093Z","sortId": 1}]`;      
+        const progressEvent = { target: { result: data } } as unknown as ProgressEvent<FileReader>;
+        const blobJson = new Blob([data], { type: 'application/json' });
+        const mockFile = new File([blobJson], 'todo-list.json');        
+        const todo = JSON.parse(data)[0] as Todo;
+
+        const action = {
+          type: TodoActions.imported,
+          payload: {
+            list: [new Todo(todo.id, todo.title, todo.description, todo.completed, todo.createdAt, todo.sortId)] as Todo[],
+            activePage: 1
+          }
+        } as IAction;
+  
+        const chooseFile = screen.getByTestId('choose-file') as HTMLInputElement;
+        fireEvent.change(chooseFile, {target: {files: [mockFile]}});
+  
+        const importButton = screen.getByTestId('import-button');
+        fireEvent.click(importButton); 
+        
+        expect(fileReader.readAsText).toBeCalledWith(mockFile);      
+        expect(importButton).toBeDisabled();
+  
+        (fileReader.onload!)(progressEvent);
+  
+        expect(localContext.dispatch).toBeCalledWith(action);
       });
   
       it('should handle file content when onload invoked', async () => {

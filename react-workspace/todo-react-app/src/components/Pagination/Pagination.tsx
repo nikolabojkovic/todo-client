@@ -151,13 +151,13 @@ export function Pagination({ inputSelectRef, rotate, pageCount, maxVisiblePagesC
           <BootstrapPagination.Next
             data-testid="next-page"
             key="next" 
-            disabled={todoList.paging.activePage === pageCount}
+            disabled={todoList.paging.activePage === pageCount || todoList.paging.activePage === 0}
             onClick={() => updatePagination(todoList.paging.activePage + 1, todoList.paging.itemsPerPage)} 
           />
           <BootstrapPagination.Last 
             data-testid="last-page"
             key="last"
-            disabled={todoList.paging.activePage === pageCount}
+            disabled={todoList.paging.activePage === pageCount || todoList.paging.activePage === 0}
             onClick={() => updatePagination(pageCount, todoList.paging.itemsPerPage)} 
           />
         </BootstrapPagination>

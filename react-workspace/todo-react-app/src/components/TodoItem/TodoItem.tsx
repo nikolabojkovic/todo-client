@@ -80,7 +80,7 @@ export function TodoItem({ todo }: Props) {
               return;
             }
 
-            handleComplete();
+            todo.completed ? handleRestore() : handleComplete();
           }}
         >
           <FontAwesomeIcon 

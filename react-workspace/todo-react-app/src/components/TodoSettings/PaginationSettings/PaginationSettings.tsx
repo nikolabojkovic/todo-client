@@ -45,7 +45,7 @@ export function PaginationSettings() {
           <label>Pagination type</label>
           <Dropdown className="ms-auto">
             <Dropdown.Toggle
-              data-testid="selected-pagination-type-option"
+              data-testid="dropdown-pagination-type"
               variant="outline-secondary"
               className="action-button ps-2 pe-2"
               id="dropdown-pagination-type"
@@ -75,7 +75,7 @@ export function PaginationSettings() {
           <label>Visible pages in navigation group</label>
           <Dropdown className="ms-auto">
             <Dropdown.Toggle
-              data-testid="selected-visible-pages-option"
+              data-testid="dropdown-visible-pages-number"
               variant="outline-secondary"
               className="action-button ps-2 pe-2"
               id="dropdown-visible-pages-number"
