@@ -195,23 +195,6 @@ export class TodoEffects {
     { dispatch: false }
   );
 
-  // loadPaging$ = createEffect(() =>
-  //   this.actions$.pipe(
-  //     ofType(TodoListActions.loadApp),
-  //     exhaustMap(() =>
-  //       this.storageProvider.getItem('todo-paging')
-  //         .pipe(
-  //           first(),
-  //           filter(data => !!data),
-  //           map((pagingData: string | null | undefined) => TodoListActions.pagingFetched({ paging: JSON.parse(pagingData!)})),
-  //           catchError(() => {
-  //             return EMPTY;
-  //           })
-  //         )
-  //     )
-  //   )
-  // );
-
   savePaging$ = createEffect(() =>
     this.actions$.pipe(
       ofType(
