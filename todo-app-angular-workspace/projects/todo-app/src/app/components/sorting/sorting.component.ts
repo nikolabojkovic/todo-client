@@ -4,6 +4,8 @@ import { Subscription } from 'rxjs';
 import { IState, TodoListActions, selectSort } from '../../shared/state';
 import { Store } from '@ngrx/store';
 import { SortAction } from './sort-button/sort-button.component';
+import { SortButtonComponent } from './';
+import { NgFor } from '@angular/common';
 
 type Sort = {
   name: string,
@@ -12,6 +14,11 @@ type Sort = {
 }
 
 @Component({
+  standalone: true,
+  imports: [
+    SortButtonComponent,
+    NgFor
+  ],
   selector: 'app-sorting',
   templateUrl: './sorting.component.html',
   styleUrls: ['./sorting.component.scss']

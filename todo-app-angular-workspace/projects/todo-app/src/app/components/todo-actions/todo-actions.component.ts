@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Subscription, first } from 'rxjs';
-
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faTrash, faRotateLeft } from '@fortawesome/free-solid-svg-icons';
 
 import { ConfirmModalService } from '..';
@@ -9,6 +9,8 @@ import { IState, TodoListActions, selectSettings } from '../../shared/state';
 import { ISettings } from '../../shared/models';
 
 @Component({
+  standalone: true,
+  imports: [FontAwesomeModule],
   selector: 'app-todo-actions',
   templateUrl: './todo-actions.component.html',
   styleUrls: ['./todo-actions.component.scss']

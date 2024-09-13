@@ -17,7 +17,7 @@
     [class]="{ 'drag-list' : isDraggingEnabled }"
   >
     <div
-      *ngFor="let item of items"
+      *ngFor="let item of items; trackBy: trackById"
       cdkDrag [cdkDragDisabled]="displayMode === DisplayMode.Filtered"
       cdkDragBoundary=".app__todo-list"
       [class]="{'drag-box': isDraggingEnabled}"

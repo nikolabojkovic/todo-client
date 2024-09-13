@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, first } from 'rxjs';
 import { Store } from '@ngrx/store';
+import { CommonModule } from '@angular/common';
 
 import { IFilter, StateFilter } from '../../shared/models';
 import { IState, TodoListActions, selectFilter, selectLoader } from '../../shared/state';
 
 @Component({
+  standalone: true,
+  imports: [CommonModule],
   selector: 'app-filter-todos',
   templateUrl: './filter-todos.component.html',
   styleUrls: ['./filter-todos.component.scss']

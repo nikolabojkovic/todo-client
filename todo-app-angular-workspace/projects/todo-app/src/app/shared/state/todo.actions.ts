@@ -11,6 +11,7 @@ import {
 export const TodoListActions = createActionGroup({
   source: 'todos',
   events: {
+    loadApp: emptyProps(),
     loadingStarted: emptyProps(),
     activeTabChanged: props<{ activeTab: string }>(),
     fetch: emptyProps(),
@@ -20,7 +21,7 @@ export const TodoListActions = createActionGroup({
     search: props<{ search: string }>(),
     sort: props<{ sort: ISort }>(),
 
-    fetched: props<{ list: ITodo[], sort: ISort }>(),
+    fetched: props<{ list: ITodo[], sort: ISort, paging: IPaging }>(),
     searched: props<{ activePage: number, list: ITodo[] }>(),
     filtered: props<{ activePage: number, filter: IFilter, list: ITodo[] }>(),
     sorted: props< { sort: ISort, list: ITodo[] }>(),

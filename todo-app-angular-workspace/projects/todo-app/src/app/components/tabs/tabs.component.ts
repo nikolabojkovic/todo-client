@@ -1,8 +1,24 @@
 import { Component } from '@angular/core';
-import { faAdd, faSearch, faFilter, faDownload, faGear, IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import {
+  faAdd,
+  faSearch,
+  faFilter,
+  faDownload,
+  faGear,
+  IconDefinition
+} from '@fortawesome/free-solid-svg-icons';
 import { Store } from '@ngrx/store';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgClass, NgFor, NgIf } from '@angular/common';
 
 import { IState, TodoListActions } from '../../shared/state';
+import {
+  AddTodoComponent,
+  FilterTodosComponent,
+  ImportExportComponent,
+  SearchTodosComponent,
+  TodoSettingsComponent
+} from '../';
 
 type Tab = {
   name: string,
@@ -10,6 +26,18 @@ type Tab = {
 }
 
 @Component({
+  standalone: true,
+  imports: [
+    TodoSettingsComponent,
+    ImportExportComponent,
+    FilterTodosComponent,
+    SearchTodosComponent,
+    AddTodoComponent,
+    FontAwesomeModule,
+    NgFor,
+    NgClass,
+    NgIf
+],
   selector: 'app-tabs',
   templateUrl: './tabs.component.html',
   styleUrls: ['./tabs.component.scss']

@@ -1,8 +1,11 @@
 import { Store } from '@ngrx/store';
 import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { TodoListActions, IState } from '../../shared/state';
 @Component({
+  standalone: true,
+  imports: [FormsModule],
   selector: 'app-add-todo',
   templateUrl: './add-todo.component.html',
   styleUrls: ['./add-todo.component.scss']

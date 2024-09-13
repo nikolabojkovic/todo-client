@@ -2,12 +2,16 @@ import { Store } from '@ngrx/store';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription, first } from 'rxjs';
 import { faCheckDouble, faTrash, faRotateLeft } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { ITodo, ISettings } from '../../shared/models';
 import { DisplayMode, IState, TodoListActions, selectSettings } from '../../shared/state';
 import { ConfirmModalService } from '../';
+import { CommonModule } from '@angular/common';
 
 @Component({
+  standalone: true,
+  imports: [FontAwesomeModule, CommonModule],
   selector: 'app-todo-item',
   templateUrl: './todo-item.component.html',
   styleUrls: ['./todo-item.component.scss']

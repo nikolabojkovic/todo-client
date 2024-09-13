@@ -4,8 +4,11 @@ import { Store } from '@ngrx/store';
 
 import { IState, TodoListActions, selectSettings } from '../../../shared/state';
 import { ISettings, PaginationType } from '../../../shared/models';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 @Component({
+  standalone: true,
+  imports: [BsDropdownModule],
   selector: 'app-pagination-settings',
   templateUrl: './pagination-settings.component.html',
   styleUrls: ['./pagination-settings.component.scss']

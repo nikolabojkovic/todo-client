@@ -2,11 +2,24 @@ import { Store } from '@ngrx/store';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subject, Subscription, combineLatestWith, delay } from 'rxjs';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { CdkDrag, CdkDragPlaceholder, CdkDropList } from '@angular/cdk/drag-drop';
+import { CommonModule } from '@angular/common';
 
 import { DisplayMode, IState, TodoListActions, selectLoader, selectTodoDisplayList, selectTodos } from '../../shared/state';
 import { IPaging, ISettings,  ITodo,  ListContainerType } from '../../shared/models';
+import { LoaderComponent, TodoItemComponent } from '../';
 
 @Component({
+  standalone: true,
+  imports: [
+    CommonModule,
+    FontAwesomeModule,
+    LoaderComponent,
+    TodoItemComponent,
+    CdkDropList,
+    CdkDrag,
+    CdkDragPlaceholder],
   selector: 'app-todo-list',
   templateUrl: './todo-list.component.html',
   styleUrls: ['./todo-list.component.scss'],
@@ -143,6 +156,8 @@ export class TodoListComponent implements OnInit, OnDestroy {
 
     this.store.dispatch(TodoListActions.manuallySorted({ list }));
   }
+
+  trackById = (index: number, item: ITodo): number => item.id;
 
   private calculateinfiniteScrollEndIndex(settings: ISettings): number {
     return (settings.general.listSizeType === ListContainerType.Fixed

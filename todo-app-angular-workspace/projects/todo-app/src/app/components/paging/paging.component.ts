@@ -1,11 +1,16 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
+import { FormsModule } from '@angular/forms';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 import { IPaging, ISettings, PaginationType } from '../../shared/models';
 import { IState, selectPaging, selectSettings, TodoListActions } from '../../shared/state';
 
 @Component({
+  standalone: true,
+  imports: [FormsModule, BsDropdownModule, PaginationModule],
   selector: 'app-paging',
   templateUrl: './paging.component.html',
   styleUrls: ['./paging.component.scss']

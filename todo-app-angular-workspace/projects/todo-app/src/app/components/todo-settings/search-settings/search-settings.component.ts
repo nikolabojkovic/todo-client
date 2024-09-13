@@ -1,11 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 import { IState, TodoListActions, selectSettings } from '../../../shared/state';
 import { ISettings } from '../../../shared/models';
 
 @Component({
+  standalone: true,
+  imports: [
+    FormsModule,
+    CommonModule,
+    MatSlideToggleModule
+  ],
   selector: 'app-search-settings',
   templateUrl: './search-settings.component.html',
   styleUrls: ['./search-settings.component.scss']

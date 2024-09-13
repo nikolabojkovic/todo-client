@@ -2,14 +2,22 @@ import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, O
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 
-import {  SortDirection, SortType } from '../../../shared/models';
+import { SortDirection, SortType } from '../../../shared/models';
 import { IState, selectLoader } from '../../../shared/state';
+// import { SortIconComponent } from '../';
+import { NgClass, NgIf } from '@angular/common';
 
 export type SortAction = {
   column: string,
   direction: SortDirection
 }
 @Component({
+  standalone: true,
+  imports: [
+    //SortIconComponent,
+    NgIf,
+    NgClass
+  ],
   selector: 'app-sort-button',
   templateUrl: './sort-button.component.html',
   styleUrls: ['./sort-button.component.scss']
@@ -42,7 +50,7 @@ export class SortButtonComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach(item => item.unsubscribe());
   }
 
-  handleClick(): void {
+  onClick(): void {
     if (this.isLoading) {
       return;
     }

@@ -32,7 +32,7 @@ export const todosReducer = createReducer(
       activeTab
     } as IState;
   }),
-  on(TodoListActions.fetched, (state, { list, sort }) => {
+  on(TodoListActions.fetched, (state, { list, sort, paging }) => {
     return {
       ...state,
       isLoading: false,
@@ -42,10 +42,10 @@ export const todosReducer = createReducer(
       paging: {
         ...state.paging,
         totalCount: list.length,
-        activePage: 1,
-        itemsPerPage: 5,
-        startIndex: 0,
-        endIndex: 5
+        activePage: paging.activePage,
+        itemsPerPage: paging.itemsPerPage,
+        startIndex: paging.startIndex,
+        endIndex: paging.endIndex
       } as IPaging,
     };
   }),

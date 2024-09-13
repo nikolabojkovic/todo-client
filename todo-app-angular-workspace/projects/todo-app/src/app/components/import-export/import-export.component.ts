@@ -2,6 +2,7 @@ import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/co
 import { Store } from '@ngrx/store';
 import { Subscription, first } from 'rxjs';
 import { faFileExport, faFileImport } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { IState, selectTodos, TodoListActions } from '../../shared/state';
 import { ITodo, Todo, Event } from '../../shared/models';
@@ -9,6 +10,8 @@ import { ConfirmModalService } from '../';
 import { AlertService } from '../../shared/services';
 
 @Component({
+  standalone: true,
+  imports: [FontAwesomeModule],
   selector: 'app-import-export',
   templateUrl: './import-export.component.html',
   styleUrls: ['./import-export.component.scss']
@@ -23,12 +26,12 @@ export class ImportExportComponent implements OnInit, OnDestroy {
   faFileImport = faFileImport;
   faFileExport = faFileExport;
   downloadLink: HTMLAnchorElement = document.createElement('a');
+  private subscription!: Subscription;
 
   constructor(
     private store: Store<IState>,
     private modalService: ConfirmModalService,
     private alertService: AlertService) { }
-    private subscription!: Subscription;
 
   ngOnInit(): void {
     this.subscription = this.store.select(selectTodos)

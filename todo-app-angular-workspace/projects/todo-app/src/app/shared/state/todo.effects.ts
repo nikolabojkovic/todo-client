@@ -1,15 +1,16 @@
 import { Inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType, concatLatestFrom } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { EMPTY, of } from 'rxjs';
-import { catchError, exhaustMap, filter, first, map, switchMap, tap } from 'rxjs/operators';
+import { forkJoin, of } from 'rxjs';
+import { catchError, exhaustMap, first, map, switchMap, tap } from 'rxjs/operators';
 
 import {
   ITodo,
   ISettings,
   IFilter,
   ISort,
-  SortDirection
+  SortDirection,
+  IPaging
 } from '../models';
 import {
   IState,
@@ -30,17 +31,32 @@ import {
 @Injectable()
 export class TodoEffects {
 
-  loadTodoList$ = createEffect(() => {
+  loadTodoListData$ = createEffect(() => {
     let sort = {
       column: 'sortId',
       direction: SortDirection.Asc
     } as ISort;
+
+    let paging = {
+      activePage: 1,
+      itemsPerPage: 5,
+      startIndex: 0,
+      endIndex: 5,
+    } as IPaging;
+
     return this.actions$.pipe(
-      ofType(TodoListActions.fetch),
-      switchMap(() => this.storageProvider.getItem('todo-sort')),
-      exhaustMap((localStorageSort: string | null | undefined) => {
+      ofType(TodoListActions.loadApp),
+      switchMap(() => forkJoin([
+        this.storageProvider.getItem('todo-paging'),
+        this.storageProvider.getItem('todo-sort')
+      ])),
+      exhaustMap(([pagingData, localStorageSort]: [string | null | undefined, string | null | undefined]) => {
         if (localStorageSort) {
           sort = JSON.parse(localStorageSort) as ISort;
+        }
+
+        if (pagingData) {
+          paging = JSON.parse(pagingData);
         }
 
         return this.todoService.getList(
@@ -49,9 +65,9 @@ export class TodoEffects {
           )
           .pipe(
             first(),
-            map((list: ITodo[]) => TodoListActions.fetched({ list, sort })),
+            map((list: ITodo[]) => TodoListActions.fetched({ list, sort, paging })),
             catchError(() => {
-              return of(TodoListActions.fetched({ list: [] as ITodo[], sort }));
+              return of(TodoListActions.fetched({ list: [] as ITodo[], sort, paging }));
             })
           );
       })
@@ -127,6 +143,7 @@ export class TodoEffects {
       ofType(
         TodoListActions.added,
         TodoListActions.completed,
+        TodoListActions.restored,
         TodoListActions.removed,
         TodoListActions.imported,
         TodoListActions.manuallySorted,
@@ -142,7 +159,7 @@ export class TodoEffects {
   startLoader$ = createEffect(() =>
     this.actions$.pipe(
       ofType(
-        TodoListActions.fetch,
+        TodoListActions.loadApp,
         TodoListActions.search,
         TodoListActions.filter,
         TodoListActions.sort
@@ -156,7 +173,7 @@ export class TodoEffects {
 
   loadSettings$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(TodoListActions.settingsFetch),
+      ofType(TodoListActions.loadApp),
       exhaustMap(() =>
         this.settingsService.loadSettings()
           .pipe(
@@ -178,23 +195,22 @@ export class TodoEffects {
     { dispatch: false }
   );
 
-
-  loadPaging$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(TodoListActions.pagingFetch),
-      exhaustMap(() =>
-        this.storageProvider.getItem('todo-paging')
-          .pipe(
-            first(),
-            filter(data => !!data),
-            map((pagingData: string | null | undefined) => TodoListActions.pagingFetched({ paging: JSON.parse(pagingData!)})),
-            catchError(() => {
-              return EMPTY;
-            })
-          )
-      )
-    )
-  );
+  // loadPaging$ = createEffect(() =>
+  //   this.actions$.pipe(
+  //     ofType(TodoListActions.loadApp),
+  //     exhaustMap(() =>
+  //       this.storageProvider.getItem('todo-paging')
+  //         .pipe(
+  //           first(),
+  //           filter(data => !!data),
+  //           map((pagingData: string | null | undefined) => TodoListActions.pagingFetched({ paging: JSON.parse(pagingData!)})),
+  //           catchError(() => {
+  //             return EMPTY;
+  //           })
+  //         )
+  //     )
+  //   )
+  // );
 
   savePaging$ = createEffect(() =>
     this.actions$.pipe(
@@ -229,5 +245,4 @@ export class TodoEffects {
     private store: Store<IState>
   ) {}
 }
-
 

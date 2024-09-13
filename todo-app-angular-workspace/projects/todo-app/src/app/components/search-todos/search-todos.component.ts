@@ -2,11 +2,20 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import { Subject, Subscription, concatMap, debounceTime, filter, first, tap } from 'rxjs';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { ISettings, ISearch } from '../../shared/models';
 import { IState, TodoListActions, selectSearch, selectSettings } from '../../shared/state';
+import { NgIf } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
+  standalone: true,
+  imports: [
+    FontAwesomeModule,
+    NgIf,
+    FormsModule
+  ],
   selector: 'app-search-todos',
   templateUrl: './search-todos.component.html',
   styleUrls: ['./search-todos.component.scss']
