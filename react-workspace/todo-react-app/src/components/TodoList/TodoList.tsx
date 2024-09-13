@@ -15,7 +15,9 @@ export function TodoList() {
   const [fetch, ] = useState(new Subject<number>());
   const isDraggingEnabled = todoList.displayList.length > 0 && todoList.displayMode === DisplayMode.All;
   
-  if (todoList.paging.totalCount === 0) return (<div className='text-light mt-5 mb-5 fade-in'>No data</div>);
+  if (todoList.paging.totalCount === 0) {
+    return (<div className='text-light mt-5 mb-5 fade-in'>No data</div>);
+  }
 
   let items : ITodo[] = [];
   if (todoList.settings.general.isPaginationEnabled) {
